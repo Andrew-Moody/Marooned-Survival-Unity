@@ -1,0 +1,87 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!319 &31900000
+AvatarMask:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Man Mask
+  m_Mask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+  m_Elements:
+  - m_Path: 
+    m_Weight: 1
+  - m_Path: Base Body
+    m_Weight: 0
+  - m_Path: ManRig
+    m_Weight: 0
+  - m_Path: ManRig/IKLegPole.L
+    m_Weight: 0
+  - m_Path: ManRig/IKLegPole.L/IKLegPole.L_end
+    m_Weight: 0
+  - m_Path: ManRig/IKLegPole.R
+    m_Weight: 0
+  - m_Path: ManRig/IKLegPole.R/IKLegPole.R_end
+    m_Weight: 0
+  - m_Path: ManRig/IKTarget.L
+    m_Weight: 0
+  - m_Path: ManRig/IKTarget.L/IKTarget.L_end
+    m_Weight: 0
+  - m_Path: ManRig/IKTarget.R
+    m_Weight: 0
+  - m_Path: ManRig/IKTarget.R/IKTarget.R_end
+    m_Weight: 0
+  - m_Path: ManRig/Root
+    m_Weight: 0
+  - m_Path: ManRig/Root/Spine1
+    m_Weight: 0
+  - m_Path: ManRig/Root/Spine1/Spine2
+    m_Weight: 0
+  - m_Path: ManRig/Root/Spine1/Spine2/Neck
+    m_Weight: 0
+  - m_Path: ManRig/Root/Spine1/Spine2/Neck/Head
+    m_Weight: 0
+  - m_Path: ManRig/Root/Spine1/Spine2/Neck/Head/HeadPoint
+    m_Weight: 0
+  - m_Path: ManRig/Root/Spine1/Spine2/Neck/Head/HeadPoint/HeadPoint_end
+    m_Weight: 0
+  - m_Path: ManRig/Root/Spine1/Spine2/Shoulder.L
+    m_Weight: 0
+  - m_Path: ManRig/Root/Spine1/Spine2/Shoulder.L/UpperArm.L
+    m_Weight: 0
+  - m_Path: ManRig/Root/Spine1/Spine2/Shoulder.L/UpperArm.L/LowerArm.L
+    m_Weight: 0
+  - m_Path: ManRig/Root/Spine1/Spine2/Shoulder.L/UpperArm.L/LowerArm.L/Hand.L
+    m_Weight: 0
+  - m_Path: ManRig/Root/Spine1/Spine2/Shoulder.L/UpperArm.L/LowerArm.L/Hand.L/Hand.L_end
+    m_Weight: 0
+  - m_Path: ManRig/Root/Spine1/Spine2/Shoulder.R
+    m_Weight: 1
+  - m_Path: ManRig/Root/Spine1/Spine2/Shoulder.R/UpperArm.R
+    m_Weight: 1
+  - m_Path: ManRig/Root/Spine1/Spine2/Shoulder.R/UpperArm.R/LowerArm.R
+    m_Weight: 1
+  - m_Path: ManRig/Root/Spine1/Spine2/Shoulder.R/UpperArm.R/LowerArm.R/Hand.R
+    m_Weight: 1
+  - m_Path: ManRig/Root/Spine1/Spine2/Shoulder.R/UpperArm.R/LowerArm.R/Hand.R/Hand.R_end
+    m_Weight: 1
+  - m_Path: ManRig/Root/UpperLeg.L
+    m_Weight: 0
+  - m_Path: ManRig/Root/UpperLeg.L/LowerLeg.L
+    m_Weight: 0
+  - m_Path: ManRig/Root/UpperLeg.L/LowerLeg.L/Foot.L
+    m_Weight: 0
+  - m_Path: ManRig/Root/UpperLeg.L/LowerLeg.L/Foot.L/Toe.L
+    m_Weight: 0
+  - m_Path: ManRig/Root/UpperLeg.L/LowerLeg.L/Foot.L/Toe.L/Toe.L_end
+    m_Weight: 0
+  - m_Path: ManRig/Root/UpperLeg.R
+    m_Weight: 0
+  - m_Path: ManRig/Root/UpperLeg.R/LowerLeg.R
+    m_Weight: 0
+  - m_Path: ManRig/Root/UpperLeg.R/LowerLeg.R/Foot.R
+    m_Weight: 0
+  - m_Path: ManRig/Root/UpperLeg.R/LowerLeg.R/Foot.R/Toe.R
+    m_Weight: 0
+  - m_Path: ManRig/Root/UpperLeg.R/LowerLeg.R/Foot.R/Toe.R/Toe.R_end
+    m_Weight: 0

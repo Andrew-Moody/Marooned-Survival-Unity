@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8afe18e8654e9054eabeb7ddb8031f3a, type: 3}
+  m_Name: testFSMSO
+  m_EditorClassIdentifier: 
+  _statesOnSO:
+    _items:
+    - StateChoice: AttackState
+      Transitions:
+        _items:
+        - Name: 
+          Condition: 
+          Value: 0
+          StateChoice: 
+    - StateChoice: AttackState
+      Transitions:
+        _items: []
+    - StateChoice: MoveState
+      Transitions:
+        _items:
+        - Name: Distance
+          Condition: LessThan
+          Value: 5
+          StateChoice: AttackState
+        - Name: 
+          Condition: 
+          Value: 0
+          StateChoice: 
+        - Name: 
+          Condition: 
+          Value: 0
+          StateChoice: 

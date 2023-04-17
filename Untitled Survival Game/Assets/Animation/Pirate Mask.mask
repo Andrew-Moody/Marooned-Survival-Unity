@@ -1,0 +1,101 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!319 &31900000
+AvatarMask:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Pirate Mask
+  m_Mask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+  m_Elements:
+  - m_Path: 
+    m_Weight: 1
+  - m_Path: Armature
+    m_Weight: 0
+  - m_Path: Armature/IKLegPole.L
+    m_Weight: 0
+  - m_Path: Armature/IKLegPole.L/IKLegPole.L_end
+    m_Weight: 0
+  - m_Path: Armature/IKLegPole.R
+    m_Weight: 0
+  - m_Path: Armature/IKLegPole.R/IKLegPole.R_end
+    m_Weight: 0
+  - m_Path: Armature/IKTarget.L
+    m_Weight: 0
+  - m_Path: Armature/IKTarget.L/IKTarget.L_end
+    m_Weight: 0
+  - m_Path: Armature/IKTarget.R
+    m_Weight: 0
+  - m_Path: Armature/IKTarget.R/IKTarget.R_end
+    m_Weight: 0
+  - m_Path: Armature/Root
+    m_Weight: 0
+  - m_Path: Armature/Root/Spine1
+    m_Weight: 0
+  - m_Path: Armature/Root/Spine1/Spine2
+    m_Weight: 0
+  - m_Path: Armature/Root/Spine1/Spine2/Head 1
+    m_Weight: 0
+  - m_Path: Armature/Root/Spine1/Spine2/Head 1/Head_end
+    m_Weight: 0
+  - m_Path: Armature/Root/Spine1/Spine2/Shoulder.L
+    m_Weight: 0
+  - m_Path: Armature/Root/Spine1/Spine2/Shoulder.L/UpperArm.L
+    m_Weight: 0
+  - m_Path: Armature/Root/Spine1/Spine2/Shoulder.L/UpperArm.L/LowerArm.L
+    m_Weight: 0
+  - m_Path: Armature/Root/Spine1/Spine2/Shoulder.L/UpperArm.L/LowerArm.L/Hand.L
+    m_Weight: 0
+  - m_Path: Armature/Root/Spine1/Spine2/Shoulder.L/UpperArm.L/LowerArm.L/Hand.L/Fingers.L
+    m_Weight: 0
+  - m_Path: Armature/Root/Spine1/Spine2/Shoulder.L/UpperArm.L/LowerArm.L/Hand.L/Fingers.L/Fingers.L_end
+    m_Weight: 0
+  - m_Path: Armature/Root/Spine1/Spine2/Shoulder.L/UpperArm.L/LowerArm.L/Hand.L/Grip.L
+    m_Weight: 0
+  - m_Path: Armature/Root/Spine1/Spine2/Shoulder.L/UpperArm.L/LowerArm.L/Hand.L/Grip.L/Grip.L_end
+    m_Weight: 0
+  - m_Path: Armature/Root/Spine1/Spine2/Shoulder.L/UpperArm.L/LowerArm.L/Hand.L/Thumb.L
+    m_Weight: 0
+  - m_Path: Armature/Root/Spine1/Spine2/Shoulder.L/UpperArm.L/LowerArm.L/Hand.L/Thumb.L/Thumb.L_end
+    m_Weight: 0
+  - m_Path: Armature/Root/Spine1/Spine2/Shoulder.R
+    m_Weight: 1
+  - m_Path: Armature/Root/Spine1/Spine2/Shoulder.R/UpperArm.R
+    m_Weight: 1
+  - m_Path: Armature/Root/Spine1/Spine2/Shoulder.R/UpperArm.R/LowerArm.R
+    m_Weight: 1
+  - m_Path: Armature/Root/Spine1/Spine2/Shoulder.R/UpperArm.R/LowerArm.R/Hand.R
+    m_Weight: 1
+  - m_Path: Armature/Root/Spine1/Spine2/Shoulder.R/UpperArm.R/LowerArm.R/Hand.R/Fingers.R
+    m_Weight: 1
+  - m_Path: Armature/Root/Spine1/Spine2/Shoulder.R/UpperArm.R/LowerArm.R/Hand.R/Fingers.R/Fingers.R_end
+    m_Weight: 1
+  - m_Path: Armature/Root/Spine1/Spine2/Shoulder.R/UpperArm.R/LowerArm.R/Hand.R/Grip.R
+    m_Weight: 1
+  - m_Path: Armature/Root/Spine1/Spine2/Shoulder.R/UpperArm.R/LowerArm.R/Hand.R/Grip.R/Grip.R_end
+    m_Weight: 1
+  - m_Path: Armature/Root/Spine1/Spine2/Shoulder.R/UpperArm.R/LowerArm.R/Hand.R/Thumb.R
+    m_Weight: 1
+  - m_Path: Armature/Root/Spine1/Spine2/Shoulder.R/UpperArm.R/LowerArm.R/Hand.R/Thumb.R/Thumb.R_end
+    m_Weight: 1
+  - m_Path: Armature/Root/UpperLeg.L
+    m_Weight: 0
+  - m_Path: Armature/Root/UpperLeg.L/LowerLeg.L
+    m_Weight: 0
+  - m_Path: Armature/Root/UpperLeg.L/LowerLeg.L/Foot.L
+    m_Weight: 0
+  - m_Path: Armature/Root/UpperLeg.L/LowerLeg.L/Foot.L/Foot.L_end
+    m_Weight: 0
+  - m_Path: Armature/Root/UpperLeg.R
+    m_Weight: 0
+  - m_Path: Armature/Root/UpperLeg.R/LowerLeg.R
+    m_Weight: 0
+  - m_Path: Armature/Root/UpperLeg.R/LowerLeg.R/Foot.R
+    m_Weight: 0
+  - m_Path: Armature/Root/UpperLeg.R/LowerLeg.R/Foot.R/Foot.R_end
+    m_Weight: 0
+  - m_Path: Body
+    m_Weight: 1
+  - m_Path: Head
+    m_Weight: 1
