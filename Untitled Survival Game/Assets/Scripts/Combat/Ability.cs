@@ -7,9 +7,13 @@ public class Ability
 {
 	[SerializeField]
 	private string _abilityName;
+	public string AbilityName {  get { return _abilityName; } }
 
 	[SerializeField]
 	private AbilityType _abilityType;
+
+	[SerializeField]
+	private ToolType _toolType;
 
 	[SerializeField]
 	private float _coolDown;
@@ -58,6 +62,8 @@ public class Ability
 		_abilityName = ability._abilityName;
 
 		_abilityType = ability._abilityType;
+
+		_toolType = ability._toolType;
 
 		_coolDown = ability._coolDown;
 
@@ -143,6 +149,7 @@ public class Ability
 
 	public virtual AbilityActor[] FindTargets(Vector3 userPosition, LayerMask targetMask)
 	{
+		Debug.LogWarning("Using base Ability.FindTargets()");
 		return null;
 	}
 
@@ -195,6 +202,21 @@ public class Ability
 					break;
 				}
 			}
+
+
+			if (effected != null && effected.GetToolType() != ToolType.None && effected.GetToolType() != _toolType)
+			{
+				// The ability does not have the correct tool type to effect this AbilityActor
+
+				// Could apply failure effects like sound and particles
+				if (effected != null)
+				{
+					Debug.LogWarning($"{_abilityName} with tooltype {_toolType} can't effect target {effected.name} with tooltype {effected.GetToolType()} ");
+				}
+
+				return;
+			}
+
 
 			foreach (Effect effect in _effectLists[((int)i - 1)])
 			{
@@ -293,4 +315,12 @@ public enum AbilityType
 	Melee,
 	Range,
 	Magic
+}
+
+
+public enum ToolType
+{
+	None,
+	Mining,
+	Logging
 }

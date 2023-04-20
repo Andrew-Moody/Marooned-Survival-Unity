@@ -156,6 +156,7 @@ MonoBehaviour:
   _addedNetworkObject: {fileID: 416200329961083272}
   _networkObjectCache: {fileID: 416200329961083272}
   _stats: {fileID: 416200329961083279}
+  _toolType: 2
   _animator: {fileID: 0}
   _animatorOverride: {fileID: 0}
   _audioSource: {fileID: 8011901385716394039}

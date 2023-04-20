@@ -60,7 +60,7 @@ public class Inventory : NetworkBehaviour
 		}
         _items = new List<InventoryItem>(Size + 4);
 
-        for (int i = 0; i < Size + 4; i++)
+        for (int i = 0; i < Size + 5; i++)
 		{
             _items.Add(InventoryItem.Empty());
 		}
@@ -140,11 +140,11 @@ public class Inventory : NetworkBehaviour
 
             if (_items[toEquip].ItemID == 0)
             {
-                gameObject.GetComponent<EquipmentController>().ObserversUnequipItem(currEquip - Size);
+                gameObject.GetComponent<EquipmentController>().ServerUnequipItem(currEquip - Size);
             }
             else if (_items[toEquip].ItemSO.equipSlot == (currEquip - Size))
 			{
-                gameObject.GetComponent<EquipmentController>().ObserversEquipItem(_items[toEquip].GetNetData());
+                gameObject.GetComponent<EquipmentController>().ServerEquipItem(_items[toEquip].GetNetData());
             }
 			else
 			{
@@ -176,7 +176,7 @@ public class Inventory : NetworkBehaviour
 		}
 
         // Equip Item
-        gameObject.GetComponent<EquipmentController>().EquipItem(_items[index].GetNetData());
+        //gameObject.GetComponent<EquipmentController>().EquipItem(_items[index].GetNetData());
 
         ServerSwapSlots(index, equipSlot);
 	}
@@ -330,6 +330,12 @@ public class Inventory : NetworkBehaviour
     public void TargetSyncContents(NetworkConnection connection, List<ItemNetData> items)
 	{
         SetContents(items);
+	}
+
+
+    public ItemSO GetItemSO(int slot)
+	{
+        return _items[slot].ItemSO;
 	}
 
 

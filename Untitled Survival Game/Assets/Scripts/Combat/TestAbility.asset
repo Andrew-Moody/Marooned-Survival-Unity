@@ -12,6 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45e779c660012684982f34e8daa1a17f, type: 3}
   m_Name: TestAbility
   m_EditorClassIdentifier: 
-  CoolDown: 2
-  EnergyCost: 0
-  AbilityAnimation: {fileID: 6336031161177774121, guid: 3e45f42772bf1f841a05c00e59c7381d, type: 3}
+  Ability:
+    _abilityName: 
+    _abilityType: 0
+    _coolDown: 0
+    _requireTarget: 0
+    _requirements: []
+    _namedValues: []
+    _userEffects:
+    - id: 0
+    _targetEffects: []
+    _itemEffects: []
+  references:
+    version: 1
+    00000000:
+      type: {class: AnimationEffect, ns: , asm: Assembly-CSharp}
+      data:
+        EffectType: 1
+        EffectTiming: 0
+        AnimTrigger: 
+        Animation: {fileID: 0}

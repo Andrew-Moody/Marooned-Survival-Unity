@@ -9,6 +9,9 @@ public class AbilityActor : NetworkBehaviour
 	private Stats _stats;
 
 	[SerializeField]
+	private ToolType _toolType;
+
+	[SerializeField]
 	private Animator _animator;
 
 	[SerializeField]
@@ -87,6 +90,12 @@ public class AbilityActor : NetworkBehaviour
 	public void AddToStat(StatType statType, float value)
 	{
 		_stats.AddToStat(statType, value);
+	}
+
+
+	public ToolType GetToolType()
+	{
+		return _toolType;
 	}
 
 	#endregion

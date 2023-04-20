@@ -14,6 +14,14 @@ public class AbilitySO : ScriptableObject
 		{
 			Ability = new Ability();
 		}
+		else
+		{
+			// This is begging for a factory
+			if (Ability.GetAbilityType() == AbilityType.Melee && !(Ability is MeleeAbility))
+			{
+				Ability = new MeleeAbility(Ability);
+			}
+		}
 
 		Ability.OnValidate();
 	}

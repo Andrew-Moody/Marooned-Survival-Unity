@@ -38,19 +38,23 @@ public class CombatInput : NetworkBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E))
 		{
-            Attack(0);
+            int attackIdx = _combatant.ChooseAbility();
+            Attack(attackIdx);
 		}
 
         // I know this is awfull and I need to make an Input Manager
         if (CameraController.Instance.GetFPSMode() && Input.GetMouseButton(0))
 		{
-            Attack(0);
+            int attackIdx = _combatant.ChooseAbility();
+            Attack(attackIdx);
         }
     }
 
 
     private void Attack(int attackIdx)
     {
+        Debug.Log("Attack index: " + attackIdx);
+
         Ability attack = _combatant.GetAbility(attackIdx);
 
         if (attack == null)

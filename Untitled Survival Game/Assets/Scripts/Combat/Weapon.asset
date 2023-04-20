@@ -18,10 +18,19 @@ MonoBehaviour:
   - _abilityName: 
     _abilityType: 1
     _coolDown: 0
+    _requireTarget: 0
     _requirements: []
     _namedValues: []
-    _userEffects: []
+    _userEffects:
+    - id: 0
     _targetEffects: []
     _itemEffects: []
   references:
     version: 1
+    00000000:
+      type: {class: AnimationEffect, ns: , asm: Assembly-CSharp}
+      data:
+        EffectType: 1
+        EffectTiming: 0
+        AnimTrigger: 
+        Animation: {fileID: 0}

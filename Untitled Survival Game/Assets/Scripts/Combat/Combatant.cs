@@ -32,6 +32,11 @@ public class Combatant : NetworkBehaviour
 	private Stats _stats;
 
 
+	private AbilityItemSO _abilityItem;
+
+	private Inventory _inventory;
+
+
 	public override void OnStartNetwork()
 	{
 		base.OnStartNetwork();
@@ -40,17 +45,17 @@ public class Combatant : NetworkBehaviour
 
 		foreach (AbilitySO abilitySO in _abilitySOList)
 		{
-			// This is begging for a factory
-			if (abilitySO.Ability.GetAbilityType() == AbilityType.Melee)
-			{
-				_abilities.Add(new MeleeAbility(abilitySO.Ability));
-			}
-			else
-			{
-				_abilities.Add(abilitySO.Ability);
-			}
+			//// This is begging for a factory
+			//if (abilitySO.Ability.GetAbilityType() == AbilityType.Melee)
+			//{
+			//	_abilities.Add(new MeleeAbility(abilitySO.Ability));
+			//}
+			//else
+			//{
+			//	_abilities.Add(abilitySO.Ability);
+			//}
 
-			
+			_abilities.Add(abilitySO.Ability);
 		}
 
 		_abilityActor = GetComponent<AbilityActor>();
@@ -58,6 +63,8 @@ public class Combatant : NetworkBehaviour
 		_stats = GetComponent<Stats>();
 
 		_stats.OnStatEmpty += OnStatEmpty;
+
+		_inventory = GetComponent<Inventory>();
 	}
 
 
@@ -107,13 +114,56 @@ public class Combatant : NetworkBehaviour
 
 	public int ChooseAbility(AbilityActor target = null)
 	{
-		// For now get the first ability that is useable
-
-		for (int i = 0; i < _abilities.Count; i++)
+		if (_inventory != null)
 		{
-			if (_abilities[i].Useable(_abilityActor, target))
+			ItemSO itemSO = _inventory.GetItemSO(8);
+			_abilityItem = itemSO.AbilityItemSO;
+
+			int ability = ChooseItemAbility(target);
+
+			Debug.Log($"Choose ItemAbility {ability}");
+
+			if (ability != -1)
 			{
-				return i;
+				return ability + _abilities.Count;
+			}
+		}
+		else
+		{
+			// For now get the first ability that is useable
+
+			for (int i = 0; i < _abilities.Count; i++)
+			{
+				if (_abilities[i].Useable(_abilityActor, target))
+				{
+					return i;
+				}
+			}
+		}
+
+		
+
+		return -1;
+	}
+
+
+	private int ChooseItemAbility(AbilityActor target = null)
+	{
+		Debug.Log($"Choosing ItemAbility {_abilityItem}");
+
+		if (_abilityItem != null)
+		{
+			for (int i = 0; i < _abilityItem.Abilities.Length; i++)
+			{
+				Ability ability = _abilityItem.Abilities[i];
+
+				Debug.Log($"Checking {ability.AbilityName} of type {ability.GetType()}");
+
+
+				if (_abilityItem.Abilities[i].Useable(_abilityActor, target))
+				{
+					return i;
+				}
 			}
 		}
 
@@ -122,18 +172,25 @@ public class Combatant : NetworkBehaviour
 
 	public Ability GetAbility(int abilityIndex)
 	{
-		if (_abilities == null)
+		if (abilityIndex == -1)
 		{
-			//Debug.Log("Ability Array was null");
-			return null;
-		}
-		else if (abilityIndex < 0 || abilityIndex >= _abilities.Count)
-		{
-			//Debug.Log("Ability Index Out of Bounds");
+			//Debug.Log("Failed to get ability with index: -1");
 			return null;
 		}
 
-		return _abilities[abilityIndex];
+		if (abilityIndex < _abilities.Count)
+		{
+			return _abilities[abilityIndex];
+		}
+
+		abilityIndex -= _abilities.Count;
+
+		if (_abilityItem != null && abilityIndex < _abilityItem.Abilities.Length)
+		{
+			return _abilityItem.Abilities[abilityIndex];
+		}
+
+		return null;
 	}
 
 
@@ -192,7 +249,7 @@ public class Combatant : NetworkBehaviour
 
 			if (targets.Length > 1)
 			{
-				Debug.LogError("Multiple Targets found");
+				Debug.Log("Multiple Targets found");
 			}
 
 			foreach (AbilityActor target in targets)
@@ -336,6 +393,14 @@ public class Combatant : NetworkBehaviour
 			foreach (Ability ability in _abilities)
 			{
 				ability.TickAbility(Time.deltaTime);
+			}
+
+			if (_abilityItem != null)
+			{
+				foreach (Ability ability in _abilityItem.Abilities)
+				{
+					ability.TickAbility(Time.deltaTime);
+				}
 			}
 		}
 	}

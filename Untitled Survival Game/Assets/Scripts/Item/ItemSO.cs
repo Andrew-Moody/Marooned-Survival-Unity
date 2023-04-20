@@ -30,4 +30,7 @@ public class ItemSO : ScriptableObject
 
     public List<Options> WorldOptions;
 
+    // Wieldable Data
+    public AbilityItemSO AbilityItemSO;
+
 }

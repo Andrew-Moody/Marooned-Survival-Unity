@@ -9,32 +9,31 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 45e779c660012684982f34e8daa1a17f, type: 3}
-  m_Name: MagicSlap
+  m_Script: {fileID: 11500000, guid: 843e3dd26f142734ba8272ee197cb8bf, type: 3}
+  m_Name: Axe
   m_EditorClassIdentifier: 
-  Ability:
-    _abilityName: Magic Slap
+  ItemName: Axe
+  itemID: 103
+  Abilities:
+  - _abilityName: Axe Attack
     _abilityType: 1
-    _toolType: 0
+    _toolType: 2
     _coolDown: 1
     _requireTarget: 0
-    _requirements:
-    - StatType: 2
-      Value: 10
+    _requirements: []
     _namedValues:
     - Name: RANGE
       Value: 2
     _userEffects:
     - id: 0
     - id: 1
-    - id: 2
     _targetEffects:
+    - id: 2
     - id: 3
     - id: 4
     - id: 5
     - id: 6
     - id: 7
-    - id: 8
     _itemEffects: []
   references:
     version: 1
@@ -46,25 +45,24 @@ MonoBehaviour:
         AnimTrigger: USE_ABILITY
         Animation: {fileID: 0}
     00000001:
-      type: {class: StatEffect, ns: , asm: Assembly-CSharp}
-      data:
-        EffectType: 4
-        EffectTiming: 1
-        StatType: 2
-        StatAmount: -1
-    00000002:
       type: {class: SoundEffect, ns: , asm: Assembly-CSharp}
       data:
         EffectType: 3
         EffectTiming: 1
         Sound: {fileID: 8300000, guid: f894ae2060e946649b8c5d2cbc7aa8b2, type: 3}
-    00000003:
+    00000002:
       type: {class: AnimationEffect, ns: , asm: Assembly-CSharp}
       data:
         EffectType: 1
         EffectTiming: 2
         AnimTrigger: HIT
         Animation: {fileID: 0}
+    00000003:
+      type: {class: SoundEffect, ns: , asm: Assembly-CSharp}
+      data:
+        EffectType: 3
+        EffectTiming: 2
+        Sound: {fileID: 8300000, guid: d76309bdff4fffd4ebfadbac6fee3764, type: 3}
     00000004:
       type: {class: ParticleEffect, ns: , asm: Assembly-CSharp}
       data:
@@ -73,25 +71,19 @@ MonoBehaviour:
         ParticleName: HIT
         ParticleSystem: {fileID: 0}
     00000005:
-      type: {class: SoundEffect, ns: , asm: Assembly-CSharp}
-      data:
-        EffectType: 3
-        EffectTiming: 2
-        Sound: {fileID: 8300000, guid: d76309bdff4fffd4ebfadbac6fee3764, type: 3}
-    00000006:
       type: {class: StatEffect, ns: , asm: Assembly-CSharp}
       data:
         EffectType: 4
         EffectTiming: 2
         StatType: 1
         StatAmount: -35
-    00000007:
+    00000006:
       type: {class: KnockBackEffect, ns: , asm: Assembly-CSharp}
       data:
         EffectType: 5
         EffectTiming: 2
         KnockBack: 8
-    00000008:
+    00000007:
       type: {class: TransformEffect, ns: , asm: Assembly-CSharp}
       data:
         EffectType: 6
