@@ -8,9 +8,32 @@ public class AbilityItemSO : ScriptableObject
 {
 	public string ItemName;
 
-	public int itemID;
+	public int ItemID;
 
+	[SerializeReference]
 	public Ability[] Abilities;
+
+
+	public Ability[] GetAbilities()
+	{
+		Ability[] abilities = new Ability[Abilities.Length];
+
+		for (int i = 0; i < Abilities.Length; i++)
+		{
+			if (Abilities[i] == null)
+			{
+				Debug.LogError($"Ability {i} was null");
+			}
+			else if (Abilities[i].GetAbilityType() == AbilityType.Melee)
+			{
+				Debug.LogError($"Range = {(Abilities[i] as MeleeAbility).Range}");
+			}
+
+			abilities[i] = Abilities[i].CreateCopy();
+		}
+
+		return abilities;
+	}
 
 	private void OnValidate()
 	{
@@ -18,16 +41,25 @@ public class AbilityItemSO : ScriptableObject
 		{
 			if (Abilities[i] == null)
 			{
+				//Debug.LogWarning($"Ability {i} was null");
 				Abilities[i] = new Ability();
 			}
 			else
 			{
-				// This is begging for a factory
-				if (Abilities[i].GetAbilityType() == AbilityType.Melee && !(Abilities[i] is MeleeAbility))
+				if (Abilities[i].GetAbilityType() == AbilityType.Melee && !(Abilities[i].GetType() == typeof(MeleeAbility)))
 				{
+					//Debug.LogWarning($"MeleeAbility(Ability) called");
 					Abilities[i] = new MeleeAbility(Abilities[i]);
 				}
+				else if (Abilities[i].GetAbilityType() == AbilityType.None && !(Abilities[i].GetType() == typeof(Ability)))
+				{
+					//Debug.LogWarning($"Ability(Ability) called");
+					Abilities[i] = new Ability(Abilities[i]);
+				}
 			}
+
+
+			//Debug.LogWarning($"Ability.OnValidate");
 
 			Abilities[i].OnValidate();
 		}

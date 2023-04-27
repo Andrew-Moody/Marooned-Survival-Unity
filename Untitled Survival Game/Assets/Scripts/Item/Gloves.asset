@@ -16,10 +16,11 @@ MonoBehaviour:
   ItemName: Gloves
   ExamineText: A sturdy pair of leather gloves
   StackLimit: 1
-  equipSlot: 2
+  equipSlot: 3
   Sprite: {fileID: 21300000, guid: 15d0596c001fa464db4db69686738e74, type: 3}
   InventoryOptions: 04000000010000000000000003000000
   EquipedOptions: 0500000006000000
   Mesh: {fileID: -9073019736851073122, guid: a34f2016bbf30d8468fa7e25a35b32aa, type: 3}
   Material: {fileID: 2100000, guid: 4c23086cc53d05b42a8a5004832ae24a, type: 2}
   WorldOptions: 00000000
+  AbilityItemSO: {fileID: 0}

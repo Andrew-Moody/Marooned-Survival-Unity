@@ -23,7 +23,7 @@ public class StatBar : MonoBehaviour
 
 		_statFill.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, fillWidth);
 
-		Debug.Log("Stat Changed on: " + gameObject.name);
+		//Debug.Log("Stat Changed on: " + gameObject.name);
 	}
 
 	public void SetAlpha(float alpha)

@@ -16,10 +16,10 @@ MonoBehaviour:
   ItemName: Pickaxe
   ExamineText: Diggy Diggy Hole!
   StackLimit: 1
-  equipSlot: 4
-  Sprite: {fileID: 21300000, guid: f0106cef986be534181a8582cffd29da, type: 3}
-  InventoryOptions: 040000000300000000000000
-  EquipedOptions: 05000000
+  equipSlot: 0
+  Sprite: {fileID: 21300000, guid: affda4ef6553de5478b22c42f4223dad, type: 3}
+  InventoryOptions: 0300000000000000
+  EquipedOptions: 
   Mesh: {fileID: 4543358190787473920, guid: 0b7af774b58cfc84fadf9da4379a6802, type: 3}
   Material: {fileID: 2100000, guid: 4c23086cc53d05b42a8a5004832ae24a, type: 2}
   WorldOptions: 00000000

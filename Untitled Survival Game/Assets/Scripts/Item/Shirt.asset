@@ -16,10 +16,11 @@ MonoBehaviour:
   ItemName: Shirt
   ExamineText: Its a white T-shirt what did you expect
   StackLimit: 10
-  equipSlot: 0
+  equipSlot: 1
   Sprite: {fileID: 21300000, guid: 28b6e51d9d7ad4942a4b1e5b4d8f093f, type: 3}
   InventoryOptions: 04000000010000000000000003000000
   EquipedOptions: 05000000
   Mesh: {fileID: 3900480760133451625, guid: c96dc75c1e2d2d644b5be05bd56e34f4, type: 3}
   Material: {fileID: 2100000, guid: 4c23086cc53d05b42a8a5004832ae24a, type: 2}
   WorldOptions: 00000000
+  AbilityItemSO: {fileID: 0}

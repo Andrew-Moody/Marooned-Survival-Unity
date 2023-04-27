@@ -6,6 +6,11 @@ using UnityEngine;
 [System.Serializable]
 public class MeleeAbility : Ability
 {
+	[SerializeField]
+	private float _range;
+	public float Range { get { return _range; } }
+
+
 	private const string RANGE = "RANGE";
 	/// <summary>
 	/// Check if the target is within melee range
@@ -15,26 +20,51 @@ public class MeleeAbility : Ability
 	/// <returns></returns>
 	/// 
 
-	public MeleeAbility(Ability ability)
-		: base (ability)
+	public MeleeAbility()
 	{
-		// Creates a MeleeAbility that copies the ability passed to it
-		// This is the best way I can think of at the moment to get
-		// a derived instance from the base instance created by the inspector
+		// Derived default constructor (no parameters) implicitly calls base default constructor
+		// unless a non default constructor is defined without also defining a default constructor
 
-		// Im hoping I can right a custom editor that will create the correct type based on an enum dropdown
+		// if default constructor is missing for the derived type it will first call the base default constructor
+		// (which I expected) but then it still sets values back to their default values because a default constructor was missing.
+
+		// When this constructor is commented out the base constructor gets called but non serialized values still get set to default
+		//Debug.LogWarning($"MeleeAbility Constructor Called for {this}");
 	}
 
 
-	public override bool Useable(AbilityActor user, AbilityActor target)
+	public MeleeAbility(Ability ability)
+		: base (ability)
 	{
-		return base.Useable(user, target);
+		Debug.LogError("MeleeAbility copied from Ability");
+	}
+
+
+	public MeleeAbility(MeleeAbility ability)
+		: base (ability)
+	{
+		_range = ability._range;
+	}
+
+
+	public override Ability CreateCopy()
+	{
+		//Debug.LogWarning($"MeleeAbility.CreateCopy called on {AbilityName}");
+		return new MeleeAbility(this);
+	}
+
+
+	public override bool Useable(bool asServer, AbilityActor user, AbilityActor target)
+	{
+		return base.Useable(asServer, user, target);
 	}
 
 
 	public override AbilityActor[] FindTargets(Vector3 userPosition, LayerMask targetMask)
 	{
-		Collider[] hits = Physics.OverlapSphere(userPosition, GetValue("RANGE"), targetMask);
+		Debug.LogError($"FindTargets with range {_range}");
+
+		Collider[] hits = Physics.OverlapSphere(userPosition, _range, targetMask);
 
 		AbilityActor[] targets = new AbilityActor[hits.Length];
 

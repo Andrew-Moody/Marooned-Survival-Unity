@@ -45,7 +45,6 @@ public class DestructibleObject : NetworkBehaviour
 		}
 		else
 		{
-			Debug.Log("How the hell");
 			enabled = false;
 		}
 

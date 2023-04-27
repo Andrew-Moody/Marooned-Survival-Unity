@@ -13,24 +13,22 @@ MonoBehaviour:
   m_Name: Weapon
   m_EditorClassIdentifier: 
   ItemName: 
-  itemID: 0
+  ItemID: 0
   Abilities:
-  - _abilityName: 
-    _abilityType: 1
-    _coolDown: 0
-    _requireTarget: 0
-    _requirements: []
-    _namedValues: []
-    _userEffects:
-    - id: 0
-    _targetEffects: []
-    _itemEffects: []
+  - id: 0
   references:
     version: 1
     00000000:
-      type: {class: AnimationEffect, ns: , asm: Assembly-CSharp}
+      type: {class: MeleeAbility, ns: , asm: Assembly-CSharp}
       data:
-        EffectType: 1
-        EffectTiming: 0
-        AnimTrigger: 
-        Animation: {fileID: 0}
+        _abilityName: 
+        _abilityType: 1
+        _toolType: 0
+        _coolDown: 0
+        _requireTarget: 0
+        _requirements: []
+        _namedValues: []
+        _userEffects: []
+        _targetEffects: []
+        _itemEffects: []
+        Range: 0

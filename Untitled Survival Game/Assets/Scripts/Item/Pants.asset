@@ -16,10 +16,11 @@ MonoBehaviour:
   ItemName: Pants
   ExamineText: A few holes in the knees
   StackLimit: 1
-  equipSlot: 1
+  equipSlot: 2
   Sprite: {fileID: 21300000, guid: 17eb5151df500e44cb879e09ca70a7c7, type: 3}
   InventoryOptions: 04000000010000000000000003000000
   EquipedOptions: 05000000
   Mesh: {fileID: 7666266049737368757, guid: a970f177c65ce0d44a67aad36cb1cc9a, type: 3}
   Material: {fileID: 2100000, guid: 4c23086cc53d05b42a8a5004832ae24a, type: 2}
   WorldOptions: 00000000
+  AbilityItemSO: {fileID: 0}

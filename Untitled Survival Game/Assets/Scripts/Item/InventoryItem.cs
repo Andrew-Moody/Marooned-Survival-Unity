@@ -3,13 +3,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/// <summary>
+/// Runtime Representation of an Item
+/// </summary>
 public class InventoryItem
 {
     public int ItemID;
 
     public int Quantity;
 
+    public EquipSlot EquipSlot;
+
+    public Sprite Sprite;
+
     public ItemSO ItemSO;
+
+    public AbilityItem AbilityItem;
+
+
+    public int StackSpace { get { return (ItemSO.StackLimit - Quantity); } }
 
     
 
@@ -18,19 +31,30 @@ public class InventoryItem
 
 
     public InventoryItem(int itemID, int quantity)
+        : this(ItemManager.Instance.GetItemSO(itemID))
     {
         ItemID = itemID;
         Quantity = quantity;
-
-        if (ItemID != 0)
-        {
-            ItemSO = ItemManager.Instance.GetItemSO(ItemID);
-        }
-        else
-        {
-            ItemSO = null;
-        }
     }
+
+
+    public InventoryItem(ItemSO itemSO)
+	{
+        ItemSO = itemSO;
+
+        if (ItemSO == null)
+        {
+            return;
+        }
+
+        EquipSlot = itemSO.equipSlot;
+        Sprite = itemSO.Sprite;
+
+        if (itemSO.AbilityItemSO != null)
+		{
+            AbilityItem = new AbilityItem(itemSO.AbilityItemSO);
+        }
+	}
 
 
     // Conversion Constructor for convenience
@@ -144,7 +168,7 @@ public class InventoryItem
 	{
         Debug.Log("Player Equiped Item: " + ItemSO.ItemName);
 
-        Inventory.ClientInstance.EquipItem(index);
+        Inventory.ClientInstance.EquipItemSRPC(index);
     }
 
 
@@ -152,7 +176,7 @@ public class InventoryItem
 	{
         Debug.Log("Player Dropped Item: " + ItemSO.ItemName);
 
-        Inventory.ClientInstance.DropItem(index);
+        Inventory.ClientInstance.DropItemSRPC(index);
     }
 
 
@@ -160,7 +184,7 @@ public class InventoryItem
 	{
         Debug.Log("Player Unequiped Item: " + ItemSO.ItemName);
 
-        Inventory.ClientInstance.UnequipItem(index);
+        Inventory.ClientInstance.UnequipItemSRPC(index);
     }
 
 

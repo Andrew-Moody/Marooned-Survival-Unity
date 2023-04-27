@@ -17,13 +17,10 @@ public class ItemSlotUI : MonoBehaviour
 	[SerializeField]
     private Image _icon;
 
-	private Inventory _inventory;
-
 	public Sprite Sprite { get { return _icon.sprite; } set { _icon.sprite = value; } }
 
-    public void Initialize(Inventory inventory, int index)
+    public void Initialize(int index)
 	{
-		_inventory = inventory;
 		Index = index;
 	}
 

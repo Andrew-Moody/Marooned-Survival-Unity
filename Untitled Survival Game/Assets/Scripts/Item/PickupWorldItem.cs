@@ -61,17 +61,8 @@ public class PickupWorldItem : NetworkBehaviour
 						item.SetItem(itemData);
 						item.ObserversSetupWorldItem(itemData);
 					}
-
-					UpdatePlayerInventory(Owner, inventory.GetContents());
-
 				}
 			}
 		}
-	}
-
-	[TargetRpc]
-	private void UpdatePlayerInventory(NetworkConnection connection, List<ItemNetData> items)
-	{
-		Inventory.ClientInstance.SetContents(items);
 	}
 }

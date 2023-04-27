@@ -42,6 +42,13 @@ public class MobSpawner : NetworkBehaviour
 				SpawnMob(_mobID);
 			}
 		}
+		else
+		{
+			if (IsServer && Input.GetKeyDown(KeyCode.P))
+			{
+				SpawnMob(_mobID);
+			}
+		}
 	}
 
 

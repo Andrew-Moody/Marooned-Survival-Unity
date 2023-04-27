@@ -1,9 +1,11 @@
+using FishNet.Connection;
 using FishNet.Object;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIManager : NetworkBehaviour
 {
@@ -16,7 +18,16 @@ public class UIManager : NetworkBehaviour
 	private StatsUI _statsUI;
 
 	[SerializeField]
+	private CraftingUI _craftingUI;
+
+	[SerializeField]
+	private HotbarUI _hotbarUI;
+
+	[SerializeField]
 	private TextMeshProUGUI _fpsText;
+
+	[SerializeField]
+	private Image _cursor;
 
 	[SerializeField]
 	private Canvas _worldCanvas;
@@ -39,7 +50,9 @@ public class UIManager : NetworkBehaviour
 	{
 		base.OnStartClient();
 
+		Debug.LogError("UIManager OnStartClient");
 		InitializeUI();
+
 	}
 
 
@@ -63,10 +76,34 @@ public class UIManager : NetworkBehaviour
 
 		if (player != null)
 		{
+			Debug.LogError("InitializeUI");
+
 			_inventoryUI.Initialize(player);
 
-
 			_statsUI.Inititialize(player);
+
+			_craftingUI.Initialize(player);
+
+			_hotbarUI.Initialize(player);
 		}
+	}
+
+
+	public void ShowCursor(bool show)
+	{
+		_cursor.enabled = show;
+	}
+
+
+	public void ShowCraftingUI(CraftingRecipe[] recipes)
+	{
+		_craftingUI.gameObject.SetActive(true);
+		_craftingUI.Show(recipes);
+	}
+
+
+	public void HideCraftingUI()
+	{
+		_craftingUI.gameObject.SetActive(false);
 	}
 }

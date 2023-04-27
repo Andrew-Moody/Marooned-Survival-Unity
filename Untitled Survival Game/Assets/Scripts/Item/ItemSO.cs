@@ -15,7 +15,7 @@ public class ItemSO : ScriptableObject
     // Inventory Data
     public int StackLimit;
 
-    public int equipSlot;
+    public EquipSlot equipSlot;
 
     public Sprite Sprite;
 

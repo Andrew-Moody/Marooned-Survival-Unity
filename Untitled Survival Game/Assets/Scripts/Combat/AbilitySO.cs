@@ -17,9 +17,13 @@ public class AbilitySO : ScriptableObject
 		else
 		{
 			// This is begging for a factory
-			if (Ability.GetAbilityType() == AbilityType.Melee && !(Ability is MeleeAbility))
+			if (Ability.GetAbilityType() == AbilityType.Melee && !(Ability.GetType() == typeof(MeleeAbility)))
 			{
 				Ability = new MeleeAbility(Ability);
+			}
+			else if (Ability.GetAbilityType() == AbilityType.None && !(Ability.GetType() == typeof(Ability)))
+			{
+				Ability = new Ability(Ability);
 			}
 		}
 

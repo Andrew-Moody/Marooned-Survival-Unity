@@ -8,11 +8,13 @@ public class ItemManager : NetworkBehaviour
 {
     public static ItemManager Instance;
 
-	public GameObject WorldItemPrefab;
+	[SerializeField]
+	private GameObject WorldItemPrefab;
 
-	public List<ItemSO> itemSOs;
+	[SerializeField]
+	private List<ItemSO> itemSOs;
 
-	public Dictionary<int, ItemSO> itemSODict;
+	private Dictionary<int, ItemSO> itemSODict;
 
     // Start is called before the first frame update
     void Awake()
@@ -44,20 +46,11 @@ public class ItemManager : NetworkBehaviour
 	}
 
 
-	// Update is called once per frame
-	void Update()
-    {
-		
-    }
-
-
     public ItemSO GetItemSO(int id)
 	{
-		bool hasID = itemSODict.TryGetValue(id, out ItemSO itemSO);
-
-        if (!hasID)
+		if (!itemSODict.TryGetValue(id, out ItemSO itemSO))
 		{
-            Debug.Log($"No ItemSO exists with ID: {id}");
+			Debug.Log($"No ItemSO exists with ID: {id}");
 		}
 
         return itemSO;

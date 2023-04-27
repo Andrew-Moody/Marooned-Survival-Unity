@@ -100,7 +100,7 @@ public class ResourceGenerator : MonoBehaviour
         }
 		else
 		{
-            Debug.Log("RayCast hit wrong layer " + hitInfo.collider.gameObject.name + " " + hitInfo.collider.gameObject.layer + " " + _spawnLayer.value);
+            //Debug.Log("RayCast hit wrong layer " + hitInfo.collider.gameObject.name + " " + hitInfo.collider.gameObject.layer + " " + _spawnLayer.value);
 		}
     }
 

@@ -126,7 +126,7 @@ public class Stats : NetworkBehaviour
 
 	private void SetupStats()
 	{
-        Debug.Log("SetupStats");
+        //Debug.Log("SetupStats");
 		for (int i = 0; i < _statInitialValues.Count; i++)
 		{
             StatValue statValue = _statInitialValues[i];

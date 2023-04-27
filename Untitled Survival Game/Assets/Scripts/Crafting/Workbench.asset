@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4134d5c96e90d54e922b24ebb397809, type: 3}
+  m_Name: Workbench
+  m_EditorClassIdentifier: 
+  Recipes:
+  - RecipeID: 1
+    OutputID: 103
+    Quantity: 1
+    Ingredients:
+    - ItemID: 101
+      Quantity: 1
+    - ItemID: 102
+      Quantity: 1
+  - RecipeID: 2
+    OutputID: 104
+    Quantity: 1
+    Ingredients:
+    - ItemID: 101
+      Quantity: 1
+    - ItemID: 102
+      Quantity: 1

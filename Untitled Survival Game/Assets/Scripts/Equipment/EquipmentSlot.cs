@@ -5,6 +5,15 @@ using UnityEngine;
 
 public class EquipmentSlot : NetworkBehaviour
 {
+	[SerializeField]
+	private EquipSlot _equipSlot;
+	public EquipSlot EquipSlot { get { return _equipSlot; } }
+
+	private AbilityItem _equippedItem;
+	public AbilityItem EquipedItem { get { return _equippedItem; } }
+
+
+
     [SerializeField]
     private bool _isSkinnedMesh;
 
@@ -26,20 +35,47 @@ public class EquipmentSlot : NetworkBehaviour
 	}
 
 
-	[ObserversRpc(BufferLast = true)]
+	[ObserversRpc(BufferLast = true, RunLocally = true)]
     public void ObserversEquipItem(ItemNetData itemNetData)
 	{
-		ItemSO itemSO = ItemManager.Instance.GetItemSO(itemNetData.ItemID);
+		Debug.LogError($"ObserversEquipItem: {itemNetData.ItemID}");
 
+		if (itemNetData.ItemID != 0)
+		{
+			InventoryItem item = new InventoryItem(itemNetData);
 
-		_renderable.SetMesh(itemSO.Mesh);
-		_renderable.SetMaterial(itemSO.Material);
+			_equippedItem = item.AbilityItem;
+
+			_renderable.SetMesh(item.ItemSO.Mesh);
+			_renderable.SetMaterial(item.ItemSO.Material);
+		}
+		else
+		{
+			_equippedItem = null;
+			_renderable.SetMesh(null);
+		}
+		
 	}
 
 
 	[ObserversRpc(BufferLast = true)]
 	public void ObserversClearSlot()
 	{
+		_equippedItem = null;
+
 		_renderable.SetMesh(null);
 	}
+}
+
+
+public enum EquipSlot
+{
+	None,
+	Body,
+	Legs,
+	Hands,
+	Feet,
+	MainHand,
+	OffHand,
+	Accessory
 }

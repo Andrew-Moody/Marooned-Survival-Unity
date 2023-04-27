@@ -51,10 +51,14 @@ public class InventoryUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
 		for (int i = 0; i < _slots.Length; ++i)
         {
-            _slots[i].Initialize(_inventory, i);
+            _slots[i].Initialize(i);
         }
 
 		_mouseUI.ClearMouseItem();
+
+		Debug.LogError("InventoryUI Initialized");
+
+		_inventory.UpdateSlots();
     }
 
 
@@ -126,7 +130,7 @@ public class InventoryUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 		// Open Options context menu in Runescape, Pickup half the stack in Minecraft (and Muck?)
 		if (eventData.button == PointerEventData.InputButton.Right)
 		{
-			Debug.Log("Right Clicked Slot: " + slot.Index);
+			Debug.LogError("Right Clicked Slot: " + slot.Index);
 
 			if (slot.IsEquipmentSlot)
 			{
@@ -155,7 +159,7 @@ public class InventoryUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 		ItemSlotUI slot = eventData.pointerCurrentRaycast.gameObject.GetComponent<ItemSlotUI>();
 		if (slot != null)
 		{
-			Debug.Log("OnBeginDrag on Slot: " + slot.Index);
+			Debug.LogError("OnBeginDrag on Slot: " + slot.Index);
 
 			if (slot.Sprite != null)
 			{
@@ -189,16 +193,19 @@ public class InventoryUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 		if (slot != null)
 		{
 			// Drag ended inside the inventory UI (Minecraft, Runescape, Muck, and others swap items)
-			Debug.Log("OnEndDrag on Slot: " + slot.Index);
+			Debug.LogError("OnEndDrag on Slot: " + slot.Index);
 
-			_inventory.ServerSwapSlots(_ptrDownIndex, slot.Index);
+			_inventory.SwapSlotsSRPC(_ptrDownIndex, slot.Index);
 
+			_slots[_ptrDownIndex].ShowSlot();
 			_mouseUI.ClearMouseItem();
 		}
 		else
 		{
 			// Drag ended outside the inventory UI (Minecraft, Runescape, Muck, and others choose to drop the item in this case)
-			Debug.Log("OnEndDrag Outside Inventory");
+			Debug.LogError("OnEndDrag Outside Inventory");
+
+			_inventory.DropItemSRPC(_ptrDownIndex);
 
 			_slots[_ptrDownIndex].ShowSlot();
 			_mouseUI.ClearMouseItem();
@@ -211,6 +218,6 @@ public class InventoryUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
 	private void OnUpdateSlot(object sender, SlotUpdateEventArgs eventArgs)
 	{
-		_slots[eventArgs.Index].UpdateSlot(eventArgs.sprite, eventArgs.count);
+		_slots[eventArgs.Index].UpdateSlot(eventArgs.Sprite, eventArgs.Count);
 	}
 }

@@ -10,70 +10,70 @@ public class EquipmentController : NetworkBehaviour
 	[SerializeField]
 	private SkinnedMeshRenderer _parentSMR;
 
-	[SerializeField]
-	private SkinnedMeshRenderer _bodySMR;
+	private Dictionary<EquipSlot, EquipmentSlot> _equipSlotsDict;
 
-	[SerializeField]
-	private SkinnedMeshRenderer _legSMR;
-
-	[SerializeField]
-	private SkinnedMeshRenderer _footSMR;
-
-	[SerializeField]
-	private SkinnedMeshRenderer _handSMR;
-
-	private Dictionary<int, SkinnedMeshRenderer> _equipSlotsDict;
-
+	//private Dictionary<EquipSlot, AbilityItem> _equipedItems;
 
 	[SerializeField]
 	private List<EquipmentSlot> _equipmentSlots;
 
 
-	private void Start()
+	public override void OnStartNetwork()
 	{
-		_equipSlotsDict = new Dictionary<int, SkinnedMeshRenderer>();
-		_equipSlotsDict.Add(0, _bodySMR);
-		_equipSlotsDict.Add(1, _legSMR);
-		_equipSlotsDict.Add(2, _footSMR);
-		_equipSlotsDict.Add(3, _handSMR);
+		base.OnStartNetwork();
 
-		_bodySMR.bones = _parentSMR.bones;
-		_bodySMR.rootBone = _parentSMR.rootBone;
-
-		_legSMR.bones = _parentSMR.bones;
-		_legSMR.rootBone = _parentSMR.rootBone;
-
-		_footSMR.bones = _parentSMR.bones;
-		_footSMR.rootBone = _parentSMR.rootBone;
-
-		_handSMR.bones = _parentSMR.bones;
-		_handSMR.rootBone = _parentSMR.rootBone;
-
+		_equipSlotsDict = new Dictionary<EquipSlot, EquipmentSlot>();
 
 		for (int i = 0; i < _equipmentSlots.Count; i++)
 		{
-			//_equipSlotsDict.Add(i, _equipmentSlots[i]);
+			_equipSlotsDict.Add(_equipmentSlots[i].EquipSlot, _equipmentSlots[i]);
 
 			_equipmentSlots[i].Initialize(_parentSMR);
 		}
 	}
 
 
-    [Server]
-    public void ServerEquipItem(ItemNetData itemNetData)
+	public AbilityItem GetItemAtSlot(EquipSlot slot)
 	{
-		ItemSO itemSO = ItemManager.Instance.GetItemSO(itemNetData.ItemID);
+		return _equipSlotsDict[slot].EquipedItem;
+	}
 
-		if (itemSO.equipSlot != -1)
+
+    public void EquipItem(InventoryItem item, EquipSlot slot)
+	{
+		if (slot == EquipSlot.None)
 		{
-			_equipmentSlots[itemSO.equipSlot].ObserversEquipItem(itemNetData);
+			Debug.LogError("Cant equip item with EquipSlot = None");
+		}
+
+		if (IsServer)
+		{
+			Debug.LogError($"EquipItem: {item.ItemID}");
+			_equipSlotsDict[slot].ObserversEquipItem(item.GetNetData());
 		}
 	}
 
 
-	[Server]
-	public void ServerUnequipItem(int slot)
+	public void UnequipItem(EquipSlot slot)
 	{
-		_equipmentSlots[slot].ObserversClearSlot();
+		if (IsServer)
+		{
+			_equipSlotsDict[slot].ObserversClearSlot();
+		}
+	}
+
+
+	private void Update()
+	{
+		foreach (KeyValuePair<EquipSlot, EquipmentSlot> pair in _equipSlotsDict)
+		{
+			if (pair.Value.EquipedItem != null)
+			{
+				foreach (Ability ability in pair.Value.EquipedItem.Abilities)
+				{
+					ability.TickAbility(Time.deltaTime);
+				}
+			}
+		}
 	}
 }

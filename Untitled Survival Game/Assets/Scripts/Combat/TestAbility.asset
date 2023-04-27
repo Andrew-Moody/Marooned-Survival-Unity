@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Ability:
     _abilityName: 
-    _abilityType: 0
+    _abilityType: 1
+    _toolType: 0
     _coolDown: 0
     _requireTarget: 0
     _requirements: []

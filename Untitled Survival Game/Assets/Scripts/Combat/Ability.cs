@@ -28,7 +28,7 @@ public class Ability
 	private NamedValue[] _namedValues;
 
 	//[SerializeField] Serialize field actually serializes non unity classes as value types rather than by reference
-	// Doesn't work well with arrays unless you have a fixed sized know ahead of time
+	// Doesn't work well with arrays unless you have a fixed sized known ahead of time
 	//[SerializeReference]
 	//private Effect[] _effects;
 
@@ -41,17 +41,18 @@ public class Ability
 	[SerializeReference]
 	private List<Effect> _itemEffects = new List<Effect>();
 
-
-	private List<Effect>[] _effectLists;
-
+	protected List<Effect>[] _effectLists;
 
     private float _coolDownRemaining = 0f;
 
 	private Dictionary<string, float> _namedValueDict;
 
+	private const float _coolDownThreshold = 0.001f;
+
 
 	public Ability()
 	{
+		//Debug.LogWarning($"Ability Constructor called for {this}");
 		_effectLists = new List<Effect>[] { _userEffects, _targetEffects, _itemEffects };
 	}
 
@@ -59,6 +60,7 @@ public class Ability
 	// Copy constructor
 	public Ability(Ability ability)
 	{
+		//Debug.LogWarning("Ability Copy Constructor");
 		_abilityName = ability._abilityName;
 
 		_abilityType = ability._abilityType;
@@ -79,6 +81,13 @@ public class Ability
 
 		_effectLists = ability._effectLists;
 
+	}
+
+
+	public virtual Ability CreateCopy()
+	{
+		//Debug.LogWarning("Ability CreateCopy");
+		return new Ability(this);
 	}
 
 
@@ -116,7 +125,7 @@ public class Ability
 	/// <param name="user"></param>
 	/// <param name="target"></param>
 	/// <returns></returns>
-    public virtual bool Useable(AbilityActor user, AbilityActor target = null)
+	public virtual bool Useable(bool asServer, AbilityActor user, AbilityActor target = null)
 	{
 		if (_requireTarget && target == null)
 		{
@@ -124,9 +133,13 @@ public class Ability
 		}
 
 
-		if (_coolDownRemaining > 0)
+		if (asServer && _coolDownRemaining > _coolDownThreshold)
 		{
-			//Debug.Log("On CoolDown, Time remaining: " + _coolDownRemaining);
+			Debug.LogError("On CoolDown, Time remaining: " + _coolDownRemaining);
+			return false;
+		}
+		else if (!asServer && _coolDownRemaining > 0f)
+		{
 			return false;
 		}
 
@@ -149,7 +162,7 @@ public class Ability
 
 	public virtual AbilityActor[] FindTargets(Vector3 userPosition, LayerMask targetMask)
 	{
-		Debug.LogWarning("Using base Ability.FindTargets()");
+		Debug.LogError("Using base Ability.FindTargets()");
 		return null;
 	}
 
@@ -250,7 +263,7 @@ public class Ability
 	/// <param name="deltaTime"></param>
 	public virtual void TickAbility(float deltaTime)
 	{
-		if (_coolDownRemaining > 0)
+		if (_coolDownRemaining > 0f)
 		{
 			_coolDownRemaining -= deltaTime;
 		}
@@ -259,13 +272,32 @@ public class Ability
 
 	public void OnValidate()
 	{
+		//if (_userEffects == null)
+		//{
+		//	Debug.LogError("UserEffects was null");
+		//	_userEffects = new List<Effect>();
+		//}
+
+		//if (_targetEffects == null)
+		//{
+		//	Debug.LogError("TargetEffects was null");
+		//	_targetEffects = new List<Effect>();
+		//}
+
+		//if (_itemEffects == null)
+		//{
+		//	Debug.LogError("ItemEffects was null");
+		//	_itemEffects = new List<Effect>();
+		//}
+
+		//if (_effectLists == null)
+		//{
+		//	Debug.LogError("EffectLists was null");
+		//	_effectLists = new List<Effect>[] { _userEffects, _targetEffects, _itemEffects };
+		//}
+
 		for ( int listIdx = 0; listIdx < _effectLists.Length; listIdx++)
 		{
-			if (_effectLists[listIdx] == null)
-			{
-				_effectLists[listIdx] = new List<Effect>();
-			}
-
 			List<Effect> effectList = _effectLists[listIdx];
 
 			for (int i = 0; i < effectList.Count; i++)

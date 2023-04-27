@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using FishNet.Object;
 using FishNet.Managing;
+using System;
 
 public class CameraController : NetworkBehaviour
 {
@@ -20,7 +21,7 @@ public class CameraController : NetworkBehaviour
 
     private Camera _camera;
 
-    private int _currentAnchorIndex;
+    private int _currentAnchorIndex = 1;
 
     private CameraAnchor _currentAnchor;
 
@@ -65,6 +66,8 @@ public class CameraController : NetworkBehaviour
         _camera = Camera.main;
 
         SetCameraMode(_currentAnchorIndex);
+
+        //SetFPSMode(true);
     }
 
 	public override void OnStartClient()
@@ -99,10 +102,10 @@ public class CameraController : NetworkBehaviour
             SetFPSMode(!_fpsMode);
         }
         
-        if (Input.GetKeyDown(KeyCode.Escape))
-		{
-            SetFPSMode(false);
-		}
+  //      if (Input.GetKeyDown(KeyCode.Escape))
+		//{
+  //          SetFPSMode(false);
+		//}
 
         if (!_fpsMode)
         {
@@ -127,20 +130,22 @@ public class CameraController : NetworkBehaviour
     }
 
 
-    private void SetFPSMode(bool fpsMode)
+    public void SetFPSMode(bool fpsMode)
     {
         _fpsMode = fpsMode;
 
         if (_fpsMode)
         {
             Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
+            
         }
         else
         {
             Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
         }
+
+        Cursor.visible = !_fpsMode;
+        UIManager.Instance.ShowCursor(_fpsMode);
     }
 
 

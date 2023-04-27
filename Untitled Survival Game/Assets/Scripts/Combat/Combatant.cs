@@ -31,10 +31,7 @@ public class Combatant : NetworkBehaviour
 
 	private Stats _stats;
 
-
-	private AbilityItemSO _abilityItem;
-
-	private Inventory _inventory;
+	private EquipmentController _equipment;
 
 
 	public override void OnStartNetwork()
@@ -45,17 +42,9 @@ public class Combatant : NetworkBehaviour
 
 		foreach (AbilitySO abilitySO in _abilitySOList)
 		{
-			//// This is begging for a factory
-			//if (abilitySO.Ability.GetAbilityType() == AbilityType.Melee)
-			//{
-			//	_abilities.Add(new MeleeAbility(abilitySO.Ability));
-			//}
-			//else
-			//{
-			//	_abilities.Add(abilitySO.Ability);
-			//}
+			// Each instance of Combatant needs its own instance of each ability for cooldowns, buffs etc.
 
-			_abilities.Add(abilitySO.Ability);
+			_abilities.Add(abilitySO.Ability.CreateCopy());
 		}
 
 		_abilityActor = GetComponent<AbilityActor>();
@@ -64,7 +53,7 @@ public class Combatant : NetworkBehaviour
 
 		_stats.OnStatEmpty += OnStatEmpty;
 
-		_inventory = GetComponent<Inventory>();
+		_equipment = GetComponent<EquipmentController>();
 	}
 
 
@@ -111,37 +100,39 @@ public class Combatant : NetworkBehaviour
 	}
 
 
-
+	/// <summary>
+	/// Get the first useable ability. if the combatant has a weapon equipped only check weapon abilities
+	/// </summary>
+	/// <param name="target"></param>
+	/// <returns></returns>
 	public int ChooseAbility(AbilityActor target = null)
 	{
-		if (_inventory != null)
+		if (_equipment != null)
 		{
-			ItemSO itemSO = _inventory.GetItemSO(8);
-			_abilityItem = itemSO.AbilityItemSO;
-
 			int ability = ChooseItemAbility(target);
-
-			Debug.Log($"Choose ItemAbility {ability}");
 
 			if (ability != -1)
 			{
 				return ability + _abilities.Count;
 			}
-		}
-		else
-		{
-			// For now get the first ability that is useable
-
-			for (int i = 0; i < _abilities.Count; i++)
+			else
 			{
-				if (_abilities[i].Useable(_abilityActor, target))
-				{
-					return i;
-				}
+				return -1;
 			}
 		}
 
-		
+
+		// For now get the first ability that is useable
+
+		for (int i = 0; i < _abilities.Count; i++)
+		{
+			if (_abilities[i].Useable(IsServer, _abilityActor, target))
+			{
+				return i;
+			}
+		}
+
+
 
 		return -1;
 	}
@@ -149,18 +140,18 @@ public class Combatant : NetworkBehaviour
 
 	private int ChooseItemAbility(AbilityActor target = null)
 	{
-		Debug.Log($"Choosing ItemAbility {_abilityItem}");
-
-		if (_abilityItem != null)
+		if (_equipment != null)
 		{
-			for (int i = 0; i < _abilityItem.Abilities.Length; i++)
+			AbilityItem abilityItem = _equipment.GetItemAtSlot(EquipSlot.MainHand);
+
+			if (abilityItem == null)
 			{
-				Ability ability = _abilityItem.Abilities[i];
+				return -1;
+			}
 
-				Debug.Log($"Checking {ability.AbilityName} of type {ability.GetType()}");
-
-
-				if (_abilityItem.Abilities[i].Useable(_abilityActor, target))
+			for (int i = 0; i < abilityItem.Abilities.Length; i++)
+			{
+				if (abilityItem.Abilities[i].Useable(IsServer, _abilityActor, target))
 				{
 					return i;
 				}
@@ -174,7 +165,7 @@ public class Combatant : NetworkBehaviour
 	{
 		if (abilityIndex == -1)
 		{
-			//Debug.Log("Failed to get ability with index: -1");
+			//Debug.LogError("Failed to get ability with index: -1");
 			return null;
 		}
 
@@ -183,12 +174,18 @@ public class Combatant : NetworkBehaviour
 			return _abilities[abilityIndex];
 		}
 
-		abilityIndex -= _abilities.Count;
-
-		if (_abilityItem != null && abilityIndex < _abilityItem.Abilities.Length)
+		if (_equipment != null)
 		{
-			return _abilityItem.Abilities[abilityIndex];
+			abilityIndex -= _abilities.Count;
+
+			AbilityItem abilityItem = _equipment.GetItemAtSlot(EquipSlot.MainHand);
+
+			if (abilityItem != null && abilityIndex < abilityItem.Abilities.Length)
+			{
+				return abilityItem.Abilities[abilityIndex];
+			}
 		}
+		
 
 		return null;
 	}
@@ -247,9 +244,9 @@ public class Combatant : NetworkBehaviour
 		{
 			AbilityActor[] targets = _abilityInUse.FindTargets(_abilityActor.transform.position, _attackMask);
 
-			if (targets.Length > 1)
+			if (targets == null)
 			{
-				Debug.Log("Multiple Targets found");
+				return;
 			}
 
 			foreach (AbilityActor target in targets)
@@ -272,13 +269,13 @@ public class Combatant : NetworkBehaviour
 	[Server]
 	private void UseAbilityAsServer(int abilityIndex, AbilityActor target)
 	{
-		Debug.Log("ServerUseAbility");
+		Debug.LogError("UseAbilityAsServer");
 
 		//_abilityInUse.Cancel() Cancel the previous ability?
 
 		_abilityInUse = GetAbility(abilityIndex);
 
-		if (_abilityInUse.Useable(_abilityActor, target))
+		if (_abilityInUse != null && _abilityInUse.Useable(IsServer, _abilityActor, target))
 		{
 			_currentTarget = target;
 
@@ -288,13 +285,24 @@ public class Combatant : NetworkBehaviour
 
 			ObserversUseAbility(abilityIndex, target);
 		}
+		else
+		{
+			if (_abilityInUse == null)
+			{
+				Debug.LogError($"UseAbilityAsServer Failed to GetAbility for abilityIndex: {abilityIndex}");
+			}
+			else
+			{
+				Debug.LogError($"UseAbilityAsServer Ability not Useable");
+			}
+		}
 	}
 
 
 	[ServerRpc]
 	private void ServerUseAbility(int abilityIndex, AbilityActor target)
 	{
-		Debug.Log("ServerRpcUseAbility");
+		Debug.LogError($"ServerRpcUseAbility {abilityIndex}");
 
 		UseAbilityAsServer(abilityIndex, target);
 	}
@@ -306,13 +314,21 @@ public class Combatant : NetworkBehaviour
 		// Local host only needs effects to be applied once
 		if (!IsServer)
 		{
-			Debug.Log("ObserversUseAbility");
+			Debug.LogError("ObserversUseAbility");
 
 			_abilityInUse = GetAbility(abilityIndex);
 
 			_currentTarget = target;
 
-			_abilityInUse.ApplyEffects(_abilityActor, _equipedItem, target, EffectTiming.OnStart, false);
+			if (_abilityInUse != null)
+			{
+				_abilityInUse.ApplyEffects(_abilityActor, _equipedItem, target, EffectTiming.OnStart, false);
+			}
+			else
+			{
+				Debug.LogError($"ObserversUseAbility Failed to GetAbility for abilityIndex: {abilityIndex}");
+			}
+			
 
 			// Dont need observers (non owning) to track cooldown
 			//_abilityInUse.StartCoolDown(); // Does the cool down need to tick on observers?
@@ -393,14 +409,6 @@ public class Combatant : NetworkBehaviour
 			foreach (Ability ability in _abilities)
 			{
 				ability.TickAbility(Time.deltaTime);
-			}
-
-			if (_abilityItem != null)
-			{
-				foreach (Ability ability in _abilityItem.Abilities)
-				{
-					ability.TickAbility(Time.deltaTime);
-				}
 			}
 		}
 	}

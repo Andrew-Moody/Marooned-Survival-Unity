@@ -16,10 +16,11 @@ MonoBehaviour:
   ItemName: Boots
   ExamineText: These Boots were made for walking
   StackLimit: 1
-  equipSlot: 3
+  equipSlot: 4
   Sprite: {fileID: 21300000, guid: f8d056d54cefc1b42907ad004962ed72, type: 3}
   InventoryOptions: 04000000010000000000000003000000
   EquipedOptions: 05000000
   Mesh: {fileID: -2785905844601245878, guid: a34f2016bbf30d8468fa7e25a35b32aa, type: 3}
   Material: {fileID: 2100000, guid: 4c23086cc53d05b42a8a5004832ae24a, type: 2}
   WorldOptions: 00000000
+  AbilityItemSO: {fileID: 0}
