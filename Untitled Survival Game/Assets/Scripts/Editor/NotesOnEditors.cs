@@ -37,8 +37,8 @@
  * 
  * Oh boy and then you have collections...
  * 
- * You cant use a property attribute to target collections (arrays, lists, etc. well unity doesnt event display dictionaries at all)
- * if you do tag an array with an property attribute it will apply to the elements not the collection
+ * You cant use a property attribute to target collections (arrays, lists, etc. well unity doesn't even serialize dictionaries at all)
+ * if you do tag an array with a property attribute it will apply to the elements not the collection
  * 
  * There are a few options
  * 
@@ -49,11 +49,11 @@
  * if I am going to have lots of arrays of different types on lots of different owners this may be nice to bother doing
  * 
  * option three is custom attributes. this is very powerfull but also very complex. I dont think the time is worth it short term at this point
- * but it's worth revisiting in the future especially if i end up doing c# full time
+ * but it's worth revisiting in the future especially if I end up doing c# full time
  * 
  * 
  * I did a small test to see the performance implications of not being able to cache serialized properties in a propertyDrawer
- * OnGUI really isnt called that often and it can only be called on a few items at a time (the ones being inspected)
+ * OnGUI really isnt called that often (in the editor) and it can only be called on a few items at a time (the ones being inspected)
  * to make it simple you can have fields for all the properties you need and a function to get them
  * I just would not call it in OnEnable but rather call it in OnGUI so they always contain the current values
  * 

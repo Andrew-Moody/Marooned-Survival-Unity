@@ -6,7 +6,6 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "StateMachine/StateMachineSO")]
 public class StateMachineSO : ScriptableObject
 {
-    [SerializeField]
-    private FSMList<EditorState> _statesOnSO;
-  
+	[SerializeField]
+	private FSMList<EditorState> _statesOnSO;
 }

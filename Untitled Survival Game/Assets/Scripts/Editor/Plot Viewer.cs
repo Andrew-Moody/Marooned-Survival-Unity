@@ -10,7 +10,7 @@ public class PlotWindow : EditorWindow
 	private List<FunctionPlotter> _mobPlotters;
 
 	[MenuItem("Window/Plot Viewer")]
-    private static void OpenWindow()
+	private static void OpenWindow()
 	{
 		PlotWindow window = GetWindow<PlotWindow>() as PlotWindow;
 		window.Show();

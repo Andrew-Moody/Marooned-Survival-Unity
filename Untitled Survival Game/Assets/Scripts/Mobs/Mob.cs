@@ -27,7 +27,7 @@ public class Mob : NetworkBehaviour
 	[SerializeField]
 	private Transform _statDisplay;
 
-    public void Initialize(MobSO mobSO)
+	public void Initialize(MobSO mobSO)
 	{
 		if (mobSO == null)
 		{

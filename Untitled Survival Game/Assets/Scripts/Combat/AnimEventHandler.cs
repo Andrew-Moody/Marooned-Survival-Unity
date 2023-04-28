@@ -11,7 +11,7 @@ public class AnimEventHandler : MonoBehaviour
 	public event Action OnDeathEndAnimEvent;
 
 
-    private void AbilityAnimEvent()
+	private void AbilityAnimEvent()
 	{
 		//Debug.Log("AbilityAnimEvent");
 

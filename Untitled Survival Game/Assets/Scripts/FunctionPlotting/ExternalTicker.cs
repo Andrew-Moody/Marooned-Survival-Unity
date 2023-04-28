@@ -9,14 +9,14 @@ public class ExternalTicker : NetworkBehaviour
 	[SerializeField]
 	private TickMode _tickMode;
 
-    [SerializeField]
-    private FunctionPlotter _plotter;
+	[SerializeField]
+	private FunctionPlotter _plotter;
 
-    private enum TickMode
+	private enum TickMode
 	{
-        PreTick,
-        OnTick,
-        PostTick
+		PreTick,
+		OnTick,
+		PostTick
 	}
 
 

@@ -16,7 +16,7 @@ public class PlacementUI : MonoBehaviour
 	[SerializeField]
 	private LayerMask _placementMask;
 
-    private Transform _cameraTransform;
+	private Transform _cameraTransform;
 
 	private Transform _placementTransform;
 

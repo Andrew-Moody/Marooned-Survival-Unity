@@ -4,11 +4,11 @@ using UnityEngine;
 
 public interface IPlottable
 {
-    public float GetValue();
+	public float GetValue();
 }
 
 
 public abstract class Plottable : MonoBehaviour, IPlottable
 {
-    public abstract float GetValue();
+	public abstract float GetValue();
 }

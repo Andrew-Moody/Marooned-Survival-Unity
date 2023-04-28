@@ -5,8 +5,8 @@ using UnityEngine.EventSystems;
 
 public class InventoryUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    [SerializeField]
-    private ItemSlotUI[] _slots;
+	[SerializeField]
+	private ItemSlotUI[] _slots;
 
 	[SerializeField]
 	private MouseUI _mouseUI;
@@ -18,16 +18,16 @@ public class InventoryUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
 	private int _ptrDownIndex;
 
-    private int _rows;
+	private int _rows;
 
-    private int _cols;
+	private int _cols;
 
 
-    
-    void Start()
+	
+	void Start()
 	{
 	
-    }
+	}
 
 
 	private void OnDestroy()
@@ -50,16 +50,16 @@ public class InventoryUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 		_inventory.SlotUpdated += OnUpdateSlot;
 
 		for (int i = 0; i < _slots.Length; ++i)
-        {
-            _slots[i].Initialize(i);
-        }
+		{
+			_slots[i].Initialize(i);
+		}
 
 		_mouseUI.ClearMouseItem();
 
 		Debug.LogError("InventoryUI Initialized");
 
 		_inventory.UpdateSlots();
-    }
+	}
 
 
 	// OnPointerDown and OnBeginDrag both are called on the object that is actually clicked*

@@ -17,15 +17,15 @@ public class EquipmentSlot : NetworkBehaviour
 
 
 
-    [SerializeField]
-    private bool _isSkinnedMesh;
+	[SerializeField]
+	private bool _isSkinnedMesh;
 
-    private IRenderable _renderable;
+	private IRenderable _renderable;
 
 
-    public void Initialize(SkinnedMeshRenderer parentRig)
+	public void Initialize(SkinnedMeshRenderer parentRig)
 	{
-        if (_isSkinnedMesh)
+		if (_isSkinnedMesh)
 		{
 			_renderable = new SkinnedMeshRenderable(parentRig, gameObject);
 		}
@@ -34,12 +34,12 @@ public class EquipmentSlot : NetworkBehaviour
 			_renderable = new MeshFilterRenderable(gameObject);
 		}
 
-        
+		
 	}
 
 
 	[ObserversRpc(BufferLast = true, RunLocally = true)]
-    public void ObserversEquipItem(ItemNetData itemNetData)
+	public void ObserversEquipItem(ItemNetData itemNetData)
 	{
 		Debug.LogError($"ObserversEquipItem: {itemNetData.ItemID}");
 

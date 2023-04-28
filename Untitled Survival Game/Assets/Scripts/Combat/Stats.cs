@@ -8,26 +8,26 @@ using UnityEngine;
 
 public class Stats : NetworkBehaviour
 {
-    [SerializeField]
-    private List<StatValue> _statInitialValues;
+	[SerializeField]
+	private List<StatValue> _statInitialValues;
 
-    /// <summary>
-    /// Notify Listeners that a stat has changed. StatData contains the type, value, and max value. Bool is true if the change should be immediate
-    /// </summary>
-    public event Action<StatData, bool> OnStatChange;
-
-
-    /// <summary>
-    /// Notify Listeners when a stat reaches zero, typically health
-    /// </summary>
-    public event Action<StatType> OnStatEmpty;
+	/// <summary>
+	/// Notify Listeners that a stat has changed. StatData contains the type, value, and max value. Bool is true if the change should be immediate
+	/// </summary>
+	public event Action<StatData, bool> OnStatChange;
 
 
-    [SyncObject]
-    private readonly SyncDictionary<StatType, float> _statValues = new SyncDictionary<StatType, float>();
+	/// <summary>
+	/// Notify Listeners when a stat reaches zero, typically health
+	/// </summary>
+	public event Action<StatType> OnStatEmpty;
 
-    [SyncObject]
-    private readonly SyncDictionary<StatType, float> _statMaxValues = new SyncDictionary<StatType, float>();
+
+	[SyncObject]
+	private readonly SyncDictionary<StatType, float> _statValues = new SyncDictionary<StatType, float>();
+
+	[SyncObject]
+	private readonly SyncDictionary<StatType, float> _statMaxValues = new SyncDictionary<StatType, float>();
 
 	#region NetworkCallbacks
 
@@ -35,213 +35,213 @@ public class Stats : NetworkBehaviour
 	{
 		base.OnStartNetwork();
 
-        _statValues.OnChange += Stats_OnChange;
-    }
+		_statValues.OnChange += Stats_OnChange;
+	}
 
 
 	public override void OnStartServer()
 	{
 		base.OnStartServer();
 
-        SetupStats();
-    }
+		SetupStats();
+	}
 
 
 	public override void OnStopNetwork()
 	{
 		base.OnStopNetwork();
 
-        _statValues.OnChange -= Stats_OnChange;
-    }
+		_statValues.OnChange -= Stats_OnChange;
+	}
 
 
 	public override void OnSpawnServer(NetworkConnection connection)
 	{
 		base.OnSpawnServer(connection);
-        // OnStartClient is too early, StatsUI may not be initialized yet / may not be any listeners
-        // Possibly not ideal but it does seem to occur after OnStartClient even with little latency
-        InitializeUIListeners(connection);
-    }
+		// OnStartClient is too early, StatsUI may not be initialized yet / may not be any listeners
+		// Possibly not ideal but it does seem to occur after OnStartClient even with little latency
+		InitializeUIListeners(connection);
+	}
 
 
-    public bool HasStat(StatType statType)
+	public bool HasStat(StatType statType)
 	{
-        return _statValues.ContainsKey(statType);
+		return _statValues.ContainsKey(statType);
 	}
 
 	#endregion
 
 	public float GetStatValue(StatType statType)
 	{
-        _statValues.TryGetValue(statType, out float value);
+		_statValues.TryGetValue(statType, out float value);
 
-        return value;
+		return value;
 	}
 
 
-    public float GetStatMax(StatType statType)
+	public float GetStatMax(StatType statType)
 	{
-        _statMaxValues.TryGetValue(statType, out float value);
+		_statMaxValues.TryGetValue(statType, out float value);
 
-        return value;
-    }
+		return value;
+	}
 
 
-    [Server]
-    public void SetStat(StatType statType, float amount)
+	[Server]
+	public void SetStat(StatType statType, float amount)
 	{
-        if (_statValues.ContainsKey(statType))
+		if (_statValues.ContainsKey(statType))
 		{
-            // This should syncronize
-            _statValues[statType] = amount;
-        }
+			// This should syncronize
+			_statValues[statType] = amount;
+		}
 		else
 		{
-            Debug.LogWarning($"Failed to SetStat: {gameObject.GetInstanceID()} does not have stat of type: {statType}");
+			Debug.LogWarning($"Failed to SetStat: {gameObject.GetInstanceID()} does not have stat of type: {statType}");
 		}
 	}
 
 
-    [Server]
-    public void AddToStat(StatType statType, float amount)
+	[Server]
+	public void AddToStat(StatType statType, float amount)
 	{
-        if (_statValues.ContainsKey(statType))
-        {
-            float current = _statValues[statType];
+		if (_statValues.ContainsKey(statType))
+		{
+			float current = _statValues[statType];
 
-            current += amount;
+			current += amount;
 
-            current = Mathf.Clamp(current, 0f, _statMaxValues[statType]);
+			current = Mathf.Clamp(current, 0f, _statMaxValues[statType]);
 
-            // This should syncronize
-            _statValues[statType] = current;
-        }
+			// This should syncronize
+			_statValues[statType] = current;
+		}
 		else
 		{
-            Debug.LogWarning($"Failed to SetStat: {gameObject.GetInstanceID()} does not have stat of type: {statType}");
-        }
-    }
+			Debug.LogWarning($"Failed to SetStat: {gameObject.GetInstanceID()} does not have stat of type: {statType}");
+		}
+	}
 
 
 
 	private void SetupStats()
 	{
-        //Debug.Log("SetupStats");
+		//Debug.Log("SetupStats");
 		for (int i = 0; i < _statInitialValues.Count; i++)
 		{
-            StatValue statValue = _statInitialValues[i];
+			StatValue statValue = _statInitialValues[i];
 
-            if (!_statValues.ContainsKey(statValue.StatType))
+			if (!_statValues.ContainsKey(statValue.StatType))
 			{
-                _statValues.Add(statValue.StatType, _statInitialValues[i].Value);
+				_statValues.Add(statValue.StatType, _statInitialValues[i].Value);
 			}
 
-            if (!_statMaxValues.ContainsKey(statValue.StatType))
+			if (!_statMaxValues.ContainsKey(statValue.StatType))
 			{
-                _statMaxValues.Add(statValue.StatType, statValue.Value);
-            }
+				_statMaxValues.Add(statValue.StatType, statValue.Value);
+			}
 		}
 	}
 
-    
-    private void Stats_OnChange(SyncDictionaryOperation operation, StatType statType, float statValue, bool asServer)
+	
+	private void Stats_OnChange(SyncDictionaryOperation operation, StatType statType, float statValue, bool asServer)
 	{
-        if (!IsSpawned)
+		if (!IsSpawned)
 		{
-            Debug.Log("Object is Despawned asServer: " + asServer + " op: " + operation);
+			Debug.Log("Object is Despawned asServer: " + asServer + " op: " + operation);
 
-            // Have to investigate more but it seems even though the syncvar is being changed first
-            // This still gets called on the client after it has been marked despawned
-            // when client host
+			// Have to investigate more but it seems even though the syncvar is being changed first
+			// This still gets called on the client after it has been marked despawned
+			// when client host
 
-            // Unsubscribing in OnStopNetwork does prevent this from being called when the object is despawned
-            // Unfortunately host clients will not recieve the last OnStatChange event before the object is marked despawned
+			// Unsubscribing in OnStopNetwork does prevent this from being called when the object is despawned
+			// Unfortunately host clients will not recieve the last OnStatChange event before the object is marked despawned
 
-            // Welp seems syncvars are sent on an interval not immediatly
-            // Best option seems to wait for at least one sync interval before actually calling despawn
-            return;
+			// Welp seems syncvars are sent on an interval not immediatly
+			// Best option seems to wait for at least one sync interval before actually calling despawn
+			return;
 		}
 
 
-        if (operation == SyncDictionaryOperation.Set)
+		if (operation == SyncDictionaryOperation.Set)
 		{
-            Debug.Log("Stats SyncDictionary Changed asServer: " + asServer + " For type: " + statType + " tick: " +TimeManager.Tick);
+			Debug.Log("Stats SyncDictionary Changed asServer: " + asServer + " For type: " + statType + " tick: " +TimeManager.Tick);
 
-            // This callback will get called twice on client host, but we only want to Invoke OnStatChange once
-            // (the client host will still get one Invoke when this is called with asServer = true)
-            // asServer = true  -> Invoke
-            // asClient and not IsServer -> Invoke
-            // asClient and IsServer -> Don't Invoke
-            if (IsServer && !asServer)
+			// This callback will get called twice on client host, but we only want to Invoke OnStatChange once
+			// (the client host will still get one Invoke when this is called with asServer = true)
+			// asServer = true  -> Invoke
+			// asClient and not IsServer -> Invoke
+			// asClient and IsServer -> Don't Invoke
+			if (IsServer && !asServer)
 			{
-                return;
-            }
+				return;
+			}
 
-            // Changed to invoke on server and client (but only once if local host)
-            if (statValue == 0f)
-            {
-                OnStatEmpty?.Invoke(statType);
-            }
+			// Changed to invoke on server and client (but only once if local host)
+			if (statValue == 0f)
+			{
+				OnStatEmpty?.Invoke(statType);
+			}
 
-            if (!_statMaxValues.TryGetValue(statType, out float maxValue))
-            {
-                Debug.Log("Failed to get MaxValue: " + asServer);
-            }
+			if (!_statMaxValues.TryGetValue(statType, out float maxValue))
+			{
+				Debug.Log("Failed to get MaxValue: " + asServer);
+			}
 
-            StatData statData = new StatData(statType, statValue, maxValue);
+			StatData statData = new StatData(statType, statValue, maxValue);
 
-            OnStatChange?.Invoke(statData, false);
-            
+			OnStatChange?.Invoke(statData, false);
+			
 		}
 	}
 
 
-    [TargetRpc]
-    private void InitializeUIListeners(NetworkConnection networkConnection)
+	[TargetRpc]
+	private void InitializeUIListeners(NetworkConnection networkConnection)
 	{
-        // Needed to update late joiners of the current values
-        foreach (var item in _statValues)
-        {
-            StatData statData = new StatData(item.Key, item.Value, _statMaxValues[item.Key]);
+		// Needed to update late joiners of the current values
+		foreach (var item in _statValues)
+		{
+			StatData statData = new StatData(item.Key, item.Value, _statMaxValues[item.Key]);
 
-            OnStatChange?.Invoke(statData, true);
-        }
-    } 
+			OnStatChange?.Invoke(statData, true);
+		}
+	} 
 }
 
 
 public enum StatType
 {
-    None,
-    Health,
-    MagicEnergy,
-    DivineEnergy,
-    Stamina,
-    Hunger,
-    
+	None,
+	Health,
+	MagicEnergy,
+	DivineEnergy,
+	Stamina,
+	Hunger,
+	
 }
 
 
 [System.Serializable]
 public struct StatValue
 {
-    public StatType StatType;
-    public float Value;
+	public StatType StatType;
+	public float Value;
 }
 
 
 public struct StatData
 {
-    public StatType StatType;
+	public StatType StatType;
 
-    public float CurrentValue;
+	public float CurrentValue;
 
-    public float MaxValue;
+	public float MaxValue;
 
-    public StatData(StatType statType, float current, float max)
-    {
-        StatType = statType;
-        CurrentValue = current;
-        MaxValue = max;
-    }
+	public StatData(StatType statType, float current, float max)
+	{
+		StatType = statType;
+		CurrentValue = current;
+		MaxValue = max;
+	}
 }

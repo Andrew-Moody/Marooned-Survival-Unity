@@ -49,7 +49,7 @@ public class Ability
 
 	protected List<Effect>[] _effectLists;
 
-    private float _coolDownRemaining = 0f;
+	private float _coolDownRemaining = 0f;
 
 	private Dictionary<string, float> _namedValueDict;
 

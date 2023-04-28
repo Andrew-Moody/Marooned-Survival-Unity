@@ -5,27 +5,27 @@ using UnityEngine.AI;
 
 public class DestViewer : MonoBehaviour
 {
-    public NavMeshAgent agent;
+	public NavMeshAgent agent;
 
 
-    [SerializeField]
-    private Mode _mode;
+	[SerializeField]
+	private Mode _mode;
 
-    private enum Mode
+	private enum Mode
 	{
-        FixedUpdate,
-        Update,
-        LateUpdate
+		FixedUpdate,
+		Update,
+		LateUpdate
 	}
 
-    
-    void Update()
-    {
-        if (_mode == Mode.Update)
+	
+	void Update()
+	{
+		if (_mode == Mode.Update)
 		{
-            UpdateTransform();
+			UpdateTransform();
 		}
-    }
+	}
 
 
 	private void LateUpdate()

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlayerLocator : NetworkBehaviour
 {
-    public static GameObject Player;
+	public static GameObject Player;
 
 
 	public override void OnStartNetwork()

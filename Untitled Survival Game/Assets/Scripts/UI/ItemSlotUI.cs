@@ -12,14 +12,14 @@ public class ItemSlotUI : MonoBehaviour
 	public bool IsEquipmentSlot;
 
 	[SerializeField]
-    private TextMeshProUGUI _countTMP;
+	private TextMeshProUGUI _countTMP;
 
 	[SerializeField]
-    private Image _icon;
+	private Image _icon;
 
 	public Sprite Sprite { get { return _icon.sprite; } set { _icon.sprite = value; } }
 
-    public void Initialize(int index)
+	public void Initialize(int index)
 	{
 		Index = index;
 	}

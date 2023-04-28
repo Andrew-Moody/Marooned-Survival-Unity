@@ -9,189 +9,189 @@ using UnityEngine;
 /// </summary>
 public class InventoryItem
 {
-    public int ItemID;
+	public int ItemID;
 
-    public int Quantity;
+	public int Quantity;
 
-    public EquipSlot EquipSlot;
+	public EquipSlot EquipSlot;
 
-    public bool ConsumeOnUse = true;
+	public bool ConsumeOnUse = true;
 
-    public Sprite Sprite;
+	public Sprite Sprite;
 
-    public ItemSO ItemSO;
+	public ItemSO ItemSO;
 
-    public AbilityItem AbilityItem;
-
-
-    public int StackSpace { get { return (ItemSO.StackLimit - Quantity); } }
-
-    
-
-    private List<ContextOption> _options;
-    private List<ContextOption> _equipedOptions;
+	public AbilityItem AbilityItem;
 
 
-    public InventoryItem(int itemID, int quantity)
-        : this(ItemManager.Instance.GetItemSO(itemID))
-    {
-        ItemID = itemID;
-        Quantity = quantity;
-    }
+	public int StackSpace { get { return (ItemSO.StackLimit - Quantity); } }
+
+	
+
+	private List<ContextOption> _options;
+	private List<ContextOption> _equipedOptions;
 
 
-    public InventoryItem(ItemSO itemSO)
+	public InventoryItem(int itemID, int quantity)
+		: this(ItemManager.Instance.GetItemSO(itemID))
 	{
-        ItemSO = itemSO;
-
-        if (ItemSO == null)
-        {
-            return;
-        }
-
-        EquipSlot = itemSO.equipSlot;
-        Sprite = itemSO.Sprite;
-
-        if (itemSO.AbilityItemSO != null)
-		{
-            AbilityItem = new AbilityItem(itemSO.AbilityItemSO);
-        }
+		ItemID = itemID;
+		Quantity = quantity;
 	}
 
 
-    // Conversion Constructor for convenience
-    public InventoryItem(ItemNetData itemNetData) : this(itemNetData.ItemID, itemNetData.Quantity) { }
-
-
-    public static InventoryItem Empty()
-    {
-        return new InventoryItem(0, 0);
-    }
-
-
-    public ItemNetData GetNetData()
-    {
-        return new ItemNetData(ItemID, Quantity);
-    }
-
-
-    public List<ContextOption> GetOptions(int slotIndex)
+	public InventoryItem(ItemSO itemSO)
 	{
-        if (_options == null)
+		ItemSO = itemSO;
+
+		if (ItemSO == null)
 		{
-            _options = new List<ContextOption>();
+			return;
+		}
 
-            List<Options> optCodes = ItemSO.InventoryOptions;
+		EquipSlot = itemSO.equipSlot;
+		Sprite = itemSO.Sprite;
 
-            for (int i = 0; i < optCodes.Count; i++)
+		if (itemSO.AbilityItemSO != null)
+		{
+			AbilityItem = new AbilityItem(itemSO.AbilityItemSO);
+		}
+	}
+
+
+	// Conversion Constructor for convenience
+	public InventoryItem(ItemNetData itemNetData) : this(itemNetData.ItemID, itemNetData.Quantity) { }
+
+
+	public static InventoryItem Empty()
+	{
+		return new InventoryItem(0, 0);
+	}
+
+
+	public ItemNetData GetNetData()
+	{
+		return new ItemNetData(ItemID, Quantity);
+	}
+
+
+	public List<ContextOption> GetOptions(int slotIndex)
+	{
+		if (_options == null)
+		{
+			_options = new List<ContextOption>();
+
+			List<Options> optCodes = ItemSO.InventoryOptions;
+
+			for (int i = 0; i < optCodes.Count; i++)
 			{
-                switch(optCodes[i])
+				switch(optCodes[i])
 				{
-                    case Options.Examine:
-                    {
-                        _options.Add(new ContextOption("Examine " + ItemSO.ItemName, slotIndex, Examine));
-                        break;
-                    }
-                    case Options.Use:
+					case Options.Examine:
 					{
-                        _options.Add(new ContextOption("Use " + ItemSO.ItemName, slotIndex, Use));
-                        break;
+						_options.Add(new ContextOption("Examine " + ItemSO.ItemName, slotIndex, Examine));
+						break;
 					}
-                    case Options.Equip:
+					case Options.Use:
 					{
-                        _options.Add(new ContextOption("Equip " + ItemSO.ItemName, slotIndex, Equip));
-                        break;
+						_options.Add(new ContextOption("Use " + ItemSO.ItemName, slotIndex, Use));
+						break;
 					}
-                    case Options.Drop:
+					case Options.Equip:
 					{
-                        _options.Add(new ContextOption("Drop " + ItemSO.ItemName, slotIndex, Drop));
-                        break;
+						_options.Add(new ContextOption("Equip " + ItemSO.ItemName, slotIndex, Equip));
+						break;
 					}
-                    default:
+					case Options.Drop:
 					{
-                        break;
+						_options.Add(new ContextOption("Drop " + ItemSO.ItemName, slotIndex, Drop));
+						break;
+					}
+					default:
+					{
+						break;
 					}
 				}
 			}
 		}
 
-        return _options;
+		return _options;
 	}
 
-    public List<ContextOption> GetEquipedOptions(int slotIndex)
-    {
-        if (_equipedOptions == null)
-        {
-            _equipedOptions = new List<ContextOption>();
-
-            List<Options> optCodes = ItemSO.EquipedOptions;
-
-            for (int i = 0; i < optCodes.Count; i++)
-            {
-                switch (optCodes[i])
-                {
-                    case Options.Unequip:
-                    {
-                        _equipedOptions.Add(new ContextOption("Unequip " + ItemSO.ItemName, slotIndex, Unequip));
-                        break;
-                    }
-                    case Options.Teleport:
-                    {
-                        _equipedOptions.Add(new ContextOption("Teleport " + ItemSO.ItemName, slotIndex, Teleport));
-                        break;
-                    }
-                    default:
-                    {
-                        break;
-                    }
-                }
-            }
-        }
-
-        return _equipedOptions;
-    }
-
-
-
-    public void Examine(int index)
+	public List<ContextOption> GetEquipedOptions(int slotIndex)
 	{
-        Debug.Log("Player Examined Item: " + ItemSO.ItemName);
+		if (_equipedOptions == null)
+		{
+			_equipedOptions = new List<ContextOption>();
 
-        ChatBox.Instance.SendChat(ItemSO.ExamineText);
-    }
+			List<Options> optCodes = ItemSO.EquipedOptions;
 
-    public void Use(int index)
-	{
-        Debug.Log("Player Used Item: " + ItemSO.ItemName);
+			for (int i = 0; i < optCodes.Count; i++)
+			{
+				switch (optCodes[i])
+				{
+					case Options.Unequip:
+					{
+						_equipedOptions.Add(new ContextOption("Unequip " + ItemSO.ItemName, slotIndex, Unequip));
+						break;
+					}
+					case Options.Teleport:
+					{
+						_equipedOptions.Add(new ContextOption("Teleport " + ItemSO.ItemName, slotIndex, Teleport));
+						break;
+					}
+					default:
+					{
+						break;
+					}
+				}
+			}
+		}
+
+		return _equipedOptions;
 	}
 
 
-    public void Equip(int index)
+
+	public void Examine(int index)
 	{
-        Debug.Log("Player Equiped Item: " + ItemSO.ItemName);
+		Debug.Log("Player Examined Item: " + ItemSO.ItemName);
 
-        Inventory.ClientInstance.EquipItemSRPC(index);
-    }
+		ChatBox.Instance.SendChat(ItemSO.ExamineText);
+	}
 
-
-    public void Drop(int index)
+	public void Use(int index)
 	{
-        Debug.Log("Player Dropped Item: " + ItemSO.ItemName);
-
-        Inventory.ClientInstance.DropItemSRPC(index);
-    }
+		Debug.Log("Player Used Item: " + ItemSO.ItemName);
+	}
 
 
-    public void Unequip(int index)
+	public void Equip(int index)
 	{
-        Debug.Log("Player Unequiped Item: " + ItemSO.ItemName);
+		Debug.Log("Player Equiped Item: " + ItemSO.ItemName);
 
-        Inventory.ClientInstance.UnequipItemSRPC(index);
-    }
+		Inventory.ClientInstance.EquipItemSRPC(index);
+	}
 
 
-    public void Teleport(int index)
+	public void Drop(int index)
 	{
-        Debug.Log("Player Teleported with Item: " + ItemSO.ItemName);
-    }
+		Debug.Log("Player Dropped Item: " + ItemSO.ItemName);
+
+		Inventory.ClientInstance.DropItemSRPC(index);
+	}
+
+
+	public void Unequip(int index)
+	{
+		Debug.Log("Player Unequiped Item: " + ItemSO.ItemName);
+
+		Inventory.ClientInstance.UnequipItemSRPC(index);
+	}
+
+
+	public void Teleport(int index)
+	{
+		Debug.Log("Player Teleported with Item: " + ItemSO.ItemName);
+	}
 }

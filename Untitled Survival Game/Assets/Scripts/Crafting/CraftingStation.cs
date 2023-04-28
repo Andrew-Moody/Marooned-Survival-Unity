@@ -6,9 +6,9 @@ public class CraftingStation : MonoBehaviour
 {
 	[SerializeField]
 	private CraftingStationSO _craftingStationSO;
-    
+	
 
-    public void Interact()
+	public void Interact()
 	{
 		CameraController.Instance.SetFPSMode(false);
 

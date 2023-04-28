@@ -5,7 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public abstract class BaseState : IState
 {
-    public List<Transition> Transitions = new List<Transition>();
+	public List<Transition> Transitions = new List<Transition>();
 
 
 	/// <summary>
@@ -13,7 +13,7 @@ public abstract class BaseState : IState
 	/// </summary>
 	/// <param name="agent"></param>
 	/// <returns>True if any transition condition was met</returns>
-    public bool CheckTransitions(Agent agent)
+	public bool CheckTransitions(Agent agent)
 	{
 		foreach (Transition transition in Transitions)
 		{

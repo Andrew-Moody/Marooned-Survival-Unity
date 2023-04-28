@@ -5,9 +5,9 @@ using UnityEngine;
 
 public class DestructibleObject : NetworkBehaviour
 {
-    private Stats _stats;
+	private Stats _stats;
 
-    private AbilityActor _abilityActor;
+	private AbilityActor _abilityActor;
 
 	[SerializeField]
 	private float _deathTime;
@@ -65,15 +65,15 @@ public class DestructibleObject : NetworkBehaviour
 	}
 
 	private void OnStatEmpty(StatType statType)
-    {
-        if (statType == StatType.Health)
+	{
+		if (statType == StatType.Health)
 		{
-            OnDeathStart();
+			OnDeathStart();
 		}
-    }
+	}
 
 
-    private void OnDeathStart()
+	private void OnDeathStart()
 	{
 		Debug.Log("OnDeathStart " + TimeManager.Tick);
 

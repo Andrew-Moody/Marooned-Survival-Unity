@@ -7,8 +7,8 @@ public class DestructibleManager : NetworkBehaviour
 {
 	public static DestructibleManager Instance;
 
-    [SerializeField]
-    private DestructibleFactory _destructibleFactory;
+	[SerializeField]
+	private DestructibleFactory _destructibleFactory;
 
 
 	private void Awake()

@@ -5,5 +5,5 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "ScriptableObjects/CraftingStationSO")]
 public class CraftingStationSO : ScriptableObject
 {
-    public CraftingRecipe[] Recipes;
+	public CraftingRecipe[] Recipes;
 }

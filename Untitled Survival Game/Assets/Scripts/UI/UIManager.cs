@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 public class UIManager : NetworkBehaviour
 {
-    public static UIManager Instance;
+	public static UIManager Instance;
 
 	[SerializeField]
 	private InventoryUI _inventoryUI;

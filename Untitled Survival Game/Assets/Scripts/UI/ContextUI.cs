@@ -5,13 +5,13 @@ using UnityEngine.UI;
 
 public class ContextUI : MonoBehaviour
 {
-    [SerializeField]
-    private Image _window;
+	[SerializeField]
+	private Image _window;
 
-    [SerializeField]
-    private OptionUI _optionPF;
+	[SerializeField]
+	private OptionUI _optionPF;
 
-    private List<OptionUI> _options;
+	private List<OptionUI> _options;
 
 	private int _slotIndex;
 
@@ -38,9 +38,9 @@ public class ContextUI : MonoBehaviour
 
 		Debug.Log("Populating options " + options.Count);
 
-        if (options.Count > _options.Count)
+		if (options.Count > _options.Count)
 		{
-            for (int i = _options.Count; i < options.Count; i++)
+			for (int i = _options.Count; i < options.Count; i++)
 			{
 				OptionUI option = Instantiate(_optionPF, transform, false);
 				_options.Add(option);
@@ -59,7 +59,7 @@ public class ContextUI : MonoBehaviour
 			{
 				_options[i].gameObject.SetActive(false);
 			}
-            
+			
 		}
 	}
 

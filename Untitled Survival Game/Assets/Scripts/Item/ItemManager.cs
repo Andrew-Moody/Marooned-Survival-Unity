@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class ItemManager : NetworkBehaviour
 {
-    public static ItemManager Instance;
+	public static ItemManager Instance;
 
 	[SerializeField]
 	private GameObject WorldItemPrefab;
@@ -20,14 +20,14 @@ public class ItemManager : NetworkBehaviour
 	[SerializeField]
 	private DestructibleFactory _destructibleFactory;
 
-    // Start is called before the first frame update
-    void Awake()
-    {
-        if (Instance == null)
+	// Start is called before the first frame update
+	void Awake()
+	{
+		if (Instance == null)
 		{
-            Instance = this;
+			Instance = this;
 		}
-    }
+	}
 
 
 	private void Start()
@@ -36,11 +36,11 @@ public class ItemManager : NetworkBehaviour
 
 		for (int i = 0; i < itemSOs.Count; i++)
 		{
-            ItemSO item = itemSOs[i];
+			ItemSO item = itemSOs[i];
 
-            if (itemSODict.ContainsKey(item.ItemID))
+			if (itemSODict.ContainsKey(item.ItemID))
 			{
-                Debug.Log($"itemSO: {item.ItemName} Attempting to use same ID({item.ItemID}) as: {itemSODict[item.ItemID].ItemName}");
+				Debug.Log($"itemSO: {item.ItemName} Attempting to use same ID({item.ItemID}) as: {itemSODict[item.ItemID].ItemName}");
 			}
 			else
 			{
@@ -50,14 +50,14 @@ public class ItemManager : NetworkBehaviour
 	}
 
 
-    public ItemSO GetItemSO(int id)
+	public ItemSO GetItemSO(int id)
 	{
 		if (!itemSODict.TryGetValue(id, out ItemSO itemSO))
 		{
 			Debug.Log($"No ItemSO exists with ID: {id}");
 		}
 
-        return itemSO;
+		return itemSO;
 	}
 
 

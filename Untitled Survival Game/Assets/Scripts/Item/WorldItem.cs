@@ -5,45 +5,45 @@ using UnityEngine;
 
 public class WorldItem : NetworkBehaviour
 {
-    public ItemNetData ItemNetData;
+	public ItemNetData ItemNetData;
 
-    public string ItemName;
+	public string ItemName;
 
-    private MeshFilter _meshFilter;
+	private MeshFilter _meshFilter;
 
-    private MeshRenderer _meshRenderer;
+	private MeshRenderer _meshRenderer;
 
 
-    // Start is called before the first frame update
-    void Awake()
-    {
-        _meshFilter = GetComponent<MeshFilter>();
-        _meshRenderer = GetComponent<MeshRenderer>();
-    }
-
-    
-    public void SetItem(ItemNetData itemNetData)
+	// Start is called before the first frame update
+	void Awake()
 	{
-        ItemNetData = itemNetData;
+		_meshFilter = GetComponent<MeshFilter>();
+		_meshRenderer = GetComponent<MeshRenderer>();
+	}
 
-        ItemSO itemSO = ItemManager.Instance.GetItemSO(itemNetData.ItemID);
-
-        ItemName = itemSO.ItemName;
-        _meshFilter.mesh = itemSO.Mesh;
-        _meshRenderer.material = itemSO.Material;
-    }
-
-
-    public ItemNetData GetItemData()
+	
+	public void SetItem(ItemNetData itemNetData)
 	{
-        return ItemNetData;
+		ItemNetData = itemNetData;
+
+		ItemSO itemSO = ItemManager.Instance.GetItemSO(itemNetData.ItemID);
+
+		ItemName = itemSO.ItemName;
+		_meshFilter.mesh = itemSO.Mesh;
+		_meshRenderer.material = itemSO.Material;
 	}
 
 
-    [ObserversRpc(BufferLast = true)]
-    public void ObserversSetupWorldItem(ItemNetData itemNetData)
+	public ItemNetData GetItemData()
 	{
-        SetItem(itemNetData);
+		return ItemNetData;
+	}
+
+
+	[ObserversRpc(BufferLast = true)]
+	public void ObserversSetupWorldItem(ItemNetData itemNetData)
+	{
+		SetItem(itemNetData);
 	}
 
 }

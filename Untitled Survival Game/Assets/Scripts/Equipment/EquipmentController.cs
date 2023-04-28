@@ -39,7 +39,7 @@ public class EquipmentController : NetworkBehaviour
 	}
 
 
-    public void EquipItem(InventoryItem item, EquipSlot slot)
+	public void EquipItem(InventoryItem item, EquipSlot slot)
 	{
 		if (slot == EquipSlot.None)
 		{

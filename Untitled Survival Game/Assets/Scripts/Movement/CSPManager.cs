@@ -7,12 +7,12 @@ using UnityEngine;
 
 public class CSPManager : NetworkBehaviour
 {
-    public static CSPManager Instance;
+	public static CSPManager Instance;
 
 	[SerializeField]
 	private bool _cacheRecArray;
 
-    private List<CSPObject> _predictedObjects = new List<CSPObject>();
+	private List<CSPObject> _predictedObjects = new List<CSPObject>();
 
 	private CSPObject _controlledObject;
 

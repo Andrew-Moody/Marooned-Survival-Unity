@@ -11,21 +11,21 @@ public class PickupWorldItem : NetworkBehaviour
 	public override void OnStartNetwork()
 	{
 		base.OnStartNetwork();
-        if (!IsServer)
-            this.enabled = false;
+		if (!IsServer)
+			this.enabled = false;
 	}
 
 	// Start is called before the first frame update
 	void Start()
-    {
+	{
 		_itemMask = 1 << 7;
-    }
+	}
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (!IsServer)
-            Debug.Log("Haha missed me!");
+	// Update is called once per frame
+	void Update()
+	{
+		if (!IsServer)
+			Debug.Log("Haha missed me!");
 
 
 		Vector3 origin = transform.position + new Vector3(0f, 0.4f, 0f);

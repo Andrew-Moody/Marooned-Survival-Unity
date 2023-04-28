@@ -24,11 +24,11 @@ public class KinematicPrediction : NetworkBehaviour
 	[SerializeField]
 	private LayerMask _groundMask;
 
-    private CharacterController _controller;
+	private CharacterController _controller;
 
 	private Animator _animator;
 
-    private bool _jumpQueued;
+	private bool _jumpQueued;
 
 	private bool _jumping;
 
@@ -91,8 +91,8 @@ public class KinematicPrediction : NetworkBehaviour
 	}
 
 	void Awake()
-    {
-        _controller = GetComponent<CharacterController>();
+	{
+		_controller = GetComponent<CharacterController>();
 		_animator = transform.parent.GetComponentInChildren<Animator>();
 	}
 
@@ -105,14 +105,14 @@ public class KinematicPrediction : NetworkBehaviour
 
 
 	void Update()
-    {
-        if (!IsOwner) return;
+	{
+		if (!IsOwner) return;
 
-        if (Input.GetKeyDown(KeyCode.Space))
+		if (Input.GetKeyDown(KeyCode.Space))
 		{
-            _jumpQueued = true;
+			_jumpQueued = true;
 		}
-    }
+	}
 
 
 	private void GetInput(out MoveData data)
@@ -159,7 +159,7 @@ public class KinematicPrediction : NetworkBehaviour
 		if (IsServer || IsClient)
 		{
 			// Seems this is too early because move interferes with spawning. only fix so far was subscribe in Start()
-            //TimeManager.OnTick += TimeManager_OnTick;
+			//TimeManager.OnTick += TimeManager_OnTick;
 		}
 	}
 
@@ -184,7 +184,7 @@ public class KinematicPrediction : NetworkBehaviour
 
 	private void TimeManager_OnTick()
 	{
-        if (IsOwner)
+		if (IsOwner)
 		{
 			Reconcile(default, false);
 
@@ -193,7 +193,7 @@ public class KinematicPrediction : NetworkBehaviour
 			Move(moveData, false);
 		}
 
-        if (IsServer)
+		if (IsServer)
 		{
 			Move(default, true);
 
@@ -206,8 +206,8 @@ public class KinematicPrediction : NetworkBehaviour
 	}
 
 
-    [Replicate]
-    private void Move(MoveData data, bool isServer, Channel channel = Channel.Unreliable, bool isReplaying = false)
+	[Replicate]
+	private void Move(MoveData data, bool isServer, Channel channel = Channel.Unreliable, bool isReplaying = false)
 	{
 		if (data.RotationChanged)
 		{

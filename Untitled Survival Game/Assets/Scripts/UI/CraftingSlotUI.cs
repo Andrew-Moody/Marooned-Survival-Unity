@@ -7,27 +7,27 @@ public class CraftingSlotUI : MonoBehaviour
 {
 	public int index;
 
-    [SerializeField]
-    private Image _icon;
+	[SerializeField]
+	private Image _icon;
 
 	[SerializeField]
 	private Color _greyoutColor;
 
 
-    private int _itemID;
+	private int _itemID;
 
 
-    public void SetRecipe(CraftingRecipe recipe)
+	public void SetRecipe(CraftingRecipe recipe)
 	{
 		Debug.Log($"Output: {recipe.OutputID}, currentID: {_itemID}");
 
 		if (recipe.OutputID != _itemID)
 		{
-            _itemID = recipe.OutputID;
+			_itemID = recipe.OutputID;
 
-            ItemSO itemSO = ItemManager.Instance.GetItemSO(_itemID);
+			ItemSO itemSO = ItemManager.Instance.GetItemSO(_itemID);
 
-            if (itemSO != null)
+			if (itemSO != null)
 			{
 				Debug.Log(itemSO.Sprite.name);
 				_icon.sprite = itemSO.Sprite;

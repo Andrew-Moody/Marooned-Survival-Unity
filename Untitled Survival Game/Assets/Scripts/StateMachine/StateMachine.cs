@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class StateMachine
 {
-    private IState _currentState;
+	private IState _currentState;
 
 
-    public void ChangeState(IState state, Agent agent)
+	public void ChangeState(IState state, Agent agent)
 	{
 		if (_currentState != null)
 		{

@@ -7,41 +7,41 @@ using UnityEngine.UI;
 
 public class OptionUI : MonoBehaviour
 {
-    [SerializeField]
-    private TextMeshProUGUI _optionTMP;
+	[SerializeField]
+	private TextMeshProUGUI _optionTMP;
 
-    private Button _button;
+	private Button _button;
 
-    private ContextOption _option;
+	private ContextOption _option;
 
-    void Start()
-    {
-        Debug.Log("Adding Listener");
-        _button = gameObject.GetComponent<Button>();
-        _button.onClick.AddListener(OnSelectOption);
-    }
+	void Start()
+	{
+		Debug.Log("Adding Listener");
+		_button = gameObject.GetComponent<Button>();
+		_button.onClick.AddListener(OnSelectOption);
+	}
 
 
 	private void OnDestroy()
 	{
 		if (_button != null)
 		{
-            _button.onClick.RemoveListener(OnSelectOption);
-        }
+			_button.onClick.RemoveListener(OnSelectOption);
+		}
 	}
 
 
-    public void SetOption(ContextOption option)
+	public void SetOption(ContextOption option)
 	{
-        _option = option;
-        _optionTMP.text = option.OptionText;
-    }
+		_option = option;
+		_optionTMP.text = option.OptionText;
+	}
 
 
-    public void OnSelectOption()
+	public void OnSelectOption()
 	{
-        _option.Callback?.Invoke(_option.SlotIndex);
+		_option.Callback?.Invoke(_option.SlotIndex);
 
-        gameObject.GetComponentInParent<ContextUI>().Hide();
+		gameObject.GetComponentInParent<ContextUI>().Hide();
 	}
 }

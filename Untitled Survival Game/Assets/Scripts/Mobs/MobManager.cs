@@ -5,14 +5,14 @@ using UnityEngine;
 
 public class MobManager : NetworkBehaviour
 {
-    public static MobManager Instance;
+	public static MobManager Instance;
 
 	[SerializeField]
 	private Mob _mobBase;
 
 
 	[SerializeField]
-    private MobFactory _mobFactory;
+	private MobFactory _mobFactory;
 
 
 	private void Awake()

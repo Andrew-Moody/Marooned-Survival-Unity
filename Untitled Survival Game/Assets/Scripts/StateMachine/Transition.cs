@@ -4,13 +4,13 @@ using UnityEngine;
 
 public struct Transition
 {
-    public ICondition Condition;
-    public IState State;
+	public ICondition Condition;
+	public IState State;
 
 
-    public Transition(ICondition condition, IState state)
+	public Transition(ICondition condition, IState state)
 	{
-        Condition = condition;
-        State = state;
+		Condition = condition;
+		State = state;
 	}
 }

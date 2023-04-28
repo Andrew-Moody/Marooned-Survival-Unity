@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ServiceLocator : MonoBehaviour
 {
-    public static ServiceLocator Instance;
+	public static ServiceLocator Instance;
 
 
 	private Dictionary<string, object> _services;

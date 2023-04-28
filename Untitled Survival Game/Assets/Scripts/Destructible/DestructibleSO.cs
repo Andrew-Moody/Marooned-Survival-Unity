@@ -5,11 +5,11 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "ScriptableObjects/DestructibleSO")]
 public class DestructibleSO : ScriptableObject
 {
-    public string Name;
+	public string Name;
 
-    public int ID;
+	public int ID;
 
-    public Mesh Mesh;
+	public Mesh Mesh;
 
-    public DestructibleObject Prefab;
+	public DestructibleObject Prefab;
 }

@@ -17,7 +17,7 @@ public class HotbarUI : MonoBehaviour
 	private int _selection;
 
 	private Inventory _inventory;
-    
+	
 
 	public void Initialize(GameObject player)
 	{

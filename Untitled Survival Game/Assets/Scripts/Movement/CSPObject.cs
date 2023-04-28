@@ -13,13 +13,13 @@ public class CSPObject : NetworkBehaviour
 	{
 		return new ReconcileData(transform.position, transform.rotation.eulerAngles, _velocity, _angularVelocity);
 	}
-    
+	
 	public virtual void Replicate(InputData data, bool asServer)
 	{
 		
 	}
 
-    public virtual void Reconcile(ReconcileData data)
+	public virtual void Reconcile(ReconcileData data)
 	{
 		transform.position = data.Position;
 		transform.rotation = Quaternion.Euler(data.Rotation);

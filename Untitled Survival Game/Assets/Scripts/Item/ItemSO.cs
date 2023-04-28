@@ -6,35 +6,35 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Item", menuName = "ScriptableObjects/ItemSO")]
 public class ItemSO : ScriptableObject
 {
-    public int ItemID;
+	public int ItemID;
 
-    public string ItemName;
+	public string ItemName;
 
-    public string ExamineText;
+	public string ExamineText;
 
-    // Inventory Data
-    public int StackLimit;
+	// Inventory Data
+	public int StackLimit;
 
-    public EquipSlot equipSlot;
+	public EquipSlot equipSlot;
 
-    public Sprite Sprite;
+	public Sprite Sprite;
 
-    public List<Options> InventoryOptions;
+	public List<Options> InventoryOptions;
 
-    public List<Options> EquipedOptions;
+	public List<Options> EquipedOptions;
 
-    // World Item Data
-    public Mesh Mesh;
+	// World Item Data
+	public Mesh Mesh;
 
-    public Material Material;
+	public Material Material;
 
-    public List<Options> WorldOptions;
+	public List<Options> WorldOptions;
 
-    // Wieldable Data
-    public AbilityItemSO AbilityItemSO;
+	// Wieldable Data
+	public AbilityItemSO AbilityItemSO;
 
 
-    // Placement Data
-    public int PlacedItemID;
+	// Placement Data
+	public int PlacedItemID;
 
 }

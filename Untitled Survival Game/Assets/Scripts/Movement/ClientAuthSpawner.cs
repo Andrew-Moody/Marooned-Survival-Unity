@@ -7,7 +7,7 @@ using UnityEngine;
 public class ClientAuthSpawner : NetworkBehaviour
 {
 
-    public GameObject prefab;
+	public GameObject prefab;
 
 
 
