@@ -15,6 +15,8 @@ public class InventoryItem
 
     public EquipSlot EquipSlot;
 
+    public bool ConsumeOnUse = true;
+
     public Sprite Sprite;
 
     public ItemSO ItemSO;

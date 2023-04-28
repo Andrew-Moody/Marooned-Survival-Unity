@@ -158,11 +158,19 @@ MonoBehaviour:
   _networkObjectCache: {fileID: 416200329961083272}
   _stats: {fileID: 416200329961083279}
   _toolType: 1
+  _toolPower: 0
   _animator: {fileID: 0}
   _animatorOverride: {fileID: 0}
   _audioSource: {fileID: 8011901385716394039}
   _particleHandler: {fileID: 2642624362254022922}
   _transformAnimator: {fileID: 5104136100577217607}
+  _parentActor: {fileID: 0}
+  _viewTransform: {fileID: 0}
+  _viewRange: 0
+  _viewMask:
+    serializedVersion: 2
+    m_Bits: 0
+  _inventory: {fileID: 0}
 --- !u!114 &3840489030011175478
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -569,10 +577,10 @@ MonoBehaviour:
   _particleEffects:
   - Name: HIT
     Anchor: {fileID: 5861946048912771079}
-    ParticleSystem: {fileID: 1400737571931329622, guid: 3e0e9e47c17f8984db2b4b759194b866, type: 3}
+    ParticleSystem: {fileID: 1400737571931329622, guid: c741a432afc388d45a898987b5f387a7, type: 3}
   - Name: Death
     Anchor: {fileID: 5861946048912771079}
-    ParticleSystem: {fileID: 1400737571931329622, guid: 3e0e9e47c17f8984db2b4b759194b866, type: 3}
+    ParticleSystem: {fileID: 1400737571931329622, guid: c741a432afc388d45a898987b5f387a7, type: 3}
 --- !u!1001 &4614275969842227109
 PrefabInstance:
   m_ObjectHideFlags: 0

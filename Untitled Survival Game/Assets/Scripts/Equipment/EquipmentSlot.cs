@@ -6,6 +6,9 @@ using UnityEngine;
 public class EquipmentSlot : NetworkBehaviour
 {
 	[SerializeField]
+	private AbilityActor _abilityActor;
+
+	[SerializeField]
 	private EquipSlot _equipSlot;
 	public EquipSlot EquipSlot { get { return _equipSlot; } }
 
@@ -46,11 +49,21 @@ public class EquipmentSlot : NetworkBehaviour
 
 			_equippedItem = item.AbilityItem;
 
+			if (_abilityActor != null)
+			{
+				_abilityActor.AbilityItem = item.AbilityItem;
+			}
+
 			_renderable.SetMesh(item.ItemSO.Mesh);
 			_renderable.SetMaterial(item.ItemSO.Material);
 		}
 		else
 		{
+			if (_abilityActor != null)
+			{
+				_abilityActor.AbilityItem = null;
+			}
+
 			_equippedItem = null;
 			_renderable.SetMesh(null);
 		}

@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbc34e124ea594447add3265ad9cb585, type: 3}
+  m_Name: Apple
+  m_EditorClassIdentifier: 
+  ItemID: 106
+  ItemName: Apple
+  ExamineText: To keep the Doctor away
+  StackLimit: 10
+  equipSlot: 0
+  Sprite: {fileID: 21300000, guid: ef90075d92abe4b44a874bc4ea9d140a, type: 3}
+  InventoryOptions: 0300000000000000
+  EquipedOptions: 
+  Mesh: {fileID: -8095057964192493474, guid: 8653b39964c46f942865d3c93ea68a82, type: 3}
+  Material: {fileID: 2100000, guid: ad19eb8def9f2c240af6b3a517fa5670, type: 2}
+  WorldOptions: 
+  AbilityItemSO: {fileID: 11400000, guid: ca69e3f125ce67047b9f0461fd7b5587, type: 2}

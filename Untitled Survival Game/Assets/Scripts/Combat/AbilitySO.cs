@@ -5,28 +5,30 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "ScriptableObjects/AbilitySO")]
 public class AbilitySO : ScriptableObject
 {
-	public Ability Ability;
+	[SerializeReference]
+	private Ability _ability;
+	public Ability Ability { get { return _ability; } }
 
 
 	private void OnValidate()
 	{
-		if (Ability == null)
+		if (_ability == null)
 		{
-			Ability = new Ability();
+			_ability = new Ability();
 		}
 		else
 		{
 			// This is begging for a factory
-			if (Ability.GetAbilityType() == AbilityType.Melee && !(Ability.GetType() == typeof(MeleeAbility)))
+			if (_ability.AbilityType == AbilityType.Melee && !(_ability.GetType() == typeof(MeleeAbility)))
 			{
-				Ability = new MeleeAbility(Ability);
+				_ability = new MeleeAbility(_ability);
 			}
-			else if (Ability.GetAbilityType() == AbilityType.None && !(Ability.GetType() == typeof(Ability)))
+			else if (_ability.AbilityType == AbilityType.None && !(_ability.GetType() == typeof(Ability)))
 			{
-				Ability = new Ability(Ability);
+				_ability = new Ability(_ability);
 			}
 		}
 
-		Ability.OnValidate();
+		_ability.OnValidate();
 	}
 }

@@ -24,7 +24,7 @@ public class AbilityItemSO : ScriptableObject
 			{
 				Debug.LogError($"Ability {i} was null");
 			}
-			else if (Abilities[i].GetAbilityType() == AbilityType.Melee)
+			else if (Abilities[i].AbilityType == AbilityType.Melee)
 			{
 				Debug.LogError($"Range = {(Abilities[i] as MeleeAbility).Range}");
 			}
@@ -46,14 +46,14 @@ public class AbilityItemSO : ScriptableObject
 			}
 			else
 			{
-				if (Abilities[i].GetAbilityType() == AbilityType.Melee && !(Abilities[i].GetType() == typeof(MeleeAbility)))
+				if (Abilities[i].AbilityType == AbilityType.Melee && !(Abilities[i].GetType() == typeof(MeleeAbility)))
 				{
 					//Debug.LogWarning($"MeleeAbility(Ability) called");
 					Abilities[i] = new MeleeAbility(Abilities[i]);
 				}
-				else if (Abilities[i].GetAbilityType() == AbilityType.None && !(Abilities[i].GetType() == typeof(Ability)))
+				else if (Abilities[i].AbilityType == AbilityType.None && !(Abilities[i].GetType() == typeof(Ability)))
 				{
-					//Debug.LogWarning($"Ability(Ability) called");
+					//Debug.LogWarning($"Ability(Ability) called ");
 					Abilities[i] = new Ability(Abilities[i]);
 				}
 			}

@@ -27,6 +27,8 @@ public class Inventory : NetworkBehaviour
 
     public event Action OnSyncContents;
 
+    public event Action<int> OnHotbarSelect;
+
     // Points to the inventory only for the player owned by this client
     public static Inventory ClientInstance;
 
@@ -111,6 +113,11 @@ public class Inventory : NetworkBehaviour
             SlotUpdateEventArgs args = new SlotUpdateEventArgs(index, _items[index].Quantity, _items[index].Sprite);
 
             SlotUpdated?.Invoke(this, args);
+
+            if (index == _hotbarSelection)
+			{
+                OnHotbarSelect?.Invoke(_items[_hotbarSelection].ItemID);
+			}
         }
 
         if (!IsOwner && !IsServer)
@@ -275,6 +282,39 @@ public class Inventory : NetworkBehaviour
 	}
 
 
+    [Server]
+    public void UseItem(AbilityActor user, AbilityItem abilityItem)
+	{
+        if (_items[_hotbarSelection].ItemID != abilityItem.ItemID)
+		{
+            Debug.LogError("Attempted to use AbilityActor item not selected by hotbar");
+            return;
+		}
+
+        InventoryItem item = _items[_hotbarSelection];
+
+        Debug.LogError("Using Item");
+
+        if (item.ItemSO.PlacedItemID != 0)
+		{
+            DestructibleManager.Instance.PlaceItem(user, item.ItemSO.PlacedItemID);
+		}
+
+        if (item.ConsumeOnUse)
+		{
+            item.Quantity -= 1;
+
+            if (item.Quantity == 0)
+            {
+                _items[_hotbarSelection] = InventoryItem.Empty();
+            }
+
+            UpdateSlot(_hotbarSelection);
+            TargetSyncSlot(Owner, _items[_hotbarSelection].GetNetData(), _hotbarSelection);
+        }
+	}
+
+
     public List<ItemNetData> GetContents()
 	{
         List<ItemNetData> contents = new List<ItemNetData>();
@@ -316,22 +356,6 @@ public class Inventory : NetworkBehaviour
 	}
 
 
-    public bool HasItem(out int slot, int itemID, int quantity = 1)
-	{
-        for (int i = 0; i < _items.Count; i++)
-		{
-            if (_items[i].ItemID == itemID && _items[i].Quantity >= quantity)
-			{
-                slot = i;
-                return true;
-			}
-		}
-
-        slot = -1;
-        return false;
-	}
-
-
     [TargetRpc]
     private void TargetSyncContents(NetworkConnection connection, List<ItemNetData> items)
 	{
@@ -348,9 +372,26 @@ public class Inventory : NetworkBehaviour
 	}
 
     // Utility Functions
-	#region Utility
+    #region Utility
 
-	private int FirstEmptySlot()
+
+    public bool HasItem(out int slot, int itemID, int quantity = 1)
+    {
+        for (int i = 0; i < _items.Count; i++)
+        {
+            if (_items[i].ItemID == itemID && _items[i].Quantity >= quantity)
+            {
+                slot = i;
+                return true;
+            }
+        }
+
+        slot = -1;
+        return false;
+    }
+
+
+    private int FirstEmptySlot()
 	{
         int firstEmptySlot = -1;
 

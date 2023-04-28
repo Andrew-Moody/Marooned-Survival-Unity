@@ -215,7 +215,7 @@ public class KinematicPrediction : NetworkBehaviour
 			transform.rotation = Quaternion.Euler(0f, data.YRotation, 0f);
 
 			// Head transform is seperate
-			_headTransform.rotation = Quaternion.Euler(data.XRotation, 0f, 0f);
+			_headTransform.localRotation = Quaternion.Euler(data.XRotation, 0f, 0f);
 		}
 
 

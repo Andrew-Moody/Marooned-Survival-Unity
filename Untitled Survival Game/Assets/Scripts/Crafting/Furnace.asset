@@ -13,11 +13,31 @@ MonoBehaviour:
   m_Name: Furnace
   m_EditorClassIdentifier: 
   Recipes:
-  - RecipeID: 3
+  - RecipeID: 201
     OutputID: 105
     Quantity: 1
     Ingredients:
     - ItemID: 101
+      Quantity: 1
+    - ItemID: 102
+      Quantity: 1
+  - RecipeID: 202
+    OutputID: 112
+    Quantity: 1
+    Ingredients:
+    - ItemID: 203
+      Quantity: 1
+    - ItemID: 202
+      Quantity: 1
+    - ItemID: 102
+      Quantity: 1
+  - RecipeID: 203
+    OutputID: 113
+    Quantity: 1
+    Ingredients:
+    - ItemID: 204
+      Quantity: 1
+    - ItemID: 202
       Quantity: 1
     - ItemID: 102
       Quantity: 1

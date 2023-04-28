@@ -36,7 +36,7 @@ public class MeleeAbility : Ability
 	public MeleeAbility(Ability ability)
 		: base (ability)
 	{
-		Debug.LogError("MeleeAbility copied from Ability");
+		//Debug.LogError("MeleeAbility copied from Ability");
 	}
 
 

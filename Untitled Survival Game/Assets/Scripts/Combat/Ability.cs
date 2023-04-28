@@ -11,9 +11,15 @@ public class Ability
 
 	[SerializeField]
 	private AbilityType _abilityType;
+	public AbilityType AbilityType {  get { return _abilityType; } }
 
 	[SerializeField]
 	private ToolType _toolType;
+	public ToolType ToolType {  get { return _toolType; } }
+
+	[SerializeField]
+	private float _toolPower;
+	public float ToolPower { get { return _toolPower; } }
 
 	[SerializeField]
 	private float _coolDown;
@@ -91,12 +97,6 @@ public class Ability
 	}
 
 
-	public AbilityType GetAbilityType()
-	{
-		return _abilityType;
-	}
-
-
 	public float GetValue(string name)
 	{
 		if (_namedValueDict == null)
@@ -135,7 +135,7 @@ public class Ability
 
 		if (asServer && _coolDownRemaining > _coolDownThreshold)
 		{
-			Debug.LogError("On CoolDown, Time remaining: " + _coolDownRemaining);
+			//Debug.LogError("On CoolDown, Time remaining: " + _coolDownRemaining);
 			return false;
 		}
 		else if (!asServer && _coolDownRemaining > 0f)
@@ -167,24 +167,26 @@ public class Ability
 	}
 
 
-	public bool IsOffCoolDown()
-	{
-		return _coolDownRemaining <= 0f;
-	}
-
-
-	public bool RequiresTarget()
-	{
-		return _requireTarget;
-	}
-
 	public void StartCoolDown()
 	{
 		_coolDownRemaining = _coolDown;
 	}
 
 
-	public void ApplyEffects(AbilityActor user, AbilityActor item, AbilityActor target, EffectTiming effectTiming, bool asServer)
+	public void UseAbility(AbilityActor user, AbilityActor item, AbilityActor target, EffectTiming effectTiming, bool asServer)
+	{
+		if (CheckAbilitySuccess(user, item, target, effectTiming, asServer))
+		{
+			ApplyEffects(user, item, target, effectTiming, asServer);
+		}
+		else
+		{
+			ApplyEffects(user, item, target, EffectTiming.OnFail, asServer);
+		}
+	}
+
+
+	private void ApplyEffects(AbilityActor user, AbilityActor item, AbilityActor target, EffectTiming effectTiming, bool asServer)
 	{
 		Debug.Log($"Applying {effectTiming} Effects, asServer: {asServer}");
 
@@ -216,18 +218,9 @@ public class Ability
 				}
 			}
 
-
-			if (effected != null && effected.GetToolType() != ToolType.None && effected.GetToolType() != _toolType)
+			if (effected == null)
 			{
-				// The ability does not have the correct tool type to effect this AbilityActor
-
-				// Could apply failure effects like sound and particles
-				if (effected != null)
-				{
-					Debug.LogWarning($"{_abilityName} with tooltype {_toolType} can't effect target {effected.name} with tooltype {effected.GetToolType()} ");
-				}
-
-				return;
+				continue;
 			}
 
 
@@ -247,13 +240,31 @@ public class Ability
 
 				if (!effect.ServerOnly || asServer)
 				{
-					effect.ApplyEffect(user, effected);
+					effect.ApplyEffect(this, user, effected);
 				}
 			}
+		}
+	}
 
+
+	private bool CheckAbilitySuccess(AbilityActor user, AbilityActor item, AbilityActor target, EffectTiming effectTiming, bool asServer)
+	{
+		if (target != null)
+		{
+			if (target.ToolType != ToolType.None && target.ToolType != _toolType)
+			{
+				Debug.Log($"{_abilityName} with Tooltype {_toolType} can't effect target {target.name} with Tooltype {target.ToolType} ");
+				return false;
+			}
+
+			if (target.ToolPower > _toolPower)
+			{
+				Debug.Log($"{_abilityName} with ToolPower {_toolPower} can't effect target {target.name} with ToolPower {target.ToolPower} ");
+				return false;
+			}
 		}
 
-		
+		return true;
 	}
 
 
@@ -272,30 +283,6 @@ public class Ability
 
 	public void OnValidate()
 	{
-		//if (_userEffects == null)
-		//{
-		//	Debug.LogError("UserEffects was null");
-		//	_userEffects = new List<Effect>();
-		//}
-
-		//if (_targetEffects == null)
-		//{
-		//	Debug.LogError("TargetEffects was null");
-		//	_targetEffects = new List<Effect>();
-		//}
-
-		//if (_itemEffects == null)
-		//{
-		//	Debug.LogError("ItemEffects was null");
-		//	_itemEffects = new List<Effect>();
-		//}
-
-		//if (_effectLists == null)
-		//{
-		//	Debug.LogError("EffectLists was null");
-		//	_effectLists = new List<Effect>[] { _userEffects, _targetEffects, _itemEffects };
-		//}
-
 		for ( int listIdx = 0; listIdx < _effectLists.Length; listIdx++)
 		{
 			List<Effect> effectList = _effectLists[listIdx];
@@ -315,10 +302,9 @@ public class Ability
 				}
 
 
-				effectList[i] = effect; // Wow I am dumb
+				effectList[i] = effect;
 			}
 		}
-		
 	}
 }
 

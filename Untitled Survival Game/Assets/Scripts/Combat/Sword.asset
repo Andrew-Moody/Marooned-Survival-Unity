@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Sword
   m_EditorClassIdentifier: 
   ItemName: Sword
-  ItemID: 0
+  ItemID: 105
   Abilities:
   - id: 0
   references:
@@ -24,6 +24,7 @@ MonoBehaviour:
         _abilityName: Sword Attack
         _abilityType: 1
         _toolType: 0
+        _toolPower: 0
         _coolDown: 1
         _requireTarget: 0
         _requirements: []

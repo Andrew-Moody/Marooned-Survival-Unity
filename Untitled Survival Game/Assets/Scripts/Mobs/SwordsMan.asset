@@ -19,4 +19,4 @@ MonoBehaviour:
   - StatType: 1
     Value: 100
   - StatType: 2
-    Value: 0
+    Value: 10

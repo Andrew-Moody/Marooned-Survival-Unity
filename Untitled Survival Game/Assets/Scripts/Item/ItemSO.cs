@@ -33,4 +33,8 @@ public class ItemSO : ScriptableObject
     // Wieldable Data
     public AbilityItemSO AbilityItemSO;
 
+
+    // Placement Data
+    public int PlacedItemID;
+
 }

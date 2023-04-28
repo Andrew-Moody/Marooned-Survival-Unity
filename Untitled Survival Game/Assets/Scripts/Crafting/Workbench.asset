@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Workbench
   m_EditorClassIdentifier: 
   Recipes:
-  - RecipeID: 1
+  - RecipeID: 101
     OutputID: 103
     Quantity: 1
     Ingredients:
@@ -21,8 +21,8 @@ MonoBehaviour:
       Quantity: 1
     - ItemID: 102
       Quantity: 1
-  - RecipeID: 2
-    OutputID: 104
+  - RecipeID: 102
+    OutputID: 111
     Quantity: 1
     Ingredients:
     - ItemID: 101

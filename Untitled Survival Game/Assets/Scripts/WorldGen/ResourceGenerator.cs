@@ -71,6 +71,8 @@ public class ResourceGenerator : MonoBehaviour
         float halfWidth = (_width - 1) * _tileSize * 0.5f;
         float halfHeight = (_height - 1) * _tileSize * 0.5f;
 
+        UnityEngine.Random.InitState(_seed);
+
         for (int i = 0; i < _width; i++)
         {
             for (int j = 0; j < _height; j++)
@@ -79,7 +81,7 @@ public class ResourceGenerator : MonoBehaviour
                 {
                     Vector3 position = new Vector3(i * _tileSize - halfWidth, 10f, j * _tileSize - halfHeight);
 
-                    int id = UnityEngine.Random.Range(0, 2);
+                    int id = UnityEngine.Random.Range(1, 7);
 
                     SpawnResource(id, position);
                 }

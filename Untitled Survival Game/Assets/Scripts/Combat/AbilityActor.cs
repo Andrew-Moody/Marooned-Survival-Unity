@@ -10,6 +10,11 @@ public class AbilityActor : NetworkBehaviour
 
 	[SerializeField]
 	private ToolType _toolType;
+	public ToolType ToolType { get { return _toolType; } }
+
+	[SerializeField]
+	private float _toolPower;
+	public float ToolPower { get { return _toolPower; } }
 
 	[SerializeField]
 	private Animator _animator;
@@ -23,16 +28,36 @@ public class AbilityActor : NetworkBehaviour
 	[SerializeField]
 	private ParticleHandler _particleHandler;
 
-
 	[SerializeField]
 	private TransformAnimator _transformAnimator;
 
+	[Header("Optional")]
+
+	[SerializeField]
+	private AbilityActor _parentActor;
+
+	[SerializeField]
+	private Transform _viewTransform;
+	public Transform ViewTransform { get { return _viewTransform; } }
+
+	[SerializeField]
+	private float _viewRange;
+	public float ViewRange { get { return _viewRange; } }
+
+	[SerializeField]
+	private LayerMask _viewMask;
+	public LayerMask ViewMask { get { return _viewMask; } }
+
+	[SerializeField]
+	private Inventory _inventory;
+	public Inventory Inventory { get { return _inventory; } }
 
 
-	private Ability _abilityInUse;
+	private AbilityItem _abilityItem;
+	public AbilityItem AbilityItem { get { return _abilityItem; } set { _abilityItem = value; } }
+
 
 	private bool _isAlive;
-
 	public bool IsAlive { get { return _isAlive; } set {  _isAlive = value; } }
 
 
@@ -92,11 +117,6 @@ public class AbilityActor : NetworkBehaviour
 		_stats.AddToStat(statType, value);
 	}
 
-
-	public ToolType GetToolType()
-	{
-		return _toolType;
-	}
 
 	#endregion
 
@@ -176,6 +196,7 @@ public class AbilityActor : NetworkBehaviour
 	}
 
 
+	[Server]
 	public void KnockBack(Vector3 direction, float strength)
 	{
 		// Eventually want to check for immunity / resistance (would that be in stats?)
@@ -186,6 +207,33 @@ public class AbilityActor : NetworkBehaviour
 		{
 			agent.KnockBack(direction, strength);
 		}
+	}
+
+
+	[Server]
+	public void UseItem()
+	{
+		Debug.LogError("AbilityActor UseItem");
+
+		if (_abilityItem == null)
+		{
+			Debug.LogError("Attempted to Use null item");
+			return;
+		}
+
+		if (_parentActor != null)
+		{
+			if (_parentActor.Inventory != null)
+			{
+				_parentActor.Inventory.UseItem(_parentActor, _abilityItem);
+			}
+		}
+		else if (_inventory != null)
+		{
+			_inventory.UseItem(this, _abilityItem);
+		}
+
+		
 	}
 
 	#endregion

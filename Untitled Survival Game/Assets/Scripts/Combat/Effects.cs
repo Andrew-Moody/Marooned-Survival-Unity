@@ -30,7 +30,7 @@ public class Effect
 		ServerOnly = false;
 	}
 
-	public virtual void ApplyEffect(AbilityActor user, AbilityActor effected)
+	public virtual void ApplyEffect(Ability ability, AbilityActor user, AbilityActor effected)
 	{
 		Debug.Log("Using Base Ability (user, target)");
 	}
@@ -54,7 +54,8 @@ public enum EffectType
 	Sound,
 	Stat,
 	KnockBack,
-	Transform
+	Transform,
+	UseItem
 }
 
 
@@ -77,7 +78,8 @@ public enum EffectTiming
 	None,
 	OnStart,
 	OnAnimEvent,
-	OnEnd
+	OnEnd,
+	OnFail
 }
 
 
@@ -95,7 +97,7 @@ public class AnimationEffect : Effect
 	}
 
 
-	public override void ApplyEffect(AbilityActor user, AbilityActor effected)
+	public override void ApplyEffect(Ability ability, AbilityActor user, AbilityActor effected)
 	{
 		if (Animation != null && AnimTrigger != null)
 		{
@@ -129,7 +131,7 @@ public class SoundEffect : Effect
 	}
 
 
-	public override void ApplyEffect(AbilityActor user, AbilityActor effected)
+	public override void ApplyEffect(Ability ability, AbilityActor user, AbilityActor effected)
 	{
 		if (Sound != null)
 		{
@@ -152,7 +154,7 @@ public class ParticleEffect : Effect
 	}
 
 
-	public override void ApplyEffect(AbilityActor user, AbilityActor effected)
+	public override void ApplyEffect(Ability ability, AbilityActor user, AbilityActor effected)
 	{
 		if (ParticleName != null && ParticleName != "")
 		{
@@ -196,7 +198,7 @@ public class TransformEffect : Effect
 	}
 
 
-	public override void ApplyEffect(AbilityActor user, AbilityActor effected)
+	public override void ApplyEffect(Ability ability, AbilityActor user, AbilityActor effected)
 	{
 		effected.PlayTransformAnimation(Name);
 	}
@@ -217,7 +219,7 @@ public class StatEffect : ServerOnlyEffect
 	}
 
 
-	public override void ApplyEffect(AbilityActor user, AbilityActor effected)
+	public override void ApplyEffect(Ability ability, AbilityActor user, AbilityActor effected)
 	{
 		if (EffectType == EffectType.Stat && StatType != StatType.None)
 		{
@@ -238,7 +240,7 @@ public class KnockBackEffect : ServerOnlyEffect
 	}
 
 
-	public override void ApplyEffect(AbilityActor user, AbilityActor effected)
+	public override void ApplyEffect(Ability ability, AbilityActor user, AbilityActor effected)
 	{
 		Vector3 direction = (effected.transform.position - user.transform.position).normalized;
 
@@ -249,6 +251,24 @@ public class KnockBackEffect : ServerOnlyEffect
 		effected.KnockBack(direction, KnockBack);
 	}
 }
+
+
+public class UseItemEffect : ServerOnlyEffect
+{
+	public static Effect Create()
+	{
+		return new UseItemEffect();
+	}
+
+
+	public override void ApplyEffect(Ability ability, AbilityActor user, AbilityActor effected)
+	{
+		Debug.LogError($"Attempting to use item {effected.name}");
+
+		effected.UseItem();
+	}
+}
+
 
 public class EffectFactory
 {

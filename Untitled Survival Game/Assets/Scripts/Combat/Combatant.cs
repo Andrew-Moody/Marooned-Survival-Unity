@@ -23,7 +23,8 @@ public class Combatant : NetworkBehaviour
 
 	private AbilityActor _abilityActor;
 
-	private AbilityActor _equipedItem;
+	[SerializeField]
+	private AbilityActor _itemActor;
 
 	private AbilityActor _currentTarget;
 
@@ -107,17 +108,22 @@ public class Combatant : NetworkBehaviour
 	/// <returns></returns>
 	public int ChooseAbility(AbilityActor target = null)
 	{
-		if (_equipment != null)
+		if (_itemActor != null)
 		{
-			int ability = ChooseItemAbility(target);
+			AbilityItem abilityItem = _itemActor.AbilityItem;
 
-			if (ability != -1)
+			if (abilityItem != null && abilityItem.ItemID != 0)
 			{
-				return ability + _abilities.Count;
-			}
-			else
-			{
-				return -1;
+				int ability = ChooseItemAbility(abilityItem, target);
+
+				if (ability != -1)
+				{
+					return ability + _abilities.Count;
+				}
+				else
+				{
+					return -1;
+				}
 			}
 		}
 
@@ -138,23 +144,18 @@ public class Combatant : NetworkBehaviour
 	}
 
 
-	private int ChooseItemAbility(AbilityActor target = null)
+	private int ChooseItemAbility(AbilityItem item, AbilityActor target = null)
 	{
-		if (_equipment != null)
+		if (item == null)
 		{
-			AbilityItem abilityItem = _equipment.GetItemAtSlot(EquipSlot.MainHand);
+			return -1;
+		}
 
-			if (abilityItem == null)
+		for (int i = 0; i < item.Abilities.Length; i++)
+		{
+			if (item.Abilities[i].Useable(IsServer, _abilityActor, target))
 			{
-				return -1;
-			}
-
-			for (int i = 0; i < abilityItem.Abilities.Length; i++)
-			{
-				if (abilityItem.Abilities[i].Useable(IsServer, _abilityActor, target))
-				{
-					return i;
-				}
+				return i;
 			}
 		}
 
@@ -174,11 +175,11 @@ public class Combatant : NetworkBehaviour
 			return _abilities[abilityIndex];
 		}
 
-		if (_equipment != null)
+		if (_itemActor != null)
 		{
 			abilityIndex -= _abilities.Count;
 
-			AbilityItem abilityItem = _equipment.GetItemAtSlot(EquipSlot.MainHand);
+			AbilityItem abilityItem = _itemActor.AbilityItem;
 
 			if (abilityItem != null && abilityIndex < abilityItem.Abilities.Length)
 			{
@@ -211,7 +212,7 @@ public class Combatant : NetworkBehaviour
 
 				// Client Goes ahead and plays FX immediately (if client is also host no need to do anything else)
 				// Hence why the observersRpc Excludes the owner
-				_abilityInUse.ApplyEffects(_abilityActor, _equipedItem, target, EffectTiming.OnStart, false);
+				_abilityInUse.UseAbility(_abilityActor, _itemActor, target, EffectTiming.OnStart, false);
 
 				// Start Cooldown on client if not host
 				// (isnt authoritative / can be hacked client side but nothing will happen server side
@@ -238,7 +239,7 @@ public class Combatant : NetworkBehaviour
 
 		if (_currentTarget != null)
 		{
-			_abilityInUse.ApplyEffects(_abilityActor, _equipedItem, _currentTarget, EffectTiming.OnAnimEvent, IsServer);
+			_abilityInUse.UseAbility(_abilityActor, _itemActor, _currentTarget, EffectTiming.OnAnimEvent, IsServer);
 		}
 		else
 		{
@@ -246,6 +247,8 @@ public class Combatant : NetworkBehaviour
 
 			if (targets == null)
 			{
+				// Ability may still perform some effects on the user and itemActor
+				_abilityInUse.UseAbility(_abilityActor, _itemActor, null, EffectTiming.OnAnimEvent, IsServer);
 				return;
 			}
 
@@ -253,7 +256,7 @@ public class Combatant : NetworkBehaviour
 			{
 				if (target.IsAlive)
 				{
-					_abilityInUse.ApplyEffects(_abilityActor, _equipedItem, target, EffectTiming.OnAnimEvent, IsServer);
+					_abilityInUse.UseAbility(_abilityActor, _itemActor, target, EffectTiming.OnAnimEvent, IsServer);
 				}
 			}
 		}
@@ -279,7 +282,7 @@ public class Combatant : NetworkBehaviour
 		{
 			_currentTarget = target;
 
-			_abilityInUse.ApplyEffects(_abilityActor, _equipedItem, target, EffectTiming.OnStart, true);
+			_abilityInUse.UseAbility(_abilityActor, _itemActor, target, EffectTiming.OnStart, true);
 
 			_abilityInUse.StartCoolDown();
 
@@ -322,7 +325,7 @@ public class Combatant : NetworkBehaviour
 
 			if (_abilityInUse != null)
 			{
-				_abilityInUse.ApplyEffects(_abilityActor, _equipedItem, target, EffectTiming.OnStart, false);
+				_abilityInUse.UseAbility(_abilityActor, _itemActor, target, EffectTiming.OnStart, false);
 			}
 			else
 			{

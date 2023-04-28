@@ -24,6 +24,9 @@ public class UIManager : NetworkBehaviour
 	private HotbarUI _hotbarUI;
 
 	[SerializeField]
+	private PlacementUI _placementUI;
+
+	[SerializeField]
 	private TextMeshProUGUI _fpsText;
 
 	[SerializeField]
@@ -85,6 +88,8 @@ public class UIManager : NetworkBehaviour
 			_craftingUI.Initialize(player);
 
 			_hotbarUI.Initialize(player);
+
+			_placementUI.Initialize(player);
 		}
 	}
 

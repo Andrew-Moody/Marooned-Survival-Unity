@@ -23,20 +23,50 @@ public class DestructibleManager : NetworkBehaviour
 	[Server]
 	public DestructibleObject SpawnDestructable(int destructibleID, Vector3 position, Quaternion rotation, Transform parent)
 	{
-		DestructibleObject destructiblePrefab = _destructibleFactory.GetPrefab(destructibleID);
+		DestructibleSO destructibleSO = _destructibleFactory.GetDestructible(destructibleID);
 
-		if (destructiblePrefab == null)
+		if (destructibleSO == null)
 		{
 			Debug.Log("Failed to Spawn DestructibleObject with ID: " + destructibleID);
 			return null;
 		}
 
-		// Have to check that this does change position etc on clients (probably doesn't)
-		DestructibleObject destructible = Instantiate(destructiblePrefab, position, rotation, parent);
+		// Have to check that this does change position etc on clients (probably doesn't) Seems it does work
+		DestructibleObject destructible = Instantiate(destructibleSO.Prefab, position, rotation, parent);
 		// DestructibleObject destructible = Instantiate(destructiblePrefab, parent, false);
 
 		Spawn(destructible.gameObject);
 
 		return destructible;
+	}
+
+
+	[Server]
+	public DestructibleObject PlaceItem(AbilityActor user, int destructibleID)
+	{
+		Transform view = user.ViewTransform;
+
+		if (view == null)
+		{
+			return null;
+		}
+
+
+		Physics.Raycast(view.position, view.forward, out RaycastHit hitInfo, user.ViewRange, user.ViewMask);
+
+		if (hitInfo.collider != null)
+		{
+			Vector3 right = Vector3.Cross(view.forward, hitInfo.normal).normalized;
+			Vector3 forward = Vector3.Cross(right, hitInfo.normal).normalized;
+
+			Quaternion rotation = Quaternion.LookRotation(forward, hitInfo.normal);
+
+			return SpawnDestructable(destructibleID, hitInfo.point, rotation, transform);
+		}
+
+
+		return null;
+
+		
 	}
 }
