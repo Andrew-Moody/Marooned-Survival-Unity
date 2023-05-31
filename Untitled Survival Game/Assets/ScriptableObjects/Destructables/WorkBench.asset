@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46640321862bd874f8021ec93a62c6d8, type: 3}
+  m_Name: WorkBench
+  m_EditorClassIdentifier: 
+  _name: 
+  _id: 402
+  _mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  _material: {fileID: 2100000, guid: 33cc5272ae2c5734dba7c0f2a18be52c, type: 2}
+  _itemID: 102
+  _deathTime: 3
+  _toolType: 2
+  _toolPower: 0
+  _craftingStationSO: {fileID: 11400000, guid: 4f7db5f2a9f6e1344b562d874b3123f6, type: 2}

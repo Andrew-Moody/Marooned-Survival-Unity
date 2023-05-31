@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class RoamState : BaseState
 {
+	[SerializeField]
+	private int _testInt2;
+
 	public override void OnEnter(Agent agent)
 	{
 		Debug.Log("Entering RoamState");
@@ -46,5 +49,27 @@ public class RoamState : BaseState
 		Vector3 destination = new Vector3(x, y, z) + agent.RoamCenter;
 
 		return destination;
+	}
+
+
+	public static BaseState Create()
+	{
+		return new RoamState();
+	}
+
+
+	public override BaseState DeepCopy()
+	{
+		return new RoamState(this);
+	}
+
+
+	public RoamState() { }
+
+
+	public RoamState(RoamState state)
+		: base(state)
+	{
+		_testInt2 = state._testInt2;
 	}
 }

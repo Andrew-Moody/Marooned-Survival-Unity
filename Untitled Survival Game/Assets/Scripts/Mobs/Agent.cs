@@ -24,7 +24,7 @@ public class Agent : NetworkBehaviour
 	public Vector3 RoamRange { get { return _roamRange; } private set { _roamRange = value; } }
 	[SerializeField] private Vector3 _roamRange;
 
-	public Vector3 RoamCenter { get { return _roamCenter; } private set { _roamCenter = value; } }
+	public Vector3 RoamCenter { get { return _roamCenter; } set { _roamCenter = value; } }
 	[SerializeField] private Vector3 _roamCenter;
 
 
@@ -45,22 +45,12 @@ public class Agent : NetworkBehaviour
 	private int _updateTicks;
 	private int _flips;
 
+	private Dictionary<string, float> _blackboard = new Dictionary<string, float>();
+
 
 	public override void OnStartServer()
 	{
 		base.OnStartServer();
-
-		RoamState roamState = new RoamState();
-
-		AttackState attackState = new AttackState();
-
-		TargetInViewCond targetInViewCond = new TargetInViewCond();
-
-		roamState.Transitions.Add(new Transition(targetInViewCond, attackState));
-
-		_stateMachine = new StateMachine();
-
-		_stateMachine.ChangeState(roamState, this);
 
 		TimeToWait = 0f;
 
@@ -126,7 +116,10 @@ public class Agent : NetworkBehaviour
 	{
 		if (_running)
 		{
-			_stateMachine.OnTick(this);
+			if (_stateMachine != null)
+			{
+				_stateMachine.OnTick(this);
+			}
 
 			if (TimeToWait > 0)
 			{
@@ -179,15 +172,38 @@ public class Agent : NetworkBehaviour
 	}
 
 
+	public void SetBlackboardValue(string name, float value)
+	{
+		_blackboard[name] = value;
+	}
+
+
+	public float GetBlackboardValue(string name)
+	{
+		if (!_blackboard.TryGetValue(name, out float value))
+		{
+			Debug.LogError($"Blackboard does not contain entry with name: " + name);
+		}
+
+		return value;
+	}
+
+
 	public void OnAnimatorStateExit(AnimatorStateInfo stateInfo)
 	{
 
 	}
 
 
-	public void ChangeState(IState state)
+	public void ChangeState(int state)
 	{
 		_stateMachine.ChangeState(state, this);
+	}
+
+
+	public void SetStateMachine(StateMachine stateMachine)
+	{
+		_stateMachine = stateMachine;
 	}
 
 

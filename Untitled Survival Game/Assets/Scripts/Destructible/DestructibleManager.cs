@@ -8,6 +8,9 @@ public class DestructibleManager : NetworkBehaviour
 	public static DestructibleManager Instance;
 
 	[SerializeField]
+	private DestructibleObject _prefab;
+
+	[SerializeField]
 	private DestructibleFactory _destructibleFactory;
 
 
@@ -32,10 +35,12 @@ public class DestructibleManager : NetworkBehaviour
 		}
 
 		// Have to check that this does change position etc on clients (probably doesn't) Seems it does work
-		DestructibleObject destructible = Instantiate(destructibleSO.Prefab, position, rotation, parent);
+		DestructibleObject destructible = Instantiate(_prefab, position, rotation, parent);
 		// DestructibleObject destructible = Instantiate(destructiblePrefab, parent, false);
 
 		Spawn(destructible.gameObject);
+
+		destructible.InitializeORPC(destructibleSO);
 
 		return destructible;
 	}

@@ -8,6 +8,8 @@ public class AnimEventHandler : MonoBehaviour
 
 	public event Action OnAbilityAnimEvent;
 
+	public event Action OnAbilityEndAnimEvent;
+
 	public event Action OnDeathEndAnimEvent;
 
 
@@ -16,6 +18,12 @@ public class AnimEventHandler : MonoBehaviour
 		//Debug.Log("AbilityAnimEvent");
 
 		OnAbilityAnimEvent?.Invoke();
+	}
+
+
+	private void AbilityEndAnimEvent()
+	{
+		OnAbilityEndAnimEvent?.Invoke();
 	}
 
 

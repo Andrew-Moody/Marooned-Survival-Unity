@@ -5,7 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public abstract class BaseState : IState
 {
-	public List<Transition> Transitions = new List<Transition>();
+	public List<BaseCondition> Transitions = new List<BaseCondition>();
 
 
 	/// <summary>
@@ -15,13 +15,13 @@ public abstract class BaseState : IState
 	/// <returns>True if any transition condition was met</returns>
 	public bool CheckTransitions(Agent agent)
 	{
-		foreach (Transition transition in Transitions)
+		foreach (BaseCondition transition in Transitions)
 		{
 			//Debug.Log("Checking Transition to" + transition.State.GetType());
 
-			if (transition.Condition.Evaluate(agent))
+			if (transition.Evaluate(agent))
 			{
-				agent.ChangeState(transition.State);
+				agent.ChangeState(transition.NextState);
 				return true;
 			}
 		}
@@ -29,22 +29,53 @@ public abstract class BaseState : IState
 		return false;
 	}
 
+	
+
 	public abstract void OnEnter(Agent agent);
 
 	public abstract void OnExit(Agent agent);
 
 	public abstract void OnTick(Agent agent);
+
+
+	public BaseState()
+	{
+		Debug.LogError("Base State Constructor");
+	}
+
+	public BaseState(BaseState state)
+	{
+		// Need to copy the conditions as well but this is a test
+		Transitions = state.Transitions;
+
+		Transitions = new List<BaseCondition>();
+
+		for (int i = 0; i < state.Transitions.Count; i++)
+		{
+			Transitions.Add(state.Transitions[i].DeepCopy());
+		}
+
+
+		Debug.LogError("Base State Copy Constructor");
+	}
+
+
+	public abstract BaseState DeepCopy();
 }
 
 
 
 public interface IState
 {
+	public bool CheckTransitions(Agent agent);
+
 	public void OnEnter(Agent agent);
 
 	public void OnExit(Agent agent);
 
 	public void OnTick(Agent agent);
+
+	public BaseState DeepCopy();
 }
 
 

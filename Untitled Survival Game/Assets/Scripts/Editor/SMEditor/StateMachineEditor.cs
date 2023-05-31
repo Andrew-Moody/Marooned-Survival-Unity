@@ -14,7 +14,7 @@ public class StateMachineEditor : Editor
 
 		if (GUILayout.Button("Reload States", GUILayout.Height(40)))
 		{
-			SMFactorySO.ReloadStates();
+			FSMFactorySO.ReloadFSMFactory();
 		}
 	}
 }

@@ -14,18 +14,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Recipes:
   - RecipeID: 101
-    OutputID: 103
+    OutputID: 121
     Quantity: 1
     Ingredients:
-    - ItemID: 101
+    - ItemID: 200
       Quantity: 1
-    - ItemID: 102
+    - ItemID: 302
       Quantity: 1
   - RecipeID: 102
     OutputID: 111
     Quantity: 1
     Ingredients:
-    - ItemID: 101
+    - ItemID: 200
       Quantity: 1
-    - ItemID: 102
+    - ItemID: 302
       Quantity: 1

@@ -84,6 +84,13 @@ public class AbilityActor : NetworkBehaviour
 	}
 
 
+	public void Initialize(DestructibleSO destructibleSO)
+	{
+		_toolType = destructibleSO.ToolType;
+
+		_toolPower = destructibleSO.ToolPower;
+	}
+
 	#region Stats Accessors
 
 	public bool HasStat(StatType statType)

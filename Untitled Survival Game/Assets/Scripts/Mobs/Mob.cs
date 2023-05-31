@@ -40,9 +40,13 @@ public class Mob : NetworkBehaviour
 
 		_agent.Animator = animator;
 
+		_agent.RoamCenter = transform.position;
+
+		_agent.SetStateMachine(mobSO.MobAISO.GetRuntimeFSM());
+
 		_abilityActor.Initialize(animator);
 
-		_combatant.Initialize();
+		_combatant.Initialize(mobSO._abilities);
 
 		_networkAnimator.SetAnimator(animator);
 

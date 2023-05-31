@@ -139,10 +139,10 @@ public class CombatInput : NetworkBehaviour
 	{
 		Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, _interactRange, _interactMask);
 
-		if (hit.collider != null && hit.collider.gameObject.TryGetComponent(out CraftingStation station))
+		if (hit.collider != null && hit.collider.gameObject.TryGetComponent(out DestructibleObject destructible))
 		{
 			_craftingUIOpen = true;
-			station.Interact();
+			destructible.Interact();
 		}
 	}
 }

@@ -11,15 +11,12 @@ public class AbilityItem
 	public Ability[] Abilities;
 
 
-	public AbilityItem(AbilityItemSO abilityItemSO)
+	public AbilityItem(string itemName, int itemID, Ability[] abilities)
 	{
-		if (abilityItemSO != null)
-		{
-			ItemName = abilityItemSO.ItemName;
+		ItemName = itemName;
 
-			ItemID = abilityItemSO.ItemID;
+		ItemID = itemID;
 
-			Abilities = abilityItemSO.GetAbilities();
-		}
+		Abilities = abilities;
 	}
 }

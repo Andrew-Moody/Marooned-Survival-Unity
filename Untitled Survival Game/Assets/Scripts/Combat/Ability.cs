@@ -73,6 +73,8 @@ public class Ability
 
 		_toolType = ability._toolType;
 
+		_toolPower = ability._toolPower;
+
 		_coolDown = ability._coolDown;
 
 		_requireTarget = ability._requireTarget;

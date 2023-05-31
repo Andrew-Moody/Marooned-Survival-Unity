@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46640321862bd874f8021ec93a62c6d8, type: 3}
+  m_Name: Furnace
+  m_EditorClassIdentifier: 
+  _name: Furnace
+  _id: 401
+  _mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  _material: {fileID: 2100000, guid: c089ac32c1036404691c4055d17861d6, type: 2}
+  _itemID: 101
+  _deathTime: 3
+  _toolType: 1
+  _toolPower: 0
+  _craftingStationSO: {fileID: 11400000, guid: 09fc4d6dcbafd0c4fbe054aac5e7dcdb, type: 2}

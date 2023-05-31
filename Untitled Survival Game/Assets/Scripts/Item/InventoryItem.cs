@@ -52,10 +52,7 @@ public class InventoryItem
 		EquipSlot = itemSO.equipSlot;
 		Sprite = itemSO.Sprite;
 
-		if (itemSO.AbilityItemSO != null)
-		{
-			AbilityItem = new AbilityItem(itemSO.AbilityItemSO);
-		}
+		AbilityItem = itemSO.GetAbilityItem();
 	}
 
 

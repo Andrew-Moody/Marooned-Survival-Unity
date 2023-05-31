@@ -19,6 +19,15 @@ public class DestructibleObject : NetworkBehaviour
 	private GameObject _graphicObject;
 
 	[SerializeField]
+	private ParticleHandler _particleHandler;
+
+	[SerializeField]
+	private MeshFilter _meshFilter;
+
+	[SerializeField]
+	private MeshRenderer _meshRenderer;
+
+	[SerializeField]
 	private WorldStatDisplay _statDisplay;
 
 
@@ -27,6 +36,30 @@ public class DestructibleObject : NetworkBehaviour
 	private bool _isDying;
 
 	private float _deathTimeLeft;
+
+	private DestructibleSO _destructibleSO;
+
+
+	[ObserversRpc(BufferLast = true, RunLocally = true)]
+	public void InitializeORPC(DestructibleSO destructibleSO)
+	{
+		_destructibleSO = destructibleSO;
+
+		_deathTime = destructibleSO.DeathTime;
+
+		_itemToSpawn = destructibleSO.ItemID;
+
+		_abilityActor.Initialize(destructibleSO);
+
+		if (destructibleSO.Mesh != null)
+		{
+			_meshFilter.sharedMesh = destructibleSO.Mesh;
+
+			_meshRenderer.sharedMaterial = destructibleSO.Material;
+		}
+
+		_particleHandler.OverrideParticleEffects(_destructibleSO.ParticleEffects);
+	}
 
 
 	public override void OnStartNetwork()
@@ -56,6 +89,17 @@ public class DestructibleObject : NetworkBehaviour
 	}
 
 
+	public void Interact()
+	{
+		if (_destructibleSO.CraftingStationSO != null)
+		{
+			CameraController.Instance.SetFPSMode(false);
+
+			UIManager.Instance.ShowCraftingUI(_destructibleSO.CraftingStationSO.Recipes);
+		}
+	}
+
+
 	private void OnDestroy()
 	{
 		if (_stats != null)
@@ -77,7 +121,7 @@ public class DestructibleObject : NetworkBehaviour
 	{
 		Debug.Log("OnDeathStart " + TimeManager.Tick);
 
-		// This is a little to soon to be despawning since this will get triggered by the stat  change on the server
+		// This is a little to soon to be despawning since this will get triggered by the stat change on the server
 		// before the OnChange has been executed on the client
 		//Despawn(gameObject);
 
@@ -95,7 +139,7 @@ public class DestructibleObject : NetworkBehaviour
 
 		_abilityActor.IsAlive = false;
 
-		_abilityActor.PlayParticles("Death");
+		_abilityActor.PlayParticles("DEATH");
 
 		_graphicObject.SetActive(false);
 
@@ -135,7 +179,7 @@ public class DestructibleObject : NetworkBehaviour
 
 		// The only way I can really think is to do some form of handshake (potentially unsafe)
 		// Or wait at least a minimum amount of time (ie. At least as long as the sync rate
-		// And there no method to get sync rate from server :} 0.1 seconds is the default and seems enough
+		// And there is no method to get sync rate from server :} 0.1 seconds is the default and seems enough
 		// May need to double it if packets are being recieved out of order not sure how that works
 
 		if (IsSpawned && !_isAlive)

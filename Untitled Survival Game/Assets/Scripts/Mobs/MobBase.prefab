@@ -135,7 +135,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.3
-  m_Speed: 3.5
+  m_Speed: 2.5
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -290,9 +290,9 @@ MonoBehaviour:
   _attackMask:
     serializedVersion: 2
     m_Bits: 256
-  _abilitySOList:
-  - {fileID: 11400000, guid: 75c03ac26ebac304c82c542597b27cc6, type: 2}
+  _abilitySOList: []
   _statDisplay: {fileID: 2578392283353702615}
+  _itemActor: {fileID: 0}
 --- !u!114 &2578392283353702761
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -309,11 +309,20 @@ MonoBehaviour:
   _addedNetworkObject: {fileID: 2578392283353702552}
   _networkObjectCache: {fileID: 2578392283353702552}
   _stats: {fileID: 2578392283353702603}
+  _toolType: 0
+  _toolPower: 0
   _animator: {fileID: 0}
   _animatorOverride: {fileID: 0}
   _audioSource: {fileID: 2578392283353702435}
   _particleHandler: {fileID: 2578392283353702782}
   _transformAnimator: {fileID: 0}
+  _parentActor: {fileID: 0}
+  _viewTransform: {fileID: 0}
+  _viewRange: 0
+  _viewMask:
+    serializedVersion: 2
+    m_Bits: 0
+  _inventory: {fileID: 0}
 --- !u!114 &2578392283353702603
 MonoBehaviour:
   m_ObjectHideFlags: 0

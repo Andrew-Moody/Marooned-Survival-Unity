@@ -20,6 +20,28 @@ public class ParticleHandler : MonoBehaviour
 	}
 
 
+	public void OverrideParticleEffects(ParticleEffectData[] effects)
+	{
+		for (int i = 0; i < effects.Length; i++)
+		{
+			ParticleEffectData newEffect = effects[i];
+
+			if (_particleDict.TryGetValue(newEffect.Name, out ParticleEffectData oldEffect))
+			{
+				newEffect.Anchor = oldEffect.Anchor;
+			}
+			else
+			{
+				newEffect.Anchor = transform;
+			}
+
+			newEffect.ParticleSystem = Instantiate(newEffect.ParticleSystem, newEffect.Anchor, false);
+
+			_particleDict[newEffect.Name] = newEffect;
+		}
+	}
+
+
 	private void Awake()
 	{
 		_particleDict = new Dictionary<string, ParticleEffectData>();

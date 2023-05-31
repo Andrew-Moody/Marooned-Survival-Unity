@@ -5,11 +5,11 @@ using UnityEngine;
 
 public class WorldGenManager : NetworkBehaviour
 {
-    [SerializeField]
-    private ResourceGenerator _resourceGenerator;
+	[SerializeField]
+	private ResourceGenerator _resourceGenerator;
 
 	private bool _worldGenerated = false;
-    private float _worldGenDelay = 0.5f;
+	private float _worldGenDelay = 0.5f;
 
 
 	private void Update()

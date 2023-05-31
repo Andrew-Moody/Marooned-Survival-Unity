@@ -34,19 +34,12 @@ public class Combatant : NetworkBehaviour
 
 	private EquipmentController _equipment;
 
+	private bool _IsAbilityActive;
+
 
 	public override void OnStartNetwork()
 	{
 		base.OnStartNetwork();
-
-		_abilities = new List<Ability>();
-
-		foreach (AbilitySO abilitySO in _abilitySOList)
-		{
-			// Each instance of Combatant needs its own instance of each ability for cooldowns, buffs etc.
-
-			_abilities.Add(abilitySO.Ability.CreateCopy());
-		}
 
 		_abilityActor = GetComponent<AbilityActor>();
 
@@ -77,6 +70,7 @@ public class Combatant : NetworkBehaviour
 		if (animEventHandler != null)
 		{
 			animEventHandler.OnAbilityAnimEvent -= AbilityAnimEventHandler;
+			animEventHandler.OnAbilityEndAnimEvent -= AbilityEndAnimEventHandler;
 			animEventHandler.OnDeathEndAnimEvent -= DeathEndAnimEventHandler;
 		}
 	}
@@ -90,12 +84,33 @@ public class Combatant : NetworkBehaviour
 
 
 	// This handles initialization that has to happen after the graphic object is instantiated
-	public void Initialize()
+	public void Initialize(List<AbilitySO> abilities = null)
 	{
+		_abilities = new List<Ability>();
+
+		foreach (AbilitySO abilitySO in _abilitySOList)
+		{
+			// Each instance of Combatant needs its own instance of each ability for cooldowns, buffs etc.
+
+			_abilities.Add(abilitySO.Ability.CreateCopy());
+		}
+
+		if (abilities != null)
+		{
+			foreach (AbilitySO abilitySO in abilities)
+			{
+				// Each instance of Combatant needs its own instance of each ability for cooldowns, buffs etc.
+
+				_abilities.Add(abilitySO.Ability.CreateCopy());
+			}
+		}
+		
+
 		AnimEventHandler animEventHandler = transform.parent.GetComponentInChildren<AnimEventHandler>();
 		if (animEventHandler != null)
 		{
 			animEventHandler.OnAbilityAnimEvent += AbilityAnimEventHandler;
+			animEventHandler.OnAbilityEndAnimEvent += AbilityEndAnimEventHandler;
 			animEventHandler.OnDeathEndAnimEvent += DeathEndAnimEventHandler;
 		}
 	}
@@ -108,6 +123,12 @@ public class Combatant : NetworkBehaviour
 	/// <returns></returns>
 	public int ChooseAbility(AbilityActor target = null)
 	{
+		if (_IsAbilityActive)
+		{
+			//Debug.Log("AbilityIsActive");
+			return -1;
+		}
+
 		if (_itemActor != null)
 		{
 			AbilityItem abilityItem = _itemActor.AbilityItem;
@@ -124,6 +145,10 @@ public class Combatant : NetworkBehaviour
 				{
 					return -1;
 				}
+			}
+			else
+			{
+				Debug.Log("Failed to get ability item from itemActor");
 			}
 		}
 
@@ -223,6 +248,7 @@ public class Combatant : NetworkBehaviour
 				// need some form of compensation / forgiveness
 				_abilityInUse.StartCoolDown();
 
+				_IsAbilityActive = true;
 			}
 		}
 	}
@@ -263,6 +289,13 @@ public class Combatant : NetworkBehaviour
 	}
 
 
+	private void AbilityEndAnimEventHandler()
+	{
+		Debug.Log("Ability End");
+		_IsAbilityActive = false;
+	}
+
+
 	private void DeathEndAnimEventHandler()
 	{
 		OnDeathEnd();
@@ -285,6 +318,8 @@ public class Combatant : NetworkBehaviour
 			_abilityInUse.UseAbility(_abilityActor, _itemActor, target, EffectTiming.OnStart, true);
 
 			_abilityInUse.StartCoolDown();
+
+			_IsAbilityActive = true;
 
 			ObserversUseAbility(abilityIndex, target);
 		}

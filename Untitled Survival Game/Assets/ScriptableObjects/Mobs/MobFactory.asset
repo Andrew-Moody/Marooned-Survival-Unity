@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7123f182f30961942a5514c5fce592ad, type: 3}
+  m_Name: MobFactory
+  m_EditorClassIdentifier: 
+  _mobs:
+  - {fileID: 11400000, guid: e65a7c1dc213c5a48894f89749b84d31, type: 2}
+  - {fileID: 11400000, guid: 6c65e50c21fe47b47a134762fb1129bb, type: 2}
+  - {fileID: 11400000, guid: 21cf943e77e1c604b926974e9b603643, type: 2}

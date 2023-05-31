@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class NoiseFunctions
 {
-    public static float[,] GetNoiseMap(int width, int height, int seed, float scale, int octaves, float persistance, float lacunarity, Vector2 offset)
+	public static float[,] GetNoiseMap(int width, int height, int seed, float scale, int octaves, float persistance, float lacunarity, Vector2 offset)
 	{
 		float[,] map = new float[width, height];
 

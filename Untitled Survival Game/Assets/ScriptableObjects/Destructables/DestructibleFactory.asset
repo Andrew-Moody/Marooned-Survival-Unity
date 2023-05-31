@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5cf94860db5924468ec0515681a9bc0, type: 3}
+  m_Name: DestructibleFactory
+  m_EditorClassIdentifier: 
+  _destructibleSOs:
+  - {fileID: 11400000, guid: 88a9bb1909f3d2047b215f1e431f7a0a, type: 2}
+  - {fileID: 11400000, guid: e9623b244cb52844ab3dec189626dbb9, type: 2}
+  - {fileID: 11400000, guid: 9769efc9fe30d6c4f8140e84b3650e49, type: 2}
+  - {fileID: 11400000, guid: de9044598f5ee7041b3901bb876ff4fd, type: 2}
+  - {fileID: 11400000, guid: 5bf1407ac4f182c45877cfbc54aa76c6, type: 2}
+  - {fileID: 11400000, guid: 421058cb3b68b7e48b9f15fbbc0ef99d, type: 2}
+  - {fileID: 11400000, guid: 9b603ae923bb0214098e7c7e166ed492, type: 2}
+  - {fileID: 11400000, guid: 1771e6b66dd1b6c42b69442b49b4e293, type: 2}
+  - {fileID: 11400000, guid: 0d22e7b6afb73964eaebc7c2712de01a, type: 2}
+  - {fileID: 11400000, guid: 691e58db5fb3d0b44ae7f8f8ac2873f5, type: 2}
+  - {fileID: 11400000, guid: 694572550ae881744889cd5fbaf38e6c, type: 2}
+  - {fileID: 11400000, guid: 2a93520bc6b8e204cbf24bc02c8d25a2, type: 2}

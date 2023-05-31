@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46640321862bd874f8021ec93a62c6d8, type: 3}
+  m_Name: IronRock
+  m_EditorClassIdentifier: 
+  _name: Iron Rock
+  _id: 203
+  _mesh: {fileID: -5135567101611655002, guid: df1bc65893f8b754595688fc64085fb1, type: 3}
+  _material: {fileID: 2100000, guid: 4c23086cc53d05b42a8a5004832ae24a, type: 2}
+  _itemID: 203
+  _deathTime: 3
+  _toolType: 1
+  _toolPower: 0
+  _craftingStationSO: {fileID: 0}
+  _particleEffects:
+  - Name: HIT
+    Anchor: {fileID: 0}
+    ParticleSystem: {fileID: 1400737571931329622, guid: 49c88debce7c3d14c80194ea9d12b2aa, type: 3}
+  - Name: DEATH
+    Anchor: {fileID: 0}
+    ParticleSystem: {fileID: 1400737571931329622, guid: 49c88debce7c3d14c80194ea9d12b2aa, type: 3}

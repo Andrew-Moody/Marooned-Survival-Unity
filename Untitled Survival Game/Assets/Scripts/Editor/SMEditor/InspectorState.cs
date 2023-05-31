@@ -335,12 +335,12 @@ public class FSMChoiceDrawer : PropertyDrawer
 		{
 			case FSMChoiceType.State:
 			{
-				DrawStringChoice(position, label, property, SMFactorySO.Options);
+				DrawStringChoice(position, label, property, FSMFactorySO.Options);
 				break;
 			}
 			case FSMChoiceType.Condition:
 			{
-				DrawStringChoice(position, label, property, SMFactorySO.Conditions);
+				DrawStringChoice(position, label, property, FSMFactorySO.Conditions);
 				break;
 			}
 			default:

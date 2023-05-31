@@ -255,6 +255,8 @@ public class KnockBackEffect : ServerOnlyEffect
 
 public class UseItemEffect : ServerOnlyEffect
 {
+	public int PlaceableID;
+
 	public static Effect Create()
 	{
 		return new UseItemEffect();
@@ -300,12 +302,13 @@ public class EffectFactory
 			{
 				MethodInfo methodInfo = type.GetMethod("Create");
 
-				// How to check if methodInfo contains a valid method?
+				if (methodInfo != null)
+				{
+					// Create a delegate from the method
+					EffectFactoryMethod factoryMethod = Delegate.CreateDelegate(typeof(EffectFactoryMethod), methodInfo) as EffectFactoryMethod;
 
-				// Create a delegate from the method
-				EffectFactoryMethod factoryMethod = Delegate.CreateDelegate(typeof(EffectFactoryMethod), methodInfo) as EffectFactoryMethod;
-
-				_factoryMethods.Add(effectType, factoryMethod);
+					_factoryMethods.Add(effectType, factoryMethod);
+				}
 			}
 			else
 			{

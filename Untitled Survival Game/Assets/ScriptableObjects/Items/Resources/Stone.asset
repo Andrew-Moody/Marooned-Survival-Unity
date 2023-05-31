@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbc34e124ea594447add3265ad9cb585, type: 3}
+  m_Name: Stone
+  m_EditorClassIdentifier: 
+  ItemID: 200
+  ItemName: Stone
+  ExamineText: Would make a great pet.
+  StackLimit: 10
+  equipSlot: 0
+  Sprite: {fileID: 21300000, guid: ded640d7910b0824a9424881d9bf895d, type: 3}
+  InventoryOptions: 0000000003000000
+  EquipedOptions: 
+  Mesh: {fileID: -8259517116483877301, guid: df1bc65893f8b754595688fc64085fb1, type: 3}
+  Material: {fileID: 2100000, guid: 4c23086cc53d05b42a8a5004832ae24a, type: 2}
+  WorldOptions: 
+  AbilityItemSO: {fileID: 0}
+  PlacedItemID: 0

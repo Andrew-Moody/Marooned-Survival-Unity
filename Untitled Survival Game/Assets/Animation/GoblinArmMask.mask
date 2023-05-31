@@ -1,0 +1,91 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!319 &31900000
+AvatarMask:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: GoblinArmMask
+  m_Mask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+  m_Elements:
+  - m_Path: 
+    m_Weight: 1
+  - m_Path: Goblin
+    m_Weight: 0
+  - m_Path: GoblinRig
+    m_Weight: 0
+  - m_Path: GoblinRig/IKLegPole.L
+    m_Weight: 0
+  - m_Path: GoblinRig/IKLegPole.L/IKLegPole.L_end
+    m_Weight: 0
+  - m_Path: GoblinRig/IKLegPole.R
+    m_Weight: 0
+  - m_Path: GoblinRig/IKLegPole.R/IKLegPole.R_end
+    m_Weight: 0
+  - m_Path: GoblinRig/IKLegTarget.L
+    m_Weight: 0
+  - m_Path: GoblinRig/IKLegTarget.L/IKLegTarget.L_end
+    m_Weight: 0
+  - m_Path: GoblinRig/IKLegTarget.R
+    m_Weight: 0
+  - m_Path: GoblinRig/IKLegTarget.R/IKLegTarget.R_end
+    m_Weight: 0
+  - m_Path: GoblinRig/Root
+    m_Weight: 0
+  - m_Path: GoblinRig/Root/LoinBack
+    m_Weight: 0
+  - m_Path: GoblinRig/Root/LoinBack/LoinBack_end
+    m_Weight: 0
+  - m_Path: GoblinRig/Root/LoinFront
+    m_Weight: 0
+  - m_Path: GoblinRig/Root/LoinFront/LoinFront_end
+    m_Weight: 0
+  - m_Path: GoblinRig/Root/Spine1
+    m_Weight: 0
+  - m_Path: GoblinRig/Root/Spine1/Spine2
+    m_Weight: 0
+  - m_Path: GoblinRig/Root/Spine1/Spine2/Neck
+    m_Weight: 0
+  - m_Path: GoblinRig/Root/Spine1/Spine2/Neck/Head
+    m_Weight: 0
+  - m_Path: GoblinRig/Root/Spine1/Spine2/Neck/Head/Head_end
+    m_Weight: 0
+  - m_Path: GoblinRig/Root/Spine1/Spine2/Shoulder.L
+    m_Weight: 1
+  - m_Path: GoblinRig/Root/Spine1/Spine2/Shoulder.L/UpperArm.L
+    m_Weight: 1
+  - m_Path: GoblinRig/Root/Spine1/Spine2/Shoulder.L/UpperArm.L/LowerArm.L
+    m_Weight: 1
+  - m_Path: GoblinRig/Root/Spine1/Spine2/Shoulder.L/UpperArm.L/LowerArm.L/Hand.L
+    m_Weight: 1
+  - m_Path: GoblinRig/Root/Spine1/Spine2/Shoulder.L/UpperArm.L/LowerArm.L/Hand.L/Hand.L_end
+    m_Weight: 1
+  - m_Path: GoblinRig/Root/Spine1/Spine2/Shoulder.R
+    m_Weight: 1
+  - m_Path: GoblinRig/Root/Spine1/Spine2/Shoulder.R/UpperArm.R
+    m_Weight: 1
+  - m_Path: GoblinRig/Root/Spine1/Spine2/Shoulder.R/UpperArm.R/LowerArm.R
+    m_Weight: 1
+  - m_Path: GoblinRig/Root/Spine1/Spine2/Shoulder.R/UpperArm.R/LowerArm.R/Hand.R
+    m_Weight: 1
+  - m_Path: GoblinRig/Root/Spine1/Spine2/Shoulder.R/UpperArm.R/LowerArm.R/Hand.R/Hand.R_end
+    m_Weight: 1
+  - m_Path: GoblinRig/Root/UpperLeg.L
+    m_Weight: 0
+  - m_Path: GoblinRig/Root/UpperLeg.L/LowerLeg.L
+    m_Weight: 0
+  - m_Path: GoblinRig/Root/UpperLeg.L/LowerLeg.L/Foot.L
+    m_Weight: 0
+  - m_Path: GoblinRig/Root/UpperLeg.L/LowerLeg.L/Foot.L/Foot.L_end
+    m_Weight: 0
+  - m_Path: GoblinRig/Root/UpperLeg.R
+    m_Weight: 0
+  - m_Path: GoblinRig/Root/UpperLeg.R/LowerLeg.R
+    m_Weight: 0
+  - m_Path: GoblinRig/Root/UpperLeg.R/LowerLeg.R/Foot.R
+    m_Weight: 0
+  - m_Path: GoblinRig/Root/UpperLeg.R/LowerLeg.R/Foot.R/Foot.R_end
+    m_Weight: 0
+  - m_Path: LoinCloth
+    m_Weight: 0
