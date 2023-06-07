@@ -55,7 +55,9 @@ public enum EffectType
 	Stat,
 	KnockBack,
 	Transform,
-	UseItem
+	UseItem,
+	SpawnProjectile,
+	LaunchProjectile
 }
 
 
@@ -83,7 +85,6 @@ public enum EffectTiming
 }
 
 
-[System.Serializable]
 public class AnimationEffect : Effect
 {
 	public string AnimTrigger;
@@ -120,7 +121,6 @@ public class AnimationEffect : Effect
 }
 
 
-[System.Serializable]
 public class SoundEffect : Effect
 {
 	public AudioClip Sound;
@@ -141,7 +141,6 @@ public class SoundEffect : Effect
 }
 
 
-[System.Serializable]
 public class ParticleEffect : Effect
 {
 	public string ParticleName;
@@ -206,7 +205,6 @@ public class TransformEffect : Effect
 
 
 
-[System.Serializable]
 public class StatEffect : ServerOnlyEffect
 {
 	public StatType StatType;
@@ -270,6 +268,48 @@ public class UseItemEffect : ServerOnlyEffect
 		effected.UseItem();
 	}
 }
+
+
+public class SpawnProjectileEffect : ServerOnlyEffect
+{
+	[SerializeField]
+	private ProjectileBase _projectile;
+
+
+	public static Effect Create()
+	{
+		return new SpawnProjectileEffect();
+	}
+
+
+	public override void ApplyEffect(Ability ability, AbilityActor user, AbilityActor effected)
+	{
+		effected.SpawnProjectile(_projectile);
+	}
+}
+
+
+public class LaunchProjectileEffect : ServerOnlyEffect
+{
+	[SerializeField]
+	private Vector3 _velocity;
+
+	[SerializeField]
+	private bool _alignWithVelocity;
+
+
+	public static Effect Create()
+	{
+		return new LaunchProjectileEffect();
+	}
+
+
+	public override void ApplyEffect(Ability ability, AbilityActor user, AbilityActor effected)
+	{
+		effected.LaunchProjectile(_velocity, _alignWithVelocity);
+	}
+}
+
 
 
 public class EffectFactory

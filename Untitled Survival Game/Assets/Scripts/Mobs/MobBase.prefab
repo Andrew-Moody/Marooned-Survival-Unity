@@ -323,6 +323,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   _inventory: {fileID: 0}
+  _projectileSource: {fileID: 0}
 --- !u!114 &2578392283353702603
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -451,6 +452,7 @@ MonoBehaviour:
   _componentIndexCache: 0
   _addedNetworkObject: {fileID: 2578392283353702656}
   _networkObjectCache: {fileID: 2578392283353702656}
+  _id: 0
   _graphicParent: {fileID: 2578392283353704134}
   _networkAnimator: {fileID: 2578392283353702592}
   _agent: {fileID: 2578392283353702718}
@@ -966,8 +968,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _target: {fileID: 2578392283353704282}
-  _smoothTime: 0.1
+  _smoothTime: 0.15
   _sprintSpeed: 0
+  _teleportThreshold: 1
 --- !u!1 &2578392283353703895
 GameObject:
   m_ObjectHideFlags: 0

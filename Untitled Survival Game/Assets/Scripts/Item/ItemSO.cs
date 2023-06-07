@@ -31,6 +31,8 @@ public class ItemSO : ScriptableObject
 	public List<Options> WorldOptions;
 
 	// Wieldable Data
+
+	public Vector3 ProjectileSource;
 	public AbilityItemSO AbilityItemSO;
 
 	[SerializeReference]
@@ -42,10 +44,16 @@ public class ItemSO : ScriptableObject
 
 	public AbilityItem GetAbilityItem()
 	{
+		return new AbilityItem(this);
+	}
+
+
+	public Ability[] GetRuntimeAbilities()
+	{
 		// Get abilities from SO if one exists
 		if (AbilityItemSO != null)
 		{
-			return new AbilityItem(ItemName, ItemID, AbilityItemSO.GetAbilities());
+			return AbilityItemSO.GetAbilities();
 		}
 
 		Ability[] abilities = new Ability[Abilities.Length];
@@ -64,11 +72,16 @@ public class ItemSO : ScriptableObject
 			abilities[i] = Abilities[i].CreateCopy();
 		}
 
-		return new AbilityItem(ItemName, ItemID, abilities);
+		return abilities;
 	}
 
 	private void OnValidate()
 	{
+		if (Abilities == null)
+		{
+			return;
+		}
+
 		for (int i = 0; i < Abilities.Length; i++)
 		{
 			if (Abilities[i] == null)

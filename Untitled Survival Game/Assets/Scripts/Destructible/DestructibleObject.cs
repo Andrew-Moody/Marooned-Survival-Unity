@@ -41,8 +41,19 @@ public class DestructibleObject : NetworkBehaviour
 
 
 	[ObserversRpc(BufferLast = true, RunLocally = true)]
-	public void InitializeORPC(DestructibleSO destructibleSO)
+	public void InitializeORPC(int id, Transform parent)
 	{
+		if (parent == null)
+		{
+			Debug.LogError("Failed to set parent for destructible object");
+		}
+		else
+		{
+			transform.SetParent(parent, false);
+		}
+
+		DestructibleSO destructibleSO = DestructibleManager.Instance.GetDestructibleSO(id);
+
 		_destructibleSO = destructibleSO;
 
 		_deathTime = destructibleSO.DeathTime;
@@ -53,12 +64,18 @@ public class DestructibleObject : NetworkBehaviour
 
 		if (destructibleSO.Mesh != null)
 		{
-			_meshFilter.sharedMesh = destructibleSO.Mesh;
+			_meshFilter.sharedMesh = destructibleSO.Mesh;	
+		}
 
+		if (destructibleSO.Material != null)
+		{
 			_meshRenderer.sharedMaterial = destructibleSO.Material;
 		}
 
-		_particleHandler.OverrideParticleEffects(_destructibleSO.ParticleEffects);
+		if (_destructibleSO.ParticleEffects != null)
+		{
+			_particleHandler.OverrideParticleEffects(_destructibleSO.ParticleEffects);
+		}
 	}
 
 

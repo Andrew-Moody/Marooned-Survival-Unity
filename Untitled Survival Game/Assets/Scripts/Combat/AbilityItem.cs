@@ -10,13 +10,17 @@ public class AbilityItem
 
 	public Ability[] Abilities;
 
+	public ItemSO ItemSO;
 
-	public AbilityItem(string itemName, int itemID, Ability[] abilities)
+
+	public AbilityItem(ItemSO itemSO)
 	{
-		ItemName = itemName;
+		ItemSO = itemSO;
 
-		ItemID = itemID;
+		ItemName = itemSO.ItemName;
 
-		Abilities = abilities;
+		ItemID = itemSO.ItemID;
+
+		Abilities = itemSO.GetRuntimeAbilities();
 	}
 }

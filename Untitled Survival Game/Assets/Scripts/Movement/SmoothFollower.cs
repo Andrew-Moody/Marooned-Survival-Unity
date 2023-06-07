@@ -13,6 +13,9 @@ public class SmoothFollower : MonoBehaviour
 	[SerializeField]
 	private float _sprintSpeed;
 
+	[SerializeField]
+	private float _teleportThreshold = 1f;
+
 	private Animator _animator;
 
 	private Vector3 _velocity = Vector3.zero;
@@ -25,30 +28,46 @@ public class SmoothFollower : MonoBehaviour
 		_animator = GetComponentInChildren<Animator>();
 	}
 
+	private void Start()
+	{
+		transform.position = _target.position;
+		transform.rotation = _target.rotation;
+	}
+
 
 	// Update is called once per frame
 	void Update()
 	{
 		if (_target != null)
 		{
-			transform.position = Vector3.SmoothDamp(transform.position, _target.position, ref _velocity, _smoothTime);
-
-			transform.rotation = Quaternion.Slerp(transform.rotation, _target.rotation, Time.deltaTime / _smoothTime);
-
-			// Target is currently not rotating so something else is actually setting the rotation
-			// CameraController is setting rotation in LateUpdate
-			// Maybe have CameraController directly control the network object rotation
-			// And have this follow that
-			//Debug.Log(_target.rotation);
-			//Debug.Log(transform.rotation);
-
-			_localVelocity = transform.InverseTransformDirection(_velocity);
-
-
-			if (_animator != null)
+			if ((_target.position - transform.position).magnitude > _teleportThreshold)
 			{
-				_animator.SetFloat("ForwardSpeed", _localVelocity.z / _sprintSpeed);
+				transform.position = _target.position;
+				transform.rotation = _target.rotation;
 			}
+			else
+			{
+				transform.position = Vector3.SmoothDamp(transform.position, _target.position, ref _velocity, _smoothTime);
+
+				transform.rotation = Quaternion.Slerp(transform.rotation, _target.rotation, Time.deltaTime / _smoothTime);
+
+				// Target is currently not rotating so something else is actually setting the rotation
+				// CameraController is setting rotation in LateUpdate
+				// Maybe have CameraController directly control the network object rotation
+				// And have this follow that
+				//Debug.Log(_target.rotation);
+				//Debug.Log(transform.rotation);
+
+				_localVelocity = transform.InverseTransformDirection(_velocity);
+
+
+				if (_animator != null)
+				{
+					_animator.SetFloat("ForwardSpeed", _localVelocity.z / _sprintSpeed);
+				}
+			}
+
+			
 		}
 	}
 

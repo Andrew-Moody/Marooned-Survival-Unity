@@ -9,7 +9,7 @@ public class TransformAnimator : MonoBehaviour
 
 	private Dictionary<string, TransformAnimation> _animDict;
 
-	private float _time = 0f;
+	//private float _time = 0f;
 
 	void Awake()
 	{

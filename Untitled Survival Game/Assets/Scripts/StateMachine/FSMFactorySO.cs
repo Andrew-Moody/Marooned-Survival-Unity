@@ -110,7 +110,7 @@ public class FSMFactorySO : ScriptableObject
 		}
 	}
 
-
+#if UNITY_EDITOR
 	[UnityEditor.Callbacks.DidReloadScripts]
 	private static void OnScriptReload()
 	{
@@ -119,7 +119,7 @@ public class FSMFactorySO : ScriptableObject
 			ReloadFSMFactory();
 		}
 	}
-
+#endif
 
 	delegate BaseState StateFactoryMethod();
 

@@ -14,7 +14,15 @@ public class ParticleHandler : MonoBehaviour
 	{
 		if (_particleDict.TryGetValue(name, out ParticleEffectData effect))
 		{
-			effect.ParticleSystem.Play();
+			if (effect.ParticleSystem != null)
+			{
+				effect.ParticleSystem.Play();
+			}
+			else
+			{
+				Debug.LogWarning($"ParticleHandler is missing a particle system for ParticleEffect {name}");
+			}
+			
 		}
 
 	}

@@ -119,6 +119,7 @@ MonoBehaviour:
   - {fileID: 416200329961083273}
   - {fileID: 416200329961083279}
   - {fileID: 416200329961083278}
+  - {fileID: 0}
   <ParentNetworkObject>k__BackingField: {fileID: 0}
   <ChildNetworkObjects>k__BackingField: []
   _isNetworked: 1
@@ -173,6 +174,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   _inventory: {fileID: 0}
+  _projectileSource: {fileID: 0}
 --- !u!1 &416200330121673329
 GameObject:
   m_ObjectHideFlags: 0

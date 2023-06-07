@@ -51,7 +51,7 @@ public class EquipmentSlot : NetworkBehaviour
 
 			if (_abilityActor != null)
 			{
-				_abilityActor.AbilityItem = item.AbilityItem;
+				_abilityActor.SetAbilityItem(item.AbilityItem);
 			}
 
 			_renderable.SetMesh(item.ItemSO.Mesh);
@@ -61,7 +61,7 @@ public class EquipmentSlot : NetworkBehaviour
 		{
 			if (_abilityActor != null)
 			{
-				_abilityActor.AbilityItem = null;
+				_abilityActor.SetAbilityItem(null);
 			}
 
 			_equippedItem = null;

@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bd6d6a412682ec2459dacb0bc056e319, type: 3}
-  m_Name: SwordsMan
+  m_Name: Swordsman
   m_EditorClassIdentifier: 
-  Name: Swordsman
-  ID: 1
+  _name: Swordsman
+  _id: 3
   _mobPrefab: {fileID: 3574848286674172710, guid: 2c1d965cedcdf454da077e5a697930f1, type: 3}
   _stats:
   - StatType: 1
@@ -23,3 +23,4 @@ MonoBehaviour:
   _abilities:
   - {fileID: 11400000, guid: 75c03ac26ebac304c82c542597b27cc6, type: 2}
   _mobAISO: {fileID: 11400000, guid: cd6322adb2f6d0e4cb6a07cc469f02db, type: 2}
+  _itemToDrop: 106

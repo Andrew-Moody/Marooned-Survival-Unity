@@ -7,6 +7,10 @@ using UnityEngine;
 
 public class Combatant : NetworkBehaviour
 {
+	public event Action OnDeathStartEvent;
+
+	public event Action OnDeathEndEvent;
+
 	public Transform FollowTarget;
 
 	[SerializeField]
@@ -92,7 +96,7 @@ public class Combatant : NetworkBehaviour
 		{
 			// Each instance of Combatant needs its own instance of each ability for cooldowns, buffs etc.
 
-			_abilities.Add(abilitySO.Ability.CreateCopy());
+			_abilities.Add(abilitySO.GetRuntimeAbility());
 		}
 
 		if (abilities != null)
@@ -101,7 +105,7 @@ public class Combatant : NetworkBehaviour
 			{
 				// Each instance of Combatant needs its own instance of each ability for cooldowns, buffs etc.
 
-				_abilities.Add(abilitySO.Ability.CreateCopy());
+				_abilities.Add(abilitySO.GetRuntimeAbility());
 			}
 		}
 		
@@ -298,6 +302,8 @@ public class Combatant : NetworkBehaviour
 
 	private void DeathEndAnimEventHandler()
 	{
+		Debug.LogError("DeathEndAnimEventHandler");
+
 		OnDeathEnd();
 	}
 
@@ -407,16 +413,18 @@ public class Combatant : NetworkBehaviour
 			{
 				agent.StopAgent();
 			}
-
-			Vector3 spawnPos = transform.position;
-			spawnPos.y += 1.4f;
-			ItemManager.Instance.SpawnWorldItem(99, spawnPos);
 		}
+
+		OnDeathStartEvent?.Invoke();
 	}
 
 
 	private void OnDeathEnd()
 	{
+		Debug.LogError("OnDeathEnd");
+
+		OnDeathEndEvent?.Invoke();
+
 		if (IsServer)
 		{
 			Despawn(transform.parent.gameObject);

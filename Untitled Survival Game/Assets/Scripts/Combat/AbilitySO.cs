@@ -7,8 +7,22 @@ public class AbilitySO : ScriptableObject
 {
 	[SerializeReference]
 	private Ability _ability;
-	public Ability Ability { get { return _ability; } }
+	//public Ability Ability { get { return _ability; } }
 
+
+	public Ability GetRuntimeAbility()
+	{
+		return _ability.CreateCopy();
+	}
+
+
+	private void OnEnable()
+	{
+		if (_ability == null)
+		{
+			_ability = new Ability();
+		}
+	}
 
 	private void OnValidate()
 	{

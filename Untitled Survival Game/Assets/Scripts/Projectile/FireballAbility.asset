@@ -1,0 +1,86 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45e779c660012684982f34e8daa1a17f, type: 3}
+  m_Name: FireballAbility
+  m_EditorClassIdentifier: 
+  _ability:
+    id: 0
+  references:
+    version: 1
+    00000000:
+      type: {class: Ability, ns: , asm: Assembly-CSharp}
+      data:
+        _abilityName: 
+        _abilityType: 0
+        _toolType: 0
+        _toolPower: 0
+        _coolDown: 0
+        _requireTarget: 0
+        _requirements: []
+        _namedValues: []
+        _userEffects:
+        - id: 1
+        - id: 2
+        _targetEffects:
+        - id: 3
+        - id: 4
+        - id: 5
+        - id: 6
+        - id: 7
+        _itemEffects: []
+    00000001:
+      type: {class: ParticleEffect, ns: , asm: Assembly-CSharp}
+      data:
+        EffectType: 2
+        EffectTiming: 1
+        ParticleName: START
+        ParticleSystem: {fileID: 0}
+    00000002:
+      type: {class: ParticleEffect, ns: , asm: Assembly-CSharp}
+      data:
+        EffectType: 2
+        EffectTiming: 3
+        ParticleName: END
+        ParticleSystem: {fileID: 0}
+    00000003:
+      type: {class: AnimationEffect, ns: , asm: Assembly-CSharp}
+      data:
+        EffectType: 1
+        EffectTiming: 2
+        AnimTrigger: HIT
+        Animation: {fileID: 0}
+    00000004:
+      type: {class: ParticleEffect, ns: , asm: Assembly-CSharp}
+      data:
+        EffectType: 2
+        EffectTiming: 2
+        ParticleName: HIT
+        ParticleSystem: {fileID: 0}
+    00000005:
+      type: {class: KnockBackEffect, ns: , asm: Assembly-CSharp}
+      data:
+        EffectType: 5
+        EffectTiming: 2
+        KnockBack: 8
+    00000006:
+      type: {class: StatEffect, ns: , asm: Assembly-CSharp}
+      data:
+        EffectType: 4
+        EffectTiming: 2
+        StatType: 1
+        StatAmount: -30
+    00000007:
+      type: {class: TransformEffect, ns: , asm: Assembly-CSharp}
+      data:
+        EffectType: 6
+        EffectTiming: 2
+        Name: HIT

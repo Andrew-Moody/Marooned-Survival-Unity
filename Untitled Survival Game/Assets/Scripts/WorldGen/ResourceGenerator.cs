@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ResourceGenerator : MonoBehaviour
+public class ResourceGenerator : NetworkBehaviour
 {
 	[SerializeField][Min(1)]
 	private int _height;
@@ -114,7 +114,7 @@ public class ResourceGenerator : MonoBehaviour
 
 
 
-	private void OnValidate()
+	protected override void OnValidate()
 	{
 		if (_height != _prevHeight || _width != _prevWidth)
 		{

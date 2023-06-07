@@ -52,9 +52,13 @@ public class AbilityActor : NetworkBehaviour
 	private Inventory _inventory;
 	public Inventory Inventory { get { return _inventory; } }
 
+	[SerializeField]
+	private Transform _projectileSource;
 
 	private AbilityItem _abilityItem;
-	public AbilityItem AbilityItem { get { return _abilityItem; } set { _abilityItem = value; } }
+	public AbilityItem AbilityItem { get { return _abilityItem; } }
+
+	private ProjectileBase _projectile;
 
 
 	private bool _isAlive;
@@ -89,6 +93,35 @@ public class AbilityActor : NetworkBehaviour
 		_toolType = destructibleSO.ToolType;
 
 		_toolPower = destructibleSO.ToolPower;
+	}
+
+
+	public void SetAbilityItem(AbilityItem abilityItem)
+	{
+		_abilityItem = abilityItem;
+
+		if (abilityItem == null)
+		{
+			_projectileSource.localPosition = Vector3.zero;
+			//_projectileSource.localRotation = Quaternion.identity;
+		}
+		else
+		{
+			_projectileSource.localPosition = abilityItem.ItemSO.ProjectileSource;
+		}
+	}
+
+
+	public void SetProjectileSource(ProjectileSource projectileSource)
+	{
+		if (projectileSource != null)
+		{
+			_projectileSource = projectileSource.Target;
+		}
+		else
+		{
+			_projectileSource = transform;
+		}
 	}
 
 	#region Stats Accessors
@@ -239,8 +272,46 @@ public class AbilityActor : NetworkBehaviour
 		{
 			_inventory.UseItem(this, _abilityItem);
 		}
+	}
 
-		
+
+	[Server]
+	public void SpawnProjectile(ProjectileBase projectile)
+	{
+		Debug.Log(_projectileSource.forward);
+
+		_projectile = ProjectileManager.SpawnProjectile(projectile);
+
+		_projectile.SetFollowTarget(_projectileSource);
+	}
+
+
+	[Server]
+	public void LaunchProjectile(Vector3 velocity, bool align)
+	{
+		if (_projectile == null)
+		{
+			return;
+		}
+
+		if (_viewTransform != null)
+		{
+			velocity = ViewTransform.TransformDirection(velocity);
+		}
+		else if (_parentActor != null && _parentActor.ViewTransform != null)
+		{
+			velocity = _parentActor.ViewTransform.TransformDirection(velocity);
+		}
+		else
+		{
+			velocity = transform.TransformDirection(velocity);
+		}
+
+		_projectile.SetFollowTarget(null);
+
+		_projectile.Launch(velocity, align);
+
+		_projectile = null;
 	}
 
 	#endregion

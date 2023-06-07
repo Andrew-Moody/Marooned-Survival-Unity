@@ -1,4 +1,5 @@
 using FishNet.Component.Animating;
+using FishNet.Connection;
 using FishNet.Object;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,6 +7,11 @@ using UnityEngine;
 
 public class Mob : NetworkBehaviour
 {
+	[SerializeField]
+	private int _id;
+	public int ID { get => _id; set => _id = value; }
+
+
 	[SerializeField]
 	private Transform _graphicParent;
 
@@ -27,6 +33,9 @@ public class Mob : NetworkBehaviour
 	[SerializeField]
 	private Transform _statDisplay;
 
+	private MobSO _mobSO;
+
+
 	public void Initialize(MobSO mobSO)
 	{
 		if (mobSO == null)
@@ -34,9 +43,13 @@ public class Mob : NetworkBehaviour
 			return;
 		}
 
+		_mobSO = mobSO;
+
 		GameObject mobGraphic = mobSO.InstantiatePrefab(_graphicParent);
 
 		Animator animator = mobGraphic.GetComponent<Animator>();
+
+		ProjectileSource projSource = mobGraphic.GetComponentInChildren<ProjectileSource>();
 
 		_agent.Animator = animator;
 
@@ -46,13 +59,17 @@ public class Mob : NetworkBehaviour
 
 		_abilityActor.Initialize(animator);
 
-		_combatant.Initialize(mobSO._abilities);
+		_abilityActor.SetProjectileSource(projSource);
+
+		_combatant.Initialize(mobSO.Abilities);
+
+		_combatant.OnDeathEndEvent += OnDeathEndEventHandler;
 
 		_networkAnimator.SetAnimator(animator);
 
 		if (IsServer)
 		{
-			foreach (StatValue stat in mobSO._stats)
+			foreach (StatValue stat in mobSO.Stats)
 			{
 				_stats.SetStat(stat.StatType, stat.Value);
 			}
@@ -65,12 +82,35 @@ public class Mob : NetworkBehaviour
 	{
 		MobSO mobSO = MobManager.Instance.GetMobSO(mobID);
 
-		Initialize(mobSO);
+		if (mobSO != null)
+		{
+			Initialize(mobSO);
+		}
+	}
+
+	private void OnDestroy()
+	{
+		Debug.LogError("Mob OnDestroy");
+		_combatant.OnDeathEndEvent -= OnDeathEndEventHandler;
 	}
 
 
 	private void LateUpdate()
 	{
 		_statDisplay.position = _graphicParent.position;
+	}
+
+
+	private void OnDeathEndEventHandler()
+	{
+		Debug.LogError("OnDeathEndEventHandler");
+		if (IsServer)
+		{
+			Vector3 spawnPos = _agent.transform.position;
+			spawnPos.y += 0.5f;
+			ItemManager.Instance.SpawnWorldItem(_mobSO.ItemToDrop, spawnPos);
+
+			Debug.LogError("Spawning at " + spawnPos);
+		}
 	}
 }

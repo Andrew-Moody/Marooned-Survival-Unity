@@ -12,7 +12,12 @@ public class MobManager : NetworkBehaviour
 
 
 	[SerializeField]
-	private MobFactory _mobFactory;
+	private MobSO[] _mobSOs;
+
+
+	private Dictionary<string, int> _nameToID;
+
+	private Dictionary<int, MobSO> _mobSODict;
 
 
 	private void Awake()
@@ -21,6 +26,8 @@ public class MobManager : NetworkBehaviour
 		{
 			Instance = this;
 		}
+
+		Instance.LoadMobSOs();
 	}
 
 
@@ -36,8 +43,61 @@ public class MobManager : NetworkBehaviour
 	}
 
 
+	[Server]
+	public Mob SpawnMob(string mobName, Transform parent)
+	{
+		Mob mob = Instantiate(_mobBase, parent, false);
+
+		Spawn(mob.gameObject);
+
+		mob.ObserversInitializeMob(_nameToID[mobName]);
+
+		return mob;
+	}
+
+
 	public MobSO GetMobSO(int mobID)
 	{
-		return _mobFactory.GetMobSO(mobID);
+		if (!_mobSODict.TryGetValue(mobID, out MobSO mobSO))
+		{
+			Debug.LogError($"MobManager failed to find MobSO for ID {mobID}");
+		}
+
+		return mobSO;
+	}
+
+
+	private void LoadMobSOs()
+	{
+		_mobSODict = new Dictionary<int, MobSO>();
+
+		_nameToID = new Dictionary<string, int>();
+
+
+		foreach (MobSO so in _mobSOs)
+		{
+			if (_mobSODict.ContainsKey(so.ID))
+			{
+				MobSO prev = _mobSODict[so.ID];
+				Debug.LogWarning($"MobSO {so.name} with ID {so.ID} conflicts with MobSO {prev.name}");
+			}
+
+			if (_nameToID.ContainsKey(so.Name))
+			{
+				int id = _nameToID[so.Name];
+
+				if (_mobSODict.TryGetValue(id, out MobSO prev))
+				{
+					Debug.LogWarning($"MobSO {so.name} with Name {so.Name} conflicts with MobSO {prev.name}");
+				}
+				else
+				{
+					Debug.LogWarning($"MobSO {so.name} with Name {so.Name} conflicts with an existing name");
+				}
+			}
+
+			_mobSODict[so.ID] = so;
+			_nameToID[so.Name] = so.ID;
+		}
 	}
 }

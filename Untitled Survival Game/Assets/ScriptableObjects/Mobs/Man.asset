@@ -12,14 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd6d6a412682ec2459dacb0bc056e319, type: 3}
   m_Name: Man
   m_EditorClassIdentifier: 
-  Name: Man
-  ID: 2
+  _name: Man
+  _id: 2
   _mobPrefab: {fileID: 7638839137136788870, guid: 338f58dda4ffefb4db4057e3b87b8ee0, type: 3}
   _stats:
   - StatType: 1
     Value: 100
-  - StatType: 2
-    Value: 10
   _abilities:
-  - {fileID: 11400000, guid: 75c03ac26ebac304c82c542597b27cc6, type: 2}
+  - {fileID: 11400000, guid: 8182022800a23af42a65b843585de93b, type: 2}
   _mobAISO: {fileID: 11400000, guid: cd6322adb2f6d0e4cb6a07cc469f02db, type: 2}
+  _itemToDrop: 106

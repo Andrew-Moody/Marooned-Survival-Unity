@@ -6,7 +6,7 @@ using UnityEngine;
 public class MobSpawner : NetworkBehaviour
 {
 	[SerializeField]
-	private int _mobID;
+	private string _mobName;
 
 
 	private float _delay = 0.5f;
@@ -39,22 +39,22 @@ public class MobSpawner : NetworkBehaviour
 			{
 				hasSpawned = true;
 
-				SpawnMob(_mobID);
+				SpawnMob(_mobName);
 			}
 		}
 		else
 		{
 			if (IsServer && Input.GetKeyDown(KeyCode.P))
 			{
-				SpawnMob(_mobID);
+				SpawnMob(_mobName);
 			}
 		}
 	}
 
 
 	[Server]
-	private void SpawnMob(int mobID)
+	private void SpawnMob(string mobName)
 	{
-		MobManager.Instance.SpawnMob(mobID, transform);
+		MobManager.Instance.SpawnMob(mobName, transform);
 	}
 }

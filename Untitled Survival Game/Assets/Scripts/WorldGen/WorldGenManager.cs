@@ -11,6 +11,7 @@ public class WorldGenManager : NetworkBehaviour
 	private bool _worldGenerated = false;
 	private float _worldGenDelay = 0.5f;
 
+	
 
 	private void Update()
 	{
@@ -22,7 +23,11 @@ public class WorldGenManager : NetworkBehaviour
 			{
 				_worldGenerated = true;
 				Debug.Log("Generating Resources");
-				_resourceGenerator.SpawnResources();
+
+				if (IsServer)
+				{
+					_resourceGenerator.SpawnResources();
+				}
 			}
 		}
 	}
