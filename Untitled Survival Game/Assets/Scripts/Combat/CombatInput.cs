@@ -18,11 +18,6 @@ public class CombatInput : NetworkBehaviour
 	private LayerMask _interactMask;
 
 
-	private bool _craftingUIOpen = false;
-	private bool _inventoryOpen = false;
-	private bool _menuOpen = false;
-
-
 	public override void OnStartNetwork()
 	{
 		base.OnStartNetwork();
@@ -51,38 +46,39 @@ public class CombatInput : NetworkBehaviour
 	{
 		if (Input.GetKeyDown(KeyCode.E))
 		{
-			_inventoryOpen = !_inventoryOpen;
-
-			CameraController.Instance.SetFPSMode(!_inventoryOpen);
+			if (UIManager.CheckStackTop("InventoryUI"))
+			{
+				UIManager.HideStackTop(true);
+				CameraController.Instance.SetFPSMode(true);
+			}
+			else
+			{
+				UIManager.ShowPanel("InventoryUI", pushToStack: true);
+				CameraController.Instance.SetFPSMode(false);
+			}
 
 		}
 
 		if (Input.GetKeyDown(KeyCode.Escape))
 		{
-			if (_craftingUIOpen)
+			if (UIManager.CheckStackTop("HotbarUI"))
 			{
-				CameraController.Instance.SetFPSMode(true);
-				UIManager.Instance.HideCraftingUI();
-				_craftingUIOpen = false;
+				UIManager.ShowPanel("SettingsUI", pushToStack: true);
 			}
-			else if (_inventoryOpen)
+			else
 			{
-				CameraController.Instance.SetFPSMode(true);
-				//UIManager.Instance.Hide("Inventory");
-				Debug.Log("Hide Inventory");
-				_inventoryOpen = false;
+				UIManager.HideStackTop(true);
 			}
-			else if (_menuOpen)
+
+
+			if (UIManager.CheckStackTop("HotbarUI"))
 			{
 				CameraController.Instance.SetFPSMode(true);
-				_menuOpen = false;
 			}
 			else
 			{
 				CameraController.Instance.SetFPSMode(false);
-				_menuOpen = true;
-			}
-			
+			}			
 		}
 
 		// I know this is awfull and I need to make an Input Manager
@@ -141,7 +137,6 @@ public class CombatInput : NetworkBehaviour
 
 		if (hit.collider != null && hit.collider.gameObject.TryGetComponent(out DestructibleObject destructible))
 		{
-			_craftingUIOpen = true;
 			destructible.Interact();
 		}
 	}

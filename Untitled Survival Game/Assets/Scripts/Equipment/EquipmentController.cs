@@ -48,7 +48,7 @@ public class EquipmentController : NetworkBehaviour
 
 		if (IsServer)
 		{
-			Debug.LogError($"EquipItem: {item.ItemID}");
+			//Debug.LogError($"EquipItem: {item.ItemID}");
 			_equipSlotsDict[slot].ObserversEquipItem(item.GetNetData());
 		}
 	}

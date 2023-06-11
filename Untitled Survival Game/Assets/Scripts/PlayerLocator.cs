@@ -5,7 +5,9 @@ using UnityEngine;
 
 public class PlayerLocator : NetworkBehaviour
 {
-	public static GameObject Player;
+	private static GameObject _player;
+
+	public static GameObject Player => _player;
 
 
 	public override void OnStartNetwork()
@@ -15,7 +17,18 @@ public class PlayerLocator : NetworkBehaviour
 		if (Owner.IsLocalClient)
 		{
 			Debug.Log("Initializing PlayerLocator");
-			Player = gameObject;
+			_player = gameObject;
+		}
+	}
+
+
+	public override void OnStartClient()
+	{
+		base.OnStartClient();
+
+		if (IsOwner)
+		{
+			GameManager.Instance.OnLocalPlayerStartClient(_player);
 		}
 	}
 }

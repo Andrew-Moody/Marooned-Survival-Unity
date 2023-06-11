@@ -9,7 +9,7 @@ public class MobSpawner : NetworkBehaviour
 	private string _mobName;
 
 
-	private float _delay = 0.5f;
+	private float _delay = 5f;
 	private bool hasSpawned = false;
 
 	public override void OnStartClient()

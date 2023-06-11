@@ -21,7 +21,6 @@ public class ProjectileManager : NetworkBehaviour
 	{
 		ProjectileBase proj = Instantiate(prefab);
 		Instance.Spawn(proj.gameObject);
-		Instance.ParentProjectileORPC(proj);
 
 		proj.Spawn(Vector3.zero, Quaternion.identity);
 
@@ -34,17 +33,9 @@ public class ProjectileManager : NetworkBehaviour
 	{
 		ProjectileBase proj = Instantiate(prefab);
 		Instance.Spawn(proj.gameObject);
-		Instance.ParentProjectileORPC(proj);
 
 		proj.Spawn(position, rotation);
 
 		return proj;
-	}
-
-
-	[ObserversRpc(RunLocally = true)]
-	private void ParentProjectileORPC(ProjectileBase projectile)
-	{
-		projectile.transform.SetParent(transform, false);
 	}
 }

@@ -41,7 +41,7 @@ public class EquipmentSlot : NetworkBehaviour
 	[ObserversRpc(BufferLast = true, RunLocally = true)]
 	public void ObserversEquipItem(ItemNetData itemNetData)
 	{
-		Debug.LogError($"ObserversEquipItem: {itemNetData.ItemID}");
+		//Debug.LogError($"ObserversEquipItem: {itemNetData.ItemID}");
 
 		if (itemNetData.ItemID != 0)
 		{

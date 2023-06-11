@@ -93,8 +93,11 @@ public class Pathfinding : MonoBehaviour
 	/// <param name="destination">The desired destination in world space</param>
 	public void SetDestination(Vector3 destination)
 	{
-		_agent.SetDestination(destination);
-		_followTarget = false;
+		if (_agent.enabled)
+		{
+			_agent.SetDestination(destination);
+			_followTarget = false;
+		}
 	}
 
 	
@@ -104,6 +107,11 @@ public class Pathfinding : MonoBehaviour
 	/// <returns></returns>
 	public bool Arrived()
 	{
+		if (!_agent.enabled)
+		{
+			return false;
+		}
+
 		return _agent.remainingDistance <= _agent.stoppingDistance;
 	}
 

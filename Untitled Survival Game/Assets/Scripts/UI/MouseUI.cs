@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MouseUI : MonoBehaviour
+public class MouseUI : UIPanel
 {
-	public static MouseUI Instance;
+	[SerializeField]
+	private Image _crosshair;
 
 	[SerializeField]
 	private Image _icon;
@@ -13,30 +14,38 @@ public class MouseUI : MonoBehaviour
 	[SerializeField]
 	private Canvas _canvas;
 
-	private void Awake()
-	{
-		if (Instance == null)
-		{
-			Instance = this;
-		}
 
-		_icon = GetComponent<Image>();
-
-		ClearMouseItem();
-	}
-
-
-	public void SetMouseItem(Sprite sprite)
-	{
-		_icon.sprite = sprite;
-		_icon.enabled = true;
-	}
-
-
-	public void ClearMouseItem()
+	public override void Initialize()
 	{
 		_icon.sprite = null;
 		_icon.enabled = false;
+		_crosshair.enabled = false;
+	}
+
+
+	public override void Show(UIPanelData mouseData)
+	{
+		gameObject.SetActive(true);
+
+		MouseUIPanelData data = mouseData as MouseUIPanelData;
+
+		if (data != null)
+		{
+			Debug.Log($"{data.Sprite} {data.Mode}");
+
+			_icon.sprite = data.Sprite;
+			_icon.enabled = data.Sprite != null;
+
+			if (data.Mode == MouseUIMode.Crosshair)
+			{
+				_icon.enabled = false;
+				_crosshair.enabled = true;
+			}
+			else
+			{
+				_crosshair.enabled = false;
+			}
+		}
 	}
 
 
@@ -59,32 +68,44 @@ public class MouseUI : MonoBehaviour
 
 		Rect pixelRect = _canvas.pixelRect;
 
-		//Debug.Log(pixelRect);
-
 		Vector3 position = Input.mousePosition;
 
-		if (position.x < pixelRect.xMin)
-		{
-			position.x = pixelRect.xMin;
-		}
-		else if (position.x > pixelRect.xMax)
-		{
-			position.x = pixelRect.xMax;
-		}
+		position.x = Mathf.Clamp(position.x, pixelRect.xMin, pixelRect.xMax);
+		position.y = Mathf.Clamp(position.y, pixelRect.yMin, pixelRect.yMax);
 
-
-		if (position.y < pixelRect.yMin)
-		{
-			position.y = pixelRect.yMin;
-		}
-		else if (position.y > pixelRect.yMax)
-		{
-			position.y = pixelRect.yMax;
-		}
-
-		//Debug.Log(position);
-
-		transform.position = position;
-
+		_icon.transform.position = position;
 	}
+}
+
+
+public class MouseUIPanelData : UIPanelData
+{
+	private Sprite _sprite;
+	public Sprite Sprite => _sprite;
+
+	private MouseUIMode _mode;
+	public MouseUIMode Mode => _mode;
+
+	public MouseUIPanelData(Sprite sprite, MouseUIMode mode)
+	{
+		_sprite = sprite;
+
+		_mode = mode;
+	}
+
+
+	public MouseUIPanelData(MouseUIMode mode)
+	{
+		_sprite = null;
+
+		_mode = mode;
+	}
+}
+
+
+public enum MouseUIMode
+{
+	None,
+	Cursor,
+	Crosshair
 }

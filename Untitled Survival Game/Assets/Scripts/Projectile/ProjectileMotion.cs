@@ -13,7 +13,7 @@ public class ProjectileMotion : MonoBehaviour
 	[SerializeField]
 	private float _speed;
 
-	private bool _isBouncing;
+	//private bool _isBouncing;
 
 	private Vector3 _preHitVelocity;
 
@@ -30,8 +30,8 @@ public class ProjectileMotion : MonoBehaviour
 	private Vector3 _acceleration;
 	private Vector3 _angularAcceleration;
 
-	private bool _stuck;
-	private Transform _stuckTarget;
+	//private bool _stuck;
+	//private Transform _stuckTarget;
 
 	//private bool _isLaunched = false;
 
@@ -99,15 +99,15 @@ public class ProjectileMotion : MonoBehaviour
 		_angularVelocity = Vector3.zero;
 		_angularAcceleration = Vector3.zero;
 
-		_stuck = true;
+		//_stuck = true;
 
-		_stuckTarget = stickTo;
+		//_stuckTarget = stickTo;
 	}
 
 
 	public void BounceStart(Collision collision)
 	{
-		_isBouncing = true;
+		//_isBouncing = true;
 
 		_postHitVelocity = Vector3.Reflect(_preHitVelocity, collision.GetContact(0).normal);
 	}
@@ -115,14 +115,14 @@ public class ProjectileMotion : MonoBehaviour
 
 	public void BounceEnd()
 	{
-		_isBouncing = false;
+		//_isBouncing = false;
 	}
 
 	void Awake()
 	{
 		enabled = false;
 
-		_isBouncing = false;
+		//_isBouncing = false;
 
 		_preHitVelocity = Vector3.zero;
 

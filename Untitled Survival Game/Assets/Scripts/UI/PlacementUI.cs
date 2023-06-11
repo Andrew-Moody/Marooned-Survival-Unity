@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlacementUI : MonoBehaviour
+public class PlacementUI : UIPanel
 {
 	[SerializeField]
 	private MeshFilter _meshFilter;
@@ -23,18 +23,28 @@ public class PlacementUI : MonoBehaviour
 	private Inventory _inventory;
 
 
-	public void Initialize(GameObject player)
+	public override void Initialize()
 	{
 		_cameraTransform = Camera.main.transform;
 
 		_placementTransform = transform;
+	}
 
-		_inventory = player.GetComponent<Inventory>();
 
-		if (_inventory != null)
+	public override void SetPlayer(GameObject player)
+	{
+		base.SetPlayer(player);
+
+		if (_player != null)
 		{
-			_inventory.OnHotbarSelect += SelectionChangedHandler;
+			_inventory = _player.GetComponent<Inventory>();
+
+			if (_inventory != null)
+			{
+				_inventory.OnHotbarSelect += SelectionChangedHandler;
+			}
 		}
+		
 	}
 
 
@@ -66,6 +76,11 @@ public class PlacementUI : MonoBehaviour
 
 	private void LateUpdate()
 	{
+		if (_cameraTransform == null)
+		{
+			return;
+		}
+
 		Physics.Raycast(_cameraTransform.position, _cameraTransform.forward, out RaycastHit hitInfo, _range, _placementMask);
 
 		if (hitInfo.collider != null)

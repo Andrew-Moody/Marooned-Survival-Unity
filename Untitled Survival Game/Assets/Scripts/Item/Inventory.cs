@@ -50,11 +50,11 @@ public class Inventory : NetworkBehaviour
 		{
 			Initialize();
 
-			Debug.LogError("Initialized inventory for Client: " + OwnerId + " AsServer: " + IsServer);
+			//Debug.LogError("Initialized inventory for Client: " + OwnerId + " AsServer: " + IsServer);
 		}
 		else
 		{
-			Debug.LogError("Non Owning client would  have initialized Inventory " + OwnerId);
+			//Debug.LogError("Non Owning client would  have initialized Inventory " + OwnerId);
 		}
 	}
 
@@ -107,8 +107,8 @@ public class Inventory : NetworkBehaviour
 		}
 
 
-		// Update UI for Owning Client
-		if (IsOwner)
+		// Update UI for Owning Client (this is called by OnStartNetwork so IsOwner is always false)
+		if (Owner.IsLocalClient)
 		{
 			SlotUpdateEventArgs args = new SlotUpdateEventArgs(index, _items[index].Quantity, _items[index].Sprite);
 
@@ -119,8 +119,9 @@ public class Inventory : NetworkBehaviour
 				OnHotbarSelect?.Invoke(_items[_hotbarSelection].ItemID);
 			}
 		}
+		else
 
-		if (!IsOwner && !IsServer)
+		if (!Owner.IsLocalClient && !IsServer)
 		{
 			Debug.LogError("Calling UpdateSlot is not needed on Observing Clients");
 		}
@@ -129,7 +130,7 @@ public class Inventory : NetworkBehaviour
 
 	public void UpdateSlots()
 	{
-		Debug.LogError("Updating all slots");
+		//Debug.LogError("Updating all slots");
 
 		for (int i = 0; i < _inventorySize + _equipmentSize; i++)
 		{

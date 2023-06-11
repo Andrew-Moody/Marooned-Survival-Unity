@@ -31,19 +31,21 @@ public class ProjectilePattern : ProjectileBase
 
 		for (int i = 0; i < _projectiles.Length; i++)
 		{
-			_projectiles[i].Spawn(_projectiles[i].transform.localPosition, _projectiles[i].transform.localRotation);
+			//_projectiles[i].Spawn(_projectiles[i].transform.localPosition, _projectiles[i].transform.localRotation);
+
+			_projectiles[i].Spawn(_networkTransform.transform.position, _networkTransform.transform.rotation);
 
 			_projectiles[i].SetFollowTarget(_networkTransform.transform);
 		}
 
-		for (int i = 0; i < _projectiles.Length; i++)
-		{
-			_projectiles[i].transform.SetParent(ProjectileManager.Instance.transform);
-			_projectiles[i].transform.localPosition = Vector3.zero;
-			_projectiles[i].transform.localRotation = Quaternion.identity;
-		}
+		//for (int i = 0; i < _projectiles.Length; i++)
+		//{
+		//	_projectiles[i].transform.SetParent(ProjectileManager.Instance.transform);
+		//	_projectiles[i].transform.localPosition = Vector3.zero;
+		//	_projectiles[i].transform.localRotation = Quaternion.identity;
+		//}
 
-		ResetParents();
+		//ResetParentsORPC();
 	}
 
 
@@ -99,7 +101,7 @@ public class ProjectilePattern : ProjectileBase
 
 
 	[ObserversRpc(BufferLast = true)]
-	private void ResetParents()
+	private void ResetParentsORPC()
 	{
 		for (int i = 0; i < _projectiles.Length; i++)
 		{

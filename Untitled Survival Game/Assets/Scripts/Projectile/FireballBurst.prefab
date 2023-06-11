@@ -161,11 +161,11 @@ MonoBehaviour:
     Position: 0
     Rotation: 0
     Scale: 0
-  _interpolation: 2
+  _interpolation: 1
   _extrapolation: 2
-  _enableTeleport: 0
+  _enableTeleport: 1
   _teleportThreshold: 1
-  _clientAuthoritative: 1
+  _clientAuthoritative: 0
   _sendToOwner: 1
   _synchronizePosition: 1
   _positionSnapping:

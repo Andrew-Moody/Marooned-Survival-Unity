@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class CraftingUI : MonoBehaviour, IPointerDownHandler
+public class CraftingUI : UIPanel, IPointerDownHandler
 {
 	[SerializeField]
 	private CraftingSlotUI _slotPrefab;
@@ -18,11 +18,20 @@ public class CraftingUI : MonoBehaviour, IPointerDownHandler
 
 
 	// Called by UIManager in OnStartClient
-	public void Initialize(GameObject player)
+	public override void Initialize()
 	{
-		_inventory = player.GetComponent<Inventory>();
-
 		CraftingManager.Instance.OnCraftItem += PopulateRecipes;
+	}
+
+
+	public override void SetPlayer(GameObject player)
+	{
+		base.SetPlayer(player);
+
+		if (_player != null)
+		{
+			_inventory = _player.GetComponent<Inventory>();
+		}
 	}
 
 
@@ -35,9 +44,16 @@ public class CraftingUI : MonoBehaviour, IPointerDownHandler
 	}
 
 
-	public void Show(CraftingRecipe[] craftingRecipes)
+	public override void Show(UIPanelData craftingRecipes)
 	{
-		_craftingRecipes = craftingRecipes;
+		gameObject.SetActive(true);
+
+		CraftingUIPanelData data = craftingRecipes as CraftingUIPanelData;
+
+		if (data != null)
+		{
+			_craftingRecipes = data.Recipes;
+		}
 
 		PopulateRecipes();
 	}
@@ -83,5 +99,19 @@ public class CraftingUI : MonoBehaviour, IPointerDownHandler
 
 			CraftingManager.Instance.CraftItemSRPC(recipeID, _inventory);
 		}
+	}
+}
+
+
+public class CraftingUIPanelData : UIPanelData
+{
+	private CraftingRecipe[] _recipes;
+	public CraftingRecipe[] Recipes => _recipes;
+
+	public int test;
+
+	public CraftingUIPanelData(CraftingRecipe[] recipes)
+	{
+		_recipes = recipes;
 	}
 }

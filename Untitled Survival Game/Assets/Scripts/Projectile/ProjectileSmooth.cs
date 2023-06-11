@@ -14,6 +14,8 @@ public class ProjectileSmooth : MonoBehaviour
 
 	void Start()
 	{
+		Debug.Log("Graphic start pos: " + _target.position);
+
 		transform.position = _target.position;
 		transform.rotation = _target.rotation;
 

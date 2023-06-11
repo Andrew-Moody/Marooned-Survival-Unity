@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HotbarUI : MonoBehaviour
+public class HotbarUI : UIPanel
 {
 	[SerializeField]
 	private float _slotWidth;
@@ -14,20 +14,49 @@ public class HotbarUI : MonoBehaviour
 	[SerializeField]
 	private Image _selectionBox;
 
+	[SerializeField]
+	private ItemSlotUI[] _slots;
+
 	private int _selection;
 
 	private Inventory _inventory;
 	
 
-	public void Initialize(GameObject player)
+	public override void Initialize()
 	{
-		Debug.LogError("Hotbar Initialize");
 
-		_inventory = player.GetComponent<Inventory>();
-
-		gameObject.SetActive(true);
 	}
 
+
+	public override void SetPlayer(GameObject player)
+	{
+		_player = player;
+
+		if (_player != null)
+		{
+			_inventory = player.GetComponent<Inventory>();
+
+			if (_inventory == null)
+			{
+				Debug.Log("Failed to register player inventory to HotbarUI");
+			}
+
+			_inventory.SlotUpdated += OnUpdateSlot;
+
+			//Debug.LogError("HotbarRegistered");
+		}
+	}
+
+
+	public override void Show(UIPanelData data)
+	{
+		base.Show(data);
+
+		if (_inventory != null)
+		{
+			_inventory.UpdateSlots();
+		}
+	}
 
 	private void SetSelection(int selection)
 	{
@@ -39,7 +68,10 @@ public class HotbarUI : MonoBehaviour
 
 		_selectionBox.rectTransform.anchoredPosition = position;
 
-		_inventory.SetHotbarSelectionSRPC(selection);
+		if (_inventory != null)
+		{
+			_inventory.SetHotbarSelectionSRPC(selection);
+		}
 	}
 
 
@@ -67,10 +99,26 @@ public class HotbarUI : MonoBehaviour
 				_selection = 0;
 			}
 
-
 			SetSelection(_selection);
 		}
+	}
 
+	private void OnUpdateSlot(object sender, SlotUpdateEventArgs eventArgs)
+	{
+		//Debug.LogError("Hotbar OnUpdateSlot");
 		
+		if (eventArgs.Index < _slots.Length)
+		{
+			_slots[eventArgs.Index].UpdateSlot(eventArgs.Sprite, eventArgs.Count);
+		}
+	}
+
+
+	private void OnDestroy()
+	{
+		if (_inventory != null)
+		{
+			_inventory.SlotUpdated -= OnUpdateSlot;
+		}
 	}
 }

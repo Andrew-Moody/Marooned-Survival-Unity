@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class InventoryUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class InventoryUI : UIPanel, IPointerDownHandler, IPointerUpHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
 	[SerializeField]
 	private ItemSlotUI[] _slots;
@@ -18,17 +18,6 @@ public class InventoryUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
 	private int _ptrDownIndex;
 
-	private int _rows;
-
-	private int _cols;
-
-
-	
-	void Start()
-	{
-	
-	}
-
 
 	private void OnDestroy()
 	{
@@ -38,25 +27,38 @@ public class InventoryUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 		}
 	}
 
-	public void Initialize(GameObject player)
+	public override void Initialize()
 	{
-		_inventory = player.GetComponent<Inventory>();
-
-		if (_inventory == null)
-		{
-			Debug.Log("Failed to register player inventory to the inventoryUI");
-		}
-
-		_inventory.SlotUpdated += OnUpdateSlot;
-
 		for (int i = 0; i < _slots.Length; ++i)
 		{
 			_slots[i].Initialize(i);
 		}
 
-		_mouseUI.ClearMouseItem();
-
 		Debug.LogError("InventoryUI Initialized");
+	}
+
+
+	public override void SetPlayer(GameObject player)
+	{
+		_player = player;
+
+		if (_player != null)
+		{
+			_inventory = player.GetComponent<Inventory>();
+
+			if (_inventory == null)
+			{
+				Debug.Log("Failed to register player inventory to InventoryUI");
+			}
+
+			_inventory.SlotUpdated += OnUpdateSlot;
+		}
+	}
+
+
+	public override void Show(UIPanelData data)
+	{
+		gameObject.SetActive(true);
 
 		_inventory.UpdateSlots();
 	}
@@ -161,9 +163,11 @@ public class InventoryUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 		{
 			Debug.LogError("OnBeginDrag on Slot: " + slot.Index);
 
+			// Hide the item in the starting slot and set the mouse sprite
 			if (slot.Sprite != null)
 			{
-				_mouseUI.SetMouseItem(slot.Sprite);
+				UIManager.ShowPanel("MouseUI", new MouseUIPanelData(slot.Sprite, MouseUIMode.Cursor));
+
 				slot.HideSlot();
 			}
 		}
@@ -196,9 +200,6 @@ public class InventoryUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 			Debug.LogError("OnEndDrag on Slot: " + slot.Index);
 
 			_inventory.SwapSlotsSRPC(_ptrDownIndex, slot.Index);
-
-			_slots[_ptrDownIndex].ShowSlot();
-			_mouseUI.ClearMouseItem();
 		}
 		else
 		{
@@ -206,10 +207,11 @@ public class InventoryUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 			Debug.LogError("OnEndDrag Outside Inventory");
 
 			_inventory.DropItemSRPC(_ptrDownIndex);
-
-			_slots[_ptrDownIndex].ShowSlot();
-			_mouseUI.ClearMouseItem();
 		}
+
+		// Unhide the starting slot and clear the mouse item
+		_slots[_ptrDownIndex].ShowSlot();
+		UIManager.ShowPanel("MouseUI", new MouseUIPanelData(null, MouseUIMode.Cursor));
 	}
 
 

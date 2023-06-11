@@ -49,6 +49,11 @@ public class CraftingManager : NetworkBehaviour
 
 	public bool CheckRecipe(CraftingRecipe recipe, Inventory inventory)
 	{
+		if (inventory == null)
+		{
+			return false;
+		}
+
 		for (int i = 0; i < recipe.Ingredients.Length; i++)
 		{
 			if (!inventory.HasItem(out int slot, recipe.Ingredients[i].ItemID, recipe.Ingredients[i].Quantity))

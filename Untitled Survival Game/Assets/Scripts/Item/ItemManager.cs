@@ -27,11 +27,7 @@ public class ItemManager : NetworkBehaviour
 		{
 			Instance = this;
 		}
-	}
 
-
-	private void Start()
-	{
 		itemSODict = new Dictionary<int, ItemSO>();
 
 		for (int i = 0; i < itemSOs.Count; i++)
@@ -47,6 +43,26 @@ public class ItemManager : NetworkBehaviour
 				itemSODict.Add(item.ItemID, item);
 			}
 		}
+	}
+
+
+	private void Start()
+	{
+		//itemSODict = new Dictionary<int, ItemSO>();
+
+		//for (int i = 0; i < itemSOs.Count; i++)
+		//{
+		//	ItemSO item = itemSOs[i];
+
+		//	if (itemSODict.ContainsKey(item.ItemID))
+		//	{
+		//		Debug.Log($"itemSO: {item.ItemName} Attempting to use same ID({item.ItemID}) as: {itemSODict[item.ItemID].ItemName}");
+		//	}
+		//	else
+		//	{
+		//		itemSODict.Add(item.ItemID, item);
+		//	}
+		//}
 	}
 
 

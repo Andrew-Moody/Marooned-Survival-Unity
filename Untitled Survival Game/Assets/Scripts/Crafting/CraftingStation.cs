@@ -12,6 +12,6 @@ public class CraftingStation : MonoBehaviour
 	{
 		CameraController.Instance.SetFPSMode(false);
 
-		UIManager.Instance.ShowCraftingUI(_craftingStationSO.Recipes);
+		UIManager.ShowPanel("CraftingUI", new CraftingUIPanelData(_craftingStationSO.Recipes), true);
 	}
 }

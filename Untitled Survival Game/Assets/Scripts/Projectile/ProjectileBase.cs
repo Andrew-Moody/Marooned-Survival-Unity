@@ -13,6 +13,10 @@ public class ProjectileBase : NetworkBehaviour
 	public Transform FollowTarget => _followTarget;
 
 
+	protected Vector3 _offsetPos;
+	protected Quaternion _offsetRot;
+
+
 	public virtual void SetFollowTarget(Transform target)
 	{
 		_followTarget = target;
@@ -23,7 +27,7 @@ public class ProjectileBase : NetworkBehaviour
 	{
 		if (IsServer)
 		{
-
+			SpawnORPC(position, rotation);
 		}
 	}
 
@@ -37,5 +41,25 @@ public class ProjectileBase : NetworkBehaviour
 	public virtual void Dispose()
 	{
 
+	}
+
+
+	[ObserversRpc(RunLocally = true, BufferLast = true)]
+	protected void SpawnORPC(Vector3 position, Quaternion rotation)
+	{
+		Debug.LogError("Projectile SpawnORPC");
+
+		// Preserve the starting position of the prefab
+		_offsetPos = transform.position;
+		_offsetRot = transform.rotation;
+
+		// Reparent and reset Projectile root object
+		transform.SetParent(ProjectileManager.Instance.transform, false);
+		transform.position = Vector3.zero;
+		transform.rotation = Quaternion.identity;
+
+		// Move the network transform to the starting position
+		_networkTransform.transform.position = _offsetPos + position;
+		_networkTransform.transform.rotation = _offsetRot * rotation;
 	}
 }

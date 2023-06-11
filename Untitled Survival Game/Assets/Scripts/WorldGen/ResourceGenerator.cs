@@ -98,17 +98,18 @@ public class ResourceGenerator : NetworkBehaviour
 
 	private void SpawnResource(int id, Vector3 position)
 	{
-		Physics.Raycast(position, Vector3.down, out RaycastHit hitInfo, 20f);
-
-		if (hitInfo.collider.gameObject.layer == _spawnLayer)
+		if (Physics.Raycast(position, Vector3.down, out RaycastHit hitInfo, 20f))
 		{
-			Quaternion rotation = Quaternion.FromToRotation(Vector3.up, hitInfo.normal);
+			if (hitInfo.collider.gameObject.layer == _spawnLayer)
+			{
+				Quaternion rotation = Quaternion.FromToRotation(Vector3.up, hitInfo.normal);
 
-			DestructibleManager.Instance.SpawnDestructable(id, hitInfo.point, rotation, transform);
-		}
-		else
-		{
-			//Debug.Log("RayCast hit wrong layer " + hitInfo.collider.gameObject.name + " " + hitInfo.collider.gameObject.layer + " " + _spawnLayer.value);
+				DestructibleManager.Instance.SpawnDestructable(id, hitInfo.point, rotation, transform);
+			}
+			else
+			{
+				//Debug.Log("RayCast hit wrong layer " + hitInfo.collider.gameObject.name + " " + hitInfo.collider.gameObject.layer + " " + _spawnLayer.value);
+			}
 		}
 	}
 

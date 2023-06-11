@@ -75,7 +75,9 @@ public class MeshGenerator : MonoBehaviour
 
 		GetComponent<MeshCollider>().sharedMesh = _mesh;
 
-		GetComponent<NavMeshSurface>().BuildNavMesh();
+		//GetComponent<NavMeshSurface>().BuildNavMesh();
+
+		Debug.LogError("Called BuildNavMesh");
 	}
 
 

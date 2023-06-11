@@ -67,10 +67,16 @@ public class Projectile : ProjectileBase
 
 	public override void Spawn(Vector3 position, Quaternion rotation)
 	{
-		_projectileMotion.SetOffset(position, rotation);
-		_projectileMotion.enabled = IsServer;
+		if (IsServer)
+		{
+			SpawnORPC(position, rotation);
 
-		//UseAbilityORPC(null, EffectTiming.OnStart);
+			Debug.Log("Setting Offset");
+			_projectileMotion.SetOffset(_offsetPos, _offsetRot);
+			_projectileMotion.enabled = IsServer;
+
+			//UseAbilityORPC(null, EffectTiming.OnStart);
+		}
 	}
 
 

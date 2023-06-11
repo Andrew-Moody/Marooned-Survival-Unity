@@ -56,6 +56,11 @@ public class ItemSO : ScriptableObject
 			return AbilityItemSO.GetAbilities();
 		}
 
+		if (Abilities == null)
+		{
+			return null;
+		}
+
 		Ability[] abilities = new Ability[Abilities.Length];
 
 		for (int i = 0; i < Abilities.Length; i++)

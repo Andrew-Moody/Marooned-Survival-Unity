@@ -40,7 +40,7 @@ public abstract class BaseState : IState
 
 	public BaseState()
 	{
-		Debug.LogError("Base State Constructor");
+		//Debug.LogError("Base State Constructor");
 	}
 
 	public BaseState(BaseState state)
@@ -56,7 +56,7 @@ public abstract class BaseState : IState
 		}
 
 
-		Debug.LogError("Base State Copy Constructor");
+		//Debug.LogError("Base State Copy Constructor");
 	}
 
 

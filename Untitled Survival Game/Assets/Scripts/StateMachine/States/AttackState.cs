@@ -93,7 +93,7 @@ public class AttackState : BaseState
 
 	public AttackState()
 	{
-		Debug.LogError("Attack State Constructor");
+		//Debug.LogError("Attack State Constructor");
 	}
 
 
@@ -102,6 +102,6 @@ public class AttackState : BaseState
 	{
 		_attackCoolDown = state._attackCoolDown;
 
-		Debug.LogError("Attack State Copy Constructor (AttackState)");
+		//Debug.LogError("Attack State Copy Constructor (AttackState)");
 	}
 }

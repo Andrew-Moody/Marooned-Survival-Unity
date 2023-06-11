@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class StatsUI : MonoBehaviour
+public class StatsUI : UIPanel
 {
 	[SerializeField]
 	private List<StatBar> _statBars;
@@ -13,7 +13,7 @@ public class StatsUI : MonoBehaviour
 	private readonly Dictionary<StatType, StatBar> _statBarDict = new Dictionary<StatType, StatBar>();
 
 
-	public void Inititialize(GameObject player)
+	public override void Initialize()
 	{
 		foreach(StatBar statBar in _statBars)
 		{
@@ -22,15 +22,26 @@ public class StatsUI : MonoBehaviour
 
 
 
-		_stats = player.GetComponent<Stats>();
+		
+	}
 
-		if (_stats != null)
+
+	public override void SetPlayer(GameObject player)
+	{
+		base.SetPlayer(player);
+
+		if (_player != null)
 		{
-			_stats.OnStatChange += StatChangeHandler;
-		}
-		else
-		{
-			Debug.LogWarning("StatsUI Failed to locate target with stats component");
+			_stats = player.GetComponent<Stats>();
+
+			if (_stats != null)
+			{
+				_stats.OnStatChange += StatChangeHandler;
+			}
+			else
+			{
+				Debug.LogWarning("StatsUI Failed to locate target with stats component");
+			}
 		}
 	}
 

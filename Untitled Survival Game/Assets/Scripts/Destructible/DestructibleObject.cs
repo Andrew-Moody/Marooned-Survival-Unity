@@ -112,7 +112,9 @@ public class DestructibleObject : NetworkBehaviour
 		{
 			CameraController.Instance.SetFPSMode(false);
 
-			UIManager.Instance.ShowCraftingUI(_destructibleSO.CraftingStationSO.Recipes);
+			CraftingUIPanelData data = new CraftingUIPanelData(_destructibleSO.CraftingStationSO.Recipes);
+
+			UIManager.ShowPanel("CraftingUI", data, true);
 		}
 	}
 

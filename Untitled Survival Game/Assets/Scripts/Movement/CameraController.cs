@@ -73,12 +73,19 @@ public class CameraController : NetworkBehaviour
 	public override void OnStartClient()
 	{
 		base.OnStartClient();
-		
-		// The transform of the graphical Object;
-		_graphicTarget = PlayerLocator.Player.transform.parent.GetComponentInChildren<SmoothFollower>().transform;
+	}
 
-		// The transform of the actual NetworkObject
-		_networkTarget = PlayerLocator.Player.transform;
+
+	public void SetPlayer(GameObject player)
+	{
+		if (player != null)
+		{
+			// The transform of the graphical Object;
+			_graphicTarget = PlayerLocator.Player.transform.parent.GetComponentInChildren<SmoothFollower>().transform;
+
+			// The transform of the actual NetworkObject
+			_networkTarget = PlayerLocator.Player.transform;
+		}
 	}
 
 
@@ -137,15 +144,16 @@ public class CameraController : NetworkBehaviour
 		if (_fpsMode)
 		{
 			Cursor.lockState = CursorLockMode.Locked;
-			
+			UIManager.ShowPanel("MouseUI", new MouseUIPanelData(MouseUIMode.Crosshair));
+
 		}
 		else
 		{
 			Cursor.lockState = CursorLockMode.None;
+			UIManager.ShowPanel("MouseUI", new MouseUIPanelData(MouseUIMode.Cursor));
 		}
 
 		Cursor.visible = !_fpsMode;
-		UIManager.Instance.ShowCursor(_fpsMode);
 	}
 
 

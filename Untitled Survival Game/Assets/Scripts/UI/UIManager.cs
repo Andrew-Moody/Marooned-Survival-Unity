@@ -1,114 +1,155 @@
-using FishNet.Connection;
-using FishNet.Object;
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class UIManager : NetworkBehaviour
+public class UIManager : MonoBehaviour
 {
 	public static UIManager Instance;
 
 	[SerializeField]
-	private InventoryUI _inventoryUI;
-
-	[SerializeField]
-	private StatsUI _statsUI;
-
-	[SerializeField]
-	private CraftingUI _craftingUI;
-
-	[SerializeField]
-	private HotbarUI _hotbarUI;
-
-	[SerializeField]
-	private PlacementUI _placementUI;
-
-	[SerializeField]
-	private TextMeshProUGUI _fpsText;
-
-	[SerializeField]
-	private Image _cursor;
-
-	[SerializeField]
 	private Canvas _worldCanvas;
-	public Canvas WorldCanvas { get { return _worldCanvas; } }
+	public Canvas WorldCanvas => _worldCanvas;
 
-	private float _timesSinceFPS;
 
-	private int _frames;
+	[SerializeField]
+	private List<UIPanel> _panels;
+
+	private Dictionary<string, UIPanel> _panelDict;
+
+	private Stack<UIPanel> _panelStack = new Stack<UIPanel>();
+
 
 	private void Awake()
 	{
 		if (Instance == null)
 		{
 			Instance = this;
+			InitializeUI();
+
+			DontDestroyOnLoad(this);
 		}
-	}
-
-
-	public override void OnStartClient()
-	{
-		base.OnStartClient();
-
-		Debug.LogError("UIManager OnStartClient");
-		InitializeUI();
-
-	}
-
-
-	private void Update()
-	{
-		_timesSinceFPS += Time.deltaTime;
-		_frames++;
-		if (_timesSinceFPS >= 1f)
+		else
 		{
-			float fps = _frames / _timesSinceFPS;
-			_fpsText.text = "FPS: " + fps.ToString("#.##");
-			_timesSinceFPS = 0f;
-			_frames = 0;
+			Destroy(gameObject);
 		}
 	}
 
 
 	private void InitializeUI()
 	{
-		GameObject player = PlayerLocator.Player;
+		_panelDict = new Dictionary<string, UIPanel>();
 
-		if (player != null)
+		for (int i = 0; i < _panels.Count; i++)
 		{
-			Debug.LogError("InitializeUI");
+			_panels[i].Initialize();
 
-			_inventoryUI.Initialize(player);
-
-			_statsUI.Inititialize(player);
-
-			_craftingUI.Initialize(player);
-
-			_hotbarUI.Initialize(player);
-
-			_placementUI.Initialize(player);
+			AddPanel(_panels[i]);
 		}
 	}
 
 
-	public void ShowCursor(bool show)
+	public static void SetPlayer(GameObject player)
 	{
-		_cursor.enabled = show;
+		Debug.LogError("UIManager SetPlayer");
+
+		for (int i = 0; i < Instance._panels.Count; i++)
+		{
+			Instance._panels[i].SetPlayer(player);
+		}
 	}
 
 
-	public void ShowCraftingUI(CraftingRecipe[] recipes)
+	public static void AddPanel(UIPanel panel)
 	{
-		_craftingUI.gameObject.SetActive(true);
-		_craftingUI.Show(recipes);
+		if (Instance._panelDict.ContainsKey(panel.PanelName))
+		{
+			Debug.LogError($"Failed to add UIPanel {panel.name}: A UIPanel already exists with the PanelName {panel.PanelName}");
+		}
+		else
+		{
+			Instance._panelDict[panel.PanelName] = panel;
+		}
 	}
 
 
-	public void HideCraftingUI()
+	public static void ShowPanel(string panelName, UIPanelData data = null, bool pushToStack = false)
 	{
-		_craftingUI.gameObject.SetActive(false);
+		if (Instance._panelDict.TryGetValue(panelName, out UIPanel panel))
+		{
+			panel.Show(data);
+
+			if (pushToStack)
+			{
+				HideStackTop(false);
+
+				Instance._panelStack.Push(panel);
+			}
+		}
+		else
+		{
+			Debug.LogError($"Failed to Show UIPanel: A UIPanel with name {panelName} was not found");
+		}
+	}
+
+
+	public static void HidePanel(string panelName)
+	{
+		if (Instance._panelDict.TryGetValue(panelName, out UIPanel panel))
+		{
+			panel.Hide();
+		}
+		else
+		{
+			Debug.LogError($"Failed to Hide UIPanel: A UIPanel with name {panelName} was not found");
+		}
+	}
+
+
+	public static void HideStackTop(bool popFromStack)
+	{
+		if (Instance._panelStack.Count == 0)
+		{
+			return;
+		}
+
+		if (popFromStack)
+		{
+			Instance._panelStack.Pop().Hide();
+
+			if (Instance._panelStack.Count > 0)
+			{
+				Instance._panelStack.Peek().Show(null);
+			}
+		}
+		else
+		{
+			Instance._panelStack.Peek().Hide();
+		}
+	}
+
+
+	/// <summary>
+	/// Returns true if the name of the panel on the top of the stack is equal to panelName 
+	/// </summary>
+	/// <param name="panelName"></param>
+	/// <returns></returns>
+	public static bool CheckStackTop(string panelName)
+	{
+		if (Instance._panelStack.Count > 0)
+		{
+			return Instance._panelStack.Peek().PanelName == panelName;
+		}
+
+		return false;
+	}
+
+
+	public static void HideAll()
+	{
+		for (int i = 0; i < Instance._panels.Count; i++)
+		{
+			Instance._panels[i].Hide();
+		}
+
+		Instance._panelStack.Clear();
 	}
 }

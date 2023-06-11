@@ -280,9 +280,16 @@ public class AbilityActor : NetworkBehaviour
 	{
 		Debug.Log(_projectileSource.forward);
 
-		_projectile = ProjectileManager.SpawnProjectile(projectile);
+		if (_projectileSource != null)
+		{
+			_projectile = ProjectileManager.SpawnProjectile(projectile, _projectileSource.position, _projectileSource.rotation);
 
-		_projectile.SetFollowTarget(_projectileSource);
+			_projectile.SetFollowTarget(_projectileSource);
+		}
+		else
+		{
+			Debug.LogError("Missing Projectile Source");
+		}
 	}
 
 
