@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Oak Tree 1
   _id: 300
+  _basePrefab: {fileID: 416200329961083273, guid: ff81589c3f4c979468ce13ba91520c45, type: 3}
+  _graphicPrefab: {fileID: 0}
   _mesh: {fileID: -2356627229855419488, guid: ca309ad74a3b1bb49889e45863deb6dd, type: 3}
   _material: {fileID: 2100000, guid: 4c23086cc53d05b42a8a5004832ae24a, type: 2}
   _itemID: 301

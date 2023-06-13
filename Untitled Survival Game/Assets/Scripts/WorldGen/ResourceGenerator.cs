@@ -68,15 +68,15 @@ public class ResourceGenerator : MonoBehaviour
 	private void Awake()
 	{
 		_spawnLayer = LayerMask.NameToLayer("Ground");
-
-		ResizeMaps();
-
-		GenerateSpawnMap();
 	}
 
 	public void SpawnResources(int seed)
 	{
 		_seed = seed;
+
+		ResizeMaps();
+
+		GenerateSpawnMap();
 
 		float halfWidth = (_width - 1) * _tileSize * 0.5f;
 		float halfHeight = (_height - 1) * _tileSize * 0.5f;

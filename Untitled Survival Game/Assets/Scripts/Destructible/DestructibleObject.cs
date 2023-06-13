@@ -13,29 +13,26 @@ public class DestructibleObject : NetworkBehaviour
 	private float _deathTime;
 
 	[SerializeField]
-	private int _itemToSpawn;
-
-	[SerializeField]
 	private GameObject _graphicObject;
 
 	[SerializeField]
 	private ParticleHandler _particleHandler;
 
 	[SerializeField]
-	private MeshFilter _meshFilter;
-
-	[SerializeField]
-	private MeshRenderer _meshRenderer;
-
-	[SerializeField]
 	private WorldStatDisplay _statDisplay;
 
+
+	private MeshFilter _meshFilter;
+
+	private MeshRenderer _meshRenderer;
 
 	private bool _isAlive;
 
 	private bool _isDying;
 
 	private float _deathTimeLeft;
+
+	private int _itemToSpawn;
 
 	private DestructibleSO _destructibleSO;
 
@@ -63,6 +60,17 @@ public class DestructibleObject : NetworkBehaviour
 		_itemToSpawn = destructibleSO.ItemID;
 
 		_abilityActor.Initialize(destructibleSO);
+
+
+		if (destructibleSO.GraphicPrefab != null)
+		{
+			_graphicObject.SetActive(false);
+
+			_graphicObject = Instantiate(destructibleSO.GraphicPrefab, _graphicObject.transform.parent, false);
+		}
+
+		_meshFilter = _graphicObject.GetComponent<MeshFilter>();
+		_meshRenderer = _graphicObject.GetComponent<MeshRenderer>();
 
 		if (destructibleSO.Mesh != null)
 		{
@@ -105,19 +113,6 @@ public class DestructibleObject : NetworkBehaviour
 		_isDying = false;
 
 		_deathTimeLeft = 0f;
-	}
-
-
-	public void Interact()
-	{
-		if (_destructibleSO.CraftingStationSO != null)
-		{
-			CameraController.Instance.SetFPSMode(false);
-
-			CraftingUIPanelData data = new CraftingUIPanelData(_destructibleSO.CraftingStationSO.Recipes);
-
-			UIManager.ShowPanel("CraftingUI", data, true);
-		}
 	}
 
 

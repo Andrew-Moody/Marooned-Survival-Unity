@@ -20,7 +20,12 @@ MonoBehaviour:
   Sprite: {fileID: 21300000, guid: 9c9ca3039072d1e40bb7ce8998eba6da, type: 3}
   InventoryOptions: 0300000000000000
   EquipedOptions: 
-  Mesh: {fileID: 4686849319519084627, guid: 4ff535bcf8a5e284bbd56d99958292b3, type: 3}
-  Material: {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  Mesh: {fileID: -1067326690134486939, guid: 22cb6f89d10e71e47bf069b329578ef6, type: 3}
+  Material: {fileID: 2100000, guid: 4c23086cc53d05b42a8a5004832ae24a, type: 2}
   WorldOptions: 00000000
+  ProjectileSource: {x: 0, y: 0, z: 0}
   AbilityItemSO: {fileID: 11400000, guid: c041db85c15509245be50276abd138b9, type: 2}
+  Abilities: []
+  PlacedItemID: 0
+  references:
+    version: 1

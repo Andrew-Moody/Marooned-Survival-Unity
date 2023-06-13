@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class CraftingSlotUI : MonoBehaviour
+public class CraftingSlotUI : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
 	public int index;
 
@@ -13,8 +14,14 @@ public class CraftingSlotUI : MonoBehaviour
 	[SerializeField]
 	private Color _greyoutColor;
 
+	public Sprite CurrentIcon => _icon.sprite;
 
 	private int _itemID;
+
+
+	public event System.Action<PointerEventData> OnPointerEnterEvent;
+
+	public event System.Action<PointerEventData> OnPointerExitEvent;
 
 
 	public void SetRecipe(CraftingRecipe recipe)
@@ -51,5 +58,15 @@ public class CraftingSlotUI : MonoBehaviour
 		{
 			_icon.color = Color.white;
 		}
+	}
+
+	public void OnPointerEnter(PointerEventData eventData)
+	{
+		OnPointerEnterEvent?.Invoke(eventData);
+	}
+
+	public void OnPointerExit(PointerEventData eventData)
+	{
+		OnPointerExitEvent?.Invoke(eventData);
 	}
 }

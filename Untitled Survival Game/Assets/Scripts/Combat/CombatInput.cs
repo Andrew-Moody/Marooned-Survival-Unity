@@ -131,13 +131,15 @@ public class CombatInput : NetworkBehaviour
 	}
 
 
+
+	[ServerRpc]
 	private void Interact()
 	{
 		Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, _interactRange, _interactMask);
 
-		if (hit.collider != null && hit.collider.gameObject.TryGetComponent(out DestructibleObject destructible))
+		if (hit.collider != null && hit.collider.gameObject.TryGetComponent(out Interactable interactible))
 		{
-			destructible.Interact();
+			interactible.Interact(Owner);
 		}
 	}
 }

@@ -9,6 +9,12 @@ public class CraftingUI : UIPanel, IPointerDownHandler
 	[SerializeField]
 	private CraftingSlotUI _slotPrefab;
 
+	[SerializeField]
+	private Transform _slotHolder;
+
+	[SerializeField]
+	private ToolTip _toolTip;
+
 
 	private List<CraftingSlotUI> _slots = new List<CraftingSlotUI>();
 
@@ -49,6 +55,8 @@ public class CraftingUI : UIPanel, IPointerDownHandler
 	{
 		gameObject.SetActive(true);
 
+		_toolTip.gameObject.SetActive(false);
+
 		CraftingUIPanelData data = craftingRecipes as CraftingUIPanelData;
 
 		if (data != null)
@@ -71,7 +79,12 @@ public class CraftingUI : UIPanel, IPointerDownHandler
 		{
 			for (int i = _slots.Count; i < _craftingRecipes.Length; i++)
 			{
-				_slots.Add(Instantiate(_slotPrefab, transform));
+				CraftingSlotUI slot = Instantiate(_slotPrefab, _slotHolder);
+
+				slot.OnPointerEnterEvent += OnPointerEnterHandler;
+				slot.OnPointerExitEvent += OnPointerExitHandler;
+
+				_slots.Add(slot);
 				_slots[i].index = i;
 			}
 		}
@@ -100,6 +113,36 @@ public class CraftingUI : UIPanel, IPointerDownHandler
 
 			CraftingManager.Instance.CraftItemSRPC(recipeID, _inventory);
 		}
+	}
+
+
+	// OnPointerExit failed to fire when handled directly by CraftingUI when the mouse moved from one child to another
+	// Moving the eventSystem callbacks to the slots themselves seems to work
+
+	private void OnPointerEnterHandler(PointerEventData eventData)
+	{
+		//Debug.LogError($"OnPointerEnter on {eventData.pointerEnter.name}");
+
+		if (eventData.pointerEnter.TryGetComponent(out CraftingSlotUI slot))
+		{
+			Ingredient[] ingredients = _craftingRecipes[slot.index].Ingredients;
+
+			string[] entries = new string[ingredients.Length];
+
+			for (int i = 0; i < ingredients.Length; i++)
+			{
+				entries[i] = $"{ItemManager.Instance.GetItemSO(ingredients[i].ItemID).ItemName} x{ingredients[i].Quantity}";
+			}
+
+			_toolTip.SetToolTip(slot.CurrentIcon, entries);
+			_toolTip.gameObject.SetActive(true);
+		}
+	}
+
+	private void OnPointerExitHandler(PointerEventData eventData)
+	{
+		//Debug.LogError($"OnPointerExit on {eventData.pointerEnter.name}");
+		_toolTip.gameObject.SetActive(false);
 	}
 }
 

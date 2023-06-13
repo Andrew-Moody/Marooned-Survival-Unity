@@ -19,7 +19,7 @@ MonoBehaviour:
     Ingredients:
     - ItemID: 200
       Quantity: 1
-    - ItemID: 302
+    - ItemID: 301
       Quantity: 1
   - RecipeID: 102
     OutputID: 111
@@ -27,5 +27,5 @@ MonoBehaviour:
     Ingredients:
     - ItemID: 200
       Quantity: 1
-    - ItemID: 302
+    - ItemID: 301
       Quantity: 1

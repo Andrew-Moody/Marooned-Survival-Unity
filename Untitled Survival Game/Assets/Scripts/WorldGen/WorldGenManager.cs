@@ -17,8 +17,6 @@ public class WorldGenManager : NetworkBehaviour
 	[SerializeField]
 	private ResourceGenerator _resourceGenerator;
 
-	public event System.Action FinishedWorldGenEvent;
-
 	
 	private void Awake()
 	{

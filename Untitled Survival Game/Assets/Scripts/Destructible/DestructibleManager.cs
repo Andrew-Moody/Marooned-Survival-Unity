@@ -43,7 +43,7 @@ public class DestructibleManager : NetworkBehaviour
 		// As a result you will always need an RPC to set the parent on an Instantiated Prefab
 		// Note that a transform or gameobject sent in an RPC will always be null if not attached to a NetworkObject
 
-		DestructibleObject destructible = Instantiate(_prefab, position, rotation);
+		DestructibleObject destructible = Instantiate(destructibleSO.BasePrefab, position, rotation);
 
 		Spawn(destructible.gameObject);
 

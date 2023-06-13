@@ -26,6 +26,8 @@ public class MobManager : NetworkBehaviour
 
 	private int _mobCount;
 
+	public static int MobCount => Instance._mobCount;
+
 	private void Awake()
 	{
 		if (Instance == null)

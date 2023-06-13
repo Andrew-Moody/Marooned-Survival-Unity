@@ -47,9 +47,10 @@ MonoBehaviour:
       data:
         EffectType: 3
         EffectTiming: 1
-        Sound: {fileID: 8300000, guid: 1253ee599a1f8cc49a195084aeab4eb2, type: 3}
+        Sound: {fileID: 8300000, guid: d76309bdff4fffd4ebfadbac6fee3764, type: 3}
     00000003:
       type: {class: UseItemEffect, ns: , asm: Assembly-CSharp}
       data:
         EffectType: 7
         EffectTiming: 1
+        PlaceableID: 0

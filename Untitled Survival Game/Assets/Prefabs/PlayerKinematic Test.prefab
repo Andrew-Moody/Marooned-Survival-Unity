@@ -169,7 +169,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bc8f9f6a2d777f4e8a435c0a295cc17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 7
+  _componentIndexCache: 11
   _addedNetworkObject: {fileID: 8748319289121584179}
   _networkObjectCache: {fileID: 8748319289121584179}
   _abilityActor: {fileID: 2037917013885147894}
@@ -236,7 +236,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f33333c45bbd6244b0e22cd1ad54732, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 8
+  _componentIndexCache: 12
   _addedNetworkObject: {fileID: 8748319289121584179}
   _networkObjectCache: {fileID: 8748319289121584179}
   _stats: {fileID: 0}
@@ -255,6 +255,7 @@ MonoBehaviour:
     m_Bits: 0
   _inventory: {fileID: 0}
   _projectileSource: {fileID: 8127156894508492046}
+  _agent: {fileID: 0}
 --- !u!114 &4520280605910822645
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -674,7 +675,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bc8f9f6a2d777f4e8a435c0a295cc17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 6
+  _componentIndexCache: 10
   _addedNetworkObject: {fileID: 8748319289121584179}
   _networkObjectCache: {fileID: 8748319289121584179}
   _abilityActor: {fileID: 0}
@@ -802,7 +803,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bc8f9f6a2d777f4e8a435c0a295cc17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 5
+  _componentIndexCache: 9
   _addedNetworkObject: {fileID: 8748319289121584179}
   _networkObjectCache: {fileID: 8748319289121584179}
   _abilityActor: {fileID: 0}
@@ -930,7 +931,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bc8f9f6a2d777f4e8a435c0a295cc17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 4
+  _componentIndexCache: 8
   _addedNetworkObject: {fileID: 8748319289121584179}
   _networkObjectCache: {fileID: 8748319289121584179}
   _abilityActor: {fileID: 0}
@@ -1088,7 +1089,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bc8f9f6a2d777f4e8a435c0a295cc17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 3
+  _componentIndexCache: 7
   _addedNetworkObject: {fileID: 8748319289121584179}
   _networkObjectCache: {fileID: 8748319289121584179}
   _abilityActor: {fileID: 0}
@@ -1264,7 +1265,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bc8f9f6a2d777f4e8a435c0a295cc17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 7
+  _componentIndexCache: 13
   _addedNetworkObject: {fileID: 8748319289121584179}
   _networkObjectCache: {fileID: 8748319289121584179}
   _abilityActor: {fileID: 8201508245467690289}
@@ -1331,7 +1332,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f33333c45bbd6244b0e22cd1ad54732, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 8
+  _componentIndexCache: 14
   _addedNetworkObject: {fileID: 8748319289121584179}
   _networkObjectCache: {fileID: 8748319289121584179}
   _stats: {fileID: 0}
@@ -1350,6 +1351,7 @@ MonoBehaviour:
     m_Bits: 0
   _inventory: {fileID: 0}
   _projectileSource: {fileID: 7848577852231253800}
+  _agent: {fileID: 0}
 --- !u!1 &6545347337491629525
 GameObject:
   m_ObjectHideFlags: 0
@@ -1811,7 +1813,7 @@ MonoBehaviour:
   _interactRange: 2
   _interactMask:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 1536
 --- !u!114 &6031285179409189235
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1843,6 +1845,7 @@ MonoBehaviour:
     m_Bits: 64
   _inventory: {fileID: 5271580255148344578}
   _projectileSource: {fileID: 7848577852231253800}
+  _agent: {fileID: 0}
 --- !u!114 &4914154645436174616
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2253,8 +2256,14 @@ MonoBehaviour:
   - {fileID: 2185315170833738049}
   - {fileID: 5049083738702227270}
   - {fileID: 4520280605910822645}
+  - {fileID: 952221630413808651}
+  - {fileID: 787864407624390806}
+  - {fileID: 7872201630306974425}
+  - {fileID: 8615519476207526426}
   - {fileID: 61887281253506367}
   - {fileID: 2037917013885147894}
+  - {fileID: 6477822008281276195}
+  - {fileID: 8201508245467690289}
   <ParentNetworkObject>k__BackingField: {fileID: 0}
   <ChildNetworkObjects>k__BackingField:
   - {fileID: 3319784803144381655}

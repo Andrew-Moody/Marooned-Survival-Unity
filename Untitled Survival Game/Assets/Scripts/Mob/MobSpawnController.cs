@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class MobSpawnController : MonoBehaviour
 {
+	[SerializeField]
+	private int _maxSpawns;
+
 	private float _delay = 5f;
 
 	void Awake()
@@ -24,6 +27,7 @@ public class MobSpawnController : MonoBehaviour
 		}
 		else
 		{
+			if (MobManager.MobCount < _maxSpawns)
 			MobManager.SpawnMob("Man", transform.position, transform.rotation);
 		}
 		

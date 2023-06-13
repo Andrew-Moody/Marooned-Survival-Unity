@@ -14,6 +14,14 @@ public class DestructibleSO : ScriptableObject
 	public int ID => _id;
 
 	[SerializeField]
+	private DestructibleObject _basePrefab;
+	public DestructibleObject BasePrefab => _basePrefab;
+
+	[SerializeField]
+	private GameObject _graphicPrefab;
+	public GameObject GraphicPrefab => _graphicPrefab;
+
+	[SerializeField]
 	private Mesh _mesh;
 	public Mesh Mesh => _mesh;
 
@@ -37,10 +45,6 @@ public class DestructibleSO : ScriptableObject
 
 	[SerializeField] private float _toolPower;
 	public float ToolPower => _toolPower;
-
-	[SerializeField]
-	private CraftingStationSO _craftingStationSO;
-	public CraftingStationSO CraftingStationSO => _craftingStationSO;
 
 	[SerializeField]
 	private ParticleEffectData[] _particleEffects;

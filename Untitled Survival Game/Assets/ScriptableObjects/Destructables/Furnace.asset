@@ -14,10 +14,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Furnace
   _id: 401
-  _mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
-  _material: {fileID: 2100000, guid: c089ac32c1036404691c4055d17861d6, type: 2}
+  _basePrefab: {fileID: 416200329961083273, guid: 64383b39db8c6ad4daf7d265ad837f58, type: 3}
+  _graphicPrefab: {fileID: 0}
+  _mesh: {fileID: -5242391522756403421, guid: 07b9bf37065e6ba4ab841b2f4c2c0b4d, type: 3}
+  _material: {fileID: 0}
   _itemID: 101
   _deathTime: 3
   _toolType: 1
   _toolPower: 0
-  _craftingStationSO: {fileID: 11400000, guid: 09fc4d6dcbafd0c4fbe054aac5e7dcdb, type: 2}
+  _particleEffects:
+  - Name: HIT
+    Anchor: {fileID: 0}
+    ParticleSystem: {fileID: 1400737571931329622, guid: 0c811072af75fbe419ba983f90484b05, type: 3}
+  - Name: DEATH
+    Anchor: {fileID: 0}
+    ParticleSystem: {fileID: 1400737571931329622, guid: 0c811072af75fbe419ba983f90484b05, type: 3}

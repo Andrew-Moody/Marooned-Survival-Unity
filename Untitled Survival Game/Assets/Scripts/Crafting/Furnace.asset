@@ -14,50 +14,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Recipes:
   - RecipeID: 200
-    OutputID: 122
+    OutputID: 205
     Quantity: 1
     Ingredients:
-    - ItemID: 301
-      Quantity: 1
     - ItemID: 203
       Quantity: 1
     - ItemID: 202
       Quantity: 1
   - RecipeID: 201
-    OutputID: 123
+    OutputID: 206
     Quantity: 1
     Ingredients:
-    - ItemID: 303
-      Quantity: 1
     - ItemID: 204
       Quantity: 1
     - ItemID: 202
-      Quantity: 1
-  - RecipeID: 202
-    OutputID: 112
-    Quantity: 1
-    Ingredients:
-    - ItemID: 301
-      Quantity: 1
-    - ItemID: 203
-      Quantity: 1
-    - ItemID: 202
-      Quantity: 1
-  - RecipeID: 203
-    OutputID: 113
-    Quantity: 1
-    Ingredients:
-    - ItemID: 303
-      Quantity: 1
-    - ItemID: 204
-      Quantity: 1
-    - ItemID: 202
-      Quantity: 1
-  - RecipeID: 204
-    OutputID: 105
-    Quantity: 1
-    Ingredients:
-    - ItemID: 101
-      Quantity: 1
-    - ItemID: 102
       Quantity: 1

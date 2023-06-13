@@ -17,11 +17,52 @@ MonoBehaviour:
   ExamineText: A fine bench for crafting
   StackLimit: 10
   equipSlot: 0
-  Sprite: {fileID: 21300000, guid: ef90075d92abe4b44a874bc4ea9d140a, type: 3}
+  Sprite: {fileID: 21300000, guid: afc439b43aaee514bafeb34a0666caa8, type: 3}
   InventoryOptions: 0000000003000000
   EquipedOptions: 
-  Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
-  Material: {fileID: 2100000, guid: 33cc5272ae2c5734dba7c0f2a18be52c, type: 2}
+  Mesh: {fileID: -6200502243224066735, guid: 07b9bf37065e6ba4ab841b2f4c2c0b4d, type: 3}
+  Material: {fileID: 2100000, guid: 4c23086cc53d05b42a8a5004832ae24a, type: 2}
   WorldOptions: 
-  AbilityItemSO: {fileID: 11400000, guid: 4f028dc2faa4b7949ab7e19e97a581ee, type: 2}
+  ProjectileSource: {x: 0, y: 0, z: 0}
+  AbilityItemSO: {fileID: 0}
+  Abilities:
+  - id: 0
   PlacedItemID: 402
+  references:
+    version: 1
+    00000000:
+      type: {class: Ability, ns: , asm: Assembly-CSharp}
+      data:
+        _abilityName: Place WorkBench
+        _abilityType: 0
+        _toolType: 0
+        _toolPower: 0
+        _coolDown: 1
+        _requireTarget: 0
+        _requirements: []
+        _namedValues: []
+        _userEffects:
+        - id: 1
+        - id: 2
+        _targetEffects: []
+        _itemEffects:
+        - id: 3
+    00000001:
+      type: {class: AnimationEffect, ns: , asm: Assembly-CSharp}
+      data:
+        EffectType: 1
+        EffectTiming: 1
+        AnimTrigger: USE_ABILITY
+        Animation: {fileID: 0}
+    00000002:
+      type: {class: SoundEffect, ns: , asm: Assembly-CSharp}
+      data:
+        EffectType: 3
+        EffectTiming: 1
+        Sound: {fileID: 8300000, guid: d76309bdff4fffd4ebfadbac6fee3764, type: 3}
+    00000003:
+      type: {class: UseItemEffect, ns: , asm: Assembly-CSharp}
+      data:
+        EffectType: 7
+        EffectTiming: 1
+        PlaceableID: 0

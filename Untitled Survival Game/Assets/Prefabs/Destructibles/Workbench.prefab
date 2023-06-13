@@ -78,8 +78,8 @@ MonoBehaviour:
   _addedNetworkObject: {fileID: 416200329961083272}
   _networkObjectCache: {fileID: 416200329961083272}
   _deathTime: 3
-  _itemToSpawn: 102
   _graphicObject: {fileID: 905301147962558676}
+  _particleHandler: {fileID: 2642624362254022922}
   _statDisplay: {fileID: 6129888415841159067}
 --- !u!114 &416200329961083272
 MonoBehaviour:
@@ -117,6 +117,7 @@ MonoBehaviour:
   - {fileID: 416200329961083273}
   - {fileID: 416200329961083279}
   - {fileID: 416200329961083278}
+  - {fileID: 3840489030011175478}
   <ParentNetworkObject>k__BackingField: {fileID: 0}
   <ChildNetworkObjects>k__BackingField: []
   _isNetworked: 1
@@ -171,6 +172,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   _inventory: {fileID: 0}
+  _projectileSource: {fileID: 0}
+  _agent: {fileID: 0}
 --- !u!114 &3840489030011175478
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -183,6 +186,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1454ee6b335ddc041be6a459fa232ce7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _componentIndexCache: 3
+  _addedNetworkObject: {fileID: 416200329961083272}
+  _networkObjectCache: {fileID: 416200329961083272}
   _craftingStationSO: {fileID: 11400000, guid: 4f7db5f2a9f6e1344b562d874b3123f6, type: 2}
 --- !u!1 &416200330121673329
 GameObject:
@@ -462,7 +468,7 @@ GameObject:
   - component: {fileID: 1875495835820309370}
   - component: {fileID: 3311766407614428130}
   m_Layer: 9
-  m_Name: Cube
+  m_Name: Workbench
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -489,7 +495,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 905301147962558676}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: -6200502243224066735, guid: 07b9bf37065e6ba4ab841b2f4c2c0b4d, type: 3}
 --- !u!23 &3311766407614428130
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -509,7 +515,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 33cc5272ae2c5734dba7c0f2a18be52c, type: 2}
+  - {fileID: 2100000, guid: 4c23086cc53d05b42a8a5004832ae24a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

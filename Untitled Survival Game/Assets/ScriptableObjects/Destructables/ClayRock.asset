@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: ClayRock
   _id: 201
+  _basePrefab: {fileID: 416200329961083273, guid: ff81589c3f4c979468ce13ba91520c45, type: 3}
+  _graphicPrefab: {fileID: 0}
   _mesh: {fileID: -2556619735891970170, guid: df1bc65893f8b754595688fc64085fb1, type: 3}
   _material: {fileID: 2100000, guid: 4c23086cc53d05b42a8a5004832ae24a, type: 2}
   _itemID: 201

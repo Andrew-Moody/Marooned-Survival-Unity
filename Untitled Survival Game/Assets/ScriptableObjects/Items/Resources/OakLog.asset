@@ -12,16 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbc34e124ea594447add3265ad9cb585, type: 3}
   m_Name: OakLog
   m_EditorClassIdentifier: 
-  ItemID: 301
+  ItemID: 302
   ItemName: Oak Log
   ExamineText: Oak Log
   StackLimit: 10
   equipSlot: 0
-  Sprite: {fileID: 21300000, guid: ef90075d92abe4b44a874bc4ea9d140a, type: 3}
+  Sprite: {fileID: 21300000, guid: fb747864ab1683e41bcd1f24763de3c4, type: 3}
   InventoryOptions: 0300000000000000
   EquipedOptions: 
   Mesh: {fileID: 8478707780338991327, guid: ca309ad74a3b1bb49889e45863deb6dd, type: 3}
   Material: {fileID: 2100000, guid: 4c23086cc53d05b42a8a5004832ae24a, type: 2}
   WorldOptions: 
+  ProjectileSource: {x: 0, y: 0, z: 0}
   AbilityItemSO: {fileID: 0}
+  Abilities: []
   PlacedItemID: 0
+  references:
+    version: 1

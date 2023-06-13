@@ -10,13 +10,14 @@ GameObject:
   m_Component:
   - component: {fileID: 416200329961083269}
   - component: {fileID: 416200329961083268}
-  - component: {fileID: 416200329961083274}
   - component: {fileID: 416200329961083273}
   - component: {fileID: 416200329961083272}
   - component: {fileID: 416200329961083279}
   - component: {fileID: 416200329961083278}
+  - component: {fileID: 3840489030011175478}
+  - component: {fileID: 8102610190564197078}
   m_Layer: 9
-  m_Name: DestuctiblePrefab
+  m_Name: Forge
   m_TagString: Mob
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30,7 +31,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 416200329961083277}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.374, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 416200330121673330}
@@ -48,19 +49,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 416200329961083277}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!135 &416200329961083274
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 416200329961083277}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.7
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &416200329961083273
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -77,11 +65,8 @@ MonoBehaviour:
   _addedNetworkObject: {fileID: 416200329961083272}
   _networkObjectCache: {fileID: 416200329961083272}
   _deathTime: 3
-  _itemToSpawn: 201
-  _graphicObject: {fileID: 5080130580684865243}
+  _graphicObject: {fileID: 905301147962558676}
   _particleHandler: {fileID: 2642624362254022922}
-  _meshFilter: {fileID: 3168502091301929823}
-  _meshRenderer: {fileID: 6520733348971845144}
   _statDisplay: {fileID: 6129888415841159067}
 --- !u!114 &416200329961083272
 MonoBehaviour:
@@ -96,11 +81,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NetworkObserver: {fileID: 0}
-  <PrefabId>k__BackingField: 28
+  <PrefabId>k__BackingField: 19
   <SpawnableCollectionId>k__BackingField: 0
   _scenePathHash: 0
   <SceneId>k__BackingField: 0
-  <AssetPathHash>k__BackingField: 1959924697605067189
+  <AssetPathHash>k__BackingField: 9886016611884767223
   _sceneNetworkObjects:
   - {fileID: 416200329961083272}
   - {fileID: 0}
@@ -119,7 +104,7 @@ MonoBehaviour:
   - {fileID: 416200329961083273}
   - {fileID: 416200329961083279}
   - {fileID: 416200329961083278}
-  - {fileID: 0}
+  - {fileID: 3840489030011175478}
   <ParentNetworkObject>k__BackingField: {fileID: 0}
   <ChildNetworkObjects>k__BackingField: []
   _isNetworked: 1
@@ -175,6 +160,37 @@ MonoBehaviour:
     m_Bits: 0
   _inventory: {fileID: 0}
   _projectileSource: {fileID: 0}
+  _agent: {fileID: 0}
+--- !u!114 &3840489030011175478
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 416200329961083277}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1454ee6b335ddc041be6a459fa232ce7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _componentIndexCache: 3
+  _addedNetworkObject: {fileID: 416200329961083272}
+  _networkObjectCache: {fileID: 416200329961083272}
+  _craftingStationSO: {fileID: 11400000, guid: 09fc4d6dcbafd0c4fbe054aac5e7dcdb, type: 2}
+--- !u!136 &8102610190564197078
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 416200329961083277}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 1
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &416200330121673329
 GameObject:
   m_ObjectHideFlags: 0
@@ -389,7 +405,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 4790094013925509986}
+  - {fileID: 7564726744900253965}
   m_Father: {fileID: 416200329961083269}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -441,7 +457,7 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 0
     _duration: 0.25
---- !u!1 &5080130580684865243
+--- !u!1 &905301147962558676
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -449,45 +465,45 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4790094013925509986}
-  - component: {fileID: 3168502091301929823}
-  - component: {fileID: 6520733348971845144}
+  - component: {fileID: 7564726744900253965}
+  - component: {fileID: 1875495835820309370}
+  - component: {fileID: 3311766407614428130}
   m_Layer: 9
-  m_Name: Mesh
+  m_Name: Forge
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4790094013925509986
+--- !u!4 &7564726744900253965
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5080130580684865243}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_GameObject: {fileID: 905301147962558676}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5861946048912771079}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &3168502091301929823
+--- !u!33 &1875495835820309370
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5080130580684865243}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &6520733348971845144
+  m_GameObject: {fileID: 905301147962558676}
+  m_Mesh: {fileID: 5685816728850260451, guid: 07b9bf37065e6ba4ab841b2f4c2c0b4d, type: 3}
+--- !u!23 &3311766407614428130
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5080130580684865243}
+  m_GameObject: {fileID: 905301147962558676}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -569,7 +585,7 @@ MonoBehaviour:
   - Name: HIT
     Anchor: {fileID: 5861946048912771079}
     ParticleSystem: {fileID: 1400737571931329622, guid: c741a432afc388d45a898987b5f387a7, type: 3}
-  - Name: DEATH
+  - Name: Death
     Anchor: {fileID: 5861946048912771079}
     ParticleSystem: {fileID: 1400737571931329622, guid: c741a432afc388d45a898987b5f387a7, type: 3}
 --- !u!1001 &4614275969842227109

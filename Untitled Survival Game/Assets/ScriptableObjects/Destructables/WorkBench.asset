@@ -12,12 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46640321862bd874f8021ec93a62c6d8, type: 3}
   m_Name: WorkBench
   m_EditorClassIdentifier: 
-  _name: 
+  _name: WorkBench
   _id: 402
-  _mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
-  _material: {fileID: 2100000, guid: 33cc5272ae2c5734dba7c0f2a18be52c, type: 2}
+  _basePrefab: {fileID: 416200329961083273, guid: 0badc05909aaac14d83559e9634ba016, type: 3}
+  _graphicPrefab: {fileID: 0}
+  _mesh: {fileID: -6200502243224066735, guid: 07b9bf37065e6ba4ab841b2f4c2c0b4d, type: 3}
+  _material: {fileID: 0}
   _itemID: 102
   _deathTime: 3
   _toolType: 2
   _toolPower: 0
-  _craftingStationSO: {fileID: 11400000, guid: 4f7db5f2a9f6e1344b562d874b3123f6, type: 2}
+  _particleEffects:
+  - Name: HIT
+    Anchor: {fileID: 0}
+    ParticleSystem: {fileID: 1400737571931329622, guid: 6b69dd3aa2bc69e44907c4de44f1b0d4, type: 3}
+  - Name: DEATH
+    Anchor: {fileID: 0}
+    ParticleSystem: {fileID: 1400737571931329622, guid: 6b69dd3aa2bc69e44907c4de44f1b0d4, type: 3}
