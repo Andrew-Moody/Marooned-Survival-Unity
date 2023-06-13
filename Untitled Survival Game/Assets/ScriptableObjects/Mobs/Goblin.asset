@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Goblin
   _id: 1
-  _mobPrefab: {fileID: 2622224132106437306, guid: 3ecb0875ab1806d4aaf5421e9abcab0e, type: 3}
+  _baseMobPrefab: {fileID: 7983660517394171817, guid: c279e38c57db3d04393a19d1dce10efa, type: 3}
+  _graphicVariantPrefab: {fileID: 2622224132106437306, guid: 3ecb0875ab1806d4aaf5421e9abcab0e, type: 3}
   _stats:
   - StatType: 1
     Value: 100

@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45e779c660012684982f34e8daa1a17f, type: 3}
+  m_Name: LaunchDemonBurst
+  m_EditorClassIdentifier: 
+  _ability:
+    id: 0
+  references:
+    version: 1
+    00000000:
+      type: {class: Ability, ns: , asm: Assembly-CSharp}
+      data:
+        _abilityName: Launch Fireball
+        _abilityType: 0
+        _toolType: 0
+        _toolPower: 0
+        _coolDown: 0.5
+        _requireTarget: 0
+        _requirements: []
+        _namedValues: []
+        _userEffects:
+        - id: 1
+        - id: 2
+        - id: 3
+        _targetEffects: []
+        _itemEffects: []
+    00000001:
+      type: {class: AnimationEffect, ns: , asm: Assembly-CSharp}
+      data:
+        EffectType: 1
+        EffectTiming: 1
+        AnimTrigger: USE_ABILITY
+        Animation: {fileID: 0}
+    00000002:
+      type: {class: SpawnProjectileEffect, ns: , asm: Assembly-CSharp}
+      data:
+        EffectType: 8
+        EffectTiming: 1
+        _projectile: {fileID: 7208833085580975929, guid: 69b7dc210ffcdae4dbe796195321355c, type: 3}
+    00000003:
+      type: {class: LaunchProjectileEffect, ns: , asm: Assembly-CSharp}
+      data:
+        EffectType: 9
+        EffectTiming: 2
+        _velocity: {x: 0, y: 0, z: 5}
+        _alignWithVelocity: 1

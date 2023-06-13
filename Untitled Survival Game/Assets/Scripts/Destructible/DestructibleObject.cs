@@ -41,8 +41,10 @@ public class DestructibleObject : NetworkBehaviour
 
 
 	[ObserversRpc(BufferLast = true, RunLocally = true)]
-	public void InitializeORPC(int id, Transform parent)
+	public void InitializeORPC(int id)
 	{
+		Transform parent = DestructibleManager.Instance.DestructibleHolder;
+
 		if (parent == null)
 		{
 			Debug.LogError("Failed to set parent for destructible object");

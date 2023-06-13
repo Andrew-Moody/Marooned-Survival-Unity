@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Man
   _id: 2
-  _mobPrefab: {fileID: 7638839137136788870, guid: 338f58dda4ffefb4db4057e3b87b8ee0, type: 3}
+  _baseMobPrefab: {fileID: 7983660517394171817, guid: c279e38c57db3d04393a19d1dce10efa, type: 3}
+  _graphicVariantPrefab: {fileID: 7638839137136788870, guid: 338f58dda4ffefb4db4057e3b87b8ee0, type: 3}
   _stats:
   - StatType: 1
     Value: 100

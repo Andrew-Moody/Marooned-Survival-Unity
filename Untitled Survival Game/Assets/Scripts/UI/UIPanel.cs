@@ -13,7 +13,7 @@ public class UIPanel : MonoBehaviour
 
 	public virtual void Initialize()
 	{
-
+		
 	}
 
 
@@ -27,7 +27,7 @@ public class UIPanel : MonoBehaviour
 	{
 		gameObject.SetActive(true);
 
-		Debug.LogError("Showing " + _panelName);
+		//Debug.LogError("Showing " + _panelName);
 	}
 
 
@@ -35,7 +35,7 @@ public class UIPanel : MonoBehaviour
 	{
 		gameObject.SetActive(false);
 
-		Debug.LogError("Hiding " + _panelName);
+		//Debug.LogError("Hiding " + _panelName);
 	}
 }
 

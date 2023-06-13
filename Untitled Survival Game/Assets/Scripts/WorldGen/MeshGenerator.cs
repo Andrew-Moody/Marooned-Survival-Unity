@@ -1,10 +1,15 @@
+using FishNet.Broadcast;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.AI.Navigation;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class MeshGenerator : MonoBehaviour
 {
+	[SerializeField]
+	private GameObject _target;
+
 	[SerializeField]
 	private int _height;
 
@@ -62,27 +67,34 @@ public class MeshGenerator : MonoBehaviour
 
 	private int _prevHeight;
 	private int _prevWidth;
-	
 
-	void Start()
+	private MeshFilter _targetMeshFilter;
+	private MeshCollider _targetMeshCollider;
+
+	private void Awake()
 	{
-		if (_mesh == null)
-		{
-			CreateMesh();
+		_targetMeshFilter = _target.GetComponent<MeshFilter>();
+		_targetMeshCollider = _target.GetComponent<MeshCollider>();
+	}
 
-			//DistortMesh();
+
+	public void GenerateTerrain(int seed)
+	{
+		if (_mesh == null || seed != _seed)
+		{
+			_seed = seed;
+			CreateMesh();
 		}
 
-		GetComponent<MeshCollider>().sharedMesh = _mesh;
-
-		//GetComponent<NavMeshSurface>().BuildNavMesh();
-
-		Debug.LogError("Called BuildNavMesh");
+		// needs to be set anytime the mesh changes
+		_targetMeshCollider.sharedMesh = _mesh;
 	}
 
 
 	public void CreateMesh()
 	{
+		Debug.LogError("CreateMesh");
+
 		_mesh = new Mesh();
 
 		_mesh.name = "Procedural Mesh";
@@ -91,8 +103,8 @@ public class MeshGenerator : MonoBehaviour
 		_prevWidth = _width;
 
 
-		transform.position = new Vector3(-_width * 0.5f * _tileSize, 0f, -_height * 0.5f * _tileSize);
-
+		//transform.position = new Vector3(-_width * 0.5f * _tileSize, 0f, -_height * 0.5f * _tileSize);
+		Vector3 offset = new Vector3(-_width * 0.5f * _tileSize, 0f, -_height * 0.5f * _tileSize);
 
 		int vertexCount = (_height + 1) * (_width + 1);
 
@@ -105,7 +117,7 @@ public class MeshGenerator : MonoBehaviour
 			{
 				int index = j + i * (_height + 1);
 
-				_vertices[index] = new Vector3(j * _tileSize, 0f, i * _tileSize);
+				_vertices[index] = new Vector3(j * _tileSize, 0f, i * _tileSize) + offset;
 			}
 		}
 
@@ -164,10 +176,8 @@ public class MeshGenerator : MonoBehaviour
 		_mesh.RecalculateNormals();
 
 		_mesh.uv = uvcoords;
-		
 
-
-		GetComponent<MeshFilter>().mesh = _mesh;
+		_targetMeshFilter.mesh = _mesh;
 
 		DistortMesh();
 	}
@@ -204,6 +214,11 @@ public class MeshGenerator : MonoBehaviour
 		if (_mesh == null)
 		{
 			return;
+		}
+
+		if (_targetMeshFilter == null && _target != null)
+		{
+			_targetMeshFilter = _target.GetComponent<MeshFilter>();
 		}
 
 		if (_height != _prevHeight || _width != _prevWidth)

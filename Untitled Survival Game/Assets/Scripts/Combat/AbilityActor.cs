@@ -55,6 +55,9 @@ public class AbilityActor : NetworkBehaviour
 	[SerializeField]
 	private Transform _projectileSource;
 
+	[SerializeField]
+	private Agent _agent;
+
 	private AbilityItem _abilityItem;
 	public AbilityItem AbilityItem { get { return _abilityItem; } }
 
@@ -301,7 +304,20 @@ public class AbilityActor : NetworkBehaviour
 			return;
 		}
 
-		if (_viewTransform != null)
+
+		if (_agent != null && _agent.AttackTarget != null)
+		{
+			Vector3 targetPos = _agent.AttackTarget.transform.position;
+			targetPos.y += 1.4f;
+
+			Vector3 toTargetVector = targetPos - _projectile.NetworkTransform.position;
+
+			Quaternion rotToTarget = Quaternion.FromToRotation(Vector3.forward, toTargetVector);
+
+			velocity = rotToTarget * velocity;
+
+		}
+		else if (_viewTransform != null)
 		{
 			velocity = ViewTransform.TransformDirection(velocity);
 		}

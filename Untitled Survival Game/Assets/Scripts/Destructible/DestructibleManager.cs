@@ -13,6 +13,10 @@ public class DestructibleManager : NetworkBehaviour
 	[SerializeField]
 	private DestructibleFactory _destructibleFactory;
 
+	[SerializeField]
+	private Transform _destructibleHolder;
+	public Transform DestructibleHolder => _destructibleHolder;
+
 
 	private void Awake()
 	{
@@ -43,7 +47,7 @@ public class DestructibleManager : NetworkBehaviour
 
 		Spawn(destructible.gameObject);
 
-		destructible.InitializeORPC(destructibleSO.ID, parent);
+		destructible.InitializeORPC(destructibleSO.ID);
 
 		return destructible;
 	}

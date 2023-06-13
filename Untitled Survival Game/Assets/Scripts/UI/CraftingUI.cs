@@ -17,10 +17,9 @@ public class CraftingUI : UIPanel, IPointerDownHandler
 	private Inventory _inventory;
 
 
-	// Called by UIManager in OnStartClient
 	public override void Initialize()
 	{
-		CraftingManager.Instance.OnCraftItem += PopulateRecipes;
+		
 	}
 
 
@@ -31,6 +30,8 @@ public class CraftingUI : UIPanel, IPointerDownHandler
 		if (_player != null)
 		{
 			_inventory = _player.GetComponent<Inventory>();
+
+			CraftingManager.Instance.OnCraftItem += PopulateRecipes;
 		}
 	}
 

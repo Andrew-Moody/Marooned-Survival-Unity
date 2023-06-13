@@ -35,6 +35,11 @@ public class PlacementUI : UIPanel
 	{
 		base.SetPlayer(player);
 
+		if (_cameraTransform == null)
+		{
+			_cameraTransform = Camera.main.transform;
+		}
+
 		if (_player != null)
 		{
 			_inventory = _player.GetComponent<Inventory>();

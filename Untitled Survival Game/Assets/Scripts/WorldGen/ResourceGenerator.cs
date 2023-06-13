@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ResourceGenerator : NetworkBehaviour
+public class ResourceGenerator : MonoBehaviour
 {
 	[SerializeField][Min(1)]
 	private int _height;
@@ -74,8 +74,10 @@ public class ResourceGenerator : NetworkBehaviour
 		GenerateSpawnMap();
 	}
 
-	public void SpawnResources()
+	public void SpawnResources(int seed)
 	{
+		_seed = seed;
+
 		float halfWidth = (_width - 1) * _tileSize * 0.5f;
 		float halfHeight = (_height - 1) * _tileSize * 0.5f;
 
@@ -115,7 +117,7 @@ public class ResourceGenerator : NetworkBehaviour
 
 
 
-	protected override void OnValidate()
+	private void OnValidate()
 	{
 		if (_height != _prevHeight || _width != _prevWidth)
 		{

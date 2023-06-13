@@ -66,11 +66,11 @@ MonoBehaviour:
       data:
         EffectType: 8
         EffectTiming: 1
-        _projectile: {fileID: 7208833085580975929, guid: 20ce575fa27e8e24ba147d28f0664121, type: 3}
+        _projectile: {fileID: 4478765195836222777, guid: c562aed2eea9b09459872e85a281726e, type: 3}
     00000004:
       type: {class: LaunchProjectileEffect, ns: , asm: Assembly-CSharp}
       data:
         EffectType: 9
         EffectTiming: 2
-        _velocity: {x: 0, y: 0, z: 1}
+        _velocity: {x: 0, y: 0, z: 5}
         _alignWithVelocity: 1

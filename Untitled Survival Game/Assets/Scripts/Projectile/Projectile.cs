@@ -27,18 +27,20 @@ public class Projectile : ProjectileBase
 	[SerializeField]
 	private AbilitySO _abilitySO;
 
+	[SerializeReference]
 	private Ability _ability;
 
 	private bool _active = false;
 
 	private bool _dying = false;
 
-	
-
 
 	private void Awake()
 	{
-		_ability = _abilitySO.GetRuntimeAbility();
+		if (_abilitySO != null)
+		{
+			_ability = _abilitySO.GetRuntimeAbility();
+		}
 	}
 
 
@@ -171,5 +173,29 @@ public class Projectile : ProjectileBase
 	private void HideGraphicORPC()
 	{
 		_graphic.gameObject.SetActive(false);
+	}
+
+
+	protected override void OnValidate()
+	{
+		base.OnValidate();
+
+		if (_ability == null)
+		{
+			_ability = new Ability();
+		}
+		else
+		{
+			if (_ability.AbilityType == AbilityType.Melee && !(_ability.GetType() == typeof(MeleeAbility)))
+			{
+				_ability = new MeleeAbility(_ability);
+			}
+			else if (_ability.AbilityType == AbilityType.None && !(_ability.GetType() == typeof(Ability)))
+			{
+				_ability = new Ability(_ability);
+			}
+		}
+
+		_ability.OnValidate();
 	}
 }

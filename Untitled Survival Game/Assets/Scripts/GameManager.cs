@@ -13,6 +13,9 @@ public class GameManager : MonoBehaviour
 {
 	public static GameManager Instance;
 
+	private int _seed;
+	public int Seed { get => _seed; set => _seed = value; }
+
 	[SerializeField]
 	private NetworkObject _playerPrefab;
 
@@ -149,7 +152,7 @@ public class GameManager : MonoBehaviour
 			PrepareSceneLoad();
 
 			// Tell clients to prepare for scene load
-			GameManagerBroadcast msg = new GameManagerBroadcast() { Message = "PrepareSceneLoad" };
+			GameManagerBroadcast msg = new GameManagerBroadcast() { Message = "PrepareSceneLoad", Seed = _seed };
 			_networkManager.ServerManager.Broadcast(msg);
 
 
@@ -178,11 +181,26 @@ public class GameManager : MonoBehaviour
 	}
 
 
+	public void PrepareSceneLoad()
+	{
+		UIManager.HideStackTop(true);
+		UIManager.ShowPanel("LoadingUI");
+
+		_loadCamera.gameObject.SetActive(true);
+	}
+
+
 	public void OnLocalPlayerStartClient(GameObject player)
 	{
+		_loadCamera.gameObject.SetActive(false);
+
 		UIManager.SetPlayer(player);
 
 		CameraController.Instance.SetPlayer(player);
+
+		//CameraController.Instance.SetFPSMode(true);
+
+		UIManager.HidePanel("LoadingUI");
 
 		UIManager.ShowPanel("HotbarUI", pushToStack: true);
 
@@ -190,15 +208,6 @@ public class GameManager : MonoBehaviour
 		{
 			combatant.OnDeathStartEvent += PlayerDeathHandler;
 		}
-	}
-
-
-	public void PrepareSceneLoad()
-	{
-		UIManager.HideStackTop(true);
-		UIManager.ShowPanel("LoadingUI");
-
-		_loadCamera.gameObject.SetActive(true);
 	}
 
 
@@ -260,28 +269,22 @@ public class GameManager : MonoBehaviour
 
 		if (!args.QueueData.AsServer)
 		{
-			_loadCamera.gameObject.SetActive(false);
-
-			WorldGenManager.Instance.FinishedWorldGenEvent += FinishedWorldGenHandler;
+			WorldGenManager.Instance.GenerateWorld(_seed, InstanceFinder.IsServer);
 		}
+
+		// In testing it seemed clients didnt recieve RPCs sent from the server in this callback
 	}
 
 
 	private void OnClientPresenceChangeEnd(ClientPresenceChangeEventArgs args)
 	{
-		if (args.Added)
-		{
-			Debug.LogError($"ClientId: {args.Connection.ClientId} added to scene: {args.Scene.name}");
-		}
-		else
-		{
-			Debug.LogError($"ClientId: {args.Connection.ClientId} removed from scene: {args.Scene.name}");
-		}
+		// This may be the earliest the server can know for sure a client has loaded the new scene
+		// and the observer status is current. Sending RPCs before this may not be recieved by the client
+
+		Debug.LogError($"ClientId: {args.Connection.ClientId} {(args.Added ? "added to" : "removed from")} scene: {args.Scene.name}");
 
 		if (args.Added && args.Scene.name == "SampleScene")
 		{
-			Debug.LogError($"Client added to sample scene {args.Connection.ClientId}");
-
 			SpawnPlayerPrefab(args.Connection);
 		}
 	}
@@ -308,20 +311,14 @@ public class GameManager : MonoBehaviour
 	}
 
 
-	private void FinishedWorldGenHandler()
-	{
-		Debug.LogError("FinishedWorldGen");
-
-		UIManager.HidePanel("LoadingUI");
-	}
-
-
 	private void OnGameManagerBroadcast(GameManagerBroadcast msg)
 	{
 		Debug.LogError(msg.Message);
 
 		if (InstanceFinder.IsClientOnly)
 		{
+			_seed = msg.Seed;
+
 			PrepareSceneLoad();
 		}
 	}
@@ -337,13 +334,13 @@ public class GameManager : MonoBehaviour
 
 	private void OnRemoteConnectionState(RemoteConnectionStateArgs args)
 	{
-		Debug.LogError($"Remote Connection State Changed: {args.ConnectionState}");
+		//Debug.LogError($"Remote Connection State Changed: {args.ConnectionState}");
 	}
 
 
 	private void OnClientConnectionState(ClientConnectionStateArgs args)
 	{
-		Debug.LogError($"Client Connection State Changed: {args.ConnectionState}");
+		//Debug.LogError($"Client Connection State Changed: {args.ConnectionState}");
 
 		if (args.ConnectionState == LocalConnectionState.Stopping)
 		{
@@ -365,6 +362,7 @@ public class GameManager : MonoBehaviour
 public struct GameManagerBroadcast : IBroadcast
 {
 	public string Message;
+	public int Seed;
 }
 
 

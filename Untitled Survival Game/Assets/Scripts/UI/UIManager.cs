@@ -75,14 +75,14 @@ public class UIManager : MonoBehaviour
 	{
 		if (Instance._panelDict.TryGetValue(panelName, out UIPanel panel))
 		{
-			panel.Show(data);
-
-			if (pushToStack)
+			if (pushToStack && !CheckStackTop(panelName))
 			{
 				HideStackTop(false);
 
 				Instance._panelStack.Push(panel);
 			}
+
+			panel.Show(data);
 		}
 		else
 		{

@@ -20,17 +20,23 @@ public class HotbarUI : UIPanel
 	private int _selection;
 
 	private Inventory _inventory;
-	
+
+	[SerializeField]
+	private UIPanel _statsUI;
+
+
 
 	public override void Initialize()
 	{
+		base.Initialize();
 
+		_statsUI.Initialize();
 	}
 
 
 	public override void SetPlayer(GameObject player)
 	{
-		_player = player;
+		base.SetPlayer(player);
 
 		if (_player != null)
 		{
@@ -44,6 +50,8 @@ public class HotbarUI : UIPanel
 			_inventory.SlotUpdated += OnUpdateSlot;
 
 			//Debug.LogError("HotbarRegistered");
+
+			_statsUI.SetPlayer(player);
 		}
 	}
 
@@ -56,6 +64,16 @@ public class HotbarUI : UIPanel
 		{
 			_inventory.UpdateSlots();
 		}
+
+		_statsUI.Show(data);
+	}
+
+
+	public override void Hide()
+	{
+		base.Hide();
+
+		_statsUI.Hide();
 	}
 
 	private void SetSelection(int selection)

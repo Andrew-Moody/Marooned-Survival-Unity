@@ -19,10 +19,6 @@ public class StatsUI : UIPanel
 		{
 			_statBarDict.Add(statBar.StatType, statBar);
 		}
-
-
-
-		
 	}
 
 

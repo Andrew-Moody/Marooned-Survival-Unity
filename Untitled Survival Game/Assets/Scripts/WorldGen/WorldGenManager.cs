@@ -8,15 +8,18 @@ public class WorldGenManager : NetworkBehaviour
 	private static WorldGenManager _instance;
 	public static WorldGenManager Instance => _instance;
 
+	[SerializeField]
+	private MeshGenerator _meshGenerator;
+
+	[SerializeField]
+	private NavMeshGenerator _navMeshGenerator;
 
 	[SerializeField]
 	private ResourceGenerator _resourceGenerator;
 
 	public event System.Action FinishedWorldGenEvent;
 
-	private bool _worldGenerated = false;
-	private float _worldGenDelay = 0.5f;
-
+	
 	private void Awake()
 	{
 		if (_instance == null)
@@ -25,32 +28,20 @@ public class WorldGenManager : NetworkBehaviour
 		}
 	}
 
-	private void Update()
+
+	public void GenerateWorld(int seed, bool asServer)
 	{
-		if (!_worldGenerated)
+		_meshGenerator.GenerateTerrain(seed);
+
+		_navMeshGenerator.BuildNavMesh();
+
+		if (IsServer)
 		{
-			_worldGenDelay -= Time.deltaTime;
+			Debug.Log("Generating Resources");
 
-			if (_worldGenDelay <= 0f)
-			{
-				_worldGenerated = true;
-				
-				if (IsServer)
-				{
-					Debug.Log("Generating Resources");
+			_resourceGenerator.SpawnResources(seed);
 
-					_resourceGenerator.SpawnResources();
-
-					OnFinishedWorldGenORPC();
-				}
-			}
+			Debug.Log("Finished Generating Resources");
 		}
-	}
-
-
-	[ObserversRpc(RunLocally = true)]
-	private void OnFinishedWorldGenORPC()
-	{
-		FinishedWorldGenEvent?.Invoke();
 	}
 }
