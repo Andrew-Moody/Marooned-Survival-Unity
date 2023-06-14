@@ -8,6 +8,10 @@ public class SpawnStatue : Interactable
 	[SerializeField]
 	private string _mobToSpawn;
 
+	private void Awake()
+	{
+		_interactPrompt = "Spawn " + _mobToSpawn;
+	}
 
 	public override void Interact(NetworkConnection user)
 	{

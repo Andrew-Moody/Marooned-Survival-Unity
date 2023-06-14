@@ -35,6 +35,7 @@ public class Inventory : NetworkBehaviour
 	private EquipmentController _equipmentController;
 
 	private int _hotbarSelection;
+	public int HotbarSelection => _hotbarSelection;
 
 
 	public override void OnStartNetwork()
@@ -474,6 +475,22 @@ public class Inventory : NetworkBehaviour
 
 		UpdateSlot(slot);
 		TargetSyncSlot(Owner, _items[slot].GetNetData(), slot);
+		return true;
+	}
+
+
+	[Server]
+	public bool SwapWithItemAtSlot(int slot, ref InventoryItem item)
+	{
+		InventoryItem output = _items[slot];
+
+		_items[slot] = item;
+
+		item = output;
+
+		UpdateSlot(slot);
+		TargetSyncSlot(Owner, _items[slot].GetNetData(), slot);
+
 		return true;
 	}
 

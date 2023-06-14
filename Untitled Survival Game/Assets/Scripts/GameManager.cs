@@ -198,7 +198,7 @@ public class GameManager : MonoBehaviour
 
 		CameraController.Instance.SetPlayer(player);
 
-		//CameraController.Instance.SetFPSMode(true);
+		CameraController.Instance.SetFPSMode(true);
 
 		UIManager.HidePanel("LoadingUI");
 

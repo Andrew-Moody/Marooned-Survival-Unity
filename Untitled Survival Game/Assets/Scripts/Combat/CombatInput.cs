@@ -74,6 +74,8 @@ public class CombatInput : NetworkBehaviour
 			if (UIManager.CheckStackTop("HotbarUI"))
 			{
 				CameraController.Instance.SetFPSMode(true);
+
+				Debug.LogError($"Hotbar top of stack {Cursor.lockState} {Cursor.visible}");
 			}
 			else
 			{
@@ -135,11 +137,14 @@ public class CombatInput : NetworkBehaviour
 	[ServerRpc]
 	private void Interact()
 	{
-		Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, _interactRange, _interactMask);
+		Transform view = _abilityActor.ViewTransform;
 
-		if (hit.collider != null && hit.collider.gameObject.TryGetComponent(out Interactable interactible))
+		if (Physics.Raycast(view.position, view.forward, out RaycastHit hit, _interactRange, _interactMask))
 		{
-			interactible.Interact(Owner);
+			if (hit.collider != null && hit.collider.gameObject.TryGetComponent(out Interactable interactible))
+			{
+				interactible.Interact(Owner);
+			}
 		}
 	}
 }
