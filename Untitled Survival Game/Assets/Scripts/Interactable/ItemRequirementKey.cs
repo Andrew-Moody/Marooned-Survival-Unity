@@ -24,6 +24,7 @@ public class ItemRequirementKey : Interactable
 	public event System.Action<NetworkConnection, ItemRequirementKey> ActivatedEvent;
 
 	private bool _isActivated;
+	public bool IsActivated => _isActivated;
 
 	private ItemSO _itemSO;
 

@@ -16,6 +16,8 @@ public class GameManager : MonoBehaviour
 	private int _seed;
 	public int Seed { get => _seed; set => _seed = value; }
 
+	public int PlayerCount => _players.Count;
+
 	[SerializeField]
 	private NetworkObject _playerPrefab;
 
@@ -24,6 +26,8 @@ public class GameManager : MonoBehaviour
 
 	private NetworkManager _networkManager;
 
+	private List<GameObject> _players = new List<GameObject>();
+	private Dictionary<NetworkConnection, GameObject> _playersByConnection = new Dictionary<NetworkConnection, GameObject>();
 
 	private void Awake()
 	{
@@ -63,8 +67,13 @@ public class GameManager : MonoBehaviour
 
 			_networkManager.ClientManager.RegisterBroadcast<GameManagerBroadcast>(OnGameManagerBroadcast);
 
-			_networkManager.ClientManager.OnRemoteConnectionState += OnRemoteConnectionState;
+			// Called on clients when another client connects but only when shareIDs is enabled
+			//_networkManager.ClientManager.OnRemoteConnectionState += ClientManager_OnRemoteConnectionState;
 
+			// Called on server when client state changes
+			//_networkManager.ServerManager.OnRemoteConnectionState += ServerManager_OnRemoteConnectionState;
+
+			// Called on client when client state changes
 			_networkManager.ClientManager.OnClientConnectionState += OnClientConnectionState;
 		}
 
@@ -94,7 +103,9 @@ public class GameManager : MonoBehaviour
 
 			_networkManager.ClientManager.UnregisterBroadcast<GameManagerBroadcast>(OnGameManagerBroadcast);
 
-			_networkManager.ClientManager.OnRemoteConnectionState -= OnRemoteConnectionState;
+			//_networkManager.ClientManager.OnRemoteConnectionState -= ClientManager_OnRemoteConnectionState;
+
+			//_networkManager.ServerManager.OnRemoteConnectionState -= ServerManager_OnRemoteConnectionState;
 
 			_networkManager.ClientManager.OnClientConnectionState -= OnClientConnectionState;
 		}
@@ -108,6 +119,19 @@ public class GameManager : MonoBehaviour
 		Initialize();
 
 		Debug.LogError("GameManager Start");
+	}
+
+
+	public GameObject GetPlayer(int index)
+	{
+		return index < _players.Count ? _players[index] : null;
+	}
+
+
+	public GameObject GetPlayer(NetworkConnection connection)
+	{
+		_playersByConnection.TryGetValue(connection, out GameObject player);
+		return player;
 	}
 
 
@@ -308,6 +332,16 @@ public class GameManager : MonoBehaviour
 		NetworkObject nob = Instantiate(_playerPrefab);
 
 		_networkManager.ServerManager.Spawn(nob, connection);
+
+		PlayerLocator playerlocator = nob.GetComponentInChildren<PlayerLocator>();
+
+		if (playerlocator == null)
+		{
+			Debug.LogError("PlayerPrefab not setup correctly: missing PlayerLocator");
+		}
+
+		_players.Add(playerlocator.gameObject);
+		_playersByConnection.Add(connection, playerlocator.gameObject);
 	}
 
 
@@ -332,9 +366,15 @@ public class GameManager : MonoBehaviour
 	}
 
 
-	private void OnRemoteConnectionState(RemoteConnectionStateArgs args)
+	private void ServerManager_OnRemoteConnectionState(NetworkConnection connection, RemoteConnectionStateArgs args)
 	{
-		//Debug.LogError($"Remote Connection State Changed: {args.ConnectionState}");
+		Debug.LogError($"Remote Connection State Changed: {args.ConnectionState}");
+
+		if (_playersByConnection.TryGetValue(connection, out GameObject player))
+		{
+			_players.Remove(player);
+			_playersByConnection.Remove(connection);
+		}
 	}
 
 

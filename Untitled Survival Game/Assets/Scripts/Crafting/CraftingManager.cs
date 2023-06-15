@@ -41,7 +41,10 @@ public class CraftingManager : NetworkBehaviour
 	
 	public CraftingRecipe GetCraftingRecipe(int recipeID)
 	{
-		_recipes.TryGetValue(recipeID, out CraftingRecipe recipe);
+		if (!_recipes.TryGetValue(recipeID, out CraftingRecipe recipe))
+		{
+			Debug.LogError("Failed to find recipe with ID: " + recipeID);
+		}
 
 		return recipe;
 	}
