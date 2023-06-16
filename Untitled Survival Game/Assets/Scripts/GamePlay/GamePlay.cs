@@ -14,6 +14,9 @@ public class GamePlay : NetworkBehaviour
 	public float HourLength => _hourLength;
 	public float NormalizedTimeInHour => _currentHour / _hourLength;
 
+	[SerializeField]
+	private MobSpawnController _mobController;
+
 
 	[SerializeField]
 	private float _hourLength;
@@ -35,6 +38,21 @@ public class GamePlay : NetworkBehaviour
 	}
 
 
+	public override void OnStartNetwork()
+	{
+		base.OnStartNetwork();
+
+		if (IsServer)
+		{
+			_mobController.enabled = true;
+		}
+		else
+		{
+			enabled = false;
+		}
+	}
+
+
 	void Update()
 	{
 		_timeInHour += Time.deltaTime;
@@ -50,8 +68,6 @@ public class GamePlay : NetworkBehaviour
 				_currentDay++;
 			}
 
-
-			Debug.LogError($"Current Time: {_currentDay} {_currentHour}");
 			SyncTimeORPC(_currentDay, _currentHour, _timeInHour);
 		}
 	}

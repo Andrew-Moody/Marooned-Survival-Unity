@@ -5,6 +5,7 @@ using FishNet.Managing;
 using FishNet.Managing.Scened;
 using FishNet.Object;
 using FishNet.Transporting;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,6 +14,7 @@ public class GameManager : MonoBehaviour
 {
 	public static GameManager Instance;
 
+	[SerializeField]
 	private int _seed;
 	public int Seed { get => _seed; set => _seed = value; }
 
@@ -28,6 +30,11 @@ public class GameManager : MonoBehaviour
 
 	private List<GameObject> _players = new List<GameObject>();
 	private Dictionary<NetworkConnection, GameObject> _playersByConnection = new Dictionary<NetworkConnection, GameObject>();
+
+	private const string MENU_SCENE = "MainMenuScene";
+	private const string GAME_SCENE = "GameScene";
+
+	private bool _startFromGameScene;
 
 	private void Awake()
 	{
@@ -71,7 +78,9 @@ public class GameManager : MonoBehaviour
 			//_networkManager.ClientManager.OnRemoteConnectionState += ClientManager_OnRemoteConnectionState;
 
 			// Called on server when client state changes
-			//_networkManager.ServerManager.OnRemoteConnectionState += ServerManager_OnRemoteConnectionState;
+			_networkManager.ServerManager.OnRemoteConnectionState += ServerManager_OnRemoteConnectionState;
+
+			_networkManager.ServerManager.OnServerConnectionState += OnServerConnectionState;
 
 			// Called on client when client state changes
 			_networkManager.ClientManager.OnClientConnectionState += OnClientConnectionState;
@@ -105,7 +114,9 @@ public class GameManager : MonoBehaviour
 
 			//_networkManager.ClientManager.OnRemoteConnectionState -= ClientManager_OnRemoteConnectionState;
 
-			//_networkManager.ServerManager.OnRemoteConnectionState -= ServerManager_OnRemoteConnectionState;
+			_networkManager.ServerManager.OnRemoteConnectionState -= ServerManager_OnRemoteConnectionState;
+
+			_networkManager.ServerManager.OnServerConnectionState -= OnServerConnectionState;
 
 			_networkManager.ClientManager.OnClientConnectionState -= OnClientConnectionState;
 		}
@@ -116,7 +127,7 @@ public class GameManager : MonoBehaviour
 
 	void Start()
 	{
-		Initialize();
+		Initialize(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
 
 		Debug.LogError("GameManager Start");
 	}
@@ -180,11 +191,19 @@ public class GameManager : MonoBehaviour
 			_networkManager.ServerManager.Broadcast(msg);
 
 
-			SceneLoadData sld = new SceneLoadData("SampleScene");
+			SceneLoadData sld = new SceneLoadData(GAME_SCENE);
 			sld.ReplaceScenes = ReplaceOption.All;
 
 			_networkManager.SceneManager.LoadGlobalScenes(sld);
 		}
+	}
+
+	public void OnDebugStartGamePressed()
+	{
+		_networkManager.ServerManager.StartConnection();
+		_networkManager.ClientManager.StartConnection();
+
+		_startFromGameScene = true;
 	}
 
 
@@ -307,18 +326,32 @@ public class GameManager : MonoBehaviour
 
 		Debug.LogError($"ClientId: {args.Connection.ClientId} {(args.Added ? "added to" : "removed from")} scene: {args.Scene.name}");
 
-		if (args.Added && args.Scene.name == "SampleScene")
+		if (args.Added && args.Scene.name == GAME_SCENE)
 		{
 			SpawnPlayerPrefab(args.Connection);
 		}
 	}
 
 
-	private void Initialize()
+	private void Initialize(string scene)
 	{
-		UIManager.HideAll();
+		if (UIManager.Instance == null)
+		{
+			return;
+		}
 
-		UIManager.ShowPanel("MainUI", pushToStack: true);
+		if (scene == MENU_SCENE)
+		{
+			UIManager.HideAll();
+
+			UIManager.ShowPanel("MainUI", pushToStack: true);
+		}
+		else if (scene == GAME_SCENE)
+		{
+			UIManager.HideAll();
+
+			UIManager.ShowPanel("DebugUI", pushToStack: true);
+		}
 	}
 
 
@@ -366,6 +399,19 @@ public class GameManager : MonoBehaviour
 	}
 
 
+	private void OnServerConnectionState(ServerConnectionStateArgs args)
+	{
+		if (args.ConnectionState == LocalConnectionState.Started)
+		{
+			if (_startFromGameScene)
+			{
+				Debug.LogError("DebugStartGame as Server: " + InstanceFinder.IsServer);
+				WorldGenManager.Instance.GenerateWorld(_seed, InstanceFinder.IsServer);
+			}
+		}
+	}
+
+
 	private void ServerManager_OnRemoteConnectionState(NetworkConnection connection, RemoteConnectionStateArgs args)
 	{
 		Debug.LogError($"Remote Connection State Changed: {args.ConnectionState}");
@@ -391,10 +437,10 @@ public class GameManager : MonoBehaviour
 
 	private void OnClientDisconnect(ClientConnectionStateArgs args)
 	{
-		// Reset GameManager to initial state since it is not destroyed on load
-		Initialize();
+		UnityEngine.SceneManagement.SceneManager.LoadScene(MENU_SCENE);
 
-		UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenuScene");
+		// Reset GameManager to initial state since it is not destroyed on load
+		Initialize(MENU_SCENE);
 	}
 }
 

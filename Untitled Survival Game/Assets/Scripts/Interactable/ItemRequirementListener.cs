@@ -12,7 +12,7 @@ public class ItemRequirementListener : MonoBehaviour
 	private ItemRequirementKey[] _requirementKeys;
 
 	[SerializeField]
-	private MeshRenderer _objectToActivate;
+	private GameObject _objectToActivate;
 
 
 	private void Awake()
@@ -21,8 +21,8 @@ public class ItemRequirementListener : MonoBehaviour
 		{
 			_requirementKeys[i].ActivatedEvent += OnActivated;
 		}
-		
-		_objectToActivate.material.color = Color.red;
+
+		_objectToActivate.SetActive(false);
 	}
 
 
@@ -30,7 +30,7 @@ public class ItemRequirementListener : MonoBehaviour
 	{
 		if (_mode == RequirementMode.Any)
 		{
-			_objectToActivate.material.color = Color.green;
+			_objectToActivate.SetActive(true);
 			return;
 		}
 
@@ -42,7 +42,7 @@ public class ItemRequirementListener : MonoBehaviour
 			}
 		}
 
-		_objectToActivate.material.color = Color.green;
+		_objectToActivate.SetActive(true);
 	}
 
 

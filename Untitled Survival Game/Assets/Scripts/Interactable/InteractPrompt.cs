@@ -15,14 +15,15 @@ public class InteractPrompt : MonoBehaviour
 
 	private const float _viewRange = 2f;
 
-	void Start()
-	{
-		_camera = Camera.main.transform;
-	}
-
 
 	void FixedUpdate()
 	{
+		if (_camera == null)
+		{
+			_camera = Camera.main.transform;
+		}
+
+
 		if (Physics.Raycast(_camera.position, _camera.forward, out RaycastHit hitInfo, _viewRange, _viewMask.value))
 		{
 			Interactable interactable = hitInfo.collider.gameObject.GetComponent<Interactable>();

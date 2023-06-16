@@ -5,7 +5,7 @@ using FishNet.Object;
 using FishNet.Managing;
 using System;
 
-public class CameraController : NetworkBehaviour
+public class CameraController : MonoBehaviour
 {
 	// Loosely based on tutorial by "Dave / GameDevelopment" (added y inversion, ability to toggle off, and integration with fishnetworking)
 
@@ -59,20 +59,14 @@ public class CameraController : NetworkBehaviour
 		Instance = this;
 	}
 
-	public override void OnStartNetwork()
-	{
-		base.OnStartNetwork();
 
+	private void Start()
+	{
 		_camera = Camera.main;
 
 		SetCameraMode(_currentAnchorIndex);
 
 		//SetFPSMode(true);
-	}
-
-	public override void OnStartClient()
-	{
-		base.OnStartClient();
 	}
 
 

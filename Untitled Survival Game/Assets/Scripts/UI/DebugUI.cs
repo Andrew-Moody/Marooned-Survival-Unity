@@ -30,4 +30,10 @@ public class DebugUI : UIPanel
 			_frames = 0;
 		}
 	}
+
+
+	public void OnStartGame()
+	{
+		GameManager.Instance.OnDebugStartGamePressed();
+	}
 }

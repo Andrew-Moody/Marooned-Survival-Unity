@@ -21,10 +21,7 @@ public class MobSpawnController : MonoBehaviour
 
 	void Awake()
 	{
-		if (!InstanceFinder.IsServer)
-		{
-			enabled = false;
-		}
+		enabled = false;
 
 		_timeToSpawn = _delay;
 	}
