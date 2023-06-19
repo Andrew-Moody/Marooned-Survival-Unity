@@ -147,6 +147,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1538418006974668355}
   - component: {fileID: 1538418006974668412}
+  - component: {fileID: 1160917935058302759}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -182,5 +183,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62d2f82e66be4864f89a4740086059e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _seed: 10
   _playerPrefab: {fileID: 8748319289121584179, guid: f26ce9cc8cc8a294dae69a1fd1506f9e, type: 3}
   _loadCamera: {fileID: 1538418006440097358}
+--- !u!114 &1160917935058302759
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1538418006974668413}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba37b16c650e8ad44b482ca34c576586, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -17,6 +17,9 @@ public class GamePlay : NetworkBehaviour
 	[SerializeField]
 	private MobSpawnController _mobController;
 
+	[SerializeField]
+	private RitualAltar _ritualAltar;
+
 
 	[SerializeField]
 	private float _hourLength;
@@ -45,6 +48,8 @@ public class GamePlay : NetworkBehaviour
 		if (IsServer)
 		{
 			_mobController.enabled = true;
+
+			_ritualAltar.RitualStartedEvent += OnRitualStarted;
 		}
 		else
 		{
@@ -89,5 +94,27 @@ public class GamePlay : NetworkBehaviour
 		_timeInHour = timeInHour;
 
 		TimeChangedEvent?.Invoke();
+	}
+
+
+	private void OnRitualStarted()
+	{
+		Mob demon = MobManager.SpawnMob("Demon", _ritualAltar.transform.position, Quaternion.identity);
+
+		demon.GetComponentInChildren<Combatant>().OnDeathEndEvent += OnDemonKilled;
+	}
+
+
+	private void OnDemonKilled()
+	{
+		ShowWinScreenORPC();
+	}
+
+
+	[ObserversRpc(RunLocally = true, BufferLast = true)]
+	private void ShowWinScreenORPC()
+	{
+		CameraController.Instance.SetFPSMode(false);
+		UIManager.ShowPanel("WinUI");
 	}
 }

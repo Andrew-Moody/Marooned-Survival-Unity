@@ -63,7 +63,7 @@ public class CombatInput : NetworkBehaviour
 		{
 			if (UIManager.CheckStackTop("HotbarUI"))
 			{
-				UIManager.ShowPanel("SettingsUI", pushToStack: true);
+				UIManager.ShowPanel("SettingsUI", PlayerOptions.GetSettingsData(), pushToStack: true);
 			}
 			else
 			{

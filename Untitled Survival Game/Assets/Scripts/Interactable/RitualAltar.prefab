@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3885105290487824765}
   - component: {fileID: 5735818778639962847}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Stand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1893,7 +1893,7 @@ Transform:
   m_GameObject: {fileID: 3909166294774620580}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -0.25, z: 0}
-  m_LocalScale: {x: 4, y: 1, z: 4}
+  m_LocalScale: {x: 4, y: 1.5, z: 4}
   m_Children: []
   m_Father: {fileID: 3909166296588726158}
   m_RootOrder: 0
@@ -1959,7 +1959,7 @@ GameObject:
   - component: {fileID: 3909166295930067823}
   - component: {fileID: 3909166295930067822}
   - component: {fileID: 3909166295930067825}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Active
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1975,7 +1975,7 @@ Transform:
   m_GameObject: {fileID: 3909166295930067824}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -0.25, z: 0}
-  m_LocalScale: {x: 4, y: 1, z: 4}
+  m_LocalScale: {x: 4, y: 1.5, z: 4}
   m_Children:
   - {fileID: 3106693725367140555}
   - {fileID: 9123987228810901970}
@@ -2629,7 +2629,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7095626225148775310}
   - component: {fileID: 1732663278236948524}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Stand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2757,7 +2757,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7682732701844925756}
   - component: {fileID: 1219805658399080094}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Stand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2804,7 +2804,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6149124955318635472}
   - component: {fileID: 3397129148343048306}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Stand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3323,7 +3323,7 @@ GameObject:
   - component: {fileID: 6519575783550662286}
   - component: {fileID: 1957775160428277251}
   - component: {fileID: 3487195632025379767}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Active
   m_TagString: Untagged
   m_Icon: {fileID: 0}

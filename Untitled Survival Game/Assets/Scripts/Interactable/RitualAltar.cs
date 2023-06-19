@@ -11,6 +11,8 @@ public class RitualAltar : Interactable
 	[SerializeField]
 	private GameObject[] _objectsToDeactivate;
 
+	public event System.Action RitualStartedEvent;
+
 
 	private void Awake()
 	{
@@ -22,7 +24,7 @@ public class RitualAltar : Interactable
 	{
 		base.Interact(user);
 
-		MobManager.SpawnMob("Demon", transform.position, Quaternion.identity);
+		RitualStartedEvent?.Invoke();
 
 		for (int i = 0; i < _objectsToActivate.Length; i++)
 		{

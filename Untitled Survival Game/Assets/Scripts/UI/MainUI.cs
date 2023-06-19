@@ -18,6 +18,16 @@ public class MainUI : UIPanel
 
 	public void OnSettingsPressed()
 	{
-		UIManager.ShowPanel("SettingsUI", pushToStack: true);
+		UIManager.ShowPanel("SettingsUI", PlayerOptions.GetSettingsData(), pushToStack: true);
+	}
+
+
+	public void OnQuitPressed()
+	{
+#if UNITY_EDITOR
+		UnityEditor.EditorApplication.isPlaying = false;
+#else
+		Application.Quit();
+#endif
 	}
 }
