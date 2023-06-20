@@ -1,9 +1,10 @@
 using FishNet.Connection;
+using FishNet.Object;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ItemRequirementListener : MonoBehaviour
+public class ItemRequirementListener : NetworkBehaviour
 {
 	[SerializeField]
 	private RequirementMode _mode;
@@ -17,12 +18,21 @@ public class ItemRequirementListener : MonoBehaviour
 
 	private void Awake()
 	{
-		for (int i = 0; i < _requirementKeys.Length; i++)
-		{
-			_requirementKeys[i].ActivatedEvent += OnActivated;
-		}
-
 		_objectToActivate.SetActive(false);
+	}
+
+
+	public override void OnStartNetwork()
+	{
+		base.OnStartNetwork();
+
+		if (IsServer)
+		{
+			for (int i = 0; i < _requirementKeys.Length; i++)
+			{
+				_requirementKeys[i].ActivatedEvent += OnActivated;
+			}
+		}
 	}
 
 
@@ -30,7 +40,7 @@ public class ItemRequirementListener : MonoBehaviour
 	{
 		if (_mode == RequirementMode.Any)
 		{
-			_objectToActivate.SetActive(true);
+			ActivateORPC();
 			return;
 		}
 
@@ -42,6 +52,13 @@ public class ItemRequirementListener : MonoBehaviour
 			}
 		}
 
+		ActivateORPC();
+	}
+
+
+	[ObserversRpc(RunLocally = true, BufferLast = true)]
+	private void ActivateORPC()
+	{
 		_objectToActivate.SetActive(true);
 	}
 

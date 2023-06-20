@@ -24,4 +24,14 @@ public class HostOptionsUI : UIPanel
 		
 		GameManager.Instance.OnStartGamePressed();
 	}
+
+
+	public void OnBackPressed()
+	{
+		//UIManager.HideStackTop(true);
+
+		//UIManager.ShowPanel("MainUI", pushToStack: true);
+
+		GameManager.Instance.OnMainMenuPressed();
+	}
 }

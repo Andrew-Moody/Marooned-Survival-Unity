@@ -164,15 +164,24 @@ public class GameManager : MonoBehaviour
 
 	public void OnJoinPressed()
 	{
-		Debug.LogError("Join button clicked");
+		UIManager.HideStackTop(true);
+
+		UIManager.ShowPanel("JoinOptionsUI", pushToStack: true);
+		
+	}
+
+
+	public void OnJoinServerPressed(string address)
+	{
+		UIManager.HideStackTop(true);
+
+		UIManager.ShowPanel("LobbyUI", pushToStack: true);
 
 		if (_networkManager != null)
 		{
+			_networkManager.TransportManager.Transport.SetClientAddress(address);
+
 			_networkManager.ClientManager.StartConnection();
-
-			UIManager.HideStackTop(true);
-
-			UIManager.ShowPanel("JoinOptionsUI", pushToStack: true);
 		}
 	}
 
@@ -211,6 +220,13 @@ public class GameManager : MonoBehaviour
 	{
 		if (_networkManager != null)
 		{
+			if (InstanceFinder.IsOffline)
+			{
+				UIManager.HideAll();
+				UIManager.ShowPanel("MainUI", pushToStack: true);
+				return;
+			}
+
 			if (InstanceFinder.IsClient)
 			{
 				_networkManager.ClientManager.StopConnection();

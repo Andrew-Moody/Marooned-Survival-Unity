@@ -53,7 +53,7 @@ public class SettingsUI : UIPanel
 	{
 		base.Hide();
 
-		PlayerOptions.SaveSettings();
+		PlayerOptions.Instance.SaveSettings();
 	}
 
 

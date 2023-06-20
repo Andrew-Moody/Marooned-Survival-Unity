@@ -4,27 +4,23 @@ using UnityEngine;
 
 public class PlayerOptions : MonoBehaviour
 {
-	private static PlayerOptions Instance;
-
-	private float _masterVolume;
+	private static PlayerOptions _instance;
+	public static PlayerOptions Instance => _instance;
 
 	private Resolution[] _resolutions;
 	private List<string> _resolutionOptions;
 
-	private int _resolutionChoice;
+	private PlayerOptionsData _optionsData = new PlayerOptionsData();
 
-	private bool _fullscreenMode;
-
-
-
+	private const string OPTIONS_PATH = "/PlayerOptions.JSON";
 
 
 	private void Awake()
 	{
-		if (Instance == null)
+		if (_instance == null)
 		{
-			Instance = this;
-			LoadSettings();
+			_instance = this;
+			_instance.LoadSettings();
 		}
 		else
 		{
@@ -34,7 +30,7 @@ public class PlayerOptions : MonoBehaviour
 
 	public static void SetVolume(float volume)
 	{
-		Instance._masterVolume = volume;
+		_instance._optionsData.MasterVolume = volume;
 
 		Debug.LogError($"Volume changed to {volume}");
 
@@ -44,7 +40,7 @@ public class PlayerOptions : MonoBehaviour
 
 	public static void SetResolution(int choice)
 	{
-		Instance._resolutionChoice = choice;
+		_instance._optionsData.ResolutionChoice = choice;
 
 		Resolution res = Instance._resolutions[choice];
 
@@ -56,7 +52,7 @@ public class PlayerOptions : MonoBehaviour
 
 	public static void SetFullscreen(bool fullscreen)
 	{
-		Instance._fullscreenMode = fullscreen;
+		_instance._optionsData.FullscreenMode = fullscreen;
 
 		Screen.fullScreen = fullscreen;
 
@@ -64,70 +60,79 @@ public class PlayerOptions : MonoBehaviour
 	}
 
 
-	public static void LoadSettings()
+	public static void AddServerEntry()
 	{
-		Debug.LogError("Loading Player Settings");
 
-		if (Instance != null)
-		{
-			Instance.Load();
-		}
-		else
-		{
-			Debug.LogError("Player Settings Failed to Saved");
-		}
 	}
 
 
-	public static void SaveSettings()
+	public void LoadSettings()
+	{
+		Debug.LogError("Loading Player Settings");
+
+		int currentChoice = LoadResolutions();
+
+		if (!JsonFileIO.LoadFromFile(OPTIONS_PATH, ref _optionsData))
+		{
+			Debug.LogError("Failed to Load player options");
+		}
+
+		if (_optionsData == null)
+		{
+			_optionsData = new PlayerOptionsData();
+		}
+
+		// keep the current screen resolution if the resolution hasn't been set 
+		if (_optionsData.ResolutionChoice == -1)
+		{
+			_optionsData.ResolutionChoice = currentChoice;
+		}
+
+		SetVolume(_optionsData.MasterVolume);
+
+		SetResolution(_optionsData.ResolutionChoice);
+
+		SetFullscreen(_optionsData.FullscreenMode);
+	}
+
+
+	public void SaveSettings()
 	{
 		Debug.LogError("Saving Player Settings");
 
-		if (Instance != null)
+		if (!JsonFileIO.SaveToFile(OPTIONS_PATH, _optionsData))
 		{
-			Instance.Save();
-		}
-		else
-		{
-			Debug.LogError("Player Settings Failed to Saved");
+			Debug.LogError("Failed to save player options");
 		}
 	}
 
 
 	public static SettingsUIData GetSettingsData()
 	{
+		PlayerOptionsData optionsData = Instance._optionsData;
+
 		SettingsUIData data = new SettingsUIData
 		{
-			MasterVolume = Instance._masterVolume,
+			MasterVolume = optionsData.MasterVolume,
 
 			Resolutions = Instance._resolutionOptions,
 
-			ResolutionChoice = Instance._resolutionChoice,
+			ResolutionChoice = optionsData.ResolutionChoice,
 
-			FullscreenMode = Instance._fullscreenMode
+			FullscreenMode = optionsData.FullscreenMode,
 		};
 
 		return data;
 	}
 
 
-	private void Load()
+	private int LoadResolutions()
 	{
-		if (PlayerPrefs.HasKey("MasterVolume"))
-		{
-			_masterVolume = PlayerPrefs.GetFloat("MasterVolume");
-
-			Debug.LogError($"Found PlayerPrefs key: MasterVolume {_masterVolume}");
-		}
-		else
-		{
-			Debug.LogError("PlayerPrefs key not found: MasterVolume");
-		}
-
-
 		_resolutions = Screen.resolutions;
 
 		_resolutionOptions = new List<string>();
+
+		int resChoice = 0;
 
 		for (int i = 0; i < _resolutions.Length; i++)
 		{
@@ -136,58 +141,23 @@ public class PlayerOptions : MonoBehaviour
 
 			_resolutionOptions.Add($"{width} x {height}");
 
+			// Find the choice that matches the current screen resolution
 			if (width == Screen.currentResolution.width && height == Screen.currentResolution.height)
 			{
-				_resolutionChoice = i;
+				resChoice = i;
 			}
 		}
 
-		if (_resolutionChoice == -1)
-		{
-			Debug.LogError("Failed to find screen resolution match");
-		}
-
-		if (PlayerPrefs.HasKey("ResolutionChoice"))
-		{
-			_resolutionChoice = PlayerPrefs.GetInt("ResolutionChoice");
-
-			Debug.LogError($"Found PlayerPrefs key: ResolutionChoice {_resolutionChoice}");
-		}
-		else
-		{
-			Debug.LogError("PlayerPrefs key not found: ResolutionChoice");
-		}
-
-		if (PlayerPrefs.HasKey("FullscreenMode"))
-		{
-			_fullscreenMode = System.Convert.ToBoolean(PlayerPrefs.GetInt("FullscreenMode"));
-
-			Debug.LogError($"Found PlayerPrefs key: FullscreenMode {_fullscreenMode}");
-		}
-		else
-		{
-			Debug.LogError("PlayerPrefs key not found: FullscreenMode");
-		}
-
-
-		SetVolume(_masterVolume);
-
-		SetResolution(_resolutionChoice);
-
-		SetFullscreen(_fullscreenMode);
+		return resChoice;
 	}
+}
 
 
-	private void Save()
-	{
-		Debug.LogError($"Vol {_masterVolume}, Res {_resolutionChoice}, FS {_fullscreenMode}");
+public class PlayerOptionsData
+{
+	public float MasterVolume = 0.5f;
 
-		PlayerPrefs.SetFloat("MasterVolume", _masterVolume);
+	public int ResolutionChoice = -1;
 
-		PlayerPrefs.SetInt("ResolutionChoice", _resolutionChoice);
-
-		PlayerPrefs.SetInt("FullscreenMode", System.Convert.ToInt32(_fullscreenMode));
-
-		PlayerPrefs.Save();
-	}
+	public bool FullscreenMode = false;
 }

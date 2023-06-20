@@ -26,6 +26,9 @@ public class Pathfinding : MonoBehaviour
 	[SerializeField]
 	private float _backoffFactor;
 
+
+	[Tooltip("This speed is used when turning to look toward the target. " +
+		"Use a slower (~120) speed if you want the player to be able to avoid by circling")]
 	[SerializeField]
 	private float _rotateSpeed;
 
