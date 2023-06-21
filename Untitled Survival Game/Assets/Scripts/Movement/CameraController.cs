@@ -19,6 +19,13 @@ public class CameraController : MonoBehaviour
 	[SerializeField]
 	private List<CameraAnchor> _cameraAnchors;
 
+	[SerializeField]
+	private Transform _playerFollower;
+
+	[SerializeField]
+	private EquipmentCamera _equipmentCamera;
+	public EquipmentCamera EquipmentCamera => _equipmentCamera;
+
 	private Camera _camera;
 
 	private int _currentAnchorIndex = 1;
@@ -102,11 +109,6 @@ public class CameraController : MonoBehaviour
 		{
 			SetFPSMode(!_fpsMode);
 		}
-		
-  //      if (Input.GetKeyDown(KeyCode.Escape))
-		//{
-  //          SetFPSMode(false);
-		//}
 
 		if (!_fpsMode)
 		{
@@ -156,12 +158,6 @@ public class CameraController : MonoBehaviour
 		_currentAnchor = _cameraAnchors[anchorIndex];
 
 		_camera.transform.SetParent(_currentAnchor.PositionAnchor, false);
-
-		if (!_currentAnchor.FollowTarget)
-		{
-			transform.position = Vector3.zero;
-		}
-
 	}
 
 
@@ -179,7 +175,7 @@ public class CameraController : MonoBehaviour
 		// Perhaps the graphical object can be freely moved in update to follow the root because the interpolation is client side only
 
 
-		// This tutorial uses two separate transforms
+		// The tutorial uses two separate transforms
 		// The camera holder has a script that updates the position to the player position in update
 		// rather than parent the camera under the player because of rigidbody wierdness
 
@@ -189,20 +185,30 @@ public class CameraController : MonoBehaviour
 		// Ill have to test the best place to move this to (Input will still need to be cached in regular Update)
 		// Probably TimeManager.OnPostTick would be the best place
 
+		// Update 6/21/23
+		// For now I am following the graphic object not the network transform directly
+		// In this case LateUpdate ensures the graphic object has applied the most current result
+		// smoothing is not strictly needed here as the graphic object already handles smoothing
+		// but smoothing can still be used here if you want a damping effect to the camera follow
+		// This also means there should be no problem using cinemachine as no networked objects are involved
+		
+		// At the moment only the y rotation need be applied to the player follower as the x rotation is really the players head
+		// not the x rotation of the body. Instead the x rotation is applied to the camera anchors
+
 		
 
-		if (_currentAnchor.FollowTarget && _graphicTarget != null)
+		if (_graphicTarget != null)
 		{
-			transform.position = Vector3.SmoothDamp(transform.position, _graphicTarget.position, ref _velocity, _smoothTime);
+			_playerFollower.position = Vector3.SmoothDamp(_playerFollower.position, _graphicTarget.position, ref _velocity, _smoothTime);
+			_playerFollower.rotation = Quaternion.Euler(0f, _yRotation, 0f);
 		}
 
 		if (!_fpsMode)
 			return;
 
-		// handle rotation for the camera (not a child of player)
-		//transform.rotation = Quaternion.Euler(_xRotation, _yRotation, 0);
+		// handle view rotation in the x axis for the camera (not a child of player)
+		_currentAnchor.RotationAnchor.localRotation = Quaternion.Euler(_xRotation, 0f, 0f);
 
-		_currentAnchor.RotationAnchor.rotation = Quaternion.Euler(_xRotation, _yRotation, 0f);
 
 		// Allow prediction to get the resultant Y Rotation from here (move to Input Manager)
 		// Allow prediction to drive the network object transform taking Y Rotation into account

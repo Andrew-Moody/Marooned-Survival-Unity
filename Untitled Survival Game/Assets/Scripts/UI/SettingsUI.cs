@@ -15,6 +15,9 @@ public class SettingsUI : UIPanel
 	[SerializeField]
 	private Toggle _fullscreen;
 
+	[SerializeField]
+	private TMP_InputField _uIScale;
+
 
 	[SerializeField]
 	private Button _mainMenuButton;
@@ -34,6 +37,15 @@ public class SettingsUI : UIPanel
 	public void OnFullscreenChanged(bool fullscreen)
 	{
 		PlayerOptions.SetFullscreen(fullscreen);
+	}
+
+
+	public void OnUIScaleChanged(string scaleString)
+	{
+		if (float.TryParse(scaleString, out float scale))
+		{
+			PlayerOptions.SetUIScale(scale);
+		}
 	}
 
 
@@ -71,6 +83,8 @@ public class SettingsUI : UIPanel
 			_resolution.SetValueWithoutNotify(settings.ResolutionChoice);
 
 			_fullscreen.SetIsOnWithoutNotify(settings.FullscreenMode);
+
+			_uIScale.SetTextWithoutNotify(settings.UIScale.ToString());
 		}
 
 		_mainMenuButton.gameObject.SetActive(!FishNet.InstanceFinder.IsOffline);
@@ -87,4 +101,6 @@ public class SettingsUIData : UIPanelData
 	public int ResolutionChoice;
 
 	public bool FullscreenMode;
+
+	public float UIScale;
 }

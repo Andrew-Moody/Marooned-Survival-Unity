@@ -9,9 +9,6 @@ public class InventoryUI : UIPanel, IPointerDownHandler, IPointerUpHandler, IBeg
 	private ItemSlotUI[] _slots;
 
 	[SerializeField]
-	private MouseUI _mouseUI;
-
-	[SerializeField]
 	private ContextUI _contextUI;
 
 	private Inventory _inventory;
@@ -61,6 +58,22 @@ public class InventoryUI : UIPanel, IPointerDownHandler, IPointerUpHandler, IBeg
 		gameObject.SetActive(true);
 
 		_inventory.UpdateSlots();
+
+		if (CameraController.Instance != null && CameraController.Instance.EquipmentCamera != null)
+		{
+			CameraController.Instance.EquipmentCamera.gameObject.SetActive(true);
+		}
+	}
+
+
+	public override void Hide()
+	{
+		base.Hide();
+
+		if (CameraController.Instance != null && CameraController.Instance.EquipmentCamera != null)
+		{
+			CameraController.Instance.EquipmentCamera.gameObject.SetActive(false);
+		}
 	}
 
 
@@ -104,7 +117,7 @@ public class InventoryUI : UIPanel, IPointerDownHandler, IPointerUpHandler, IBeg
 
 		if (slot == null)
 		{
-			Debug.Log("OnPointerUp Outside Inventory");
+			Debug.Log("OnPointerUp Outside Inventory on" + eventData.pointerCurrentRaycast.gameObject.name);
 			return;
 		}
 
@@ -204,7 +217,7 @@ public class InventoryUI : UIPanel, IPointerDownHandler, IPointerUpHandler, IBeg
 		else
 		{
 			// Drag ended outside the inventory UI (Minecraft, Runescape, Muck, and others choose to drop the item in this case)
-			Debug.LogError("OnEndDrag Outside Inventory");
+			Debug.LogError("OnEndDrag Outside Inventory on" + eventData.pointerCurrentRaycast.gameObject.name);
 
 			_inventory.DropItemSRPC(_ptrDownIndex);
 		}

@@ -6,6 +6,12 @@ public class UIManager : MonoBehaviour
 	public static UIManager Instance;
 
 	[SerializeField]
+	private Canvas _uiCanvas;
+	public Canvas UICanvas => _uiCanvas;
+
+	public float UIScale { get => _uiCanvas.scaleFactor; set => _uiCanvas.scaleFactor = value; }
+
+	[SerializeField]
 	private Canvas _worldCanvas;
 	public Canvas WorldCanvas => _worldCanvas;
 

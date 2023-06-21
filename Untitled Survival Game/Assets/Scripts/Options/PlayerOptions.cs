@@ -12,7 +12,9 @@ public class PlayerOptions : MonoBehaviour
 
 	private PlayerOptionsData _optionsData = new PlayerOptionsData();
 
-	private const string OPTIONS_PATH = "/PlayerOptions.JSON";
+	private const string OPTIONS_PATH = "PlayerOptions.JSON";
+
+	private const bool EDITOR_UNIQUE = true; // Save a seperate file for the editor if true
 
 
 	private void Awake()
@@ -40,6 +42,11 @@ public class PlayerOptions : MonoBehaviour
 
 	public static void SetResolution(int choice)
 	{
+		if (choice >= Instance._resolutions.Length)
+		{
+			choice = 0;
+		}
+
 		_instance._optionsData.ResolutionChoice = choice;
 
 		Resolution res = Instance._resolutions[choice];
@@ -60,9 +67,11 @@ public class PlayerOptions : MonoBehaviour
 	}
 
 
-	public static void AddServerEntry()
+	public static void SetUIScale(float scale)
 	{
+		_instance._optionsData.UIScale = scale;
 
+		UIManager.Instance.UIScale = scale;
 	}
 
 
@@ -72,7 +81,7 @@ public class PlayerOptions : MonoBehaviour
 
 		int currentChoice = LoadResolutions();
 
-		if (!JsonFileIO.LoadFromFile(OPTIONS_PATH, ref _optionsData))
+		if (!JsonFileIO.LoadFromFile(OPTIONS_PATH, ref _optionsData, EDITOR_UNIQUE))
 		{
 			Debug.LogError("Failed to Load player options");
 		}
@@ -93,6 +102,8 @@ public class PlayerOptions : MonoBehaviour
 		SetResolution(_optionsData.ResolutionChoice);
 
 		SetFullscreen(_optionsData.FullscreenMode);
+
+		SetUIScale(_optionsData.UIScale);
 	}
 
 
@@ -100,7 +111,7 @@ public class PlayerOptions : MonoBehaviour
 	{
 		Debug.LogError("Saving Player Settings");
 
-		if (!JsonFileIO.SaveToFile(OPTIONS_PATH, _optionsData))
+		if (!JsonFileIO.SaveToFile(OPTIONS_PATH, _optionsData, EDITOR_UNIQUE))
 		{
 			Debug.LogError("Failed to save player options");
 		}
@@ -120,6 +131,8 @@ public class PlayerOptions : MonoBehaviour
 			ResolutionChoice = optionsData.ResolutionChoice,
 
 			FullscreenMode = optionsData.FullscreenMode,
+
+			UIScale = optionsData.UIScale,
 		};
 
 		return data;
@@ -160,4 +173,6 @@ public class PlayerOptionsData
 	public int ResolutionChoice = -1;
 
 	public bool FullscreenMode = false;
+
+	public float UIScale = 2f;
 }

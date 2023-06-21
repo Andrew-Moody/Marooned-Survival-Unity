@@ -4,9 +4,23 @@ using UnityEngine;
 
 public class JsonFileIO
 {
-	public static bool LoadFromFile<T>(string relativePath, ref T data)
+	public static bool LoadFromFile<T>(string relativePath, ref T data, bool editorUnique = false)
 	{
-		string path = Application.persistentDataPath + relativePath;
+		string path = Application.persistentDataPath;
+
+#if UNITY_EDITOR
+		if (editorUnique)
+		{
+			path += "/Editor_" + relativePath;
+		}
+		else
+		{
+			path += "/" + relativePath;
+		}
+#else
+		path += "/" + relativePath;
+#endif
+
 
 		if (!File.Exists(path))
 		{
@@ -30,10 +44,26 @@ public class JsonFileIO
 
 
 
-	public static bool SaveToFile<T>(string relativePath, T data)
+	public static bool SaveToFile<T>(string relativePath, T data, bool editorUnique = false)
 	{
-		string finalPath = Application.persistentDataPath + relativePath;
-		string tempPath = Application.persistentDataPath + relativePath + "_temp";
+
+		string finalPath = Application.persistentDataPath;
+
+#if UNITY_EDITOR
+		
+		if (editorUnique)
+		{
+			finalPath += "/Editor_" + relativePath;
+		}
+		else
+		{
+			finalPath += "/" + relativePath;
+		}
+#else
+		finalPath += "/" + relativePath;
+#endif
+
+		string tempPath = finalPath + "_temp";
 
 		try
 		{

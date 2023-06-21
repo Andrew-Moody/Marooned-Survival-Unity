@@ -27,7 +27,7 @@ public class JoinOptionsUI : UIPanel
 
 	private ServerEntryUI _entryToEdit;
 
-	private const string SAVE_PATH = "/ServerList.JSON";
+	private const string SAVE_PATH = "ServerList.JSON";
 
 
 	public override void Show(UIPanelData data)
