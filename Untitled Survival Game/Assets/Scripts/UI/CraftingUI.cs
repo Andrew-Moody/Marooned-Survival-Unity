@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class CraftingUI : UIPanel, IPointerDownHandler
+public class CraftingUI : UIPanel
 {
 	[SerializeField]
 	private CraftingSlotUI _slotPrefab;
@@ -12,21 +12,12 @@ public class CraftingUI : UIPanel, IPointerDownHandler
 	[SerializeField]
 	private Transform _slotHolder;
 
-	[SerializeField]
-	private ToolTip _toolTip;
-
 
 	private List<CraftingSlotUI> _slots = new List<CraftingSlotUI>();
 
 	private CraftingRecipe[] _craftingRecipes;
 
 	private Inventory _inventory;
-
-
-	public override void Initialize()
-	{
-		
-	}
 
 
 	public override void SetPlayer(GameObject player)
@@ -55,7 +46,7 @@ public class CraftingUI : UIPanel, IPointerDownHandler
 	{
 		gameObject.SetActive(true);
 
-		_toolTip.gameObject.SetActive(false);
+		MouseUI.HideTooltip();
 
 		CraftingUIPanelData data = craftingRecipes as CraftingUIPanelData;
 
@@ -65,6 +56,14 @@ public class CraftingUI : UIPanel, IPointerDownHandler
 		}
 
 		PopulateRecipes();
+	}
+
+
+	public override void Hide()
+	{
+		base.Hide();
+
+		MouseUI.HideTooltip();
 	}
 
 
@@ -81,6 +80,7 @@ public class CraftingUI : UIPanel, IPointerDownHandler
 			{
 				CraftingSlotUI slot = Instantiate(_slotPrefab, _slotHolder);
 
+				slot.OnPointerClickEvent += OnPointerClickHandler;
 				slot.OnPointerEnterEvent += OnPointerEnterHandler;
 				slot.OnPointerExitEvent += OnPointerExitHandler;
 
@@ -103,11 +103,11 @@ public class CraftingUI : UIPanel, IPointerDownHandler
 	}
 
 
-	public void OnPointerDown(PointerEventData eventData)
+	// OnPointerExit failed to fire when handled directly by CraftingUI and the mouse moved from one child to another
+	// Seems to work better with the slots recieving pointer events and raising events to be handled here
+	private void OnPointerClickHandler(PointerEventData eventData)
 	{
-		CraftingSlotUI slot = eventData.pointerCurrentRaycast.gameObject.GetComponent<CraftingSlotUI>();
-
-		if (slot != null)
+		if (eventData.pointerClick.TryGetComponent(out CraftingSlotUI slot))
 		{
 			int recipeID = _craftingRecipes[slot.index].RecipeID;
 
@@ -115,14 +115,9 @@ public class CraftingUI : UIPanel, IPointerDownHandler
 		}
 	}
 
-
-	// OnPointerExit failed to fire when handled directly by CraftingUI when the mouse moved from one child to another
-	// Moving the eventSystem callbacks to the slots themselves seems to work
-
+	
 	private void OnPointerEnterHandler(PointerEventData eventData)
 	{
-		//Debug.LogError($"OnPointerEnter on {eventData.pointerEnter.name}");
-
 		if (eventData.pointerEnter.TryGetComponent(out CraftingSlotUI slot))
 		{
 			Ingredient[] ingredients = _craftingRecipes[slot.index].Ingredients;
@@ -134,15 +129,13 @@ public class CraftingUI : UIPanel, IPointerDownHandler
 				entries[i] = $"{ItemManager.Instance.GetItemSO(ingredients[i].ItemID).ItemName} x{ingredients[i].Quantity}";
 			}
 
-			_toolTip.SetToolTip(slot.CurrentIcon, entries);
-			_toolTip.gameObject.SetActive(true);
+			MouseUI.ShowTooltip(slot.CurrentIcon, entries);
 		}
 	}
 
 	private void OnPointerExitHandler(PointerEventData eventData)
 	{
-		//Debug.LogError($"OnPointerExit on {eventData.pointerEnter.name}");
-		_toolTip.gameObject.SetActive(false);
+		MouseUI.HideTooltip();
 	}
 }
 

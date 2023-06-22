@@ -6,23 +6,15 @@ using UnityEngine.UI;
 public class ContextUI : MonoBehaviour
 {
 	[SerializeField]
-	private Image _window;
+	private Transform _optionHolder;
 
 	[SerializeField]
 	private OptionUI _optionPF;
 
-	private List<OptionUI> _options;
-
-	private int _slotIndex;
+	private List<OptionUI> _options = new List<OptionUI>();
 
 
-	private void Start()
-	{
-		_options = new List<OptionUI>();
-		Hide();
-	}
-
-	public void PopulateOptions(int slotIndex, List<ContextOption> options)
+	public void Show(List<ContextOption> options)
 	{
 		if (options == null)
 		{
@@ -31,47 +23,39 @@ public class ContextUI : MonoBehaviour
 			return;
 		}
 
-		transform.parent.position = Input.mousePosition;
-
-		_slotIndex = slotIndex;
-		Show();
-
-		Debug.Log("Populating options " + options.Count);
-
+		// Instantiate more options if there aren't enough
 		if (options.Count > _options.Count)
 		{
 			for (int i = _options.Count; i < options.Count; i++)
 			{
-				OptionUI option = Instantiate(_optionPF, transform, false);
+				OptionUI option = Instantiate(_optionPF, _optionHolder, false);
 				_options.Add(option);
 			}
 		}
 
 
+		// Set and show options and hide the unused extras
 		for (int i = 0; i < _options.Count; i++)
 		{
 			if (i < options.Count)
 			{
-				_options[i].gameObject.SetActive(true);
 				_options[i].SetOption(options[i]);
+				_options[i].gameObject.SetActive(true);
 			}
 			else
 			{
 				_options[i].gameObject.SetActive(false);
 			}
-			
 		}
+
+		transform.parent.position = Input.mousePosition;
+
+		gameObject.SetActive(true);
 	}
 
 
 	public void Hide()
 	{
 		gameObject.SetActive(false);
-	}
-
-
-	public void Show()
-	{
-		gameObject.SetActive(true);
 	}
 }

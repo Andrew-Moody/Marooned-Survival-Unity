@@ -18,11 +18,10 @@ MonoBehaviour:
   _graphicPrefab: {fileID: 0}
   _mesh: {fileID: 8110042247515285164, guid: ca309ad74a3b1bb49889e45863deb6dd, type: 3}
   _material: {fileID: 2100000, guid: 4c23086cc53d05b42a8a5004832ae24a, type: 2}
-  _itemID: 302
+  _itemID: 301
   _deathTime: 3
   _toolType: 2
   _toolPower: 0
-  _craftingStationSO: {fileID: 0}
   _particleEffects:
   - Name: HIT
     Anchor: {fileID: 0}

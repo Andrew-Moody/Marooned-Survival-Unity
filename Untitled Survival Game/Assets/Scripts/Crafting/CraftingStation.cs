@@ -25,7 +25,7 @@ public class CraftingStation : Interactable
 	[TargetRpc]
 	private void InteractTRPC(NetworkConnection user)
 	{
-		CameraController.Instance.SetFPSMode(false);
+		PlayerInput.SetFPSMode(false);
 
 		UIManager.ShowPanel("CraftingUI", new CraftingUIPanelData(_craftingStationSO.Recipes), true);
 	}

@@ -154,7 +154,7 @@ public class InventoryItem
 	{
 		Debug.Log("Player Examined Item: " + ItemSO.ItemName);
 
-		ChatBox.Instance.SendChat(ItemSO.ExamineText);
+		ChatUI.SendChat(ItemSO.ExamineText);
 	}
 
 	public void Use(int index)

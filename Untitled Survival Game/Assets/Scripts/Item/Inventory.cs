@@ -78,6 +78,18 @@ public class Inventory : NetworkBehaviour
 	}
 
 
+	public bool IsSlotEmpty(int index)
+	{
+		if (index < 0 || index >= _inventorySize + _equipmentSize)
+		{
+			Debug.LogError("inventory slot index outside bounds");
+			return true;
+		}
+
+		return _items[index].ItemID == 0;
+	}
+
+
 	private void ClearSlot(int index)
 	{
 		// Need consitent definition of empty slot
@@ -203,7 +215,7 @@ public class Inventory : NetworkBehaviour
 
 
 	[ServerRpc(RunLocally = true)]
-	public void DropItemSRPC(int currentSlot)
+	public void DeleteItemSRPC(int currentSlot)
 	{
 		ClearSlot(currentSlot);
 	}
@@ -222,6 +234,29 @@ public class Inventory : NetworkBehaviour
 	public void SwapSlotsSRPC(int currentSlot, int prevSlot)
 	{
 		SwapSlots(currentSlot, prevSlot);
+	}
+
+
+	[ServerRpc]
+	public void DropItemSRPC(int currentSlot)
+	{
+		Debug.LogError($"Dropping at slot {currentSlot}");
+
+		if (IsSlotEmpty(currentSlot))
+		{
+			Debug.LogError($"Attempted to drop empty item");
+			return;
+		}
+
+		ItemNetData item = _items[currentSlot].GetNetData();
+
+		Vector3 location = transform.TransformPoint(0f, 0.5f, 1.5f);
+
+		ItemManager.Instance.SpawnWorldItem(item, location);
+
+		ClearSlot(currentSlot);
+
+		TargetSyncSlot(Owner, _items[currentSlot].GetNetData(), currentSlot);
 	}
 
 

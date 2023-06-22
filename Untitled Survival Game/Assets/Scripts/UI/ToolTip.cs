@@ -18,7 +18,7 @@ public class ToolTip : MonoBehaviour
 	private List<ToolTipEntry> _entries = new List<ToolTipEntry>();
 
 
-	public void SetToolTip(Sprite icon, string[] entries)
+	public void Show(Sprite icon, string[] entries)
 	{
 		_icon.sprite = icon;
 
@@ -30,7 +30,6 @@ public class ToolTip : MonoBehaviour
 			}
 		}
 
-
 		for (int i = 0; i < entries.Length; i++)
 		{
 			_entries[i].SetEntry(entries[i]);
@@ -41,6 +40,15 @@ public class ToolTip : MonoBehaviour
 		{
 			_entries[i].gameObject.SetActive(false);
 		}
+
+		transform.position = Input.mousePosition;
+		gameObject.SetActive(true);
+	}
+
+
+	public void Hide()
+	{
+		gameObject.SetActive(false);
 	}
 
 

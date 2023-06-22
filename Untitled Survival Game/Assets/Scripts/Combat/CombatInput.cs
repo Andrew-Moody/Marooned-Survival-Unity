@@ -17,6 +17,10 @@ public class CombatInput : NetworkBehaviour
 	[SerializeField]
 	private LayerMask _interactMask;
 
+	private const string HEADSUP = "HeadsupUI";
+	private const string INVENTORY = "InventoryUI";
+	private const string SETTINGS = "SettingsUI";
+
 
 	public override void OnStartNetwork()
 	{
@@ -46,47 +50,35 @@ public class CombatInput : NetworkBehaviour
 	{
 		if (Input.GetKeyDown(KeyCode.E))
 		{
-			if (UIManager.CheckStackTop("InventoryUI"))
+			if (UIManager.CheckStackTop(INVENTORY))
 			{
 				UIManager.HideStackTop(true);
-				CameraController.Instance.SetFPSMode(true);
+				PlayerInput.SetFPSMode(true);
 			}
 			else
 			{
-				UIManager.ShowPanel("InventoryUI", pushToStack: true);
-				CameraController.Instance.SetFPSMode(false);
+				UIManager.ShowPanel(INVENTORY, pushToStack: true);
+				PlayerInput.SetFPSMode(false);
 			}
 
 		}
 
 		if (Input.GetKeyDown(KeyCode.Escape))
 		{
-			if (UIManager.CheckStackTop("HotbarUI"))
+			if (UIManager.CheckStackTop(HEADSUP))
 			{
-				UIManager.ShowPanel("SettingsUI", PlayerOptions.GetSettingsData(), pushToStack: true);
+				UIManager.ShowPanel(SETTINGS, PlayerOptions.GetSettingsData(), pushToStack: true);
 			}
 			else
 			{
 				UIManager.HideStackTop(true);
 			}
 
-
-			if (UIManager.CheckStackTop("HotbarUI"))
-			{
-				CameraController.Instance.SetFPSMode(true);
-
-				Debug.LogError($"Hotbar top of stack {Cursor.lockState} {Cursor.visible}");
-			}
-			else
-			{
-				CameraController.Instance.SetFPSMode(false);
-			}			
+			PlayerInput.SetFPSMode(UIManager.CheckStackTop(HEADSUP));
 		}
 
-		// I know this is awfull and I need to make an Input Manager
-
-
-		if (CameraController.Instance.GetFPSMode())
+		
+		if (PlayerInput.FPSMode)
 		{
 			if (Input.GetMouseButton(0))
 			{
@@ -100,17 +92,6 @@ public class CombatInput : NetworkBehaviour
 				Interact();
 			}
 		}
-		else
-		{
-			
-
-			//if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
-			//{
-			//    CameraController.Instance.SetFPSMode(true);
-			//    UIManager.Instance.HideCraftingUI();
-			//}
-		}
-		
 	}
 
 

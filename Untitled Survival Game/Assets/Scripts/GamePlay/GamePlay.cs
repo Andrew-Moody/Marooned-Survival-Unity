@@ -114,7 +114,7 @@ public class GamePlay : NetworkBehaviour
 	[ObserversRpc(RunLocally = true, BufferLast = true)]
 	private void ShowWinScreenORPC()
 	{
-		CameraController.Instance.SetFPSMode(false);
+		PlayerInput.SetFPSMode(false);
 		UIManager.ShowPanel("WinUI");
 	}
 }

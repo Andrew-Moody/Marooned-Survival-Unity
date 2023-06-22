@@ -5,67 +5,144 @@ using UnityEngine.UI;
 
 public class MouseUI : UIPanel
 {
+	private static MouseUI _instance;
+
+	[SerializeField]
+	private Transform _mouseFollower;
+
 	[SerializeField]
 	private Image _crosshair;
 
 	[SerializeField]
-	private Image _icon;
+	private Image _cursor;
 
 	[SerializeField]
+	private MouseItemUI _mouseItemUI;
+
+	[SerializeField]
+	private ToolTip _toolTip;
+
+	[SerializeField]
+	private ContextUI _contextUI;
+
 	private Canvas _canvas;
 
-
-	public override void Initialize()
+	private void Awake()
 	{
-		_icon.sprite = null;
-		_icon.enabled = false;
-		_crosshair.enabled = false;
+		if (_instance == null)
+		{
+			_instance = this;
+		}
+		else
+		{
+			Destroy(gameObject);
+		}
+		
 	}
 
 
-	public override void Show(UIPanelData mouseData)
+	public override void Show(UIPanelData data)
 	{
 		gameObject.SetActive(true);
 
-		MouseUIPanelData data = mouseData as MouseUIPanelData;
-
-		if (data != null)
+		if (_canvas == null)
 		{
-			Debug.Log($"{data.Sprite} {data.Mode}");
+			_canvas = UIManager.Instance.UICanvas;
+		}
 
-			_icon.sprite = data.Sprite;
-			_icon.enabled = data.Sprite != null;
+		FollowMouseClamped(); // Might flicker if set visible for a frame before update moves to correct position
 
-			if (data.Mode == MouseUIMode.Crosshair)
-			{
-				_icon.enabled = false;
-				_crosshair.enabled = true;
-			}
-			else
-			{
-				_crosshair.enabled = false;
-			}
+		HideTooltip();
+		HideContext();
+
+		SetCursorMode(CursorMode.Cursor);
+	}
+
+
+
+	public static void SetCursorMode(CursorMode mode)
+	{
+		if (_instance == null)
+		{
+			Debug.LogError("MouseUI Instance not yet set");
+			return;
+		}
+
+		_instance._cursor.enabled = mode == CursorMode.Cursor;
+		_instance._crosshair.enabled = mode == CursorMode.Crosshair;
+
+		Cursor.visible = mode == CursorMode.Cursor;
+
+		if (mode == CursorMode.Cursor)
+		{
+			Cursor.lockState = CursorLockMode.None;
+		}
+		else if (mode == CursorMode.Crosshair)
+		{
+			Cursor.lockState = CursorLockMode.Locked;
+		}
+	}
+
+
+	public static void ShowTooltip(Sprite icon, string[] entries)
+	{
+		if (_instance != null)
+		{
+			_instance._toolTip.Show(icon, entries);
+		}
+	}
+
+	public static void HideTooltip()
+	{
+		if (_instance != null)
+		{
+			_instance._toolTip.Hide();
+		}
+	}
+
+	public static void ShowContext(List<ContextOption> contextOptions)
+	{
+		if (_instance != null)
+		{
+			_instance._contextUI.Show(contextOptions);
+		}
+	}
+
+	public static void HideContext()
+	{
+		if (_instance != null)
+		{
+			_instance._contextUI.Hide();
+		}
+	}
+
+
+	public static void ShowMouseItem(Sprite icon)
+	{
+		if (_instance != null)
+		{
+			_instance._mouseItemUI.Show(icon);
+		}
+	}
+
+
+	public static void HideMouseItem()
+	{
+		if (_instance != null)
+		{
+			_instance._mouseItemUI.Hide();
 		}
 	}
 
 
 	private void Update()
 	{
-		// Had issues with screenspace camera 
+		FollowMouseClamped();
+	}
 
-		// Position of the mouse in Canvas coordinates
-		//Vector3 position = Vector3.zero;
 
-		//if (_canvas.renderMode == RenderMode.ScreenSpaceCamera)
-		//{
-		//	RectTransformUtility.ScreenPointToLocalPointInRectangle((RectTransform)_canvas.transform, Input.mousePosition, _canvas.worldCamera, out position);
-		//}
-		//else if (_canvas.renderMode == RenderMode.ScreenSpaceOverlay)
-		//{
-		//	// Might have to divide by scale factor if not 1?
-		//	position = Input.mousePosition;
-		//}
-
+	private void FollowMouseClamped()
+	{
 		Rect pixelRect = _canvas.pixelRect;
 
 		Vector3 position = Input.mousePosition;
@@ -73,37 +150,12 @@ public class MouseUI : UIPanel
 		position.x = Mathf.Clamp(position.x, pixelRect.xMin, pixelRect.xMax);
 		position.y = Mathf.Clamp(position.y, pixelRect.yMin, pixelRect.yMax);
 
-		_icon.transform.position = position;
+		_mouseFollower.position = position;
 	}
 }
 
 
-public class MouseUIPanelData : UIPanelData
-{
-	private Sprite _sprite;
-	public Sprite Sprite => _sprite;
-
-	private MouseUIMode _mode;
-	public MouseUIMode Mode => _mode;
-
-	public MouseUIPanelData(Sprite sprite, MouseUIMode mode)
-	{
-		_sprite = sprite;
-
-		_mode = mode;
-	}
-
-
-	public MouseUIPanelData(MouseUIMode mode)
-	{
-		_sprite = null;
-
-		_mode = mode;
-	}
-}
-
-
-public enum MouseUIMode
+public enum CursorMode
 {
 	None,
 	Cursor,

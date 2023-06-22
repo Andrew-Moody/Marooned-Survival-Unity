@@ -77,13 +77,16 @@ public class UIManager : MonoBehaviour
 	}
 
 
-	public static void ShowPanel(string panelName, UIPanelData data = null, bool pushToStack = false)
+	public static void ShowPanel(string panelName, UIPanelData data = null, bool pushToStack = false, bool hideStackTop = false)
 	{
 		if (Instance._panelDict.TryGetValue(panelName, out UIPanel panel))
 		{
 			if (pushToStack && !CheckStackTop(panelName))
 			{
-				HideStackTop(false);
+				if (hideStackTop)
+				{
+					HideStackTop(false);
+				}
 
 				Instance._panelStack.Push(panel);
 			}

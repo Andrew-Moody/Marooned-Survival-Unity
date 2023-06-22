@@ -34,6 +34,16 @@ public class GameManager : MonoBehaviour
 	private const string MENU_SCENE = "MainMenuScene";
 	private const string GAME_SCENE = "GameScene";
 
+	private const string MAINMENU = "MainUI";
+	private const string MOUSE = "MouseUI";
+	private const string HOST_OPTIONS = "HostOptionsUI";
+	private const string JOIN_OPTIONS = "JoinOptionsUI";
+	private const string LOBBY = "LobbyUI";
+	private const string LOADING = "LoadingUI";
+	private const string HEADSUP = "HeadsupUI";
+	private const string DEATH = "DeathUI";
+	private const string DEBUG = "DebugUI";
+
 	private bool _startFromGameScene;
 
 	private void Awake()
@@ -157,7 +167,7 @@ public class GameManager : MonoBehaviour
 
 			UIManager.HideStackTop(true);
 
-			UIManager.ShowPanel("HostOptionsUI", pushToStack: true);
+			UIManager.ShowPanel(HOST_OPTIONS, pushToStack: true);
 		}
 	}
 
@@ -166,7 +176,7 @@ public class GameManager : MonoBehaviour
 	{
 		UIManager.HideStackTop(true);
 
-		UIManager.ShowPanel("JoinOptionsUI", pushToStack: true);
+		UIManager.ShowPanel(JOIN_OPTIONS, pushToStack: true);
 		
 	}
 
@@ -175,7 +185,7 @@ public class GameManager : MonoBehaviour
 	{
 		UIManager.HideStackTop(true);
 
-		UIManager.ShowPanel("LobbyUI", pushToStack: true);
+		UIManager.ShowPanel(LOBBY, pushToStack: true);
 
 		if (_networkManager != null)
 		{
@@ -223,7 +233,8 @@ public class GameManager : MonoBehaviour
 			if (InstanceFinder.IsOffline)
 			{
 				UIManager.HideAll();
-				UIManager.ShowPanel("MainUI", pushToStack: true);
+				UIManager.ShowPanel(MOUSE);
+				UIManager.ShowPanel(MAINMENU, pushToStack: true);
 				return;
 			}
 
@@ -243,7 +254,7 @@ public class GameManager : MonoBehaviour
 	public void PrepareSceneLoad()
 	{
 		UIManager.HideStackTop(true);
-		UIManager.ShowPanel("LoadingUI");
+		UIManager.ShowPanel(LOADING);
 
 		_loadCamera.gameObject.SetActive(true);
 	}
@@ -257,11 +268,11 @@ public class GameManager : MonoBehaviour
 
 		CameraController.Instance.SetPlayer(player);
 
-		CameraController.Instance.SetFPSMode(true);
+		UIManager.HideAll();
+		UIManager.ShowPanel(MOUSE);
+		UIManager.ShowPanel(HEADSUP, pushToStack: true);
 
-		UIManager.HidePanel("LoadingUI");
-
-		UIManager.ShowPanel("HotbarUI", pushToStack: true);
+		PlayerInput.SetFPSMode(true);
 
 		if (player.TryGetComponent(out Combatant combatant))
 		{
@@ -360,14 +371,16 @@ public class GameManager : MonoBehaviour
 		{
 			UIManager.HideAll();
 
-			UIManager.ShowPanel("MainUI", pushToStack: true);
+			UIManager.ShowPanel(MAINMENU, pushToStack: true);
 		}
 		else if (scene == GAME_SCENE)
 		{
 			UIManager.HideAll();
 
-			UIManager.ShowPanel("DebugUI", pushToStack: true);
+			UIManager.ShowPanel(DEBUG, pushToStack: true);
 		}
+
+		UIManager.ShowPanel(MOUSE);
 	}
 
 
@@ -409,9 +422,9 @@ public class GameManager : MonoBehaviour
 
 	private void PlayerDeathHandler()
 	{
-		CameraController.Instance.SetFPSMode(false);
+		PlayerInput.SetFPSMode(false);
 
-		UIManager.ShowPanel("DeathUI", pushToStack: true);
+		UIManager.ShowPanel(DEATH, pushToStack: true);
 	}
 
 

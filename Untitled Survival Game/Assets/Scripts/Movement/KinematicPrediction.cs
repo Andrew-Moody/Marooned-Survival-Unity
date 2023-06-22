@@ -104,17 +104,6 @@ public class KinematicPrediction : NetworkBehaviour
 	}
 
 
-	void Update()
-	{
-		if (!IsOwner) return;
-
-		if (Input.GetKeyDown(KeyCode.Space))
-		{
-			_jumpQueued = true;
-		}
-	}
-
-
 	private void GetInput(out MoveData data)
 	{
 		data = default;
@@ -123,15 +112,14 @@ public class KinematicPrediction : NetworkBehaviour
 		float vertical = Input.GetAxisRaw("Vertical");
 		bool sprint = Input.GetKey(KeyCode.LeftShift);
 
-		bool jump = _jumpQueued;
-		_jumpQueued = false;
+		bool jump = PlayerInput.CheckJump();
 
 		// Get the players look direction (Currently controlled by CameraController, but should move to Input Manager)
 		// Its acceptable for this to be client authoritive as generally speaking
 		// The input that drives this can be easily faked, so theres no point in preventing the value itself from being faked
 
-		float yRotation = CameraController.Instance.GetYRotation();
-		float xRotation = CameraController.Instance.GetXRotation();
+		float yRotation = PlayerInput.YRotation;
+		float xRotation = PlayerInput.XRotation;
 
 		bool rotationChanged = yRotation != _prefYRotation || xRotation != _prefXRotation;
 
