@@ -1,12 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ToolTip : MonoBehaviour
 {
 	[SerializeField]
+	private bool _showIcon;
+
+	[SerializeField]
 	private Image _icon;
+
+	[SerializeField]
+	private Transform _iconHolder;
+
+	[SerializeField]
+	private TextMeshProUGUI _itemName;
 
 	[SerializeField]
 	private Transform _entryHolder;
@@ -18,9 +28,12 @@ public class ToolTip : MonoBehaviour
 	private List<ToolTipEntry> _entries = new List<ToolTipEntry>();
 
 
-	public void Show(Sprite icon, string[] entries)
+	public void Show(Sprite icon, string itemName,  string[] entries)
 	{
 		_icon.sprite = icon;
+		_iconHolder.gameObject.SetActive(icon != null && _showIcon);
+
+		_itemName.text = itemName;
 
 		if (entries.Length > _entries.Count)
 		{

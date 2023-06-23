@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class InventoryUI : UIPanel, IPointerDownHandler, IPointerUpHandler, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class InventoryUI : UIPanel
 {
 	[SerializeField][Tooltip("Allow empty slots to be dragged as items")]
 	private bool _dragEmpty;
@@ -12,7 +12,10 @@ public class InventoryUI : UIPanel, IPointerDownHandler, IPointerUpHandler, IBeg
 	private ItemSlotUI[] _slots;
 
 	[SerializeField]
-	private GameObject _inventoryWindow;
+	private Transform _inventoryWindow;
+
+	[SerializeField]
+	private PointerEventDetector _outsideDetector;
 
 	[SerializeField]
 	private CraftingUI _handCraftingUI;
@@ -21,8 +24,6 @@ public class InventoryUI : UIPanel, IPointerDownHandler, IPointerUpHandler, IBeg
 	private CraftingStationSO _handCraftingSO;
 
 	private Inventory _inventory;
-
-	private int _ptrDownIndex;
 
 
 	private void OnDestroy()
@@ -38,9 +39,18 @@ public class InventoryUI : UIPanel, IPointerDownHandler, IPointerUpHandler, IBeg
 		for (int i = 0; i < _slots.Length; ++i)
 		{
 			_slots[i].Initialize(i);
-		}
 
-		Debug.LogError("InventoryUI Initialized");
+			if (_slots[i].TryGetComponent(out PointerEventDetector detector))
+			{
+				detector.OnPointerClickEvent += OnPointerClickEvent;
+				detector.OnBeginDragEvent += OnBeginDragEvent;
+				detector.OnEndDragEvent += OnEndDragEvent;
+				detector.OnPointerEnterEvent += OnPointerEnterEvent;
+				detector.OnPointerExitEvent += OnPointerExitEvent;
+			}
+
+			//_outsideDetector.OnPointerClickEvent += OnPointerClickEvent;
+		}
 	}
 
 
@@ -87,17 +97,10 @@ public class InventoryUI : UIPanel, IPointerDownHandler, IPointerUpHandler, IBeg
 		{
 			CameraController.Instance.EquipmentCamera.gameObject.SetActive(false);
 		}
+
+		MouseUI.HideTooltip();
 	}
 
-
-	// OnPointerDown and OnBeginDrag both are called on the object that is actually clicked*
-	// OnPointerUp, OnDrag, and OnEndDrag are called on the initial object regardless of where the mouse ends up*
-	// The object that the mouse raycast has hit can be accessed by the eventdata*
-	// Also OnPointerUp is called before OnEndDrag
-
-	// * In this case all of the events are called on the parent UI object
-	// The current object under the mouse can be accessed through eventdata
-	// The object under the mouse can be cached in OnPointerDown OnBeginDrag etc or with eventdata.pointerPress, eventdata.pointerDrag
 
 	// Update 6/22/23
 	// I have found some quirks with the way pointer events work when handled by parent objects
@@ -106,36 +109,30 @@ public class InventoryUI : UIPanel, IPointerDownHandler, IPointerUpHandler, IBeg
 	// And now pointerPress and pointerDrag yield the InventoryUI gameObject (the object that handled OnPointerDown is my guess why)
 	// not the gameObject that was hit by the raycast even though pointerPressRaycast still gives the actual object hit
 
-	public void OnPointerDown(PointerEventData eventData)
+	// The slot that recieved OnPointerDown can be retrieved through pointerCurrentRaycast and cached or
+	// by pointerPressRaycast in future callbacks (up, drag etc.) note that pointerPress is null currently
+	// and will refer to InventoryUI, not the slot in future events (because this object actually handles the event)?
+	// if it becomes an issue it may be best to move the pointer event handlers to the slots and give them callbacks to actually handle them
+	
+	// Update 6/23/23
+	// Adding tooltips to items caused the same issue with pointer exit events
+	// Decided to move pointer event handlers to the slots
+
+	private void OnPointerClickEvent(PointerEventData eventData)
 	{
-		// The slot that recieved OnPointerDown can be retrieved through pointerCurrentRaycast and cached or
-		// by pointerPressRaycast in future callbacks (up, drag etc.) note that pointerPress is null currently
-		// and will refer to InventoryUI, not the slot in future events (because this object actually handles the event)?
-		// if it becomes an issue it may be best to move the pointer event handlers to the slots and give them callbacks to actually handle them
+		string pointerPress = eventData.pointerPress != null ? eventData.pointerPress.name : "null";
 
-		ItemSlotUI slot = eventData.pointerCurrentRaycast.gameObject.GetComponent<ItemSlotUI>();
-		if (slot != null)
-		{
-			_ptrDownIndex = slot.Index;
+		string pressRay = eventData.pointerPressRaycast.gameObject != null ? eventData.pointerPressRaycast.gameObject.name : "null";
 
-			//if (!_inventory.IsSlotEmpty(slot.Index))
-			//{
-			//	_ptrDownIndex = slot.Index;
-			//}
-			//else
-			//{
-			//	_ptrDownIndex = -1;
-			//}
+		string currentRay = eventData.pointerCurrentRaycast.gameObject != null ? eventData.pointerCurrentRaycast.gameObject.name : "null";
 
-			Debug.Log("OnPointerDown on Slot: " + slot.Index);
-		}
-	}
+		Debug.LogError($"Click pointerPress {pointerPress}, pressRay {pressRay}, currentRay {currentRay}");
 
-	public void OnPointerUp(PointerEventData eventData)
-	{
+
 		// Handled by OnEndDrag
 		if (eventData.dragging || eventData.pointerCurrentRaycast.gameObject == null)
 		{
+			Debug.LogError("OnPointerClick recieved while dragging");
 			return;
 		}
 
@@ -148,8 +145,9 @@ public class InventoryUI : UIPanel, IPointerDownHandler, IPointerUpHandler, IBeg
 		// If double+ click is needed
 		if (eventData.clickCount > 1)
 		{
-			Debug.LogError($"Double click on slot {slot.gameObject.name}");
+			Debug.LogError($"Multi click on slot {slot.gameObject.name}, clicks: {eventData.clickCount}");
 		}
+
 
 		// Handle LeftClick
 		// (Use or consume in Runescape, Pickup by mouse in Minecraft or Muck)
@@ -159,13 +157,17 @@ public class InventoryUI : UIPanel, IPointerDownHandler, IPointerUpHandler, IBeg
 			{
 				// Shift Click if applicable
 			}
+
+			_inventory.SwapWithMouseSRPC(slot.Index);
 		}
-		
+
 		// Handle RightClick
 		// Open Options context menu in Runescape, Pickup half the stack in Minecraft (and Muck?)
 		if (eventData.button == PointerEventData.InputButton.Right)
 		{
 			Debug.LogError("Right Clicked Slot: " + slot.Index);
+
+			// need to check mouse is not holding an item
 
 			if (!_inventory.IsSlotEmpty(slot.Index))
 			{
@@ -176,8 +178,18 @@ public class InventoryUI : UIPanel, IPointerDownHandler, IPointerUpHandler, IBeg
 		}
 	}
 
-	public void OnBeginDrag(PointerEventData eventData)
+
+	private void OnBeginDragEvent(PointerEventData eventData)
 	{
+		string pointerPress = eventData.pointerPress != null ? eventData.pointerPress.name : "null";
+
+		string pressRay = eventData.pointerPressRaycast.gameObject != null ? eventData.pointerPressRaycast.gameObject.name : "null";
+
+		string currentRay = eventData.pointerCurrentRaycast.gameObject != null ? eventData.pointerCurrentRaycast.gameObject.name : "null";
+
+		Debug.LogError($"BeginDrag pointerPress {pointerPress}, pressRay {pressRay}, currentRay {currentRay}");
+
+
 		GameObject slotObj = eventData.pointerCurrentRaycast.gameObject;
 
 		if (slotObj != null && slotObj.TryGetComponent(out ItemSlotUI slot))
@@ -186,18 +198,23 @@ public class InventoryUI : UIPanel, IPointerDownHandler, IPointerUpHandler, IBeg
 			{
 				// Hide the item in the starting slot and set the mouse sprite
 				slot.HideSlot();
-				MouseUI.ShowMouseItem(slot.Sprite);
+				MouseUI.ShowMouseItem(slot.ItemIcon, slot.ItemCount);
 			}
 		}
 	}
 
-	public void OnDrag(PointerEventData eventData)
-	{
-		// Must implement OnDrag or else OnBeginDrag and OnEndDrag will not be called
-	}
 
-	public void OnEndDrag(PointerEventData eventData)
+	private void OnEndDragEvent(PointerEventData eventData)
 	{
+		string pointerPress = eventData.pointerPress != null ? eventData.pointerPress.name : "null";
+
+		string pressRay = eventData.pointerPressRaycast.gameObject != null ? eventData.pointerPressRaycast.gameObject.name : "null";
+
+		string currentRay = eventData.pointerCurrentRaycast.gameObject != null ? eventData.pointerCurrentRaycast.gameObject.name : "null";
+
+		Debug.LogError($"EndDrag pointerPress {pointerPress}, pressRay {pressRay}, currentRay {currentRay}");
+
+
 		GameObject startObj = eventData.pointerPressRaycast.gameObject;
 		GameObject endObj = eventData.pointerCurrentRaycast.gameObject;
 
@@ -218,31 +235,49 @@ public class InventoryUI : UIPanel, IPointerDownHandler, IPointerUpHandler, IBeg
 		_slots[startSlot.Index].ShowSlot();
 		MouseUI.HideMouseItem();
 
-		// Check if the Drag ended inside the inventory window but not on another slot
-		if (endObj == _inventoryWindow)
-		{
-			return;
-		}
-
 
 		if (endObj != null && endObj.TryGetComponent(out ItemSlotUI endSlot))
 		{
 			// Drag between two items (Minecraft, Runescape, Muck, and others swap items)
 			_inventory.SwapSlotsSRPC(startSlot.Index, endSlot.Index);
 		}
+		else if (endObj.transform.IsChildOf(_inventoryWindow))
+		{
+			// Drag ended inside the inventory window but not on another slot (return item to its original place)
+			return;
+		}
 		else
 		{
 			// Drag ended outside the inventory UI (Minecraft, Runescape, Muck, and others choose to drop the item in this case)
-			_inventory.DropItemSRPC(_ptrDownIndex);
+			_inventory.DropItemSRPC(startSlot.Index);
 		}	
 	}
 
 
+	private void OnPointerEnterEvent(PointerEventData eventData)
+	{
+		if (eventData.pointerEnter.TryGetComponent(out ItemSlotUI slot))
+		{
+			MouseUI.ShowTooltip(slot.ItemIcon, slot.ItemName, new string[] { slot.ItemDescription });
+		}
+	}
 
+
+	private void OnPointerExitEvent(PointerEventData eventData)
+	{
+		MouseUI.HideTooltip();
+	}
 
 
 	private void OnUpdateSlot(object sender, SlotUpdateEventArgs eventArgs)
 	{
-		_slots[eventArgs.Index].UpdateSlot(eventArgs.Sprite, eventArgs.Count);
+		if (eventArgs.Index == _inventory.MouseIndex)
+		{
+			MouseUI.ShowMouseItem(eventArgs.ItemIcon, eventArgs.Count);
+		}
+		else
+		{
+			_slots[eventArgs.Index].UpdateSlot(eventArgs.ItemIcon, eventArgs.ItemName, eventArgs.ItemDescription, eventArgs.Count);
+		}
 	}
 }

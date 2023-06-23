@@ -22,6 +22,16 @@ public class HotbarUI : UIPanel
 	private Inventory _inventory;
 
 
+	public override void Initialize()
+	{
+		base.Initialize();
+
+		for (int i = 0; i < _slots.Length; i++)
+		{
+			_slots[i].Initialize(i);
+		}
+	}
+
 	public override void SetPlayer(GameObject player)
 	{
 		base.SetPlayer(player);
@@ -102,7 +112,7 @@ public class HotbarUI : UIPanel
 		
 		if (eventArgs.Index < _slots.Length)
 		{
-			_slots[eventArgs.Index].UpdateSlot(eventArgs.Sprite, eventArgs.Count);
+			_slots[eventArgs.Index].UpdateSlot(eventArgs.ItemIcon, eventArgs.ItemName, eventArgs.ItemDescription, eventArgs.Count);
 		}
 	}
 

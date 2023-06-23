@@ -92,9 +92,15 @@ public class CraftingManager : NetworkBehaviour
 
 		ItemNetData itemNetData = new ItemNetData(recipe.OutputID, recipe.Quantity);
 
-		if (!inventory.TryTakeItem(ref itemNetData))
+		// First attempt to give all or some to the mouse 
+		if (!inventory.TryGiveMouseItem(ref itemNetData))
 		{
-			Debug.LogError("Failed to Take Item");
+			// Then attempt to give all or some to the inventory
+			if (!inventory.TryTakeItem(ref itemNetData))
+			{
+				// Drop the rest at the players feet if inventory was full
+				ItemManager.Instance.SpawnWorldItem(itemNetData, inventory.transform.TransformPoint(new Vector3(0f, 0.5f, 1.5f)));
+			}
 		}
 
 		TargetOnCraftItem(inventory.Owner);

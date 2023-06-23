@@ -22,7 +22,6 @@ public class PlayerOptions : MonoBehaviour
 		if (_instance == null)
 		{
 			_instance = this;
-			_instance.LoadSettings();
 		}
 		else
 		{
@@ -30,17 +29,27 @@ public class PlayerOptions : MonoBehaviour
 		}
 	}
 
-	public static void SetVolume(float volume)
+	private void Start()
+	{
+		_instance.LoadSettings();
+	}
+
+	public static void SetVolume(float volume, bool saveOnChange = true)
 	{
 		_instance._optionsData.MasterVolume = volume;
 
 		Debug.LogError($"Volume changed to {volume}");
 
 		AudioListener.volume = volume;
+
+		if (saveOnChange)
+		{
+			_instance.SaveSettings();
+		}
 	}
 
 
-	public static void SetResolution(int choice)
+	public static void SetResolution(int choice, bool saveOnChange = true)
 	{
 		if (choice >= Instance._resolutions.Length)
 		{
@@ -54,24 +63,44 @@ public class PlayerOptions : MonoBehaviour
 		Screen.SetResolution(res.width, res.height, Screen.fullScreen);
 
 		Debug.LogError($"Resolution changed to {res.width} x {res.height}");
+
+		// It seems setting the resolution sets the scale back to 1
+		UIManager.Instance.UIScale = _instance._optionsData.UIScale;
+
+		if (saveOnChange)
+		{
+			_instance.SaveSettings();
+		}
 	}
 
 
-	public static void SetFullscreen(bool fullscreen)
+	public static void SetFullscreen(bool fullscreen, bool saveOnChange = true)
 	{
 		_instance._optionsData.FullscreenMode = fullscreen;
 
 		Screen.fullScreen = fullscreen;
 
 		Debug.LogError($"Fullscreen Mode changed to {fullscreen}");
+
+		if (saveOnChange)
+		{
+			_instance.SaveSettings();
+		}
 	}
 
 
-	public static void SetUIScale(float scale)
+	public static void SetUIScale(float scale, bool saveOnChange = true)
 	{
 		_instance._optionsData.UIScale = scale;
 
 		UIManager.Instance.UIScale = scale;
+
+		Debug.LogError($"Changed UI Scale to {scale}");
+
+		if (saveOnChange)
+		{
+			_instance.SaveSettings();
+		}
 	}
 
 
@@ -88,6 +117,7 @@ public class PlayerOptions : MonoBehaviour
 
 		if (_optionsData == null)
 		{
+			Debug.LogError("Player options was null");
 			_optionsData = new PlayerOptionsData();
 		}
 
@@ -97,13 +127,13 @@ public class PlayerOptions : MonoBehaviour
 			_optionsData.ResolutionChoice = currentChoice;
 		}
 
-		SetVolume(_optionsData.MasterVolume);
+		SetVolume(_optionsData.MasterVolume, false);
 
-		SetResolution(_optionsData.ResolutionChoice);
+		SetResolution(_optionsData.ResolutionChoice, false);
 
-		SetFullscreen(_optionsData.FullscreenMode);
+		SetFullscreen(_optionsData.FullscreenMode, false);
 
-		SetUIScale(_optionsData.UIScale);
+		SetUIScale(_optionsData.UIScale, false);
 	}
 
 

@@ -80,15 +80,17 @@ public class MouseUI : UIPanel
 		else if (mode == CursorMode.Crosshair)
 		{
 			Cursor.lockState = CursorLockMode.Locked;
+
+			HideMouseItem();
 		}
 	}
 
 
-	public static void ShowTooltip(Sprite icon, string[] entries)
+	public static void ShowTooltip(Sprite icon, string itemName, string[] entries)
 	{
 		if (_instance != null)
 		{
-			_instance._toolTip.Show(icon, entries);
+			_instance._toolTip.Show(icon, itemName, entries);
 		}
 	}
 
@@ -117,11 +119,11 @@ public class MouseUI : UIPanel
 	}
 
 
-	public static void ShowMouseItem(Sprite icon)
+	public static void ShowMouseItem(Sprite icon, int count)
 	{
 		if (_instance != null)
 		{
-			_instance._mouseItemUI.Show(icon);
+			_instance._mouseItemUI.Show(icon, count);
 		}
 	}
 

@@ -21,6 +21,7 @@ public class JsonFileIO
 		path += "/" + relativePath;
 #endif
 
+		Debug.LogError($"Loading at: {path}");
 
 		if (!File.Exists(path))
 		{

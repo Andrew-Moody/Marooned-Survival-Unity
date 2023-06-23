@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class ContextUI : MonoBehaviour
@@ -11,7 +12,16 @@ public class ContextUI : MonoBehaviour
 	[SerializeField]
 	private OptionUI _optionPF;
 
+	[SerializeField]
+	private PointerEventDetector _clickDetector;
+
 	private List<OptionUI> _options = new List<OptionUI>();
+
+
+	private void Start()
+	{
+		_clickDetector.OnPointerDownEvent += OnPointerDownEvent;
+	}
 
 
 	public void Show(List<ContextOption> options)
@@ -48,7 +58,7 @@ public class ContextUI : MonoBehaviour
 			}
 		}
 
-		transform.parent.position = Input.mousePosition;
+		_optionHolder.position = Input.mousePosition;
 
 		gameObject.SetActive(true);
 	}
@@ -57,5 +67,11 @@ public class ContextUI : MonoBehaviour
 	public void Hide()
 	{
 		gameObject.SetActive(false);
+	}
+
+
+	private void OnPointerDownEvent(PointerEventData eventData)
+	{
+		Hide();
 	}
 }

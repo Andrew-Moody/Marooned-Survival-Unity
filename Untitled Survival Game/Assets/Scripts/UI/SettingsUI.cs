@@ -64,8 +64,6 @@ public class SettingsUI : UIPanel
 	public override void Hide()
 	{
 		base.Hide();
-
-		PlayerOptions.Instance.SaveSettings();
 	}
 
 

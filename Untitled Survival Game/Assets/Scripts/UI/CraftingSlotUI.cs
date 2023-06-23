@@ -14,7 +14,9 @@ public class CraftingSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnter
 	[SerializeField]
 	private Color _greyoutColor;
 
-	public Sprite CurrentIcon => _icon.sprite;
+	public Sprite ItemIcon => _icon.sprite;
+
+	public string ItemName { get; private set; }
 
 	private int _itemID;
 
@@ -27,8 +29,6 @@ public class CraftingSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnter
 
 	public void SetRecipe(CraftingRecipe recipe)
 	{
-		Debug.Log($"Output: {recipe.OutputID}, currentID: {_itemID}");
-
 		if (recipe.OutputID != _itemID)
 		{
 			_itemID = recipe.OutputID;
@@ -37,8 +37,8 @@ public class CraftingSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnter
 
 			if (itemSO != null)
 			{
-				Debug.Log(itemSO.Sprite.name);
 				_icon.sprite = itemSO.Sprite;
+				ItemName = itemSO.ItemName;
 			}
 			else
 			{

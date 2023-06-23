@@ -129,7 +129,7 @@ public class CraftingUI : UIPanel
 				entries[i] = $"{ItemManager.Instance.GetItemSO(ingredients[i].ItemID).ItemName} x{ingredients[i].Quantity}";
 			}
 
-			MouseUI.ShowTooltip(slot.CurrentIcon, entries);
+			MouseUI.ShowTooltip(slot.ItemIcon, slot.ItemName, entries);
 		}
 	}
 

@@ -17,54 +17,49 @@ public class ItemSlotUI : MonoBehaviour
 	[SerializeField]
 	private Image _icon;
 
-	public Sprite Sprite { get { return _icon.sprite; } set { _icon.sprite = value; } }
+	public Sprite ItemIcon => _icon.sprite;
+
+	public string ItemName { get; private set; }
+
+	public string ItemDescription { get; private set; }
+
+	public int ItemCount { get; private set; }
+
 
 	public void Initialize(int index)
 	{
 		Index = index;
+		ShowSlot();
 	}
 
 
-	public void UpdateSlot(Sprite icon, int count)
+	public void UpdateSlot(Sprite itemIcon, string itemName, string itemDescription, int itemCount)
 	{
-		if (icon == null)
-		{
-			ClearSlot();
-			return;
-		}
+		_icon.sprite = itemIcon;
+		ItemName = itemName;
+		ItemDescription = itemDescription;
+		ItemCount = itemCount;
 
-		if (count < 2)
+		// Format the count text depending on the amount
+		if (itemCount < 2)
 		{
 			_countTMP.text = "";
 		}
-		else if (count < 100000)
+		else if (itemCount < 100000)
 		{
-			_countTMP.text = count.ToString("N0");
+			_countTMP.text = itemCount.ToString("N0");
 			_countTMP.color = Color.yellow;
 		}
-		else if (count < 10000000)
+		else if (itemCount < 10000000)
 		{
-			_countTMP.text = (count / 1000).ToString("N0") + "K";
+			_countTMP.text = (itemCount / 1000).ToString("N0") + "K";
 			_countTMP.color = Color.yellow;
 		}
 		else
 		{
-			_countTMP.text = (count / 1000000).ToString("N0") + "M";
+			_countTMP.text = (itemCount / 1000000).ToString("N0") + "M";
 			_countTMP.color = Color.green;
 		}
-
-		_icon.sprite = icon;
-		_icon.enabled = true;
-		_countTMP.enabled = true;
-	}
-
-
-	public void ClearSlot()
-	{
-		_icon.sprite = null; // This will leave a white square, need to either disable or set alpha to 0 (but then need to undo later)
-		_icon.enabled = false;
-		_countTMP.text = "";
-		_countTMP.enabled = false;
 	}
 
 

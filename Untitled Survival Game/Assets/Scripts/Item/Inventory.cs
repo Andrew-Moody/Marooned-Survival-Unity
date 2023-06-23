@@ -37,6 +37,8 @@ public class Inventory : NetworkBehaviour
 	private int _hotbarSelection;
 	public int HotbarSelection => _hotbarSelection;
 
+	public int MouseIndex => _items.Count - 1;
+
 
 	public override void OnStartNetwork()
 	{
@@ -67,9 +69,9 @@ public class Inventory : NetworkBehaviour
 			Debug.LogWarning("Inventory Size set to zero");
 		}
 
-		_items = new List<InventoryItem>(_inventorySize + _equipmentSize);
+		_items = new List<InventoryItem>(_inventorySize + _equipmentSize + 1);
 
-		for (int i = 0; i < _inventorySize + _equipmentSize; i++)
+		for (int i = 0; i < _inventorySize + _equipmentSize + 1; i++)
 		{
 			_items.Add(InventoryItem.Empty());
 		}
@@ -80,13 +82,25 @@ public class Inventory : NetworkBehaviour
 
 	public bool IsSlotEmpty(int index)
 	{
-		if (index < 0 || index >= _inventorySize + _equipmentSize)
+		if (index < 0 || index >= _items.Count)
 		{
 			Debug.LogError("inventory slot index outside bounds");
 			return true;
 		}
 
 		return _items[index].ItemID == 0;
+	}
+
+
+	public bool HasMouseItem()
+	{
+		return !IsSlotEmpty(MouseIndex);
+	}
+
+
+	public Sprite MouseSprite()
+	{
+		return _items[MouseIndex].Sprite;
 	}
 
 
@@ -110,7 +124,7 @@ public class Inventory : NetworkBehaviour
 	private void UpdateSlot(int index)
 	{
 		// Check if item needs to be equiped
-		if (index >= _inventorySize)
+		if (index >= _inventorySize && index != MouseIndex)
 		{
 			_equipmentController.EquipItem(_items[index], IndexToSlot(index));
 		}
@@ -123,7 +137,7 @@ public class Inventory : NetworkBehaviour
 		// Update UI for Owning Client (this is called by OnStartNetwork so IsOwner is always false)
 		if (Owner.IsLocalClient)
 		{
-			SlotUpdateEventArgs args = new SlotUpdateEventArgs(index, _items[index].Quantity, _items[index].Sprite);
+			SlotUpdateEventArgs args = new SlotUpdateEventArgs(index, _items[index]);
 
 			SlotUpdated?.Invoke(this, args);
 
@@ -235,6 +249,14 @@ public class Inventory : NetworkBehaviour
 	{
 		SwapSlots(currentSlot, prevSlot);
 	}
+
+
+	[ServerRpc(RunLocally = true)]
+	public void SwapWithMouseSRPC(int currentSlot)
+	{
+		SwapSlots(currentSlot, MouseIndex);
+	}
+
 
 
 	[ServerRpc]
@@ -455,7 +477,7 @@ public class Inventory : NetworkBehaviour
 
 	private EquipSlot IndexToSlot(int index)
 	{
-		if (index < _inventorySize)
+		if (index < _inventorySize || index == MouseIndex)
 		{
 			return EquipSlot.None;
 		}
@@ -530,6 +552,40 @@ public class Inventory : NetworkBehaviour
 	}
 
 
+	[Server]
+	public bool TryGiveMouseItem(ref ItemNetData item)
+	{
+		if (!HasMouseItem())
+		{
+			// Mouse is empty so directly set the item
+			_items[MouseIndex] = new InventoryItem(item);
+			item.ItemID = 0;
+			item.Quantity = 0;
+		}
+		else if (item.ItemID == _items[MouseIndex].ItemID)
+		{
+			// If they have the same ID attempt to add to the stack
+			int space = _items[MouseIndex].ItemSO.StackLimit - _items[MouseIndex].Quantity;
+
+			if (item.Quantity <= space)
+			{
+				_items[MouseIndex].Quantity += item.Quantity;
+				item.Quantity = 0;
+				item.ItemID = 0;
+			}
+			else
+			{
+				_items[MouseIndex].Quantity += space;
+				item.Quantity -= space;
+			}
+		}
+
+		UpdateSlot(MouseIndex);
+		TargetSyncSlot(Owner, _items[MouseIndex].GetNetData(), MouseIndex);
+		return item.ItemID == 0;
+	}
+
+
 	#endregion
 }
 
@@ -537,12 +593,25 @@ public class SlotUpdateEventArgs : EventArgs
 {
 	public int Index;
 	public int Count;
-	public Sprite Sprite;
+	public Sprite ItemIcon;
+	public string ItemName;
+	public string ItemDescription;
 
-	public SlotUpdateEventArgs(int index, int count, Sprite sprite)
+	public SlotUpdateEventArgs(int index, int count, Sprite itemIcon, string itemName, string itemDescription)
 	{
 		Index = index;
 		Count = count;
-		Sprite = sprite;
+		ItemIcon = itemIcon;
+		ItemName = itemName;
+		ItemDescription = itemDescription;
+	}
+
+	public SlotUpdateEventArgs(int index, InventoryItem item)
+	{
+		Index = index;
+		Count = item.Quantity;
+		ItemIcon = item.Sprite;
+		ItemName = item.ItemSO.ItemName;
+		ItemDescription = item.ItemSO.ExamineText;
 	}
 }
