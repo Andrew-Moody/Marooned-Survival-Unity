@@ -17,6 +17,7 @@ public class PlayerInput : MonoBehaviour
 	[SerializeField]
 	private bool _invertY;
 
+
 	private bool _fpsMode;
 	public static bool FPSMode => _instance != null && _instance._fpsMode;
 

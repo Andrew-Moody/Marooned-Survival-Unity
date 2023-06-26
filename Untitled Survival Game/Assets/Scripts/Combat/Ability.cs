@@ -10,7 +10,7 @@ public class Ability
 	public string AbilityName {  get { return _abilityName; } }
 
 	[SerializeField]
-	private AbilityType _abilityType;
+	protected AbilityType _abilityType;
 	public AbilityType AbilityType {  get { return _abilityType; } }
 
 	[SerializeField]
@@ -29,14 +29,6 @@ public class Ability
 
 	[SerializeField]
 	private StatRequirement[] _requirements;
-
-	[SerializeField]
-	private NamedValue[] _namedValues;
-
-	//[SerializeField] Serialize field actually serializes non unity classes as value types rather than by reference
-	// Doesn't work well with arrays unless you have a fixed sized known ahead of time
-	//[SerializeReference]
-	//private Effect[] _effects;
 
 	[SerializeReference]
 	private List<Effect> _userEffects = new List<Effect>();
@@ -81,14 +73,11 @@ public class Ability
 
 		_requirements = ability._requirements;
 
-		_namedValues = ability._namedValues;
-
 		_userEffects = ability._userEffects;
 
 		_targetEffects = ability._targetEffects;
 
 		_effectLists = ability._effectLists;
-
 	}
 
 
@@ -96,28 +85,6 @@ public class Ability
 	{
 		//Debug.LogWarning("Ability CreateCopy");
 		return new Ability(this);
-	}
-
-
-	public float GetValue(string name)
-	{
-		if (_namedValueDict == null)
-		{
-			_namedValueDict = new Dictionary<string, float>();
-
-			foreach (NamedValue namedValue in _namedValues)
-			{
-				_namedValueDict.Add(namedValue.Name, namedValue.Value);
-			}
-		}
-
-
-		if (!_namedValueDict.TryGetValue(name, out float value))
-		{
-			Debug.LogWarning($"{_abilityName} does not have NamedValue: {name}");
-		}
-
-		return value;
 	}
 
 
@@ -283,8 +250,10 @@ public class Ability
 	}
 
 
-	public void OnValidate()
+	public void ValidateEffects()
 	{
+		//Debug.LogError($"_abilityType: {_abilityType}, type {this.GetType()}");
+
 		for ( int listIdx = 0; listIdx < _effectLists.Length; listIdx++)
 		{
 			List<Effect> effectList = _effectLists[listIdx];
@@ -308,39 +277,12 @@ public class Ability
 			}
 		}
 	}
-}
 
+	[System.Serializable]
+	private struct StatRequirement
+	{
+		public StatType StatType;
 
-[System.Serializable]
-public struct StatRequirement
-{
-	public StatType StatType;
-
-	public float Value;
-}
-
-
-[System.Serializable]
-public struct NamedValue
-{
-	public string Name;
-
-	public float Value;
-}
-
-
-public enum AbilityType
-{
-	None,
-	Melee,
-	Range,
-	Magic
-}
-
-
-public enum ToolType
-{
-	None,
-	Mining,
-	Logging
+		public float Value;
+	}
 }

@@ -17,10 +17,15 @@ MonoBehaviour:
   ExamineText: 
   StackLimit: 0
   equipSlot: 0
-  Sprite: {fileID: 21300000, guid: a4638c6b8e07c0b49822ed7a91a96d0a, type: 3}
+  Sprite: {fileID: 21300000, guid: 8d9bff8994bd9b94ca26ec8e2b51c36d, type: 3}
   InventoryOptions: 
   EquipedOptions: 
   Mesh: {fileID: 0}
   Material: {fileID: 0}
   WorldOptions: 
+  ProjectileSource: {x: 0, y: 0, z: 0}
   AbilityItemSO: {fileID: 0}
+  Abilities: []
+  PlacedItemID: 0
+  references:
+    version: 1

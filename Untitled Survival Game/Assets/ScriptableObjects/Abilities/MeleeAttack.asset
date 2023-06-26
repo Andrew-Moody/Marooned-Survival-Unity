@@ -9,34 +9,35 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 843e3dd26f142734ba8272ee197cb8bf, type: 3}
-  m_Name: Apple
+  m_Script: {fileID: 11500000, guid: 45e779c660012684982f34e8daa1a17f, type: 3}
+  m_Name: MeleeAttack
   m_EditorClassIdentifier: 
-  ItemName: Apple
-  ItemID: 106
-  Abilities:
-  - id: 0
+  _ability:
+    id: 0
   references:
     version: 1
     00000000:
-      type: {class: Ability, ns: , asm: Assembly-CSharp}
+      type: {class: MeleeAbility, ns: , asm: Assembly-CSharp}
       data:
-        _abilityName: Eat
-        _abilityType: 0
+        _abilityName: Basic Attack
+        _abilityType: 2
         _toolType: 0
         _toolPower: 0
-        _coolDown: 1
+        _coolDown: 2
         _requireTarget: 0
         _requirements: []
-        _namedValues: []
         _userEffects:
         - id: 1
         - id: 2
+        _targetEffects:
         - id: 3
         - id: 4
-        _targetEffects: []
-        _itemEffects:
         - id: 5
+        - id: 6
+        - id: 7
+        - id: 8
+        _itemEffects: []
+        _range: 2
     00000001:
       type: {class: AnimationEffect, ns: , asm: Assembly-CSharp}
       data:
@@ -51,20 +52,41 @@ MonoBehaviour:
         EffectTiming: 1
         Sound: {fileID: 8300000, guid: f894ae2060e946649b8c5d2cbc7aa8b2, type: 3}
     00000003:
+      type: {class: AnimationEffect, ns: , asm: Assembly-CSharp}
+      data:
+        EffectType: 1
+        EffectTiming: 2
+        AnimTrigger: HIT
+        Animation: {fileID: 0}
+    00000004:
       type: {class: SoundEffect, ns: , asm: Assembly-CSharp}
       data:
         EffectType: 3
         EffectTiming: 2
         Sound: {fileID: 8300000, guid: d76309bdff4fffd4ebfadbac6fee3764, type: 3}
-    00000004:
+    00000005:
+      type: {class: ParticleEffect, ns: , asm: Assembly-CSharp}
+      data:
+        EffectType: 2
+        EffectTiming: 2
+        ParticleName: HIT
+        ParticleSystem: {fileID: 0}
+    00000006:
       type: {class: StatEffect, ns: , asm: Assembly-CSharp}
       data:
         EffectType: 4
         EffectTiming: 2
         StatType: 1
-        StatAmount: 30
-    00000005:
-      type: {class: UseItemEffect, ns: , asm: Assembly-CSharp}
+        StatAmount: -5
+    00000007:
+      type: {class: KnockBackEffect, ns: , asm: Assembly-CSharp}
       data:
-        EffectType: 7
+        EffectType: 5
         EffectTiming: 2
+        KnockBack: 8
+    00000008:
+      type: {class: TransformEffect, ns: , asm: Assembly-CSharp}
+      data:
+        EffectType: 6
+        EffectTiming: 2
+        Name: HIT

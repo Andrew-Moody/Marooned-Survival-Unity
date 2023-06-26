@@ -48,9 +48,9 @@ public class InventoryUI : UIPanel
 				detector.OnPointerEnterEvent += OnPointerEnterEvent;
 				detector.OnPointerExitEvent += OnPointerExitEvent;
 			}
-
-			//_outsideDetector.OnPointerClickEvent += OnPointerClickEvent;
 		}
+
+		_outsideDetector.OnPointerClickEvent += OnPointerClickEvent;
 	}
 
 
@@ -122,23 +122,47 @@ public class InventoryUI : UIPanel
 	{
 		string pointerPress = eventData.pointerPress != null ? eventData.pointerPress.name : "null";
 
+		string pointerClick = eventData.pointerClick != null ? eventData.pointerClick.name : "null";
+
 		string pressRay = eventData.pointerPressRaycast.gameObject != null ? eventData.pointerPressRaycast.gameObject.name : "null";
 
 		string currentRay = eventData.pointerCurrentRaycast.gameObject != null ? eventData.pointerCurrentRaycast.gameObject.name : "null";
 
-		Debug.LogError($"Click pointerPress {pointerPress}, pressRay {pressRay}, currentRay {currentRay}");
+		Debug.LogError($"Click pointerClick {pointerClick}, pointerPress {pointerPress}, pressRay {pressRay}, currentRay {currentRay}");
 
 
-		// Handled by OnEndDrag
-		if (eventData.dragging || eventData.pointerCurrentRaycast.gameObject == null)
+		// Handle in OnEndDrag (PointerClick will still fire for a drag if the drag starts and ends on the same object)
+		if (eventData.dragging)
 		{
 			Debug.LogError("OnPointerClick recieved while dragging");
 			return;
 		}
 
-		if (!eventData.pointerCurrentRaycast.gameObject.TryGetComponent(out ItemSlotUI slot))
+		// This shouldn't be true but wanted to check
+		if (eventData.pointerCurrentRaycast.gameObject == null || eventData.pointerClick == null)
 		{
-			Debug.LogError($"Pointer up on {eventData.pointerCurrentRaycast.gameObject}, failed to find slot");
+			Debug.LogError("OnPointerClick recieved on null gameObject");
+			return;
+		}
+
+
+		// Clicking outside inventory with an item in the mouse slot should drop the item
+		if (eventData.pointerClick == _outsideDetector.gameObject)
+		{
+			Debug.LogError("OnPointerClick outside inventory");
+
+			if (_inventory.HasMouseItem())
+			{
+				_inventory.DropItemSRPC(_inventory.MouseIndex);
+			}
+
+			return;
+		}
+
+
+		if (!eventData.pointerClick.TryGetComponent(out ItemSlotUI slot))
+		{
+			Debug.LogError($"Pointer up on {eventData.pointerClick.gameObject}, failed to find slot");
 			return;
 		}
 
@@ -206,13 +230,17 @@ public class InventoryUI : UIPanel
 
 	private void OnEndDragEvent(PointerEventData eventData)
 	{
+		string lastPress = eventData.lastPress != null ? eventData.lastPress.name : "null";
+
+		string pointerDrag = eventData.pointerDrag != null ? eventData.pointerDrag.name : "null";
+
 		string pointerPress = eventData.pointerPress != null ? eventData.pointerPress.name : "null";
 
 		string pressRay = eventData.pointerPressRaycast.gameObject != null ? eventData.pointerPressRaycast.gameObject.name : "null";
 
 		string currentRay = eventData.pointerCurrentRaycast.gameObject != null ? eventData.pointerCurrentRaycast.gameObject.name : "null";
 
-		Debug.LogError($"EndDrag pointerPress {pointerPress}, pressRay {pressRay}, currentRay {currentRay}");
+		Debug.LogError($"EndDrag pointerDrag {pointerDrag}, lastPress {lastPress}, pointerPress {pointerPress}, pressRay {pressRay}, currentRay {currentRay}");
 
 
 		GameObject startObj = eventData.pointerPressRaycast.gameObject;
@@ -258,7 +286,10 @@ public class InventoryUI : UIPanel
 	{
 		if (eventData.pointerEnter.TryGetComponent(out ItemSlotUI slot))
 		{
-			MouseUI.ShowTooltip(slot.ItemIcon, slot.ItemName, new string[] { slot.ItemDescription });
+			if (!_inventory.IsSlotEmpty(slot.Index))
+			{
+				MouseUI.ShowTooltip(slot.ItemIcon, slot.ItemName, new string[] { slot.ItemDescription });
+			}
 		}
 	}
 

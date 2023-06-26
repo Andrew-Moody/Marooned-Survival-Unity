@@ -2,7 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
+/// <summary>
+/// A general component for recieving EventSystem pointer callbacks
+/// </summary>
 public class PointerEventDetector : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerClickHandler,
 	IPointerEnterHandler, IPointerExitHandler, IDragHandler, IBeginDragHandler, IEndDragHandler
 {
@@ -14,6 +18,16 @@ public class PointerEventDetector : MonoBehaviour, IPointerDownHandler, IPointer
 	public event System.Action<PointerEventData> OnDragEvent;
 	public event System.Action<PointerEventData> OnPointerEnterEvent;
 	public event System.Action<PointerEventData> OnPointerExitEvent;
+
+
+	private void Awake()
+	{
+		if (!TryGetComponent(out Graphic graphic))
+		{
+			Debug.LogError($"PointerEventDetector {gameObject.name} must have a component derived from Graphic to detect pointer events." +
+				$"Typically an Image with alpha set to zero if a visual element is not needed");
+		}
+	}
 
 
 	public void OnPointerDown(PointerEventData eventData)

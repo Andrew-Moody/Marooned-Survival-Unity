@@ -982,7 +982,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &7575443744689514994
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1093,6 +1093,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _panelName: MouseUI
+  _cursorImage: {fileID: 2800000, guid: 7258f40a5a694e449861c44220c7f7d4, type: 3}
   _mouseFollower: {fileID: 3692402055200194154}
   _crosshair: {fileID: 7575443744689514997}
   _cursor: {fileID: 7575443744630645376}

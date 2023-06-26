@@ -253,8 +253,6 @@ public class KnockBackEffect : ServerOnlyEffect
 
 public class UseItemEffect : ServerOnlyEffect
 {
-	public int PlaceableID;
-
 	public static Effect Create()
 	{
 		return new UseItemEffect();

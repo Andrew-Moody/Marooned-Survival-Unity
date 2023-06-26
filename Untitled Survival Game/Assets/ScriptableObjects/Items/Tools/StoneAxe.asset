@@ -24,91 +24,11 @@ MonoBehaviour:
   Material: {fileID: 2100000, guid: 4c23086cc53d05b42a8a5004832ae24a, type: 2}
   WorldOptions: 00000000
   ProjectileSource: {x: 0, y: 0, z: 0}
-  AbilityItemSO: {fileID: 0}
-  Abilities:
-  - id: 0
-  PlacedItemID: 0
+  _useItemSO: {fileID: 0}
+  _abilitySet:
+    _abilitySetSO: {fileID: 0}
+    _abilitySOList:
+    - {fileID: 11400000, guid: 398240ea25a297e4d8118be2f18e8366, type: 2}
+    _abilities: []
   references:
     version: 1
-    00000000:
-      type: {class: MeleeAbility, ns: , asm: Assembly-CSharp}
-      data:
-        _abilityName: StoneAxe
-        _abilityType: 1
-        _toolType: 2
-        _toolPower: 0
-        _coolDown: 1
-        _requireTarget: 0
-        _requirements: []
-        _namedValues: []
-        _userEffects:
-        - id: 1
-        - id: 2
-        - id: 3
-        - id: 4
-        _targetEffects:
-        - id: 5
-        - id: 6
-        - id: 7
-        - id: 8
-        - id: 9
-        _itemEffects: []
-        _range: 2
-    00000001:
-      type: {class: AnimationEffect, ns: , asm: Assembly-CSharp}
-      data:
-        EffectType: 1
-        EffectTiming: 1
-        AnimTrigger: USE_ABILITY
-        Animation: {fileID: 0}
-    00000002:
-      type: {class: SoundEffect, ns: , asm: Assembly-CSharp}
-      data:
-        EffectType: 3
-        EffectTiming: 1
-        Sound: {fileID: 8300000, guid: f894ae2060e946649b8c5d2cbc7aa8b2, type: 3}
-    00000003:
-      type: {class: SoundEffect, ns: , asm: Assembly-CSharp}
-      data:
-        EffectType: 3
-        EffectTiming: 4
-        Sound: {fileID: 8300000, guid: 1253ee599a1f8cc49a195084aeab4eb2, type: 3}
-    00000004:
-      type: {class: SoundEffect, ns: , asm: Assembly-CSharp}
-      data:
-        EffectType: 3
-        EffectTiming: 2
-        Sound: {fileID: 8300000, guid: d76309bdff4fffd4ebfadbac6fee3764, type: 3}
-    00000005:
-      type: {class: AnimationEffect, ns: , asm: Assembly-CSharp}
-      data:
-        EffectType: 1
-        EffectTiming: 2
-        AnimTrigger: HIT
-        Animation: {fileID: 0}
-    00000006:
-      type: {class: ParticleEffect, ns: , asm: Assembly-CSharp}
-      data:
-        EffectType: 2
-        EffectTiming: 2
-        ParticleName: HIT
-        ParticleSystem: {fileID: 0}
-    00000007:
-      type: {class: StatEffect, ns: , asm: Assembly-CSharp}
-      data:
-        EffectType: 4
-        EffectTiming: 2
-        StatType: 1
-        StatAmount: -35
-    00000008:
-      type: {class: KnockBackEffect, ns: , asm: Assembly-CSharp}
-      data:
-        EffectType: 5
-        EffectTiming: 2
-        KnockBack: 8
-    00000009:
-      type: {class: TransformEffect, ns: , asm: Assembly-CSharp}
-      data:
-        EffectType: 6
-        EffectTiming: 2
-        Name: HIT

@@ -8,6 +8,9 @@ public class MouseUI : UIPanel
 	private static MouseUI _instance;
 
 	[SerializeField]
+	private Texture2D _cursorImage;
+
+	[SerializeField]
 	private Transform _mouseFollower;
 
 	[SerializeField]
@@ -38,6 +41,13 @@ public class MouseUI : UIPanel
 			Destroy(gameObject);
 		}
 		
+	}
+
+	public override void Initialize()
+	{
+		base.Initialize();
+
+		Cursor.SetCursor(_cursorImage, new Vector2(0f, 0f), UnityEngine.CursorMode.Auto);
 	}
 
 
@@ -72,6 +82,7 @@ public class MouseUI : UIPanel
 		_instance._crosshair.enabled = mode == CursorMode.Crosshair;
 
 		Cursor.visible = mode == CursorMode.Cursor;
+		//Cursor.visible = false;
 
 		if (mode == CursorMode.Cursor)
 		{

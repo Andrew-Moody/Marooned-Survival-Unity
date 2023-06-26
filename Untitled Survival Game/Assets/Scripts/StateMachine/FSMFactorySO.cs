@@ -10,8 +10,6 @@ public class FSMFactorySO : ScriptableObject
 	[SerializeField]
 	private bool _getStatesOnReload;
 
-	//private Dictionary<> 
-
 	public static string[] Conditions
 	{
 		get { return Instance._conditions; }

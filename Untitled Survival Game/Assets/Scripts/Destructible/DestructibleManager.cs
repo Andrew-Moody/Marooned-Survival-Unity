@@ -18,11 +18,28 @@ public class DestructibleManager : NetworkBehaviour
 	public Transform DestructibleHolder => _destructibleHolder;
 
 
+	[SerializeField]
+	private PlaceableItem[] _placeableItems;
+
+	private Dictionary<int, int> _placeableItemDict;
+
+
 	private void Awake()
 	{
 		if (Instance == null)
 		{
 			Instance = this;
+		}
+	}
+
+
+	private void Start()
+	{
+		_placeableItemDict = new Dictionary<int, int>();
+
+		for (int i = 0; i < _placeableItems.Length; i++)
+		{
+			_placeableItemDict[_placeableItems[i].ItemID] = _placeableItems[i].DestructibleID;
 		}
 	}
 
@@ -54,8 +71,15 @@ public class DestructibleManager : NetworkBehaviour
 
 
 	[Server]
-	public DestructibleObject PlaceItem(AbilityActor user, int destructibleID)
+	public DestructibleObject PlaceItem(AbilityActor user, int itemID)
 	{
+		if (!_placeableItemDict.TryGetValue(itemID, out int destructibleID))
+		{
+			Debug.LogError($"Attempted to place item: {itemID} with no corresponding destructibleID");
+			return null;
+		}
+
+
 		Transform view = user.ViewTransform;
 
 		if (view == null)
@@ -78,13 +102,31 @@ public class DestructibleManager : NetworkBehaviour
 
 
 		return null;
-
-		
 	}
 
 
 	public DestructibleSO GetDestructibleSO(int id)
 	{
 		return _destructibleFactory.GetDestructible(id);
+	}
+
+
+	public DestructibleSO GetPlacedItemSO(int itemID)
+	{
+		if (_placeableItemDict.TryGetValue(itemID, out int destructibleID))
+		{
+			return _destructibleFactory.GetDestructible(destructibleID);
+		}
+
+		return null;
+	}
+
+
+	[System.Serializable]
+	private struct PlaceableItem
+	{
+		public int ItemID;
+
+		public int DestructibleID;
 	}
 }

@@ -230,6 +230,7 @@ MonoBehaviour:
   _componentIndexCache: 0
   _addedNetworkObject: {fileID: 6261605203819184730}
   _networkObjectCache: {fileID: 6261605203819184730}
+  _networkTransform: {fileID: 0}
   _projectileMotion: {fileID: 5800626481318469105}
   _graphic: {fileID: 8935335444905319778}
   _collider: {fileID: 5800626481318469108}
@@ -237,6 +238,23 @@ MonoBehaviour:
   _lifeTime: 100
   _disposeDelay: 0.3
   _abilitySO: {fileID: 11400000, guid: 9d230a898b696604da11111bf1acd5ab, type: 2}
+  _ability:
+    id: 0
+  references:
+    version: 1
+    00000000:
+      type: {class: Ability, ns: , asm: Assembly-CSharp}
+      data:
+        _abilityName: Projectile
+        _abilityType: 1
+        _toolType: 0
+        _toolPower: 0
+        _coolDown: 0
+        _requireTarget: 0
+        _requirements: []
+        _userEffects: []
+        _targetEffects: []
+        _itemEffects: []
 --- !u!114 &6261605203819184730
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -429,6 +447,7 @@ MonoBehaviour:
     m_Bits: 0
   _inventory: {fileID: 0}
   _projectileSource: {fileID: 0}
+  _agent: {fileID: 0}
 --- !u!1 &6419618811462087625
 GameObject:
   m_ObjectHideFlags: 0

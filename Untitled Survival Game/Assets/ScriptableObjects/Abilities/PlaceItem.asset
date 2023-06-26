@@ -9,32 +9,30 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 843e3dd26f142734ba8272ee197cb8bf, type: 3}
-  m_Name: Log
+  m_Script: {fileID: 11500000, guid: 45e779c660012684982f34e8daa1a17f, type: 3}
+  m_Name: PlaceItem
   m_EditorClassIdentifier: 
-  ItemName: Log
-  ItemID: 102
-  Abilities:
-  - id: 0
+  _ability:
+    id: 0
   references:
     version: 1
     00000000:
-      type: {class: Ability, ns: , asm: Assembly-CSharp}
+      type: {class: BasicAbility, ns: , asm: Assembly-CSharp}
       data:
-        _abilityName: Place Workbench
-        _abilityType: 0
+        _abilityName: 
+        _abilityType: 1
         _toolType: 0
         _toolPower: 0
         _coolDown: 1
         _requireTarget: 0
         _requirements: []
-        _namedValues: []
         _userEffects:
         - id: 1
         - id: 2
         _targetEffects: []
         _itemEffects:
         - id: 3
+        _polyTest: 0
     00000001:
       type: {class: AnimationEffect, ns: , asm: Assembly-CSharp}
       data:
@@ -52,5 +50,4 @@ MonoBehaviour:
       type: {class: UseItemEffect, ns: , asm: Assembly-CSharp}
       data:
         EffectType: 7
-        EffectTiming: 1
-        PlaceableID: 0
+        EffectTiming: 2

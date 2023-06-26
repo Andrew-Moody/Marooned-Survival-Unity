@@ -20,13 +20,12 @@ MonoBehaviour:
       type: {class: Ability, ns: , asm: Assembly-CSharp}
       data:
         _abilityName: Launch Fireball
-        _abilityType: 0
+        _abilityType: 1
         _toolType: 0
         _toolPower: 0
         _coolDown: 0.5
         _requireTarget: 0
         _requirements: []
-        _namedValues: []
         _userEffects:
         - id: 1
         - id: 2

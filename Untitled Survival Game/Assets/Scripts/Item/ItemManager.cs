@@ -16,10 +16,6 @@ public class ItemManager : NetworkBehaviour
 
 	private Dictionary<int, ItemSO> itemSODict;
 
-
-	[SerializeField]
-	private DestructibleFactory _destructibleFactory;
-
 	// Start is called before the first frame update
 	void Awake()
 	{
@@ -116,13 +112,5 @@ public class ItemManager : NetworkBehaviour
 		ItemNetData itemNetData = new ItemNetData(itemID, 1);
 
 		return SpawnWorldItem(itemNetData, location);
-	}
-
-
-	public DestructibleSO GetPlacedItemSO(int itemID)
-	{
-		ItemSO itemSO = GetItemSO(itemID);
-
-		return _destructibleFactory.GetDestructible(itemSO.PlacedItemID);
 	}
 }

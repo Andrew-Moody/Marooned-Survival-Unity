@@ -9,26 +9,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 843e3dd26f142734ba8272ee197cb8bf, type: 3}
-  m_Name: Sword
+  m_Script: {fileID: 11500000, guid: 45e779c660012684982f34e8daa1a17f, type: 3}
+  m_Name: SwingAxe
   m_EditorClassIdentifier: 
-  ItemName: Sword
-  ItemID: 105
-  Abilities:
-  - id: 0
+  _ability:
+    id: 0
   references:
     version: 1
     00000000:
       type: {class: MeleeAbility, ns: , asm: Assembly-CSharp}
       data:
-        _abilityName: Sword Attack
-        _abilityType: 1
-        _toolType: 0
-        _toolPower: 0
-        _coolDown: 1
+        _abilityName: Swing Axe
+        _abilityType: 2
+        _toolType: 2
+        _toolPower: 10
+        _coolDown: 2
         _requireTarget: 0
         _requirements: []
-        _namedValues: []
         _userEffects:
         - id: 1
         - id: 2
@@ -62,25 +59,25 @@ MonoBehaviour:
         AnimTrigger: HIT
         Animation: {fileID: 0}
     00000004:
+      type: {class: SoundEffect, ns: , asm: Assembly-CSharp}
+      data:
+        EffectType: 3
+        EffectTiming: 2
+        Sound: {fileID: 8300000, guid: d76309bdff4fffd4ebfadbac6fee3764, type: 3}
+    00000005:
       type: {class: ParticleEffect, ns: , asm: Assembly-CSharp}
       data:
         EffectType: 2
         EffectTiming: 2
         ParticleName: HIT
         ParticleSystem: {fileID: 0}
-    00000005:
-      type: {class: SoundEffect, ns: , asm: Assembly-CSharp}
-      data:
-        EffectType: 3
-        EffectTiming: 2
-        Sound: {fileID: 8300000, guid: d76309bdff4fffd4ebfadbac6fee3764, type: 3}
     00000006:
       type: {class: StatEffect, ns: , asm: Assembly-CSharp}
       data:
         EffectType: 4
         EffectTiming: 2
         StatType: 1
-        StatAmount: -35
+        StatAmount: -5
     00000007:
       type: {class: KnockBackEffect, ns: , asm: Assembly-CSharp}
       data:

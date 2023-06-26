@@ -47,6 +47,18 @@ public class MeleeAbility : Ability
 	}
 
 
+	public static Ability Create()
+	{
+		return new MeleeAbility();
+	}
+
+
+	public static Ability CreateFrom(Ability ability)
+	{
+		return new MeleeAbility(ability);
+	}
+
+
 	public override Ability CreateCopy()
 	{
 		//Debug.LogWarning($"MeleeAbility.CreateCopy called on {AbilityName}");

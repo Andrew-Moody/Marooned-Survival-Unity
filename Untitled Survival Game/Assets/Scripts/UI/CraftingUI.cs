@@ -80,10 +80,13 @@ public class CraftingUI : UIPanel
 			{
 				CraftingSlotUI slot = Instantiate(_slotPrefab, _slotHolder);
 
-				slot.OnPointerClickEvent += OnPointerClickHandler;
-				slot.OnPointerEnterEvent += OnPointerEnterHandler;
-				slot.OnPointerExitEvent += OnPointerExitHandler;
-
+				if (slot.gameObject.TryGetComponent(out PointerEventDetector detector))
+				{
+					detector.OnPointerClickEvent += OnPointerClickHandler;
+					detector.OnPointerEnterEvent += OnPointerEnterHandler;
+					detector.OnPointerExitEvent += OnPointerExitHandler;
+				}
+				
 				_slots.Add(slot);
 				_slots[i].index = i;
 			}

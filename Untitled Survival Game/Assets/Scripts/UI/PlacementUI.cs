@@ -64,7 +64,7 @@ public class PlacementUI : UIPanel
 
 	private void SelectionChangedHandler(int itemID)
 	{
-		DestructibleSO destructibleSO = ItemManager.Instance.GetPlacedItemSO(itemID);
+		DestructibleSO destructibleSO = DestructibleManager.Instance.GetPlacedItemSO(itemID);
 
 		if (destructibleSO != null)
 		{

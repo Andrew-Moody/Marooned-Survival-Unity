@@ -257,19 +257,19 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: Ability, ns: , asm: Assembly-CSharp}
+      type: {class: BasicAbility, ns: , asm: Assembly-CSharp}
       data:
-        _abilityName: 
-        _abilityType: 0
+        _abilityName: Fireball
+        _abilityType: 1
         _toolType: 0
         _toolPower: 0
         _coolDown: 0
         _requireTarget: 0
         _requirements: []
-        _namedValues: []
         _userEffects: []
         _targetEffects: []
         _itemEffects: []
+        _polyTest: 0
 --- !u!114 &6261605203819184730
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -462,6 +462,7 @@ MonoBehaviour:
     m_Bits: 0
   _inventory: {fileID: 0}
   _projectileSource: {fileID: 0}
+  _agent: {fileID: 0}
 --- !u!1 &6419618811462087625
 GameObject:
   m_ObjectHideFlags: 0

@@ -354,9 +354,9 @@ public class Inventory : NetworkBehaviour
 
 		Debug.LogError("Using Item");
 
-		if (item.ItemSO.PlacedItemID != 0)
+		if (item.ItemSO.UseItemSO != null)
 		{
-			DestructibleManager.Instance.PlaceItem(user, item.ItemSO.PlacedItemID);
+			item.ItemSO.UseItemSO.UseItem(user, item.ItemSO);
 		}
 
 		if (item.ConsumeOnUse)

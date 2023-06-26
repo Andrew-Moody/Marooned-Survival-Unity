@@ -20,7 +20,7 @@ MonoBehaviour:
       type: {class: MeleeAbility, ns: , asm: Assembly-CSharp}
       data:
         _abilityName: MagicSlap
-        _abilityType: 1
+        _abilityType: 2
         _toolType: 0
         _toolPower: 0
         _coolDown: 5
@@ -28,7 +28,6 @@ MonoBehaviour:
         _requirements:
         - StatType: 2
           Value: 1
-        _namedValues: []
         _userEffects:
         - id: 1
         - id: 2

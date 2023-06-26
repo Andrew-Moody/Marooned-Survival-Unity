@@ -260,13 +260,12 @@ MonoBehaviour:
       type: {class: Ability, ns: , asm: Assembly-CSharp}
       data:
         _abilityName: Fireball
-        _abilityType: 0
+        _abilityType: 1
         _toolType: 0
         _toolPower: 0
         _coolDown: 0
         _requireTarget: 0
         _requirements: []
-        _namedValues: []
         _userEffects:
         - id: 1
         - id: 2
@@ -523,6 +522,7 @@ MonoBehaviour:
     m_Bits: 0
   _inventory: {fileID: 0}
   _projectileSource: {fileID: 0}
+  _agent: {fileID: 0}
 --- !u!1 &6419618811462087625
 GameObject:
   m_ObjectHideFlags: 0

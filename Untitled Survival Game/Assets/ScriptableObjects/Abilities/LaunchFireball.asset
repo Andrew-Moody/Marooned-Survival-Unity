@@ -17,22 +17,22 @@ MonoBehaviour:
   references:
     version: 1
     00000000:
-      type: {class: Ability, ns: , asm: Assembly-CSharp}
+      type: {class: BasicAbility, ns: , asm: Assembly-CSharp}
       data:
         _abilityName: Launch Fireball
-        _abilityType: 0
+        _abilityType: 1
         _toolType: 0
         _toolPower: 0
         _coolDown: 0.5
         _requireTarget: 0
         _requirements: []
-        _namedValues: []
         _userEffects:
         - id: 1
         - id: 2
         - id: 3
         _targetEffects: []
         _itemEffects: []
+        _polyTest: 0
     00000001:
       type: {class: AnimationEffect, ns: , asm: Assembly-CSharp}
       data:
@@ -45,7 +45,7 @@ MonoBehaviour:
       data:
         EffectType: 8
         EffectTiming: 1
-        _projectile: {fileID: 4478765195836222777, guid: c9affc41cd519a9439c854e48329b660, type: 3}
+        _projectile: {fileID: 4478765195836222777, guid: 0df770e97aea7e34887ee6d80beb8717, type: 3}
     00000003:
       type: {class: LaunchProjectileEffect, ns: , asm: Assembly-CSharp}
       data:

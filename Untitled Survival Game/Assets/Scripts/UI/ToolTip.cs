@@ -54,7 +54,6 @@ public class ToolTip : MonoBehaviour
 			_entries[i].gameObject.SetActive(false);
 		}
 
-		transform.position = Input.mousePosition;
 		gameObject.SetActive(true);
 	}
 
@@ -62,11 +61,5 @@ public class ToolTip : MonoBehaviour
 	public void Hide()
 	{
 		gameObject.SetActive(false);
-	}
-
-
-	private void Update()
-	{
-		transform.position = Input.mousePosition;
 	}
 }

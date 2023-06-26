@@ -19,14 +19,13 @@ MonoBehaviour:
     00000000:
       type: {class: Ability, ns: , asm: Assembly-CSharp}
       data:
-        _abilityName: 
-        _abilityType: 0
+        _abilityName: FireballAbility
+        _abilityType: 1
         _toolType: 0
         _toolPower: 0
         _coolDown: 0
         _requireTarget: 0
         _requirements: []
-        _namedValues: []
         _userEffects:
         - id: 1
         - id: 2

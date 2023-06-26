@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class CraftingSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
+public class CraftingSlotUI : MonoBehaviour
 {
 	public int index;
 
@@ -19,12 +19,6 @@ public class CraftingSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnter
 	public string ItemName { get; private set; }
 
 	private int _itemID;
-
-	public event System.Action<PointerEventData> OnPointerClickEvent;
-
-	public event System.Action<PointerEventData> OnPointerEnterEvent;
-
-	public event System.Action<PointerEventData> OnPointerExitEvent;
 
 
 	public void SetRecipe(CraftingRecipe recipe)
@@ -59,20 +53,5 @@ public class CraftingSlotUI : MonoBehaviour, IPointerClickHandler, IPointerEnter
 		{
 			_icon.color = Color.white;
 		}
-	}
-
-	public void OnPointerClick(PointerEventData eventData)
-	{
-		OnPointerClickEvent?.Invoke(eventData);
-	}
-
-	public void OnPointerEnter(PointerEventData eventData)
-	{
-		OnPointerEnterEvent?.Invoke(eventData);
-	}
-
-	public void OnPointerExit(PointerEventData eventData)
-	{
-		OnPointerExitEvent?.Invoke(eventData);
 	}
 }

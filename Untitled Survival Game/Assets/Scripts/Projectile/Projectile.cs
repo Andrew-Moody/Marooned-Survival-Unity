@@ -180,22 +180,6 @@ public class Projectile : ProjectileBase
 	{
 		base.OnValidate();
 
-		if (_ability == null)
-		{
-			_ability = new Ability();
-		}
-		else
-		{
-			if (_ability.AbilityType == AbilityType.Melee && !(_ability.GetType() == typeof(MeleeAbility)))
-			{
-				_ability = new MeleeAbility(_ability);
-			}
-			else if (_ability.AbilityType == AbilityType.None && !(_ability.GetType() == typeof(Ability)))
-			{
-				_ability = new Ability(_ability);
-			}
-		}
-
-		_ability.OnValidate();
+		AbilityFactory.ValidateAbility(ref _ability);
 	}
 }
