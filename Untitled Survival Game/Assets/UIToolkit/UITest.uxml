@@ -1,0 +1,6 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="UITest.uss" />
+    <ui:VisualElement name="Container">
+        <ui:Label text="Test Title" display-tooltip-when-elided="true" class="header" />
+    </ui:VisualElement>
+</ui:UXML>
