@@ -1,0 +1,4 @@
+.Section {
+    background-color: var(--unity-colors-highlight-background-inactive);
+    flex-grow: 1;
+}

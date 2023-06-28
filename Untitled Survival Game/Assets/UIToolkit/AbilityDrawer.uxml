@@ -1,0 +1,9 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="AbilityDrawer.uss" />
+    <ui:VisualElement name="container" class="Section" style="align-items: stretch;">
+        <ui:VisualElement name="toolbar-section" style="align-items: flex-start;">
+            <uie:ToolbarMenu display-tooltip-when-elided="true" text="Ability" name="ability-toolbar" style="border-top-left-radius: 3px; border-bottom-left-radius: 3px; border-top-right-radius: 3px; border-bottom-right-radius: 3px;" />
+        </ui:VisualElement>
+        <uie:PropertyField binding-path="Text" name="ability" />
+    </ui:VisualElement>
+</ui:UXML>

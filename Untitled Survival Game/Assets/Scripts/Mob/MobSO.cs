@@ -54,7 +54,7 @@ public class MobSO : ScriptableObject
 	[UnityEditor.Callbacks.OnOpenAssetAttribute]
 	public static bool Test(int instanceID, int line)
 	{
-		Debug.Log("Test " + instanceID + " " + line);
+		//Debug.Log("Test " + instanceID + " " + line);
 
 		return false;
 	}

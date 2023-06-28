@@ -9,13 +9,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 843e3dd26f142734ba8272ee197cb8bf, type: 3}
-  m_Name: test
+  m_Script: {fileID: 11500000, guid: 8e5d3443968a0e34ba60dcb79eb84e0a, type: 3}
+  m_Name: New Ability Holder
   m_EditorClassIdentifier: 
-  ItemName: 
-  ItemID: 0
-  Abilities: []
-  _abilitySet:
-    Abilities: []
+  _ability:
+    id: 0
+  _test: 3
+  _abilities: []
   references:
     version: 1
+    00000000:
+      type: {class: EmptyAbility, ns: , asm: Assembly-CSharp}
+      data:
+        Text: EmptyAbility

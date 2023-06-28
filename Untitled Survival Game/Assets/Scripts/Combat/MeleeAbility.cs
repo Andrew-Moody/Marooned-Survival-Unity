@@ -8,17 +8,8 @@ public class MeleeAbility : Ability
 {
 	[SerializeField]
 	private float _range;
-	public float Range { get { return _range; } }
+	public float Range => _range;
 
-
-	private const string RANGE = "RANGE";
-	/// <summary>
-	/// Check if the target is within melee range
-	/// </summary>
-	/// <param name="user"></param>
-	/// <param name="target"></param>
-	/// <returns></returns>
-	/// 
 
 	public MeleeAbility()
 	{

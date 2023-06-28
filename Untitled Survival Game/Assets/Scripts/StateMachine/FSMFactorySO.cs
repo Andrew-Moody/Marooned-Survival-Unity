@@ -28,7 +28,7 @@ public class FSMFactorySO : ScriptableObject
 			if (_instance == null)
 			{
 				_instance = Resources.Load<FSMFactorySO>(FACTORY_NAME);
-				Debug.Log("Had to load FSMFactory from Resources");
+				//Debug.Log("Had to load FSMFactory from Resources");
 
 				if (_instance == null)
 				{
