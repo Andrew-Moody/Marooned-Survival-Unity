@@ -68,6 +68,7 @@ public class DerivedAbility2 : IAbility
 public class EmptyAbility : IAbility
 {
 	public string Text = "EmptyAbility";
+
 	public string GetText() => "EmptyAbility";
 
 	public EmptyAbility() { }

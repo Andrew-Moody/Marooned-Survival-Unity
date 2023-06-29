@@ -1,9 +1,10 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
     <Style src="AbilityDrawer.uss" />
     <ui:VisualElement name="container" class="Section" style="align-items: stretch;">
-        <ui:VisualElement name="toolbar-section" style="align-items: flex-start;">
-            <uie:ToolbarMenu display-tooltip-when-elided="true" text="Ability" name="ability-toolbar" style="border-top-left-radius: 3px; border-bottom-left-radius: 3px; border-top-right-radius: 3px; border-bottom-right-radius: 3px;" />
+        <ui:VisualElement name="toolbar-section" style="align-items: stretch; flex-direction: row; justify-content: flex-start;">
+            <uie:ToolbarMenu display-tooltip-when-elided="true" text="Ability" name="ability-toolbar" style="border-top-left-radius: 3px; border-bottom-left-radius: 3px; border-top-right-radius: 3px; border-bottom-right-radius: 3px; border-top-width: 1px; border-bottom-width: 1px; min-height: auto; align-items: stretch; flex-grow: 0; flex-direction: row; flex-wrap: nowrap;" />
+            <uie:PropertyField name="text" binding-path="Text" style="flex-direction: column; align-items: flex-start; display: none;" />
+            <ui:TextField picking-mode="Ignore" value="filler text" text="filler text" binding-path="Text" />
         </ui:VisualElement>
-        <uie:PropertyField binding-path="Text" name="ability" />
     </ui:VisualElement>
 </ui:UXML>

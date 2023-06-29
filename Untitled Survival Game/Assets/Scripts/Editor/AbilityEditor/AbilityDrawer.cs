@@ -32,6 +32,10 @@ public class AbilityDrawer : PropertyDrawer
 
 		SetupToolbar();
 
+		//PropertyField ability = _root.Q<PropertyField>("ability");
+
+
+
 		return _root;
 	}
 
@@ -55,73 +59,89 @@ public class AbilityDrawer : PropertyDrawer
 			return;
 		}
 		
-		_property.serializedObject.Update();
-
-		AbilityMenuData data = act.userData as AbilityMenuData;
-
-		if (data == null)
+		if (!(act.userData is AbilityMenuData data) || data.AbilityType == null)
 		{
-			Debug.LogError("ContextualMenu Action was not given AbilityMenuData");
+			Debug.LogError("ContextualMenu Action was not given valid AbilityMenuData");
 			return;
 		}
 
-		if (data.AbilityType == null)
+		IAbility oldAbility;
+
+		if (_property.propertyPath.Contains("."))
 		{
-			_property.managedReferenceValue = null;
-			_property.serializedObject.ApplyModifiedProperties();
-			ForceDraw();
-			return;
-		}
+			string[] pathArray = _property.propertyPath.Split('.');
 
-		FieldInfo fieldInfo = _property.serializedObject.targetObject.GetType().GetField(
-			ABILITY_PROPNAME, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+			string listPath = pathArray[0];
 
-		if (fieldInfo == null)
-		{
-			Debug.LogError($"Failed to get field for {ABILITY_PROPNAME} on {_property.serializedObject.targetObject.name}");
-			return;
-		}
+			string indexString = pathArray[pathArray.Length - 1].Trim('d', 'a', 't', 'a', '[', ']');
 
-		IAbility ability = fieldInfo.GetValue(_property.serializedObject.targetObject) as IAbility;
+			int.TryParse(indexString, out int index);
 
-		if (ability == null)
-		{
-			IAbility newAbility = Activator.CreateInstance(data.AbilityType) as IAbility;
-			_property.managedReferenceValue = newAbility;
+			FieldInfo fieldInfo = _property.serializedObject.targetObject.GetType().GetField(
+				listPath, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+
+			IList list = fieldInfo.GetValue(_property.serializedObject.targetObject) as IList;
+
+			oldAbility = list[index] as IAbility;
 		}
 		else
 		{
-			IAbility newAbility = Activator.CreateInstance(data.AbilityType, ability) as IAbility;
-			_property.managedReferenceValue = newAbility;
+			FieldInfo fieldInfo = _property.serializedObject.targetObject.GetType().GetField(
+				ABILITY_PROPNAME, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+
+			oldAbility = fieldInfo.GetValue(_property.serializedObject.targetObject) as IAbility;
 		}
 
 
+		IAbility newAbility = null;
+
+		if (oldAbility == null)
+		{
+			// Create new ability
+			newAbility = Activator.CreateInstance(data.AbilityType) as IAbility;
+		}
+		else
+		{
+			// Copy from old ability
+			newAbility = Activator.CreateInstance(data.AbilityType, oldAbility) as IAbility;
+			
+		}
+
+		// using fieldInfo may be the more general approach if making extension methods to get and set fields
+		// This may be required for nested classes, lists, arrays etc.
+		//fieldInfo.SetValue(_property.serializedObject.targetObject, newAbility);
+		
+		// This is essential if setting the value through field info rather with managedReferenceValue
+		// ApplyModifiedProperties must be called instead in that case
+		//_property.serializedObject.Update();
+
+
+		// This can work but it is then required to call ApplyModifiedProperties instead of Update()
+		_property.managedReferenceValue = newAbility;
+
+		// Only needed if the setting changing the property without using fieldInfo
 		_property.serializedObject.ApplyModifiedProperties();
 
-		ForceDraw();
+		
+		// Either way the PropertyField UIElement will not rebind to the new reference value automatically
+
+		// It seems SerializeReference is still not a first class citizen in unity
+		// The PropertyField needs to be rebound after changing the reference which
+		// being a PropertyDrawer with its own uxml means the parent of the root is needed
+		// Should be safe considering you can't embed UIelements inside an IMGUI inspector
+		// in later versions the default editor is actually a UI Toolkit inspector
+		// but in this version it will work as long as I am using a UI Toolkit inspector on any
+		// object that holds an ability or it will revert back to the default property drawer
+		if (_root.parent is PropertyField propfield)
+		{
+			propfield.BindProperty(_property);
+		}
+		else
+		{
+			Debug.LogError("Failed to find PropertyField on parent VisualElement");
+		}
 
 		return;
-	}
-
-
-	private void ForceDraw()
-	{
-		_root.Clear();
-		_visualTreeAsset.CloneTree(_root);
-
-		SetupToolbar();
-
-		// Doesn't work for properties ie not the target object
-		//_root.BindProperty(_property.serializedObject); // Must rebind if changing elements outside of CreateInspectorGUI
-
-		PropertyField ability = _root.Q<PropertyField>("ability");
-
-		// not that either
-		//ability.Bind(_property.serializedObject);
-
-		ability.Unbind();
-		ability.Clear();
-		ability.BindProperty(_property); // works but have to unbind the old property
 	}
 
 
@@ -140,6 +160,7 @@ public class AbilityDrawer : PropertyDrawer
 		}
 	}
 }
+
 
 [CustomPropertyDrawer(typeof(EmptyAbility))]
 public class EmptyAbilityDrawer : AbilityDrawer { }

@@ -1,5 +1,5 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
-    <uie:PropertyField name="test" binding-path="_test" />
-    <uie:Toolbar name="ability-toolbar" />
     <uie:PropertyField binding-path="_ability" name="ability" label="Ability" style="height: -15px;" />
+    <uie:Toolbar name="ability-toolbar" />
+    <ui:ListView focusable="true" binding-path="_abilities" name="abilities" style="height: 164px;" />
 </ui:UXML>

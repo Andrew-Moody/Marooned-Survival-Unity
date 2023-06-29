@@ -18,6 +18,13 @@ public class AbilityHolderEditor : Editor
 
 	private VisualElement _toolbar;
 
+	private ListView _listView;
+
+	private SerializedProperty _abilitiesProp;
+
+	private List<IAbility> _abilities;
+
+
 	public override VisualElement CreateInspectorGUI()
 	{
 		Debug.Log("CreateInspectorGUI");
@@ -36,12 +43,43 @@ public class AbilityHolderEditor : Editor
 		}));
 
 
+		_abilitiesProp = serializedObject.FindProperty("_abilities");
+
+		FieldInfo fieldInfo = target.GetType().GetField("_abilities", BindingFlags.NonPublic | BindingFlags.Instance);
+
+		_abilities = fieldInfo.GetValue(target) as List<IAbility>;
+
+
+
+		_listView = _root.Q<ListView>("abilities");
+
+		_listView.makeItem = MakeItem;
+		_listView.bindItem = BindItem;
+		_listView.itemsSource = _abilities;
+
 		// Draws the default inspector
-		// InspectorElement.FillDefaultInspector(root, serializedObject, this);
+		//InspectorElement.FillDefaultInspector(_root, serializedObject, this);
 		
 		return _root;
 	}
 
+
+	private VisualElement MakeItem()
+	{
+		return new PropertyField();
+	}
+
+
+	private void BindItem(VisualElement element, int index)
+	{
+		if (index < _abilities.Count)
+		{
+			SerializedProperty prop = serializedObject.FindProperty("_abilities");
+			prop.GetArrayElementAtIndex(index);
+
+			(element as PropertyField).BindProperty(prop.GetArrayElementAtIndex(index));
+		}
+	}
 
 	private void PopulateContextMenu(ContextualMenuPopulateEvent evt)
 	{
@@ -49,25 +87,23 @@ public class AbilityHolderEditor : Editor
 		//evt.menu.AppendAction("DerivedAbility", HandleContextAction);
 		//evt.menu.AppendAction("DerivedAbility2", HandleContextAction);
 
-		evt.menu.AppendAction("Test", HandleContextAction, GetStatus, new AbilityMenuData(null, 0));
-		evt.menu.AppendAction("EmptyAbility", HandleContextAction, GetStatus, new AbilityMenuData(typeof(EmptyAbility), 1));
-		evt.menu.AppendAction("DerivedAbility", HandleContextAction, GetStatus, new AbilityMenuData(typeof(DerivedAbility), 2));
-		evt.menu.AppendAction("DerivedAbility2", HandleContextAction, GetStatus, new AbilityMenuData(typeof(DerivedAbility2), 3));
+		evt.menu.AppendAction("Test", ChangeAbilityType, GetStatus, new AbilityMenuData(null, 0));
+		evt.menu.AppendAction("EmptyAbility", AddAbility, GetStatus, new AbilityMenuData(typeof(EmptyAbility), 1));
+		evt.menu.AppendAction("DerivedAbility", AddAbility, GetStatus, new AbilityMenuData(typeof(DerivedAbility), 2));
+		evt.menu.AppendAction("DerivedAbility2", AddAbility, GetStatus, new AbilityMenuData(typeof(DerivedAbility2), 3));
 	}
 
 
 	private DropdownMenuAction.Status GetStatus(DropdownMenuAction act) { return DropdownMenuAction.Status.Normal; }
 
 
-	private void HandleContextAction(DropdownMenuAction act)
+	private void ChangeAbilityType(DropdownMenuAction act)
 	{
-		serializedObject.Update();
+		
 
-		AbilityMenuData data = act.userData as AbilityMenuData;
-
-		if (data == null)
+		if (!(act.userData is AbilityMenuData data) || data.AbilityType == null)
 		{
-			Debug.LogError("ContextualMenu Action was not given AbilityMenuData");
+			Debug.LogError("ContextualMenu Action was not given valid AbilityMenuData");
 			return;
 		}
 
@@ -76,19 +112,6 @@ public class AbilityHolderEditor : Editor
 		if (prop == null)
 		{
 			Debug.LogError($"Failed to find property for {ABILITY_PROPNAME} on {target.name}");
-			return;
-		}
-
-
-		SerializedProperty testInt = serializedObject.FindProperty("_test");
-		testInt.intValue = data.TestInt;
-
-
-		if (data.AbilityType == null)
-		{
-			prop.managedReferenceValue = null;
-			serializedObject.ApplyModifiedProperties();
-			ForceDraw();
 			return;
 		}
 
@@ -115,10 +138,21 @@ public class AbilityHolderEditor : Editor
 
 
 		serializedObject.ApplyModifiedProperties();
+		serializedObject.Update();
 
 		ForceDraw();
+	}
 
-		return;
+
+	private void AddAbility(DropdownMenuAction act)
+	{
+		if (!(act.userData is AbilityMenuData data) || data.AbilityType == null)
+		{
+			Debug.LogError("ContextualMenu Action was not given valid AbilityMenuData");
+			return;
+		}
+
+		(target as AbilityHolder).AddAbility(data.AbilityType);
 	}
 
 
@@ -155,13 +189,9 @@ public class AbilityHolderEditor : Editor
 		private Type _abilityType;
 		public Type AbilityType => _abilityType;
 
-		private int _testInt;
-		public int TestInt => _testInt;
-
 		public AbilityMenuData(Type type, int testInt)
 		{
 			_abilityType = type;
-			_testInt = testInt;
 		}
 	}
 }

@@ -12,13 +12,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e5d3443968a0e34ba60dcb79eb84e0a, type: 3}
   m_Name: New Ability Holder
   m_EditorClassIdentifier: 
-  _ability:
-    id: 0
-  _test: 3
-  _abilities: []
+  _abilities:
+  - id: 0
+  - id: 1
+  - id: 2
+  - id: 3
   references:
     version: 1
     00000000:
-      type: {class: EmptyAbility, ns: , asm: Assembly-CSharp}
+      type: {class: DerivedAbility, ns: , asm: Assembly-CSharp}
       data:
-        Text: EmptyAbility
+        Text: DerivedAbilityEmptyAbility
+    00000001:
+      type: {class: DerivedAbility, ns: , asm: Assembly-CSharp}
+      data:
+        Text: DerivedAbility
+    00000002:
+      type: {class: DerivedAbility2, ns: , asm: Assembly-CSharp}
+      data:
+        Text: DerivedAbility2
+        OtherText: ' - More Text'
+    00000003:
+      type: {class: DerivedAbility2, ns: , asm: Assembly-CSharp}
+      data:
+        Text: DerivedAbility2EmptyAbility
+        OtherText: ' - More Text'
