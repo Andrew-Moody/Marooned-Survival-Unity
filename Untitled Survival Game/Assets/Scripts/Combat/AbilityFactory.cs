@@ -67,6 +67,18 @@ public class AbilityFactory
 	}
 
 
+	// It may be that simple
+	public static Ability CreateInstance(Type type, Ability ability = null)
+	{
+		if (ability == null)
+		{
+			return Activator.CreateInstance(type) as Ability;
+		}
+
+		return Activator.CreateInstance(type, ability) as Ability;
+	}
+
+
 	
 	public static Ability CreateAbilityFrom(AbilityType abilityType, Ability ability)
 	{

@@ -59,7 +59,7 @@ public class AbilityDrawer : PropertyDrawer
 			return;
 		}
 		
-		if (!(act.userData is AbilityMenuData data) || data.AbilityType == null)
+		if (!(act.userData is AbilityMenuData data))
 		{
 			Debug.LogError("ContextualMenu Action was not given valid AbilityMenuData");
 			return;
@@ -95,22 +95,27 @@ public class AbilityDrawer : PropertyDrawer
 
 		IAbility newAbility = null;
 
-		if (oldAbility == null)
+		if (data.AbilityType != null)
 		{
-			// Create new ability
-			newAbility = Activator.CreateInstance(data.AbilityType) as IAbility;
-		}
-		else
-		{
-			// Copy from old ability
 			newAbility = Activator.CreateInstance(data.AbilityType, oldAbility) as IAbility;
-			
 		}
+		
+		//if (oldAbility == null)
+		//{
+		//	// Create new ability
+		//	newAbility = Activator.CreateInstance(data.AbilityType) as IAbility;
+		//}
+		//else
+		//{
+		//	// Copy from old ability
+		//	newAbility = Activator.CreateInstance(data.AbilityType, oldAbility) as IAbility;
+
+		//}
 
 		// using fieldInfo may be the more general approach if making extension methods to get and set fields
 		// This may be required for nested classes, lists, arrays etc.
 		//fieldInfo.SetValue(_property.serializedObject.targetObject, newAbility);
-		
+
 		// This is essential if setting the value through field info rather with managedReferenceValue
 		// ApplyModifiedProperties must be called instead in that case
 		//_property.serializedObject.Update();
