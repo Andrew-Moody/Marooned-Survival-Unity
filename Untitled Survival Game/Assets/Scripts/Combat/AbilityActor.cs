@@ -18,6 +18,7 @@ public class AbilityActor : NetworkBehaviour
 
 	[SerializeField]
 	private Animator _animator;
+	public Animator Animator => _animator;
 
 	[SerializeField]
 	private AnimatorOverrideController _animatorOverride;
@@ -350,4 +351,28 @@ public class AbilityActor : NetworkBehaviour
 	{
 		
 	}
+
+
+	#region AbilitySystem
+
+	private Dictionary<AbilityTag, Ability> _abilities;
+
+	private ActiveEffects _activeEffects;
+
+
+	[Server]
+	public void GiveAbility(Ability ability)
+	{
+
+	}
+
+
+
+	
+	public void ApplyEffectToTarget(AbilityActor target, ActiveEffect effect)
+	{
+
+	}
+
+	#endregion
 }

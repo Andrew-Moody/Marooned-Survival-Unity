@@ -1,20 +1,106 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class AbilityTag
+public class AbilityTagContainer
 {
-	private AbilityTagValue _value;
+	[SerializeField]
+	private AbilityTag[] _tags;
+	public AbilityTag[] Tags => _tags;
 
-	public bool CheckTag(AbilityTag tag)
+	private Dictionary<AbilityTag, int> _tagMap;
+
+
+	public bool MatchAny(AbilityTagContainer tags)
 	{
-		return _value == tag._value;
+		if (_tagMap == null)
+		{
+			PopulateTagMap();
+		}
+
+		foreach (AbilityTag tag in tags.Tags)
+		{
+			if (_tagMap.ContainsKey(tag))
+			{
+				return true;
+			}
+		}
+
+		return false;
 	}
 
-	private enum AbilityTagValue
+
+	public bool MatchAll(AbilityTagContainer tags)
 	{
-		None,
-		Melee,
-		Range,
-		Magic
+		if (_tagMap == null)
+		{
+			PopulateTagMap();
+		}
+
+		foreach (AbilityTag tag in tags.Tags)
+		{
+			if (_tagMap.ContainsKey(tag))
+			{
+				return false;
+			}
+		}
+
+		return true;
 	}
+
+	
+	private void PopulateTagMap()
+	{
+		_tagMap = new Dictionary<AbilityTag, int>();
+
+		foreach (AbilityTag tag in _tags)
+		{
+			_tagMap[tag] = 1;
+		}
+	}
+
+
+	public void AddTag(AbilityTag tag)
+	{
+		if (_tagMap == null)
+		{
+			PopulateTagMap();
+		}
+
+		if (_tagMap.TryGetValue(tag, out int value))
+		{
+			_tagMap[tag] = value + 1;
+		}
+		else
+		{
+			_tagMap[tag] = 1;
+		}
+	}
+
+
+	public void RemoveTag(AbilityTag tag)
+	{
+		if (_tagMap == null)
+		{
+			PopulateTagMap();
+		}
+
+		if (_tagMap.TryGetValue(tag, out int value))
+		{
+			_tagMap[tag] = value - 1;
+
+			if (value > 1)
+			{
+				_tagMap.Remove(tag);
+			}
+		}
+	}
+}
+
+public enum AbilityTag
+{
+	None,
+	Melee,
+	Range,
+	Magic
 }

@@ -4,5 +4,11 @@ using UnityEngine;
 
 public interface ICueable
 {
-	public void OnCue(AbilityEvent evt);
+	
+}
+
+
+public interface IAnimCueable : ICueable
+{
+	public void SetTrigger(string trigger);
 }

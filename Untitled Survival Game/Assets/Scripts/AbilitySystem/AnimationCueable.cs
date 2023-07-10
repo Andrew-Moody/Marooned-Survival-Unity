@@ -2,21 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AnimationCueable : BaseCueable
+public class AnimationCueable : MonoBehaviour, IAnimCueable
 {
+	[SerializeField]
 	private Animator _animator;
 
-	private void Awake()
+	public void SetTrigger(string trigger)
 	{
-		_animator = GetComponent<Animator>();
-
-		if (_animator == null)
+		if (_animator != null)
 		{
-			Debug.LogError($"AnimationCueable {gameObject.name} was unable to find an Animator");
+			_animator.SetTrigger(trigger);
 		}
-	}
-	public override void OnCue(AbilityEvent evt)
-	{
-		
 	}
 }
