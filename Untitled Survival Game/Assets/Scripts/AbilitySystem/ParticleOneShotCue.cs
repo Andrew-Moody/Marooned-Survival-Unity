@@ -15,7 +15,6 @@ public class ParticleOneShotCue : CueOneShot
 	{
 		base.OnExecute(data);
 
-
 		Transform parent = null;
 
 		if (_attachToOwner)

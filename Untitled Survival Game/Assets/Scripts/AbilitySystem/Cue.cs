@@ -10,6 +10,26 @@ public class Cue : ScriptableObject
 
 	public virtual CueNotifyType GetNotifyType() => CueNotifyType.None;
 
+
+	public virtual void HandleCue(CueEventType eventType, CueEventData data)
+	{
+		switch (eventType)
+		{
+			case CueEventType.OnExecute:
+				OnExecute(data);
+				break;
+			case CueEventType.OnActivate:
+				OnActivate(data);
+				break;
+			case CueEventType.OnRemove:
+				OnRemove(data);
+				break;
+			case CueEventType.OnVisible:
+				OnVisible(data);
+				break;
+		}
+	}
+
 	/// <summary>
 	/// Called when the Cue is triggered instantly
 	/// </summary>
@@ -31,7 +51,7 @@ public class Cue : ScriptableObject
 	/// <summary>
 	/// Called when the Cue is removed or when a client is no longer an observer
 	/// </summary>
-	public virtual void OnRemove()
+	public virtual void OnRemove(CueEventData data)
 	{
 
 	}
@@ -62,7 +82,6 @@ public enum CueEventType
 	OnActivate,
 	OnRemove,
 	OnVisible
-
 }
 
 
@@ -71,4 +90,6 @@ public class CueEventData
 	public AbilityActor Target;
 
 	public Vector3 Position;
+
+	public Quaternion Rotation;
 }

@@ -34,8 +34,6 @@ MonoBehaviour:
         - id: 4
         - id: 5
         - id: 6
-        - id: 7
-        - id: 8
         _itemEffects: []
         _range: 2
     00000001:
@@ -59,34 +57,21 @@ MonoBehaviour:
         AnimTrigger: HIT
         Animation: {fileID: 0}
     00000004:
-      type: {class: SoundEffect, ns: , asm: Assembly-CSharp}
-      data:
-        EffectType: 3
-        EffectTiming: 2
-        Sound: {fileID: 8300000, guid: d76309bdff4fffd4ebfadbac6fee3764, type: 3}
-    00000005:
-      type: {class: ParticleEffect, ns: , asm: Assembly-CSharp}
-      data:
-        EffectType: 2
-        EffectTiming: 2
-        ParticleName: HIT
-        ParticleSystem: {fileID: 0}
-    00000006:
-      type: {class: StatEffect, ns: , asm: Assembly-CSharp}
-      data:
-        EffectType: 4
-        EffectTiming: 2
-        StatType: 1
-        StatAmount: -5
-    00000007:
       type: {class: KnockBackEffect, ns: , asm: Assembly-CSharp}
       data:
         EffectType: 5
         EffectTiming: 2
         KnockBack: 8
-    00000008:
-      type: {class: TransformEffect, ns: , asm: Assembly-CSharp}
+    00000005:
+      type: {class: StatEffect, ns: , asm: Assembly-CSharp}
       data:
-        EffectType: 6
+        EffectType: 4
         EffectTiming: 2
-        Name: HIT
+        StatType: 1
+        StatAmount: -50
+    00000006:
+      type: {class: CueEffect, ns: , asm: Assembly-CSharp}
+      data:
+        EffectType: 10
+        EffectTiming: 2
+        _tag: 1

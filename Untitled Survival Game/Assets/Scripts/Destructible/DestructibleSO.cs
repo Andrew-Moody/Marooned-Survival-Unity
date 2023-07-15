@@ -49,6 +49,8 @@ public class DestructibleSO : ScriptableObject
 	[SerializeField]
 	private ParticleEffectData[] _particleEffects;
 	public ParticleEffectData[] ParticleEffects => _particleEffects;
-	
-	
+
+	[SerializeField]
+	private Cue[] _cueOverrides;
+	public Cue[] CueOverrides => _cueOverrides;
 }

@@ -57,7 +57,8 @@ public enum EffectType
 	Transform,
 	UseItem,
 	SpawnProjectile,
-	LaunchProjectile
+	LaunchProjectile,
+	Cue
 }
 
 
@@ -305,6 +306,27 @@ public class LaunchProjectileEffect : ServerOnlyEffect
 	public override void ApplyEffect(Ability ability, AbilityActor user, AbilityActor effected)
 	{
 		effected.LaunchProjectile(_velocity, _alignWithVelocity);
+	}
+}
+
+
+public class CueEffect : Effect
+{
+	[SerializeField]
+	private AbilityTag _tag;
+
+	public static Effect Create()
+	{
+		return new CueEffect();
+	}
+
+
+	public override void ApplyEffect(Ability ability, AbilityActor user, AbilityActor effected)
+	{
+		CueEventData data = new CueEventData();
+		data.Target = effected;
+
+		CueManager.HandleCue(_tag, CueEventType.OnExecute, data);
 	}
 }
 

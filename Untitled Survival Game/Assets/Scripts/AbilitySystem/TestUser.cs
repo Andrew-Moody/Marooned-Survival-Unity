@@ -34,4 +34,13 @@ public class TestUser : NetworkBehaviour
 	{
 		// Give the actor the starting abilities
 	}
+
+
+	private void Update()
+	{
+		if (Input.GetKeyDown(KeyCode.K))
+		{
+
+		}
+	}
 }

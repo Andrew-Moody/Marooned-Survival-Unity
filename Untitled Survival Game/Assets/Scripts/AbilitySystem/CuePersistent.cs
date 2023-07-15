@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CuePersistent : Cue
 {
-	public override sealed CueNotifyType GetNotifyType() => CueNotifyType.NonInstantiated;
+	public override sealed CueNotifyType GetNotifyType() => CueNotifyType.Instantiated;
 
 
 	// In theory, OnExecute will not be called on persitent cues

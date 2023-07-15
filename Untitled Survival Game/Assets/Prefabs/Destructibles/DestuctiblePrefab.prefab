@@ -403,7 +403,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _animations:
-  - _name: HIT
+  - _name: Melee
     _animationCurve:
       serializedVersion: 2
       m_Curve:

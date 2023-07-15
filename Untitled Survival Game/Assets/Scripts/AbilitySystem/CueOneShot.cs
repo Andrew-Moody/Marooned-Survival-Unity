@@ -15,9 +15,9 @@ public class CueOneShot : Cue
 	}
 
 
-	public override sealed void OnRemove()
+	public override sealed void OnRemove(CueEventData data)
 	{
-		base.OnRemove();
+		base.OnRemove(data);
 	}
 
 

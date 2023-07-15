@@ -25,12 +25,14 @@ public class AbilityActor : NetworkBehaviour
 
 	[SerializeField]
 	private AudioSource _audioSource;
+	public AudioSource AudioSource => _audioSource;
 
 	[SerializeField]
 	private ParticleHandler _particleHandler;
 
 	[SerializeField]
 	private TransformAnimator _transformAnimator;
+	public TransformAnimator TransformAnimator => _transformAnimator;
 
 	[Header("Optional")]
 
@@ -67,6 +69,10 @@ public class AbilityActor : NetworkBehaviour
 
 	private bool _isAlive;
 	public bool IsAlive { get { return _isAlive; } set {  _isAlive = value; } }
+
+	private Dictionary<AbilityTag, Cue> _cueOverrides;
+
+	private Dictionary<string, AttachPoint> _attachPoints;
 
 
 	public override void OnStartNetwork()
@@ -357,7 +363,7 @@ public class AbilityActor : NetworkBehaviour
 
 	private Dictionary<AbilityTag, Ability> _abilities;
 
-	private ActiveEffects _activeEffects;
+	//private ActiveEffects _activeEffects;
 
 
 	[Server]
@@ -366,12 +372,79 @@ public class AbilityActor : NetworkBehaviour
 
 	}
 
-
-
 	
 	public void ApplyEffectToTarget(AbilityActor target, ActiveEffect effect)
 	{
+		target.ApplyEffectToSelf(effect);
+	}
 
+
+	public void ApplyEffectToSelf(ActiveEffect effect)
+	{
+
+	}
+
+
+	public bool TryHandleCue(AbilityTag tag, CueEventType eventType, CueEventData data)
+	{
+		if (_cueOverrides != null && _cueOverrides.TryGetValue(tag, out Cue cue))
+		{
+			Debug.LogWarning($"handling cue override: {cue.name}");
+			cue.HandleCue(eventType, data);
+			return true;
+		}
+
+		return false;
+	}
+
+
+	public void AddCueOverrides(Cue[] cues)
+	{
+		_cueOverrides = new Dictionary<AbilityTag, Cue>();
+
+		foreach(Cue cue in cues)
+		{
+			_cueOverrides.Add(cue.Tag, cue);
+		}
+	}
+
+
+	public Transform FindAttachPoint(string name)
+	{
+		if (_attachPoints == null)
+		{
+			InitializeAttachPoints();
+		}
+
+		if (_attachPoints.TryGetValue(name, out AttachPoint attachPoint))
+		{
+			return attachPoint.transform;
+		}
+
+		return null;
+	}
+
+
+	private void InitializeAttachPoints()
+	{
+		AttachPoint[] points;
+
+		if (_animator != null)
+		{
+			points = _animator.gameObject.GetComponentsInChildren<AttachPoint>();
+		}
+		else
+		{
+			points = GetComponentsInChildren<AttachPoint>();
+		}
+		
+
+		_attachPoints = new Dictionary<string, AttachPoint>();
+
+		foreach(AttachPoint point in points)
+		{
+			_attachPoints.Add(point.name, point);
+		}
 	}
 
 	#endregion

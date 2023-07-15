@@ -22,7 +22,6 @@ MonoBehaviour:
   _deathTime: 3
   _toolType: 2
   _toolPower: 10
-  _craftingStationSO: {fileID: 0}
   _particleEffects:
   - Name: HIT
     Anchor: {fileID: 0}
@@ -30,3 +29,5 @@ MonoBehaviour:
   - Name: DEATH
     Anchor: {fileID: 0}
     ParticleSystem: {fileID: 1400737571931329622, guid: 2536057e4ed01bb4eb47c8e796fb475f, type: 3}
+  _cueOverrides:
+  - {fileID: 11400000, guid: a28013fc10696f14ea3971fb52064afd, type: 2}

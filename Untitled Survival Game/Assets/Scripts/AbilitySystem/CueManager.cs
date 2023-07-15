@@ -4,78 +4,46 @@ using UnityEditor;
 using UnityEngine;
 
 
-
-[CreateAssetMenu(menuName = "AbilitySystem/CueManager")]
-public class CueManager : ScriptableObject
+public class CueManager : MonoBehaviour
 {
-
+	public static CueManager Instance => _instance;
 	private static CueManager _instance;
 
-	public static CueManager Instance
-	{
-		get
-		{
-			if (_instance == null)
-			{
-				CueManager[] managers = Resources.FindObjectsOfTypeAll<CueManager>();
 
-				if (managers.Length == 0)
-				{
-					Debug.LogError("Failed to find CueManager Asset");
-				}
-				else if (managers.Length > 1)
-				{
-					Debug.LogError("Found multiple instances of CueManager Asset");
-				}
-				else
-				{
-					_instance = managers[0];
-					_instance.hideFlags = HideFlags.DontUnloadUnusedAsset;
-					_instance.OnNewInstance();
-				}
-			}
-
-			return _instance;
-		}
-	}
-
-
-	private Cue[] _cues;
+	[SerializeField]
+	private CueDatabase _cueDatabase;
 
 	private Dictionary<AbilityTag, Cue> _cueMap;
 
 
-	private void OnNewInstance()
+	private void Awake()
 	{
-		_cues = Resources.FindObjectsOfTypeAll<Cue>();
-
-		_cueMap = new Dictionary<AbilityTag, Cue>();
-
-		for (int i = 0; i < _cues.Length; i++)
+		if (_instance == null)
 		{
-			_cueMap[_cues[i].Tag] = _cues[i];
+			_instance = this;
+			Initialize();
+		}
+		else
+		{
+			Destroy(gameObject);
 		}
 	}
 
-
-	public static void NotifyCue(AbilityTag tag, CueEventType eventType, CueEventData data)
+	private void Initialize()
 	{
-		if (Instance._cueMap.TryGetValue(tag, out Cue cue))
+		_cueMap = _cueDatabase.BuildCueMap();
+	}
+
+
+	public static void HandleCue(AbilityTag tag, CueEventType eventType, CueEventData data)
+	{
+		// Attempt to let the actor choose the response to a given tag
+		if (!data.Target.TryHandleCue(tag, eventType, data))
 		{
-			switch(eventType)
+			// If not handled by the actor handle it here
+			if (Instance._cueMap.TryGetValue(tag, out Cue cue))
 			{
-				case CueEventType.OnExecute:
-					cue.OnExecute(data);
-					break;
-				case CueEventType.OnActivate:
-					cue.OnActivate(data);
-					break;
-				case CueEventType.OnRemove:
-					cue.OnRemove();
-					break;
-				case CueEventType.OnVisible:
-					cue.OnVisible(data);
-					break;
+				cue.HandleCue(eventType, data);
 			}
 		}
 	}

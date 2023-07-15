@@ -86,6 +86,11 @@ public class DestructibleObject : NetworkBehaviour
 		{
 			_particleHandler.OverrideParticleEffects(_destructibleSO.ParticleEffects);
 		}
+
+		if (_destructibleSO.CueOverrides != null)
+		{
+			_abilityActor.AddCueOverrides(_destructibleSO.CueOverrides);
+		}
 	}
 
 
