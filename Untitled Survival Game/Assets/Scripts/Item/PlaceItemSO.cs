@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using AbilityActor = AbilitySystem.AbilityActor;
 
 [CreateAssetMenu(menuName = "ScriptableObjects/Item/PlaceItemSO")]
 public class PlaceItemSO : UseItemSO

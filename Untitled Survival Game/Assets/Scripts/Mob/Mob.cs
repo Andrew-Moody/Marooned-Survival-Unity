@@ -4,6 +4,7 @@ using FishNet.Object;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using AbilityActor = AbilitySystem.AbilityActor;
 
 public class Mob : NetworkBehaviour
 {

@@ -51,6 +51,6 @@ public class DestructibleSO : ScriptableObject
 	public ParticleEffectData[] ParticleEffects => _particleEffects;
 
 	[SerializeField]
-	private Cue[] _cueOverrides;
-	public Cue[] CueOverrides => _cueOverrides;
+	private AbilitySystem.Cue[] _cueOverrides;
+	public AbilitySystem.Cue[] CueOverrides => _cueOverrides;
 }

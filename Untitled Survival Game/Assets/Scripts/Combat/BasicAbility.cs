@@ -12,22 +12,4 @@ public class BasicAbility : Ability
 	public BasicAbility(Ability ability) : base(ability) { }
 
 	public BasicAbility(BasicAbility basicAbility) : base(basicAbility) { _polyTest = basicAbility._polyTest; }
-
-
-	public static Ability Create()
-	{
-		return new BasicAbility();
-	}
-
-
-	public static Ability CreateFrom(Ability ability)
-	{
-		return new BasicAbility(ability);
-	}
-
-
-	public override Ability CreateCopy()
-	{
-		return new BasicAbility(this);
-	}
 }

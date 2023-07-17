@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 
+using AbilityActor = AbilitySystem.AbilityActor;
 
 [System.Serializable]
 public class Effect
@@ -323,10 +324,10 @@ public class CueEffect : Effect
 
 	public override void ApplyEffect(Ability ability, AbilityActor user, AbilityActor effected)
 	{
-		CueEventData data = new CueEventData();
+		AbilitySystem.CueEventData data = new AbilitySystem.CueEventData();
 		data.Target = effected;
 
-		CueManager.HandleCue(_tag, CueEventType.OnExecute, data);
+		AbilitySystem.CueManager.HandleCue(_tag, AbilitySystem.CueEventType.OnExecute, data);
 	}
 }
 

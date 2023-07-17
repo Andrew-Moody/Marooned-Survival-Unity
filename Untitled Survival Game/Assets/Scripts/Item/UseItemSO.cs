@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class UseItemSO : ScriptableObject
 {
-	public virtual void UseItem(AbilityActor user, ItemSO itemSO)
+	public virtual void UseItem(AbilitySystem.AbilityActor user, ItemSO itemSO)
 	{
 		Debug.LogError($"Used item: {itemSO.ItemName}");
 	}

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using AbilityActor = AbilitySystem.AbilityActor;
 
 
 [System.Serializable]
@@ -35,25 +36,6 @@ public class MeleeAbility : Ability
 		: base (ability)
 	{
 		_range = ability._range;
-	}
-
-
-	public static Ability Create()
-	{
-		return new MeleeAbility();
-	}
-
-
-	public static Ability CreateFrom(Ability ability)
-	{
-		return new MeleeAbility(ability);
-	}
-
-
-	public override Ability CreateCopy()
-	{
-		//Debug.LogWarning($"MeleeAbility.CreateCopy called on {AbilityName}");
-		return new MeleeAbility(this);
 	}
 
 

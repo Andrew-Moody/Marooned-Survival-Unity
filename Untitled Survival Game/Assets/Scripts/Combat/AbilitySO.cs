@@ -11,7 +11,7 @@ public class AbilitySO : ScriptableObject
 
 	public Ability GetRuntimeAbility()
 	{
-		return _ability.CreateCopy();
+		return AbilityFactory.CreateInstance(_ability.GetType(), _ability);
 	}
 
 

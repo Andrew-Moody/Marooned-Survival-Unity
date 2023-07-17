@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using AbilityActor = AbilitySystem.AbilityActor;
 
 [System.Serializable]
 public class Ability
@@ -78,13 +79,6 @@ public class Ability
 		_targetEffects = ability._targetEffects;
 
 		_effectLists = ability._effectLists;
-	}
-
-
-	public virtual Ability CreateCopy()
-	{
-		//Debug.LogWarning("Ability CreateCopy");
-		return new Ability(this);
 	}
 
 

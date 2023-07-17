@@ -27,43 +27,6 @@ public class AbilityFactory
 			// { AbilityType.Magic, typeof(MagicAbility) },
 			// { AbilityType.Combo, typeof(ComboAbility) }
 		};
-
-
-		_factoryMethods = new Dictionary<AbilityType, AbilityFactoryMethod>
-		{
-			{ AbilityType.Basic, BasicAbility.Create },
-			{ AbilityType.Melee, MeleeAbility.Create },
-			// { AbilityType.Range, RangeAbility.Create },
-			// { AbilityType.Magic, MagicAbility.Create },
-			// { AbilityType.Combo, ComboAbility.Create },
-		};
-
-
-		_copyMethods = new Dictionary<AbilityType, AbilityCopyMethod>
-		{
-			{ AbilityType.Basic, BasicAbility.CreateFrom },
-			{ AbilityType.Melee, MeleeAbility.CreateFrom },
-			// { AbilityType.Range, RangeAbility.CreateFrom },
-			// { AbilityType.Magic, MagicAbility.CreateFrom },
-			// { AbilityType.Combo, ComboAbility.CreateFrom },
-		};
-	}
-
-
-	public static Ability CreateAbility(AbilityType abilityType)
-	{
-		if (_instance == null)
-		{
-			_instance = new AbilityFactory();
-		}
-
-		if (_instance._factoryMethods.TryGetValue(abilityType, out AbilityFactoryMethod factoryMethod))
-		{
-			return factoryMethod.Invoke();
-		}
-
-		Debug.LogError($"AbilityFactory is a missing a factory method for AbilityType.{abilityType}");
-		return null;
 	}
 
 
@@ -76,24 +39,6 @@ public class AbilityFactory
 		}
 
 		return Activator.CreateInstance(type, ability) as Ability;
-	}
-
-
-	
-	public static Ability CreateAbilityFrom(AbilityType abilityType, Ability ability)
-	{
-		if (_instance == null)
-		{
-			_instance = new AbilityFactory();
-		}
-
-		if (_instance._copyMethods.TryGetValue(abilityType, out AbilityCopyMethod copyMethod))
-		{
-			return copyMethod.Invoke(ability);
-		}
-
-		Debug.LogError($"AbilityFactory is a missing a copy method for AbilityType.{abilityType}");
-		return ability;
 	}
 
 
@@ -119,8 +64,8 @@ public class AbilityFactory
 		if (ability.GetType() != type)
 		{
 			Debug.LogError($"Ability {ability.AbilityName} mismatched type: current {ability.GetType()}, desired {type}, enum {ability.AbilityType}");
-			ability = CreateAbilityFrom(ability.AbilityType, ability);
 			
+			ability = CreateInstance(type, ability);
 		}
 
 		ability.ValidateEffects();

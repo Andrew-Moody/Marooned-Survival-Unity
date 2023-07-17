@@ -37,7 +37,7 @@ public class AbilitySet
 		{
 			if (_abilities[i] != null)
 			{
-				abilities[i] = _abilities[i].CreateCopy();
+				abilities[i] = AbilityFactory.CreateInstance(_abilities[i].GetType(), _abilities[i]);
 			}
 		}
 

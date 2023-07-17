@@ -3,44 +3,48 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TestUser : NetworkBehaviour
+namespace AbilitySystem
 {
-	private AbilityActor _actor;
-
-
-	// Array of starting effects to initialize attributes
-
-	// Array of abilities that the player starts with
-
-
-
-	public override void OnStartServer()
+	public class TestUser : NetworkBehaviour
 	{
-		base.OnStartServer();
-
-		InitializeAttributes();
-
-		GiveStartingAbilities();
-	}
+		private AbilityActor _actor;
 
 
-	private void InitializeAttributes()
-	{
-		// Apply each initial effect
-	}
+		// Array of starting effects to initialize attributes
+
+		// Array of abilities that the player starts with
 
 
-	private void GiveStartingAbilities()
-	{
-		// Give the actor the starting abilities
-	}
 
-
-	private void Update()
-	{
-		if (Input.GetKeyDown(KeyCode.K))
+		public override void OnStartServer()
 		{
+			base.OnStartServer();
 
+			InitializeAttributes();
+
+			GiveStartingAbilities();
+		}
+
+
+		private void InitializeAttributes()
+		{
+			// Apply each initial effect
+		}
+
+
+		private void GiveStartingAbilities()
+		{
+			// Give the actor the starting abilities
+		}
+
+
+		private void Update()
+		{
+			if (Input.GetKeyDown(KeyCode.K))
+			{
+
+			}
 		}
 	}
 }
+

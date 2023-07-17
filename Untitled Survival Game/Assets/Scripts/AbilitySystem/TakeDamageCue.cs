@@ -2,103 +2,110 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "TakeDamageCue", menuName = "AbilitySystem/TakeDamageCue")]
-public class TakeDamageCue : CueOneShot
+namespace AbilitySystem
 {
-	[SerializeField] private GameObject _particlePF;
-
-	[SerializeField] private AudioClip _audioClip;
-
-	[SerializeField] private bool _attachToOwner;
-
-	[SerializeField] private string _attachPoint;
-
-	public override void OnExecute(CueEventData data)
+	[CreateAssetMenu(fileName = "TakeDamageCue", menuName = "AbilitySystem/TakeDamageCue")]
+	public class TakeDamageCue : CueOneShot
 	{
-		base.OnExecute(data);
+		[SerializeField] private GameObject _particlePF;
 
-		PlayParticleEffect(data);
+		[SerializeField] private AudioClip _audioClip;
 
-		PlaySoundEffect(data);
+		[SerializeField] private bool _attachToOwner;
 
-		PlayTransformAnimation(data);
-	}
+		[SerializeField] private string _attachPoint;
 
-
-	private void PlayParticleEffect(CueEventData data)
-	{
-		if (_particlePF == null)
+		public override void OnExecute(CueEventData data)
 		{
-			Debug.LogError("ParticleOneShotCue has no particle effect specified");
-			return;
+			base.OnExecute(data);
+
+			PlayParticleEffect(data);
+
+			PlaySoundEffect(data);
+
+			PlayTransformAnimation(data);
 		}
 
-		Vector3 position = data.Position;
 
-		Quaternion rotation = data.Rotation;
-
-		Transform parent = null;
-
-		if (_attachToOwner)
+		private void PlayParticleEffect(CueEventData data)
 		{
-			parent = data.Target.FindAttachPoint(_attachPoint);
-
-			if (parent == null)
+			if (_particlePF == null)
 			{
-				parent = data.Target.transform;
+				Debug.LogError("ParticleOneShotCue has no particle effect specified");
+				return;
 			}
 
-			if (parent != null)
-			{
-				position += parent.position;
+			Vector3 position = data.Position;
 
-				rotation = rotation * parent.rotation;
+			Quaternion rotation = data.Rotation;
+
+			Transform parent = null;
+
+			if (_attachToOwner)
+			{
+				if (data.Target.AttachPoints != null)
+				{
+					parent = data.Target.AttachPoints.FindAttachPoint(_attachPoint);
+				}
+
+				if (parent == null)
+				{
+					parent = data.Target.transform;
+				}
+
+				if (parent != null)
+				{
+					position += parent.position;
+
+					rotation = rotation * parent.rotation;
+				}
+			}
+
+
+			GameObject particleObj = Instantiate(_particlePF, position, rotation, parent);
+
+			if (particleObj.TryGetComponent(out ParticleSystem particle))
+			{
+				particle.Play();
+
+				// For particle effects to be reused in different contexts, settings like what to do when finished need to be set in code
+
+				ParticleSystem.MainModule main = particle.main;
+				main.stopAction = ParticleSystemStopAction.Destroy;
 			}
 		}
 
 
-		GameObject particleObj = Instantiate(_particlePF, position, rotation, parent);
-
-		if (particleObj.TryGetComponent(out ParticleSystem particle))
+		private void PlaySoundEffect(CueEventData data)
 		{
-			particle.Play();
+			AudioSource audioSource = data.Target.AudioSource;
 
-			// For particle effects to be reused in different contexts, settings like what to do when finished need to be set in code
-
-			ParticleSystem.MainModule main = particle.main;
-			//main.stopAction = ParticleSystemStopAction.Destroy;
+			if (audioSource != null)
+			{
+				audioSource.PlayOneShot(_audioClip);
+			}
 		}
-	}
 
 
-	private void PlaySoundEffect(CueEventData data)
-	{
-		AudioSource audioSource = data.Target.AudioSource;
-
-		if (audioSource != null)
+		private void PlayTransformAnimation(CueEventData data)
 		{
-			audioSource.PlayOneShot(_audioClip);
+			TransformAnimator transformAnimator = data.Target.TransformAnimator;
+
+			if (transformAnimator != null)
+			{
+				transformAnimator.PlayAnimation(_tag.ToString());
+			}
 		}
-	}
 
 
-	private void PlayTransformAnimation(CueEventData data)
-	{
-		TransformAnimator transformAnimator = data.Target.TransformAnimator;
-
-		if (transformAnimator != null)
+		private void OnValidate()
 		{
-			transformAnimator.PlayAnimation(_tag.ToString());
-		}
-	}
-
-
-	private void OnValidate()
-	{
-		if (_particlePF != null && !_particlePF.GetComponent<ParticleSystem>())
-		{
-			_particlePF = null;
-			Debug.LogError("ParticlePF must be a prefab that has a ParticleSystem component");
+			if (_particlePF != null && !_particlePF.GetComponent<ParticleSystem>())
+			{
+				_particlePF = null;
+				Debug.LogError("ParticlePF must be a prefab that has a ParticleSystem component");
+			}
 		}
 	}
 }
+
