@@ -10,13 +10,43 @@ namespace AbilitySystem
 		public StatType StatType => _statType;
 		[SerializeField] private StatType _statType;
 
-		public ModifierOperation Operation => _operation;
+		//public ModifierOperation Operation => _operation;
 		[SerializeField] private ModifierOperation _operation;
 
-		public float Magnitude => _magnitude;
+		//public float Magnitude => _magnitude;
 		[SerializeField] private float _magnitude;
 
+		public void ApplyModifier(Stats stats)
+		{
+			float value = stats.GetStatValue(_statType);
 
+			switch (_operation)
+			{
+				case ModifierOperation.Add:
+				{
+					value += _magnitude;
+					break;
+				}
+				case ModifierOperation.Multiply:
+				{
+					value *= _magnitude;
+					break;
+				}
+				case ModifierOperation.Divide:
+				{
+					value /= _magnitude;
+					break;
+				}
+				case ModifierOperation.Override:
+				{
+					value = _magnitude;
+					break;
+				}
+			}
+
+
+			stats.SetStat(_statType, value);
+		}
 
 		public enum ModifierOperation
 		{

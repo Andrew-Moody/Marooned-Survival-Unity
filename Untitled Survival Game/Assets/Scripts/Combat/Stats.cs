@@ -6,6 +6,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using StatModifier = AbilitySystem.StatModifier;
+
 public class Stats : NetworkBehaviour
 {
 	[SerializeField]
@@ -22,6 +24,11 @@ public class Stats : NetworkBehaviour
 	/// </summary>
 	public event Action<StatType> OnStatEmpty;
 
+
+	// The nice thing about syncvars is that they can collect changes and send periodically instead of every tick.
+	// The downside is that this causes a delay that has been inconsistent in testing, and has a single global value
+	// that can't be tailored to the desired update rate of a particular variable (and can't be queried at runtime)
+	// Rpcs would be a better choice for things that dont change on tick and need to react fast to changes when they happen
 
 	[SyncObject]
 	private readonly SyncDictionary<StatType, float> _statValues = new SyncDictionary<StatType, float>();
@@ -63,13 +70,13 @@ public class Stats : NetworkBehaviour
 		InitializeUIListeners(connection);
 	}
 
+	#endregion
 
 	public bool HasStat(StatType statType)
 	{
 		return _statValues.ContainsKey(statType);
 	}
 
-	#endregion
 
 	public float GetStatValue(StatType statType)
 	{
@@ -90,18 +97,21 @@ public class Stats : NetworkBehaviour
 	[Server]
 	public void SetStat(StatType statType, float amount)
 	{
-		if (_statValues.ContainsKey(statType))
-		{
-			// This should syncronize
-			_statValues[statType] = amount;
-		}
-		else
+		if (!_statValues.ContainsKey(statType))
 		{
 			Debug.LogWarning($"Failed to SetStat: {gameObject.GetInstanceID()} does not have stat of type: {statType}");
+			return;
 		}
+
+		// Ensure the new value is between bounds
+		amount = Mathf.Clamp(amount, 0f, _statMaxValues[statType]);
+
+		// This should syncronize
+		_statValues[statType] = amount;
 	}
 
 
+	// Used only by legacy ability system
 	[Server]
 	public void AddToStat(StatType statType, float amount)
 	{
@@ -121,7 +131,6 @@ public class Stats : NetworkBehaviour
 			Debug.LogWarning($"Failed to SetStat: {gameObject.GetInstanceID()} does not have stat of type: {statType}");
 		}
 	}
-
 
 
 	private void SetupStats()
@@ -165,7 +174,7 @@ public class Stats : NetworkBehaviour
 
 		if (operation == SyncDictionaryOperation.Set)
 		{
-			Debug.Log("Stats SyncDictionary Changed asServer: " + asServer + " For type: " + statType + " tick: " +TimeManager.Tick);
+			//Debug.LogError("Stats SyncDictionary Changed asServer: " + asServer + " For type: " + statType + " tick: " +TimeManager.Tick);
 
 			// This callback will get called twice on client host, but we only want to Invoke OnStatChange once
 			// (the client host will still get one Invoke when this is called with asServer = true)

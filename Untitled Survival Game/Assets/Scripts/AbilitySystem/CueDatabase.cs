@@ -13,19 +13,19 @@ namespace AbilitySystem
 		private List<Cue> _cues;
 
 
-		public Dictionary<AbilityTag, Cue> BuildCueMap()
+		public Dictionary<AbilityTrait, Cue> BuildCueMap()
 		{
-			Dictionary<AbilityTag, Cue> cueMap = new Dictionary<AbilityTag, Cue>();
+			Dictionary<AbilityTrait, Cue> cueMap = new Dictionary<AbilityTrait, Cue>();
 
 			for (int i = 0; i < _cues.Count; i++)
 			{
-				if (cueMap.ContainsKey(_cues[i].Tag))
+				if (cueMap.ContainsKey(_cues[i].Trait))
 				{
-					Debug.LogError($"Failed to add cue ({_cues[i].name}) to global set: tag ({_cues[i].Tag}) already exists");
+					Debug.LogError($"Failed to add cue ({_cues[i].name}) to global set: tag ({_cues[i].Trait}) already exists");
 				}
 				else
 				{
-					cueMap[_cues[i].Tag] = _cues[i];
+					cueMap[_cues[i].Trait] = _cues[i];
 				}
 			}
 

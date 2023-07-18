@@ -2961,7 +2961,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &596124530
 Transform:
   m_ObjectHideFlags: 0
@@ -3774,7 +3774,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8237469595901889490, guid: a870d14fc5dc21146b4a3b2b7dbf405d, type: 3}
   m_PrefabInstance: {fileID: 736041532}
   m_PrefabAsset: {fileID: 0}
---- !u!28 &784352375
+--- !u!28 &843532172
 Texture2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4207,7 +4207,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BaseMap:
-        m_Texture: {fileID: 784352375}
+        m_Texture: {fileID: 843532172}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:

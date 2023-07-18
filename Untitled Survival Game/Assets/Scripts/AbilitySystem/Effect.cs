@@ -14,10 +14,12 @@ namespace AbilitySystem
 		[SerializeField] private float _duration;
 
 
+		public StatModifier[] Modifiers => _modifiers;
 		[SerializeField] private StatModifier[] _modifiers;
 
 
-		[SerializeField] private AbilityTag[] _cues;
+		public AbilityTrait[] Cues => _cues;
+		[SerializeField] private AbilityTrait[] _cues;
 
 
 	}

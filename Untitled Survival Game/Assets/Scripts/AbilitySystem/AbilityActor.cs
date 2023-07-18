@@ -77,14 +77,13 @@ namespace AbilitySystem
 
 		
 
-		
-
-
 		public override void OnStartNetwork()
 		{
 			base.OnStartNetwork();
 
 			_isAlive = true;
+
+			SetupStartingAbilities();
 		}
 
 		public override void OnStartClient()
@@ -349,10 +348,15 @@ namespace AbilitySystem
 			_projectile = null;
 		}
 
-		#endregion		
+		#endregion
 
 
 		#region AbilitySystem
+
+		public bool AsOwner => IsOwner;
+
+		public bool AsServer => IsServer;
+
 
 		// Allow intial abilities to be defined in the inspector
 		[SerializeField] private List<Ability> _startingAbilities;
@@ -360,9 +364,9 @@ namespace AbilitySystem
 		// Instantiated ability instances
 		private List<AbilityHandle> _abilities;
 
-		private List<EffectHandle> _activeEffects;
+		private List<EffectHandle> _activeEffects = new List<EffectHandle>();
 
-		private Dictionary<AbilityTag, Cue> _cueOverrides;
+		private Dictionary<AbilityTrait, Cue> _cueOverrides;
 
 
 		[Server]
@@ -372,21 +376,44 @@ namespace AbilitySystem
 		}
 
 
-		public void ApplyEffectToTarget(AbilityActor target, EffectHandle effect)
+		public void ApplyEffect(EffectHandle effectHandle)
 		{
-			target.ApplyEffectToSelf(effect);
+			Effect effect = effectHandle.Effect;
+
+			if (effect == null)
+			{
+				return;
+			}
+
+
+			// First check that the effect can be applied based on traits
+			if (!CanApply(effectHandle))
+			{
+				return;
+			}
+
+
+			if (effect.DurationType == DurationType.Instant)
+			{
+				// Fire off any cues if this is a client
+				if (IsClient)
+				{
+					HandleCues(effectHandle, CueEventType.OnExecute);
+				}
+
+
+				// Handle Stat changes only on server
+				if (IsServer)
+				{
+					HandleStatChanges(effectHandle);
+				}
+			}
 		}
 
 
-		public void ApplyEffectToSelf(EffectHandle effect)
+		public bool TryHandleCue(AbilityTrait trait, CueEventType eventType, CueEventData data)
 		{
-
-		}
-
-
-		public bool TryHandleCue(AbilityTag tag, CueEventType eventType, CueEventData data)
-		{
-			if (_cueOverrides != null && _cueOverrides.TryGetValue(tag, out Cue cue))
+			if (_cueOverrides != null && _cueOverrides.TryGetValue(trait, out Cue cue))
 			{
 				Debug.LogWarning($"handling cue override: {cue.name}");
 				cue.HandleCue(eventType, data);
@@ -399,29 +426,83 @@ namespace AbilitySystem
 
 		public void AddCueOverrides(Cue[] cues)
 		{
-			_cueOverrides = new Dictionary<AbilityTag, Cue>();
+			_cueOverrides = new Dictionary<AbilityTrait, Cue>();
 
 			foreach (Cue cue in cues)
 			{
-				_cueOverrides.Add(cue.Tag, cue);
+				_cueOverrides.Add(cue.Trait, cue);
 			}
 		}
 
 
-		public bool TryActivateAbility(int abilityID)
+		public void ActivateAbility(int abilityID)
 		{
-			if (TryFindAbilityFromID(abilityID, out AbilityHandle abilityHandle))
+			if (IsServer)
 			{
-				if (abilityHandle.CanActivate())
-				{
+				ActivateAbilityAsServer(abilityID);
+			}
+			else if (IsOwner)
+			{
+				ActivateAbilityAsClient(abilityID);
+			}
+		}
 
 
-
-					return true;
-				}
+		private void ActivateAbilityAsClient(int abilityID)
+		{
+			if (!TryFindAbilityFromID(abilityID, out AbilityHandle abilityHandle))
+			{
+				return;
 			}
 
-			return false;
+
+			// Activate the ability locally and request the server activate remotely
+			if (abilityHandle.CanActivate())
+			{
+				abilityHandle.Activate();
+
+				ActivateAbilitySRPC(abilityID);
+			}
+		}
+
+
+		[Server]
+		private void ActivateAbilityAsServer(int abilityID)
+		{
+			if (!TryFindAbilityFromID(abilityID, out AbilityHandle abilityHandle))
+			{
+				return;
+			}
+
+			if (abilityHandle.CanActivate())
+			{
+				abilityHandle.Activate();
+
+				ActivateAbilityORPC(abilityID);
+			}
+		}
+
+
+		// Request the server to activate the ability
+		[ServerRpc]
+		private void ActivateAbilitySRPC(int abilityID)
+		{
+			ActivateAbilityAsServer(abilityID);
+		}
+
+
+		// Activate the ability on observers in order to play cues (but not localhost)
+		// may be preferable to activate only the cues but they typically need extra data
+		// this will save a lot of bandwidth unless I find a better way to activate cues over the network
+		[ObserversRpc(ExcludeOwner = true, ExcludeServer = true)]
+		private void ActivateAbilityORPC(int abilityID)
+		{
+			if (!TryFindAbilityFromID(abilityID, out AbilityHandle abilityHandle))
+			{
+				return;
+			}
+
+			abilityHandle.Activate();
 		}
 
 
@@ -440,6 +521,82 @@ namespace AbilitySystem
 		}
 
 
+		private void SetupStartingAbilities()
+		{
+			_abilities = new List<AbilityHandle>();
+
+			foreach (Ability ability in _startingAbilities)
+			{
+				_abilities.Add(new AbilityHandle(ability, this));
+			}
+		}
+
+
+		// Handle in update for now but may move to TimeManager eventually
+		private void Tick(float deltaTime)
+		{
+			TickAbilities(deltaTime);
+
+			TickEffects(deltaTime);
+		}
+
+		// If cooldown ends up being the only thing updated here I may find a different way to handle cooldowns
+		private void TickAbilities(float deltaTime)
+		{
+			foreach (AbilityHandle handle in _abilities)
+			{
+				handle.Tick(deltaTime);
+			}
+		}
+
+
+		private void TickEffects(float deltaTime)
+		{
+			foreach (EffectHandle effect in _activeEffects)
+			{
+				effect.Tick(deltaTime);
+			}
+		}
+
+
+		private bool CanApply(EffectHandle effectHandle)
+		{
+			return true;
+		}
+
+
+		private void HandleCues(EffectHandle effectHandle, CueEventType cueEventType)
+		{
+			AbilityTrait[] traits = effectHandle.Effect.Cues;
+
+			CueEventData data = new CueEventData()
+			{
+				Target = this,
+			};
+
+			foreach(AbilityTrait trait in traits)
+			{
+				CueManager.HandleCue(trait, cueEventType, data);
+			}
+		}
+
+
+		private void HandleStatChanges(EffectHandle effectHandle)
+		{
+			Debug.LogError($"HandleStatChanges");
+
+			foreach (StatModifier modifier in effectHandle.Effect.Modifiers)
+			{
+				modifier.ApplyModifier(_stats);
+			}
+		}
+
+
 		#endregion
+
+		private void Update()
+		{
+			Tick(Time.deltaTime);
+		}
 	}
 }

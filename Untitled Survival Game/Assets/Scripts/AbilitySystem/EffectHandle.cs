@@ -6,13 +6,25 @@ namespace AbilitySystem
 {
 	public class EffectHandle
 	{
-		private AbilityActor _target;
+		public Effect Effect => _effect;
+
+		public EffectEventData EventData => _effectEventData;
 
 		private Effect _effect;
 
 		private EffectEventData _effectEventData;
 
 
-		public EffectHandle() { }
+		public EffectHandle(Effect effect, EffectEventData data)
+		{
+			_effect = effect;
+			_effectEventData = data;
+		}
+
+
+		public void Tick(float deltaTime)
+		{
+
+		}
 	}
 }

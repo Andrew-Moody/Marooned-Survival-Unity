@@ -39,9 +39,9 @@ namespace AbilitySystem
 		}
 
 
-		public void End()
+		public void Tick(float deltaTime)
 		{
-			_ability.End(_abilityData);
+			_ability.Tick(_abilityData, deltaTime);
 		}
 	}
 }

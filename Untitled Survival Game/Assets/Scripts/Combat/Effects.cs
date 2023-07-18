@@ -314,7 +314,7 @@ public class LaunchProjectileEffect : ServerOnlyEffect
 public class CueEffect : Effect
 {
 	[SerializeField]
-	private AbilityTag _tag;
+	private AbilityTrait _trait;
 
 	public static Effect Create()
 	{
@@ -327,7 +327,7 @@ public class CueEffect : Effect
 		AbilitySystem.CueEventData data = new AbilitySystem.CueEventData();
 		data.Target = effected;
 
-		AbilitySystem.CueManager.HandleCue(_tag, AbilitySystem.CueEventType.OnExecute, data);
+		AbilitySystem.CueManager.HandleCue(_trait, AbilitySystem.CueEventType.OnExecute, data);
 	}
 }
 

@@ -93,7 +93,7 @@ namespace AbilitySystem
 
 			if (transformAnimator != null)
 			{
-				transformAnimator.PlayAnimation(_tag.ToString());
+				transformAnimator.PlayAnimation(_trait.ToString());
 			}
 		}
 

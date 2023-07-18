@@ -31,17 +31,8 @@ public class DestructibleManager : NetworkBehaviour
 		{
 			Instance = this;
 		}
-	}
 
-
-	private void Start()
-	{
-		_placeableItemDict = new Dictionary<int, int>();
-
-		for (int i = 0; i < _placeableItems.Length; i++)
-		{
-			_placeableItemDict[_placeableItems[i].ItemID] = _placeableItems[i].DestructibleID;
-		}
+		BuildPlaceableMap();
 	}
 
 
@@ -120,6 +111,17 @@ public class DestructibleManager : NetworkBehaviour
 		}
 
 		return null;
+	}
+
+
+	private void BuildPlaceableMap()
+	{
+		_placeableItemDict = new Dictionary<int, int>();
+
+		for (int i = 0; i < _placeableItems.Length; i++)
+		{
+			_placeableItemDict[_placeableItems[i].ItemID] = _placeableItems[i].DestructibleID;
+		}
 	}
 
 

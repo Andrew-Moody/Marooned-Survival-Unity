@@ -7,15 +7,9 @@ namespace AbilitySystem
 	/// </summary>
 	public class EffectEventData
 	{
+		public AbilityActor Source { get; set; }
 
-		public AbilityActor Source => _source;
-		private AbilityActor _source;
-
-		public AbilityActor Target => _target;
-		private AbilityActor _target;
-
-
-		public EffectEventData() { }
+		public AbilityActor Target { get; set; }
 	}
 }
 

@@ -83,10 +83,14 @@ public class CombatInput : NetworkBehaviour
 		{
 			if (Input.GetMouseButton(0))
 			{
-				int attackIdx = _combatant.ChooseAbility();
-				Attack(attackIdx);
+				//int attackIdx = _combatant.ChooseAbility();
+				//Attack(attackIdx);
 			}
 
+			if (Input.GetMouseButtonDown(0))
+			{
+				_abilityActor.ActivateAbility(0);
+			}
 
 			if (Input.GetMouseButtonDown(1))
 			{

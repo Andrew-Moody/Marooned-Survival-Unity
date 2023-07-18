@@ -6,8 +6,8 @@ namespace AbilitySystem
 {
 	public class Cue : ScriptableObject
 	{
-		public AbilityTag Tag => _tag;
-		[SerializeField] protected AbilityTag _tag;
+		public AbilityTrait Trait => _trait;
+		[SerializeField] protected AbilityTrait _trait;
 
 
 		public virtual CueNotifyType GetNotifyType() => CueNotifyType.None;
