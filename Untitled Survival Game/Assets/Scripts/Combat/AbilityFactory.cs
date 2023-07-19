@@ -3,23 +3,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AbilityFactory
+namespace LegacyAbility
 {
-	private static AbilityFactory _instance;
-
-	delegate Ability AbilityFactoryMethod();
-
-	delegate Ability AbilityCopyMethod(Ability ability);
-
-	private Dictionary<AbilityType, Type> _abilityTypes;
-
-	private Dictionary<AbilityType, AbilityFactoryMethod> _factoryMethods;
-
-	private Dictionary<AbilityType, AbilityCopyMethod> _copyMethods;
-
-	public AbilityFactory()
+	public class AbilityFactory
 	{
-		_abilityTypes = new Dictionary<AbilityType, Type>
+		private static AbilityFactory _instance;
+
+		delegate Ability AbilityFactoryMethod();
+
+		delegate Ability AbilityCopyMethod(Ability ability);
+
+		private Dictionary<AbilityType, Type> _abilityTypes;
+
+		private Dictionary<AbilityType, AbilityFactoryMethod> _factoryMethods;
+
+		private Dictionary<AbilityType, AbilityCopyMethod> _copyMethods;
+
+		public AbilityFactory()
+		{
+			_abilityTypes = new Dictionary<AbilityType, Type>
 		{
 			{ AbilityType.Basic, typeof(BasicAbility) },
 			{ AbilityType.Melee, typeof(MeleeAbility) },
@@ -27,66 +29,67 @@ public class AbilityFactory
 			// { AbilityType.Magic, typeof(MagicAbility) },
 			// { AbilityType.Combo, typeof(ComboAbility) }
 		};
+		}
+
+
+		// It may be that simple
+		public static Ability CreateInstance(Type type, Ability ability = null)
+		{
+			if (ability == null)
+			{
+				return Activator.CreateInstance(type) as Ability;
+			}
+
+			return Activator.CreateInstance(type, ability) as Ability;
+		}
+
+
+		public static void ValidateAbility(ref Ability ability)
+		{
+			if (_instance == null)
+			{
+				_instance = new AbilityFactory();
+			}
+
+			if (ability == null)
+			{
+				ability = new BasicAbility();
+				return;
+			}
+
+			if (!_instance._abilityTypes.TryGetValue(ability.AbilityType, out Type type))
+			{
+				Debug.LogError($"AbilityFactory is a missing a type entry for AbilityType.{ability.AbilityType} on {ability.AbilityName}");
+				return;
+			}
+
+			if (ability.GetType() != type)
+			{
+				Debug.LogError($"Ability {ability.AbilityName} mismatched type: current {ability.GetType()}, desired {type}, enum {ability.AbilityType}");
+
+				ability = CreateInstance(type, ability);
+			}
+
+			ability.ValidateEffects();
+		}
 	}
 
 
-	// It may be that simple
-	public static Ability CreateInstance(Type type, Ability ability = null)
+	public enum AbilityType
 	{
-		if (ability == null)
-		{
-			return Activator.CreateInstance(type) as Ability;
-		}
-
-		return Activator.CreateInstance(type, ability) as Ability;
+		None,
+		Basic,
+		Melee,
+		Range,
+		Magic,
+		Combo
 	}
 
 
-	public static void ValidateAbility(ref Ability ability)
+	public enum ToolType
 	{
-		if (_instance == null)
-		{
-			_instance = new AbilityFactory();
-		}
-
-		if (ability == null)
-		{
-			ability = new BasicAbility();
-			return;
-		}
-
-		if (!_instance._abilityTypes.TryGetValue(ability.AbilityType, out Type type))
-		{
-			Debug.LogError($"AbilityFactory is a missing a type entry for AbilityType.{ability.AbilityType} on {ability.AbilityName}");
-			return;
-		}
-
-		if (ability.GetType() != type)
-		{
-			Debug.LogError($"Ability {ability.AbilityName} mismatched type: current {ability.GetType()}, desired {type}, enum {ability.AbilityType}");
-			
-			ability = CreateInstance(type, ability);
-		}
-
-		ability.ValidateEffects();
+		None,
+		Mining,
+		Logging
 	}
-}
-
-
-public enum AbilityType
-{
-	None,
-	Basic,
-	Melee,
-	Range,
-	Magic,
-	Combo
-}
-
-
-public enum ToolType
-{
-	None,
-	Mining,
-	Logging
 }

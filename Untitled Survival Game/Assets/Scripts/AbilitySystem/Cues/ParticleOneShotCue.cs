@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace AbilitySystem
 {
-	[CreateAssetMenu(fileName = "ParticleCue", menuName = "AbilitySystem/ParticleOneShotCue")]
+	[CreateAssetMenu(fileName = "ParticleCue", menuName = "AbilitySystem/Cue/ParticleOneShotCue")]
 	public class ParticleOneShotCue : CueOneShot
 	{
 		[SerializeField] private GameObject _particlePF;

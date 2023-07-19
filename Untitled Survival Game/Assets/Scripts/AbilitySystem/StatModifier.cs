@@ -7,8 +7,8 @@ namespace AbilitySystem
 	[System.Serializable]
 	public class StatModifier
 	{
-		public StatType StatType => _statType;
-		[SerializeField] private StatType _statType;
+		public LegacyAbility.StatType StatType => _statType;
+		[SerializeField] private LegacyAbility.StatType _statType;
 
 		//public ModifierOperation Operation => _operation;
 		[SerializeField] private ModifierOperation _operation;
@@ -16,7 +16,7 @@ namespace AbilitySystem
 		//public float Magnitude => _magnitude;
 		[SerializeField] private float _magnitude;
 
-		public void ApplyModifier(Stats stats)
+		public void ApplyModifier(LegacyAbility.Stats stats)
 		{
 			float value = stats.GetStatValue(_statType);
 

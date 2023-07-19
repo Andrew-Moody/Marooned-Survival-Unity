@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using AbilityActor = AbilitySystem.AbilityActor;
+using AbilityActor = LegacyAbility.AbilityActor;
 
 public class AttackState : BaseState
 {

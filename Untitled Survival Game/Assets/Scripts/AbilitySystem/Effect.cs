@@ -22,6 +22,8 @@ namespace AbilitySystem
 		[SerializeField] private AbilityTrait[] _cues;
 
 
+		public AbilityTrait[] Traits => _traits;
+		[SerializeField] private AbilityTrait[] _traits;
 	}
 
 

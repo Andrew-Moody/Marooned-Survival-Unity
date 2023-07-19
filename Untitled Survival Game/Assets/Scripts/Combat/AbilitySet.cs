@@ -2,59 +2,62 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
-public class AbilitySet
+namespace LegacyAbility
 {
-	[SerializeField]
-	private AbilitySetSO _abilitySetSO;
-
-	[SerializeField]
-	private AbilitySO[] _abilitySOList;
-
-	[SerializeReference]
-	private Ability[] _abilities;
-
-
-	public Ability[] GetRuntimeAbilities()
+	[System.Serializable]
+	public class AbilitySet
 	{
-		// Get abilities from SO if one exists
-		if (_abilitySetSO != null)
-		{
-			return _abilitySetSO.GetRuntimeAbilities();
-		}
+		[SerializeField]
+		private AbilitySetSO _abilitySetSO;
 
-		Ability[] abilities = new Ability[_abilitySOList.Length + _abilities.Length];
+		[SerializeField]
+		private AbilitySO[] _abilitySOList;
 
-		for (int i = 0; i < _abilitySOList.Length; i++)
+		[SerializeReference]
+		private Ability[] _abilities;
+
+
+		public Ability[] GetRuntimeAbilities()
 		{
-			if (_abilitySOList[i] != null)
+			// Get abilities from SO if one exists
+			if (_abilitySetSO != null)
 			{
-				abilities[i] = _abilitySOList[i].GetRuntimeAbility();
+				return _abilitySetSO.GetRuntimeAbilities();
 			}
-		}
 
-		for (int i = 0; i < _abilities.Length; i++)
-		{
-			if (_abilities[i] != null)
+			Ability[] abilities = new Ability[_abilitySOList.Length + _abilities.Length];
+
+			for (int i = 0; i < _abilitySOList.Length; i++)
 			{
-				abilities[i] = AbilityFactory.CreateInstance(_abilities[i].GetType(), _abilities[i]);
+				if (_abilitySOList[i] != null)
+				{
+					abilities[i] = _abilitySOList[i].GetRuntimeAbility();
+				}
 			}
+
+			for (int i = 0; i < _abilities.Length; i++)
+			{
+				if (_abilities[i] != null)
+				{
+					abilities[i] = AbilityFactory.CreateInstance(_abilities[i].GetType(), _abilities[i]);
+				}
+			}
+
+			return abilities;
 		}
 
-		return abilities;
-	}
 
-
-	public void ValidateAbilities()
-	{
-		if (_abilities == null)
+		public void ValidateAbilities()
 		{
-			return;
-		}
+			if (_abilities == null)
+			{
+				return;
+			}
 
-		for (int i = 0; i < _abilities.Length; i++)
-		{
-			AbilityFactory.ValidateAbility(ref _abilities[i]);
+			for (int i = 0; i < _abilities.Length; i++)
+			{
+				AbilityFactory.ValidateAbility(ref _abilities[i]);
+			}
 		}
 	}
 }

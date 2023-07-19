@@ -8,7 +8,7 @@ public class AbilityItem
 
 	public int ItemID;
 
-	public Ability[] Abilities;
+	public LegacyAbility.Ability[] Abilities;
 
 	public ItemSO ItemSO;
 

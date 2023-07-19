@@ -2,7 +2,7 @@ using FishNet.Object;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using AbilityActor = AbilitySystem.AbilityActor;
+using AbilityActor = LegacyAbility.AbilityActor;
 
 public class DestructibleManager : NetworkBehaviour
 {

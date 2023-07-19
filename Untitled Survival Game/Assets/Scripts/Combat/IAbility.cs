@@ -2,6 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// This was used solely to test a custom inspector/editor solution to dealing with polymorphic classes and interfaces
+// in the inspector with dropdown options for creating and converting instances. This is a viable approach if the
+// system is large enough to really benefit given the amount of upfront time it takes to create and maintain the custom editor
+// You also lose the drag and drop functionality that prefabs/scriptable objects provide and overall seems less reliable
 
 public interface IAbility
 {

@@ -2,7 +2,8 @@ using FishNet.Object;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using AbilityActor = AbilitySystem.AbilityActor;
+using AbilityActor = LegacyAbility.AbilityActor;
+using Combatant = LegacyAbility.Combatant;
 
 public class Agent : NetworkBehaviour
 {

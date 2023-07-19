@@ -2,21 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-[CreateAssetMenu(menuName = "ScriptableObjects/AbilitySetSO")]
-public class AbilitySetSO : ScriptableObject
+namespace LegacyAbility
 {
-	[SerializeField]
-	private AbilitySet _abilitySet;
-
-
-	public Ability[] GetRuntimeAbilities()
+	[CreateAssetMenu(menuName = "ScriptableObjects/AbilitySetSO")]
+	public class AbilitySetSO : ScriptableObject
 	{
-		return _abilitySet.GetRuntimeAbilities();
-	}
+		[SerializeField]
+		private AbilitySet _abilitySet;
 
-	private void OnValidate()
-	{
-		_abilitySet.ValidateAbilities();
+
+		public Ability[] GetRuntimeAbilities()
+		{
+			return _abilitySet.GetRuntimeAbilities();
+		}
+
+		private void OnValidate()
+		{
+			_abilitySet.ValidateAbilities();
+		}
 	}
 }

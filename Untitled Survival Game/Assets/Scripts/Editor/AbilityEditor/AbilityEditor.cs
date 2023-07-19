@@ -1,7 +1,7 @@
 using UnityEditor;
 
 
-[CustomEditor(typeof(Ability))]
+[CustomEditor(typeof(LegacyAbility.Ability))]
 public class AbilityEditor : Editor
 {
 	#region SerializedProperty

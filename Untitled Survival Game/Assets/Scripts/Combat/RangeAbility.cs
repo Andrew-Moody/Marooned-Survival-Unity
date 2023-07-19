@@ -2,7 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RangeAbility : Ability
+namespace LegacyAbility
 {
-	
+	public class RangeAbility : Ability
+	{
+
+	}
 }

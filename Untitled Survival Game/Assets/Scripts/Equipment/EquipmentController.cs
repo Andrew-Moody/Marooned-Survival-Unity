@@ -5,6 +5,8 @@ using UnityEngine;
 using FishNet.Object;
 using FishNet.Object.Synchronizing;
 
+using LegacyAbility;
+
 public class EquipmentController : NetworkBehaviour
 {
 	[SerializeField]

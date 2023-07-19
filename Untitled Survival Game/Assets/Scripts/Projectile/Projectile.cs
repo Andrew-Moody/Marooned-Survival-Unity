@@ -2,6 +2,7 @@ using FishNet.Object;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using LegacyAbility;
 using AbilityActor = AbilitySystem.AbilityActor;
 
 
@@ -18,6 +19,9 @@ public class Projectile : ProjectileBase
 
 	[SerializeField]
 	private AbilityActor _abilityActor;
+
+	[SerializeField]
+	private LegacyAbility.AbilityActor _legacyActor;
 
 	[SerializeField]
 	private float _lifeTime;
@@ -41,6 +45,7 @@ public class Projectile : ProjectileBase
 		if (_abilitySO != null)
 		{
 			_ability = _abilitySO.GetRuntimeAbility();
+
 		}
 	}
 
@@ -166,7 +171,16 @@ public class Projectile : ProjectileBase
 	[ObserversRpc(RunLocally = true)]
 	private void UseAbilityORPC(AbilityActor target, EffectTiming timing)
 	{
-		_ability.UseAbility(_abilityActor, null, target, timing, IsServer);
+		if (target == null)
+		{
+			_ability.UseAbility(_legacyActor, null, null, timing, IsServer);
+		}
+		else
+		{
+			LegacyAbility.AbilityActor targetActor = target.gameObject.GetComponent<LegacyAbility.AbilityActor>();
+
+			_ability.UseAbility(_legacyActor, null, targetActor, timing, IsServer);
+		}
 	}
 
 

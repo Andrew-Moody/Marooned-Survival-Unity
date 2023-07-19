@@ -9,10 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59f74583617b56b48978de0e3148f35c, type: 3}
-  m_Name: ParticleCue
+  m_Script: {fileID: 11500000, guid: 7f61c8f560f73c941ab0a834e0320f57, type: 3}
+  m_Name: BasicTargeter
   m_EditorClassIdentifier: 
-  _tag: 1
-  _addToGlobalSet: 0
-  _particlePF: {fileID: 5856641632776669729, guid: 0182a489c51430a4981265b8c91c6c56, type: 3}
-  _attachToOwner: 1

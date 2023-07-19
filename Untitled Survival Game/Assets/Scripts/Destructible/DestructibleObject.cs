@@ -2,6 +2,7 @@ using FishNet.Object;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using LegacyAbility;
 using AbilityActor = AbilitySystem.AbilityActor;
 
 public class DestructibleObject : NetworkBehaviour
@@ -60,8 +61,6 @@ public class DestructibleObject : NetworkBehaviour
 
 		_itemToSpawn = destructibleSO.ItemID;
 
-		_abilityActor.Initialize(destructibleSO);
-
 
 		if (destructibleSO.GraphicPrefab != null)
 		{
@@ -92,6 +91,8 @@ public class DestructibleObject : NetworkBehaviour
 		{
 			_abilityActor.AddCueOverrides(_destructibleSO.CueOverrides);
 		}
+
+		_abilityActor.AddTraits(_destructibleSO.RequiredTraits, _destructibleSO.BlockingTraits);
 	}
 
 
@@ -139,6 +140,10 @@ public class DestructibleObject : NetworkBehaviour
 	}
 
 
+	// Needs to integrate AbilitySystem
+	// (and do away with depending on syncvars for timing sensitive tasks)
+	// Could just fire off cues for particles on death but may want to implement death as an ability
+	// after async tasks are implemented
 	private void OnDeathStart()
 	{
 		Debug.Log("OnDeathStart " + TimeManager.Tick);
@@ -161,7 +166,7 @@ public class DestructibleObject : NetworkBehaviour
 
 		_abilityActor.IsAlive = false;
 
-		_abilityActor.PlayParticles("DEATH");
+		//_abilityActor.PlayParticles("DEATH");
 
 		_graphicObject.SetActive(false);
 

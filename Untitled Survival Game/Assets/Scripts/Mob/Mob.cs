@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using AbilityActor = AbilitySystem.AbilityActor;
+using LegacyAbility;
 
 public class Mob : NetworkBehaviour
 {

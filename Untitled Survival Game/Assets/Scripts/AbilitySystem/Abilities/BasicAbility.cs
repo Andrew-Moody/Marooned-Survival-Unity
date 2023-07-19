@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace AbilitySystem
 {
-	[CreateAssetMenu(menuName = "AbilitySystem/BasicAbility")]
+	[CreateAssetMenu(fileName = "NewBasicAbility", menuName = "AbilitySystem/Ability/BasicAbility")]
 	public class BasicAbility : Ability
 	{
 		[SerializeField]

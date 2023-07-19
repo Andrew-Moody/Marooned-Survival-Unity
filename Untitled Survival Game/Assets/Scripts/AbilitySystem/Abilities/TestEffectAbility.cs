@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace AbilitySystem
 {
-	[CreateAssetMenu(menuName = "AbilitySystem/TestEffectAbility")]
+	[CreateAssetMenu(fileName = "NewTestEffectAbility", menuName = "AbilitySystem/Ability/TestEffectAbility")]
 	public class TestEffectAbility : Ability
 	{
 		[SerializeField]

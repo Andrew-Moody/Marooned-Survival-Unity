@@ -5,12 +5,15 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using AbilityActor = AbilitySystem.AbilityActor;
 
+
 public class CombatInput : NetworkBehaviour
 {
 	[SerializeField]
-	private Combatant _combatant;
+	private LegacyAbility.Combatant _combatant;
 
 	private AbilityActor _abilityActor;
+
+	private LegacyAbility.AbilityActor _legacyActor;
 
 	[SerializeField]
 	private float _interactRange;
@@ -28,6 +31,8 @@ public class CombatInput : NetworkBehaviour
 		base.OnStartNetwork();
 
 		_abilityActor = _combatant.gameObject.GetComponent<AbilityActor>();
+
+		_legacyActor = _combatant.gameObject.GetComponent<LegacyAbility.AbilityActor>();
 
 		_combatant.Initialize();
 	}
@@ -104,7 +109,7 @@ public class CombatInput : NetworkBehaviour
 	{
 		//Debug.Log("Attack index: " + attackIdx);
 
-		Ability attack = _combatant.GetAbility(attackIdx);
+		LegacyAbility.Ability attack = _combatant.GetAbility(attackIdx);
 
 		if (attack == null)
 		{
@@ -112,7 +117,7 @@ public class CombatInput : NetworkBehaviour
 			return;
 		}
 
-		if (attack.Useable(IsServer, _abilityActor))
+		if (attack.Useable(IsServer, _legacyActor))
 		{
 			_combatant.UseAbility(attackIdx);
 		}

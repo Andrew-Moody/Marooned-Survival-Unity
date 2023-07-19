@@ -342,7 +342,7 @@ public class Inventory : NetworkBehaviour
 
 
 	[Server]
-	public void UseItem(AbilitySystem.AbilityActor user, AbilityItem abilityItem)
+	public void UseItem(LegacyAbility.AbilityActor user, AbilityItem abilityItem)
 	{
 		if (_items[_hotbarSelection].ItemID != abilityItem.ItemID)
 		{

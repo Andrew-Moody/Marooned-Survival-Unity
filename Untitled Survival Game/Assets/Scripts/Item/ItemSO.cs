@@ -41,7 +41,7 @@ public class ItemSO : ScriptableObject
 	public UseItemSO UseItemSO => _useItemSO;
 
 	[SerializeField]
-	private AbilitySet _abilitySet;
+	private LegacyAbility.AbilitySet _abilitySet;
 
 
 	public AbilityItem GetAbilityItem()
@@ -50,7 +50,7 @@ public class ItemSO : ScriptableObject
 	}
 
 
-	public Ability[] GetRuntimeAbilities()
+	public LegacyAbility.Ability[] GetRuntimeAbilities()
 	{
 		return _abilitySet.GetRuntimeAbilities();
 	}

@@ -3,7 +3,7 @@ using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
-[CustomPropertyDrawer(typeof(Effect))]
+[CustomPropertyDrawer(typeof(LegacyAbility.Effect))]
 public class EffectDrawer : PropertyDrawer
 {
 	private const float PADDING = 2f;

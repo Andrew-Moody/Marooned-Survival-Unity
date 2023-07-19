@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using Combatant = LegacyAbility.Combatant;
+
 public class GamePlay : NetworkBehaviour
 {
 	public static GamePlay Instance;

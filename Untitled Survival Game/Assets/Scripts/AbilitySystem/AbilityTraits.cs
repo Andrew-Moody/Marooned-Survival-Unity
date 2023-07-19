@@ -1,72 +1,81 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
-public class AbilityTraits
+namespace AbilitySystem
 {
-	[SerializeField]
-	private AbilityTrait[] _traits;
-
-	// Match functions are O(m x n) which may warrant a dictionary implementation
-	// if the number of traits becomes large enough to impact performance
-
-	public bool ContainsTrait(AbilityTrait trait)
+	[System.Serializable]
+	public class AbilityTraits
 	{
-		foreach (AbilityTrait traitToCheck in _traits)
+		[SerializeField]
+		private List<AbilityTrait> _traits;
+
+		// Match functions are O(m x n) which may warrant a dictionary implementation
+		// if the number of traits becomes large enough to impact performance
+
+		public bool ContainsTrait(AbilityTrait trait)
 		{
-			if (trait == traitToCheck)
+			foreach (AbilityTrait traitToCheck in _traits)
 			{
-				return true;
+				if (trait == traitToCheck)
+				{
+					return true;
+				}
 			}
+
+			return false;
 		}
 
-		return false;
-	}
 
-
-	public bool MatchAny(AbilityTraits traits)
-	{
-		foreach (AbilityTrait trait in _traits)
+		public bool MatchAny(AbilityTraits traits)
 		{
-			if (traits.ContainsTrait(trait))
+			foreach (AbilityTrait trait in _traits)
 			{
-				return true;
+				if (traits.ContainsTrait(trait))
+				{
+					return true;
+				}
 			}
+
+			return false;
 		}
 
-		return false;
-	}
 
-
-	public bool MatchAll(AbilityTraits traits)
-	{
-		foreach (AbilityTrait trait in _traits)
+		public bool MatchAll(AbilityTraits traits)
 		{
-			if (traits.ContainsTrait(trait))
+			foreach (AbilityTrait trait in _traits)
 			{
-				return false;
+				if (traits.ContainsTrait(trait))
+				{
+					return false;
+				}
 			}
+
+			return true;
 		}
 
-		return true;
+
+		public void AddTraits(AbilityTraits traits)
+		{
+			foreach (AbilityTrait trait in traits._traits)
+			{
+				_traits.Add(trait);
+			}
+		}
 	}
 
+	public enum AbilityTrait
+	{
+		None,
 
-	
-}
+		Damage,
 
-public enum AbilityTrait
-{
-	None,
+		// Damage class
+		Melee,
+		Range,
+		Magic,
 
-	Damage,
-
-	// Damage class
-	Melee,
-	Range,
-	Magic,
-
-	// Tool traits
-	Mining,
-	Logging,
+		// Tool traits
+		Mining,
+		Logging,
+	}
 }

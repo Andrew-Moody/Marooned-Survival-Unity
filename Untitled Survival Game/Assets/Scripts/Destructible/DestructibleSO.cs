@@ -2,6 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using LegacyAbility;
+
+using Cue = AbilitySystem.Cue;
+using AbilityTraits = AbilitySystem.AbilityTraits;
+
 [CreateAssetMenu(menuName = "ScriptableObjects/DestructibleSO")]
 public class DestructibleSO : ScriptableObject
 {
@@ -50,7 +55,14 @@ public class DestructibleSO : ScriptableObject
 	private ParticleEffectData[] _particleEffects;
 	public ParticleEffectData[] ParticleEffects => _particleEffects;
 
-	[SerializeField]
-	private AbilitySystem.Cue[] _cueOverrides;
-	public AbilitySystem.Cue[] CueOverrides => _cueOverrides;
+	
+	
+	public Cue[] CueOverrides => _cueOverrides;
+	[Header("Ability System")] [SerializeField] private Cue[] _cueOverrides;
+
+	public AbilityTraits RequiredTraits => _requiredTraits;
+	[SerializeField] private AbilityTraits _requiredTraits;
+
+	public AbilityTraits BlockingTraits => _blockingTraits;
+	[SerializeField] private AbilityTraits _blockingTraits;
 }

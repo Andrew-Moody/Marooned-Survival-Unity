@@ -257,6 +257,10 @@ MonoBehaviour:
   _inventory: {fileID: 0}
   _projectileSource: {fileID: 8127156894508492046}
   _agent: {fileID: 0}
+  _requiredTraits:
+    _traits: 
+  _blockingTraits:
+    _traits: 
   _startingAbilities: []
 --- !u!114 &4471845960874943677
 MonoBehaviour:
@@ -1367,6 +1371,10 @@ MonoBehaviour:
   _inventory: {fileID: 0}
   _projectileSource: {fileID: 7848577852231253800}
   _agent: {fileID: 0}
+  _requiredTraits:
+    _traits: 
+  _blockingTraits:
+    _traits: 
   _startingAbilities: []
 --- !u!1 &6545347337491629525
 GameObject:
@@ -1863,8 +1871,12 @@ MonoBehaviour:
   _inventory: {fileID: 5271580255148344578}
   _projectileSource: {fileID: 7848577852231253800}
   _agent: {fileID: 0}
+  _requiredTraits:
+    _traits: 
+  _blockingTraits:
+    _traits: 
   _startingAbilities:
-  - {fileID: 11400000, guid: a7e555446dc029845a6651ac7378d4ca, type: 2}
+  - {fileID: 11400000, guid: 61967cc90a269ba419471578b1cd8b57, type: 2}
 --- !u!114 &4914154645436174616
 MonoBehaviour:
   m_ObjectHideFlags: 0
