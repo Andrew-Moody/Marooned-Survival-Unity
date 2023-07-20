@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Actor;
 
 namespace AbilitySystem
 {
@@ -9,6 +10,8 @@ namespace AbilitySystem
 	{
 		public LegacyAbility.StatType StatType => _statType;
 		[SerializeField] private LegacyAbility.StatType _statType;
+
+		[SerializeField] private StatKind _statKind;
 
 		//public ModifierOperation Operation => _operation;
 		[SerializeField] private ModifierOperation _operation;
@@ -20,6 +23,24 @@ namespace AbilitySystem
 		{
 			float value = stats.GetStatValue(_statType);
 
+			value = ApplyModifier(value);
+
+			stats.SetStat(_statType, value);
+		}
+
+
+		public void ApplyModifier(Stats stats)
+		{
+			float value = stats.GetStatValue(_statKind);
+
+			value = ApplyModifier(value);
+
+			stats.SetStatValue(_statKind, value);
+		}
+
+
+		private float ApplyModifier(float value)
+		{
 			switch (_operation)
 			{
 				case ModifierOperation.Add:
@@ -44,9 +65,9 @@ namespace AbilitySystem
 				}
 			}
 
-
-			stats.SetStat(_statType, value);
+			return value;
 		}
+
 
 		public enum ModifierOperation
 		{

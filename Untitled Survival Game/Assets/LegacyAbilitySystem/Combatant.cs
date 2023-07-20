@@ -37,7 +37,7 @@ namespace LegacyAbility
 
 		private Ability _abilityInUse;
 
-		private Stats _stats;
+		private IUIEventPublisher _stats;
 
 		private EquipmentController _equipment;
 
@@ -50,9 +50,12 @@ namespace LegacyAbility
 
 			_abilityActor = GetComponent<AbilityActor>();
 
-			_stats = GetComponent<Stats>();
+			_stats = GetComponent<IUIEventPublisher>();
 
-			_stats.OnStatEmpty += OnStatEmpty;
+			if (_stats != null)
+			{
+				_stats.UIEvent += OnStatChange;
+			}
 
 			_equipment = GetComponent<EquipmentController>();
 		}
@@ -389,11 +392,14 @@ namespace LegacyAbility
 		#region OnDeath
 
 
-		private void OnStatEmpty(StatType statType)
+		private void OnStatChange(UIEventData data)
 		{
-			if (statType == StatType.Health)
+			if (data.TagString == "Health" && data is UIFloatChangeEventData statData)
 			{
-				OnDeathStart();
+				if (statData.Value == statData.MinValue)
+				{
+					OnDeathStart();
+				}
 			}
 		}
 

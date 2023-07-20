@@ -7,7 +7,7 @@ using AbilityActor = AbilitySystem.AbilityActor;
 
 public class DestructibleObject : NetworkBehaviour
 {
-	private Stats _stats;
+	private IUIEventPublisher _stats;
 
 	private AbilityActor _abilityActor;
 
@@ -102,9 +102,15 @@ public class DestructibleObject : NetworkBehaviour
 
 		_abilityActor = GetComponent<AbilityActor>();
 
-		_stats = GetComponent<Stats>();
+		// Don't really want to rely on UI events to tell when a stat has changed
+		// but most behaviour involving stats and death will be moved soon regardless
+		_stats = GetComponent<IUIEventPublisher>();
 
-		_stats.OnStatEmpty += OnStatEmpty;
+		if (_stats != null)
+		{
+			_stats.UIEvent += OnStatChange;
+		}
+
 
 		if (IsServer)
 		{
@@ -127,15 +133,18 @@ public class DestructibleObject : NetworkBehaviour
 	{
 		if (_stats != null)
 		{
-			_stats.OnStatEmpty -= OnStatEmpty;
+			_stats.UIEvent -= OnStatChange;
 		}
 	}
 
-	private void OnStatEmpty(StatType statType)
+	private void OnStatChange(UIEventData data)
 	{
-		if (statType == StatType.Health)
+		if (data.TagString == "Health" && data is UIFloatChangeEventData statData)
 		{
-			OnDeathStart();
+			if (statData.Value == statData.MinValue)
+			{
+				OnDeathStart();
+			}
 		}
 	}
 

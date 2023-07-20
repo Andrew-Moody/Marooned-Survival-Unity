@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace LegacyAbility
 {
-	public class Stats : NetworkBehaviour
+	public class Stats : NetworkBehaviour, IUIEventPublisher
 	{
 		[SerializeField]
 		private List<StatValue> _statInitialValues;
@@ -24,6 +24,10 @@ namespace LegacyAbility
 		/// Notify Listeners when a stat reaches zero, typically health
 		/// </summary>
 		public event Action<StatType> OnStatEmpty;
+
+
+		// Decouple UI from specific stat implementation
+		public event Action<UIEventData> UIEvent;
 
 
 		// The nice thing about syncvars is that they can collect changes and send periodically instead of every tick.
@@ -193,15 +197,7 @@ namespace LegacyAbility
 					OnStatEmpty?.Invoke(statType);
 				}
 
-				if (!_statMaxValues.TryGetValue(statType, out float maxValue))
-				{
-					Debug.Log("Failed to get MaxValue: " + asServer);
-				}
-
-				StatData statData = new StatData(statType, statValue, maxValue);
-
-				OnStatChange?.Invoke(statData, false);
-
+				NotifyStatChange(statType, statValue, _statMaxValues[statType]);
 			}
 		}
 
@@ -212,10 +208,27 @@ namespace LegacyAbility
 			// Needed to update late joiners of the current values
 			foreach (var item in _statValues)
 			{
-				StatData statData = new StatData(item.Key, item.Value, _statMaxValues[item.Key]);
-
-				OnStatChange?.Invoke(statData, true);
+				NotifyStatChange(item.Key, item.Value, _statMaxValues[item.Key]);
 			}
+		}
+
+
+		private void NotifyStatChange(StatType type, float value, float max)
+		{
+			StatData statData = new StatData(type, value, max);
+
+			OnStatChange?.Invoke(statData, true);
+
+
+			UIEventData eventData = new UIFloatChangeEventData()
+			{
+				TagString = type.ToString(),
+				Value = value,
+				MinValue = 0f,
+				MaxValue = max
+			};
+
+			UIEvent?.Invoke(eventData);
 		}
 	}
 

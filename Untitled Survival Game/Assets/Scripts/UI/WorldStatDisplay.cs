@@ -2,12 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using LegacyAbility;
 
 public class WorldStatDisplay : MonoBehaviour
 {
-	[SerializeField]
-	private Stats _stats;
+	[SerializeField][Tooltip("Must implement IUIEventPublisher")]
+	private GameObject _targetObject;
 
 	[SerializeField]
 	private List<StatBar> _statBars;
@@ -33,7 +32,9 @@ public class WorldStatDisplay : MonoBehaviour
 	[SerializeField]
 	private float _farAngle;
 
-	private readonly Dictionary<StatType, StatBar> _statBarDict = new Dictionary<StatType, StatBar>();
+	private IUIEventPublisher _target;
+
+	private readonly Dictionary<string, StatBar> _statBarDict = new Dictionary<string, StatBar>();
 
 
 	public void Show(bool show)
@@ -50,10 +51,23 @@ public class WorldStatDisplay : MonoBehaviour
 	{
 		for (int i = 0; i < _statBars.Count; i++)
 		{
-			_statBarDict.Add(_statBars[i].StatType, _statBars[i]);
+			_statBarDict.Add(_statBars[i].StatName, _statBars[i]);
 		}
 
-		_stats.OnStatChange += StatChangeHandler;
+
+		if (_targetObject != null)
+		{
+			_target = _targetObject.gameObject.GetComponent<IUIEventPublisher>();
+		}
+
+		if (_target != null)
+		{
+			_target.UIEvent += StatChangeHandler;
+		}
+		else
+		{
+			Debug.LogWarning("WorldStatDisplay failed to find component that implements IUIEventPublisher");
+		}
 
 		foreach (StatBar stat in _statBars)
 		{
@@ -73,19 +87,18 @@ public class WorldStatDisplay : MonoBehaviour
 
 	private void OnDestroy()
 	{
-		if (_stats != null)
+		if (_target != null)
 		{
-			_stats.OnStatChange -= StatChangeHandler;
+			_target.UIEvent -= StatChangeHandler;
 		}
-		
 	}
 
 
-	private void StatChangeHandler(StatData statData, bool immediate)
+	private void StatChangeHandler(UIEventData data)
 	{
-		if (_statBarDict.ContainsKey(statData.StatType))
+		if (_statBarDict.TryGetValue(data.TagString, out StatBar statBar))
 		{
-			_statBarDict[statData.StatType].StatChangeHandler(statData, immediate);
+			statBar.StatChangeHandler(data);
 		}
 	}
 
@@ -114,9 +127,19 @@ public class WorldStatDisplay : MonoBehaviour
 				stat.SetAlpha(alpha);
 			}
 		}
-
-		
 	}
 
 
+	private void OnValidate()
+	{
+		if (_targetObject != null)
+		{
+			if (_targetObject.GetComponent<IUIEventPublisher>() == null)
+			{
+				_targetObject = null;
+
+				Debug.LogError("TargetObject must implement IUIEventPublisher");
+			}
+		}
+	}
 }

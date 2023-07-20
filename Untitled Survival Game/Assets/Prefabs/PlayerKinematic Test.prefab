@@ -240,27 +240,19 @@ MonoBehaviour:
   _addedNetworkObject: {fileID: 8748319289121584179}
   _networkObjectCache: {fileID: 8748319289121584179}
   _stats: {fileID: 0}
-  _toolType: 0
-  _toolPower: 0
   _animator: {fileID: 0}
-  _animatorOverride: {fileID: 0}
   _audioSource: {fileID: 0}
-  _particleHandler: {fileID: 0}
   _attachPoints: {fileID: 0}
   _transformAnimator: {fileID: 0}
   _parentActor: {fileID: 6031285179409189235}
   _viewTransform: {fileID: 0}
-  _viewRange: 0
-  _viewMask:
-    serializedVersion: 2
-    m_Bits: 0
   _inventory: {fileID: 0}
   _projectileSource: {fileID: 8127156894508492046}
   _agent: {fileID: 0}
   _requiredTraits:
-    _traits: 
+    _traits: []
   _blockingTraits:
-    _traits: 
+    _traits: []
   _startingAbilities: []
 --- !u!114 &4471845960874943677
 MonoBehaviour:
@@ -459,7 +451,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01c1662d979d0c648ad57938cf39fd19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _stats: {fileID: 4914154645436174616}
+  _targetObject: {fileID: 6627521212544344237}
   _statBars:
   - {fileID: 6259474477385298343}
   - {fileID: 4288388281675646303}
@@ -520,7 +512,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b887be6d71ce7144ab28e4188d29c18b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _statType: 2
+  _statName: MagicEnergy
   _statFill: {fileID: 7447312880946038258}
   _statBackground: {fileID: 8742766387470839680}
 --- !u!114 &5049083738702227270
@@ -1354,27 +1346,19 @@ MonoBehaviour:
   _addedNetworkObject: {fileID: 8748319289121584179}
   _networkObjectCache: {fileID: 8748319289121584179}
   _stats: {fileID: 0}
-  _toolType: 0
-  _toolPower: 0
   _animator: {fileID: 0}
-  _animatorOverride: {fileID: 0}
   _audioSource: {fileID: 0}
-  _particleHandler: {fileID: 0}
   _attachPoints: {fileID: 0}
   _transformAnimator: {fileID: 0}
   _parentActor: {fileID: 6031285179409189235}
   _viewTransform: {fileID: 0}
-  _viewRange: 0
-  _viewMask:
-    serializedVersion: 2
-    m_Bits: 0
   _inventory: {fileID: 0}
   _projectileSource: {fileID: 7848577852231253800}
   _agent: {fileID: 0}
   _requiredTraits:
-    _traits: 
+    _traits: []
   _blockingTraits:
-    _traits: 
+    _traits: []
   _startingAbilities: []
 --- !u!1 &6545347337491629525
 GameObject:
@@ -1525,7 +1509,7 @@ GameObject:
   - component: {fileID: 2746929826052401511}
   - component: {fileID: 8230062386309937651}
   - component: {fileID: 6031285179409189235}
-  - component: {fileID: 4914154645436174616}
+  - component: {fileID: 1264368023694782322}
   m_Layer: 8
   m_Name: NetworkObject
   m_TagString: Untagged
@@ -1582,7 +1566,7 @@ MonoBehaviour:
   - {fileID: 2746929826052401511}
   - {fileID: 8230062386309937651}
   - {fileID: 6031285179409189235}
-  - {fileID: 4914154645436174616}
+  - {fileID: 1264368023694782322}
   <ParentNetworkObject>k__BackingField: {fileID: 8748319289121584179}
   <ChildNetworkObjects>k__BackingField: []
   _isNetworked: 1
@@ -1817,7 +1801,7 @@ MonoBehaviour:
   _abilitySOList:
   - {fileID: 11400000, guid: 92eb70fa571190b448164297fc04ea42, type: 2}
   _statDisplay: {fileID: 2648384347835160165}
-  _itemActor: {fileID: 8201508245467690289}
+  _itemActor: {fileID: 0}
 --- !u!114 &8230062386309937651
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1853,31 +1837,23 @@ MonoBehaviour:
   _componentIndexCache: 10
   _addedNetworkObject: {fileID: 3319784803144381655}
   _networkObjectCache: {fileID: 3319784803144381655}
-  _stats: {fileID: 4914154645436174616}
-  _toolType: 0
-  _toolPower: 0
+  _stats: {fileID: 1264368023694782322}
   _animator: {fileID: 2320330449311759500}
-  _animatorOverride: {fileID: 0}
   _audioSource: {fileID: 2368233122571443417}
-  _particleHandler: {fileID: 2372126713120818995}
   _attachPoints: {fileID: 4471845960874943677}
   _transformAnimator: {fileID: 0}
   _parentActor: {fileID: 0}
   _viewTransform: {fileID: 1533986958453193848}
-  _viewRange: 4
-  _viewMask:
-    serializedVersion: 2
-    m_Bits: 64
   _inventory: {fileID: 5271580255148344578}
   _projectileSource: {fileID: 7848577852231253800}
   _agent: {fileID: 0}
   _requiredTraits:
-    _traits: 
+    _traits: []
   _blockingTraits:
-    _traits: 
+    _traits: []
   _startingAbilities:
-  - {fileID: 11400000, guid: 61967cc90a269ba419471578b1cd8b57, type: 2}
---- !u!114 &4914154645436174616
+  - {fileID: 11400000, guid: a7e555446dc029845a6651ac7378d4ca, type: 2}
+--- !u!114 &1264368023694782322
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1886,16 +1862,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 6627521212544344237}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4acd5b522a232e3449da0b55d203679a, type: 3}
+  m_Script: {fileID: 11500000, guid: 6bb0dbe57eb116d42af5d281eef26f0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _componentIndexCache: 11
   _addedNetworkObject: {fileID: 3319784803144381655}
   _networkObjectCache: {fileID: 3319784803144381655}
   _statInitialValues:
-  - StatType: 1
+  - StatKind: 0
     Value: 100
-  - StatType: 2
+  - StatKind: 1
     Value: 100
 --- !u!1 &6729147989952191722
 GameObject:
@@ -2219,7 +2195,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b887be6d71ce7144ab28e4188d29c18b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _statType: 1
+  _statName: Health
   _statFill: {fileID: 216899135637542615}
   _statBackground: {fileID: 8887452718822060157}
 --- !u!1 &8481777165395590307

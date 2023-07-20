@@ -1,24 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using LegacyAbility;
 
 public class StatsUI : UIPanel
 {
 	[SerializeField]
 	private List<StatBar> _statBars;
 
-	private Stats _stats;
+	private IUIEventPublisher _target;
 
-	private readonly Dictionary<StatType, StatBar> _statBarDict = new Dictionary<StatType, StatBar>();
+	private readonly Dictionary<string, StatBar> _statBarDict = new Dictionary<string, StatBar>();
 
 
 	public override void Initialize()
 	{
 		foreach(StatBar statBar in _statBars)
 		{
-			_statBarDict.Add(statBar.StatType, statBar);
+			_statBarDict.Add(statBar.StatName, statBar);
 		}
 	}
 
@@ -29,35 +27,34 @@ public class StatsUI : UIPanel
 
 		if (_player != null)
 		{
-			_stats = player.GetComponent<Stats>();
+			_target = player.GetComponent<IUIEventPublisher>();
 
-			if (_stats != null)
+			if (_target != null)
 			{
-				_stats.OnStatChange += StatChangeHandler;
+				_target.UIEvent += StatChangeHandler;
 			}
 			else
 			{
-				Debug.LogWarning("StatsUI Failed to locate target with stats component");
+				Debug.LogWarning("StatsUI Failed to locate component that implements IUIEventPublisher");
 			}
 		}
 	}
 
 
-	// This is not safe
 	private void OnDestroy()
 	{
-		if (_stats != null)
+		if (_target != null)
 		{
-			_stats.OnStatChange -= StatChangeHandler;
+			_target.UIEvent -= StatChangeHandler;
 		}
 	}
 
 
-	private void StatChangeHandler(StatData statData, bool immediate)
+	private void StatChangeHandler(UIEventData data)
 	{
-		if (_statBarDict.ContainsKey(statData.StatType))
+		if (_statBarDict.TryGetValue(data.TagString, out StatBar statBar))
 		{
-			_statBarDict[statData.StatType].StatChangeHandler(statData, immediate);
+			statBar.StatChangeHandler(data);
 		}
 	}
 }

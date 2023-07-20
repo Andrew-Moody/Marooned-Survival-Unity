@@ -16,6 +16,9 @@ MonoBehaviour:
   _duration: 0
   _modifiers:
   - _statType: 1
+    _statTrait:
+      _trait: 7
     _operation: 1
     _magnitude: -20
-  _cues: 01000000
+  _cues: []
+  _traits: []

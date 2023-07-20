@@ -14,7 +14,7 @@ namespace AbilitySystem
 		[SerializeField]
 		private CueDatabase _cueDatabase;
 
-		private Dictionary<AbilityTrait, Cue> _cueMap;
+		private Dictionary<int, Cue> _cueMap;
 
 
 		private void Awake()
@@ -42,7 +42,7 @@ namespace AbilitySystem
 			if (!data.Target.TryHandleCue(trait, eventType, data))
 			{
 				// If not handled by the actor handle it here
-				if (Instance._cueMap.TryGetValue(trait, out Cue cue))
+				if (Instance._cueMap.TryGetValue(trait.GetTraitKey(), out Cue cue))
 				{
 					cue.HandleCue(eventType, data);
 				}

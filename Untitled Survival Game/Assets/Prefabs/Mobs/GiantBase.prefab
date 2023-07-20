@@ -56,8 +56,8 @@ GameObject:
   - component: {fileID: 2578392283353702647}
   - component: {fileID: 2578392283353702544}
   - component: {fileID: 2578392283353702761}
-  - component: {fileID: 2578392283353702603}
   - component: {fileID: 2578392283353702509}
+  - component: {fileID: 5986367087571537020}
   m_Layer: 9
   m_Name: NetworkObject
   m_TagString: Mob
@@ -119,7 +119,7 @@ MonoBehaviour:
   - {fileID: 2578392283353702718}
   - {fileID: 2578392283353702544}
   - {fileID: 2578392283353702761}
-  - {fileID: 2578392283353702603}
+  - {fileID: 5986367087571537020}
   <ParentNetworkObject>k__BackingField: {fileID: 2578392283353702656}
   <ChildNetworkObjects>k__BackingField: []
   _isNetworked: 1
@@ -310,43 +310,21 @@ MonoBehaviour:
   _componentIndexCache: 4
   _addedNetworkObject: {fileID: 2578392283353702552}
   _networkObjectCache: {fileID: 2578392283353702552}
-  _stats: {fileID: 2578392283353702603}
-  _toolType: 0
-  _toolPower: 0
+  _stats: {fileID: 5986367087571537020}
   _animator: {fileID: 0}
-  _animatorOverride: {fileID: 0}
   _audioSource: {fileID: 2578392283353702435}
-  _particleHandler: {fileID: 2578392283353702782}
+  _attachPoints: {fileID: 0}
   _transformAnimator: {fileID: 0}
   _parentActor: {fileID: 0}
   _viewTransform: {fileID: 1292900308787569862}
-  _viewRange: 0
-  _viewMask:
-    serializedVersion: 2
-    m_Bits: 0
   _inventory: {fileID: 0}
   _projectileSource: {fileID: 0}
   _agent: {fileID: 2578392283353702718}
---- !u!114 &2578392283353702603
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2578392283353703508}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4acd5b522a232e3449da0b55d203679a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _componentIndexCache: 5
-  _addedNetworkObject: {fileID: 2578392283353702552}
-  _networkObjectCache: {fileID: 2578392283353702552}
-  _statInitialValues:
-  - StatType: 1
-    Value: 100
-  - StatType: 2
-    Value: 100
+  _requiredTraits:
+    _traits: []
+  _blockingTraits:
+    _traits: []
+  _startingAbilities: []
 --- !u!143 &2578392283353702509
 CharacterController:
   m_ObjectHideFlags: 0
@@ -365,6 +343,26 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 1.8, z: 0}
+--- !u!114 &5986367087571537020
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2578392283353703508}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bb0dbe57eb116d42af5d281eef26f0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _componentIndexCache: 5
+  _addedNetworkObject: {fileID: 2578392283353702552}
+  _networkObjectCache: {fileID: 2578392283353702552}
+  _statInitialValues:
+  - StatKind: 0
+    Value: 100
+  - StatKind: 2
+    Value: 100
 --- !u!1 &2578392283353703598
 GameObject:
   m_ObjectHideFlags: 0
@@ -462,7 +460,7 @@ MonoBehaviour:
   _agent: {fileID: 2578392283353702718}
   _abilityActor: {fileID: 2578392283353702761}
   _combatant: {fileID: 2578392283353702544}
-  _stats: {fileID: 2578392283353702603}
+  _stats: {fileID: 5986367087571537020}
   _statDisplay: {fileID: 2578392283353702487}
 --- !u!1 &2578392283353703637
 GameObject:
@@ -589,7 +587,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b887be6d71ce7144ab28e4188d29c18b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _statType: 1
+  _statName: Health
   _statFill: {fileID: 2578392283353702655}
   _statBackground: {fileID: 2578392283353702687}
 --- !u!1 &2578392283353703724
@@ -769,7 +767,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b887be6d71ce7144ab28e4188d29c18b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _statType: 2
+  _statName: MagicEnergy
   _statFill: {fileID: 2578392283353702681}
   _statBackground: {fileID: 2578392283353702614}
 --- !u!1 &2578392283353703753
@@ -1309,7 +1307,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01c1662d979d0c648ad57938cf39fd19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _stats: {fileID: 2578392283353702603}
+  _targetObject: {fileID: 2578392283353703508}
   _statBars:
   - {fileID: 2578392283353702710}
   - {fileID: 2578392283353702613}

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using LegacyAbility;
+using Actor;
 
 [CreateAssetMenu(menuName = "ScriptableObjects/MobSO")]
 public class MobSO : ScriptableObject
@@ -23,13 +24,8 @@ public class MobSO : ScriptableObject
 	private GameObject _graphicVariantPrefab;
 	public GameObject GraphicVariantPrefab => _graphicVariantPrefab;
 
-	[SerializeField]
-	private List<StatValue> _stats;
-	public List<StatValue> Stats => _stats;
-
-	[SerializeField]
-	private List<AbilitySO> _abilities;
-	public List<AbilitySO> Abilities => _abilities;
+	public List<StatInitialValue> InitialStats => _stats;
+	[SerializeField] private List<StatInitialValue> _stats;
 
 	[SerializeField]
 	private MobAISO _mobAISO;

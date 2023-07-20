@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 416200329961083274}
   - component: {fileID: 416200329961083273}
   - component: {fileID: 416200329961083272}
-  - component: {fileID: 416200329961083279}
   - component: {fileID: 416200329961083278}
+  - component: {fileID: 116272913050607862}
   m_Layer: 9
   m_Name: DestuctiblePrefab
   m_TagString: Mob
@@ -114,32 +114,14 @@ MonoBehaviour:
   <PredictedSpawn>k__BackingField: {fileID: 0}
   _networkBehaviours:
   - {fileID: 416200329961083273}
-  - {fileID: 416200329961083279}
   - {fileID: 416200329961083278}
+  - {fileID: 116272913050607862}
   <ParentNetworkObject>k__BackingField: {fileID: 0}
   <ChildNetworkObjects>k__BackingField: []
   _isNetworked: 1
   _isGlobal: 0
   _initializeOrder: 0
   _defaultDespawnType: 0
---- !u!114 &416200329961083279
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 416200329961083277}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4acd5b522a232e3449da0b55d203679a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _componentIndexCache: 1
-  _addedNetworkObject: {fileID: 416200329961083272}
-  _networkObjectCache: {fileID: 416200329961083272}
-  _statInitialValues:
-  - StatType: 1
-    Value: 100
 --- !u!114 &416200329961083278
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -152,26 +134,42 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f33333c45bbd6244b0e22cd1ad54732, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 2
+  _componentIndexCache: 1
   _addedNetworkObject: {fileID: 416200329961083272}
   _networkObjectCache: {fileID: 416200329961083272}
-  _stats: {fileID: 416200329961083279}
-  _toolType: 1
-  _toolPower: 0
+  _stats: {fileID: 116272913050607862}
   _animator: {fileID: 0}
-  _animatorOverride: {fileID: 0}
   _audioSource: {fileID: 8011901385716394039}
-  _particleHandler: {fileID: 2642624362254022922}
+  _attachPoints: {fileID: 0}
   _transformAnimator: {fileID: 5104136100577217607}
   _parentActor: {fileID: 0}
   _viewTransform: {fileID: 0}
-  _viewRange: 0
-  _viewMask:
-    serializedVersion: 2
-    m_Bits: 0
   _inventory: {fileID: 0}
   _projectileSource: {fileID: 0}
   _agent: {fileID: 0}
+  _requiredTraits:
+    _traits: []
+  _blockingTraits:
+    _traits: []
+  _startingAbilities: []
+--- !u!114 &116272913050607862
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 416200329961083277}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bb0dbe57eb116d42af5d281eef26f0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _componentIndexCache: 2
+  _addedNetworkObject: {fileID: 416200329961083272}
+  _networkObjectCache: {fileID: 416200329961083272}
+  _statInitialValues:
+  - StatKind: 0
+    Value: 100
 --- !u!1 &416200330121673329
 GameObject:
   m_ObjectHideFlags: 0
@@ -221,7 +219,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01c1662d979d0c648ad57938cf39fd19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _stats: {fileID: 416200329961083279}
+  _targetObject: {fileID: 416200329961083277}
   _statBars:
   - {fileID: 7448925181275724520}
   _infoTMP: {fileID: 0}

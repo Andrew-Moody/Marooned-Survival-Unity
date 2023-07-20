@@ -16,7 +16,7 @@ namespace AbilitySystem
 		{
 			foreach (AbilityTrait traitToCheck in _traits)
 			{
-				if (trait == traitToCheck)
+				if (trait.Matches(traitToCheck))
 				{
 					return true;
 				}
@@ -61,21 +61,5 @@ namespace AbilitySystem
 				_traits.Add(trait);
 			}
 		}
-	}
-
-	public enum AbilityTrait
-	{
-		None,
-
-		Damage,
-
-		// Damage class
-		Melee,
-		Range,
-		Magic,
-
-		// Tool traits
-		Mining,
-		Logging,
 	}
 }

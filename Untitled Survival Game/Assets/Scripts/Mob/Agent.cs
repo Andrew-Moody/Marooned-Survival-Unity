@@ -7,7 +7,6 @@ using Combatant = LegacyAbility.Combatant;
 
 public class Agent : NetworkBehaviour
 {
-	
 	public Pathfinding Pathfinding { get { return _pathfinding; } private set { _pathfinding = value; } }
 	[SerializeField] private Pathfinding _pathfinding;
 
@@ -178,13 +177,7 @@ public class Agent : NetworkBehaviour
 
 				_viewTransform.LookAt(targetPos, Vector3.up);
 			}
-
 		}
-
-
-		
-
-		
 	}
 
 

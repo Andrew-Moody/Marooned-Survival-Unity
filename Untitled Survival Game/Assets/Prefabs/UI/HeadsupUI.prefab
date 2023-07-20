@@ -720,6 +720,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6712375481705254614}
     m_Modifications:
+    - target: {fileID: 5169838512495731347, guid: 2723bddff5fdd4f46985b48e6cf141fd, type: 3}
+      propertyPath: _statName
+      value: Magic Energy
+      objectReference: {fileID: 0}
+    - target: {fileID: 6982869482000851144, guid: 2723bddff5fdd4f46985b48e6cf141fd, type: 3}
+      propertyPath: _statName
+      value: Health
+      objectReference: {fileID: 0}
     - target: {fileID: 6982869482101741418, guid: 2723bddff5fdd4f46985b48e6cf141fd, type: 3}
       propertyPath: m_Name
       value: StatsUI

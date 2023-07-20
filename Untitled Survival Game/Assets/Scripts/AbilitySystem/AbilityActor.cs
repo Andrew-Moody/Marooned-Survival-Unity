@@ -2,13 +2,14 @@ using FishNet.Object;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Actor;
 
 namespace AbilitySystem
 {
 	public class AbilityActor : NetworkBehaviour
 	{
 		[SerializeField]
-		private LegacyAbility.Stats _stats;
+		private Stats _stats;
 
 		public Animator Animator => _animator;
 		[SerializeField] private Animator _animator;

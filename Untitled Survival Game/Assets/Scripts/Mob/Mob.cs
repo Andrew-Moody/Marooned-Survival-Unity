@@ -5,7 +5,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using AbilityActor = AbilitySystem.AbilityActor;
-using LegacyAbility;
+using Combatant = LegacyAbility.Combatant;
+
+using Actor;
 
 public class Mob : NetworkBehaviour
 {
@@ -67,19 +69,13 @@ public class Mob : NetworkBehaviour
 
 		_abilityActor.SetProjectileSource(projSource);
 
-		_combatant.Initialize(mobSO.Abilities);
+		//_combatant.Initialize(mobSO.Abilities);
 
-		_combatant.OnDeathEndEvent += OnDeathEndEventHandler;
+		//_combatant.OnDeathEndEvent += OnDeathEndEventHandler;
 
 		_networkAnimator.SetAnimator(animator);
 
-		if (IsServer)
-		{
-			foreach (StatValue stat in mobSO.Stats)
-			{
-				_stats.SetStat(stat.StatType, stat.Value);
-			}
-		}
+		_stats.SetInitialValues(_mobSO.InitialStats);
 	}
 
 

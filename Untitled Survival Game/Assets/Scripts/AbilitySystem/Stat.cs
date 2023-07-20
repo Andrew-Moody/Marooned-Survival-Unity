@@ -2,18 +2,40 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace AbilitySystem
+namespace Actor
 {
-	public class Stat
+	public class ActorStat
 	{
+		public StatKind StatKind => _statKind;
+
 		public float Value => _currentValue;
 
+		public float MinValue => _minValue;
+
+		public float MaxValue => _maxValue;
+
+
+		private StatKind _statKind;
 
 		private float _minValue;
 
 		private float _maxValue;
 
 		private float _currentValue;
+
+
+		public ActorStat() { }
+
+		public ActorStat(ActorStat stat)
+		{
+			_statKind = stat._statKind;
+
+			_currentValue = stat._currentValue;
+
+			_minValue = stat._minValue;
+
+			_maxValue = stat._maxValue;
+		}
 
 
 		/// <summary>
@@ -36,6 +58,18 @@ namespace AbilitySystem
 			_currentValue = Clamp(_currentValue);
 
 			return _currentValue;
+		}
+
+
+		public UIEventData GetUIData()
+		{
+			return new UIFloatChangeEventData()
+			{
+				TagString = _statKind.ToString(),
+				Value = _currentValue,
+				MinValue = _minValue,
+				MaxValue = _maxValue
+			};
 		}
 
 
