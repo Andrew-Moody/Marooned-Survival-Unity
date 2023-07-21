@@ -2,23 +2,20 @@ using FishNet.Object;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using LegacyAbility;
-using AbilityActor = AbilitySystem.AbilityActor;
+using Actors;
 
 public class DestructibleObject : NetworkBehaviour
 {
 	private IUIEventPublisher _stats;
 
-	private AbilityActor _abilityActor;
-
-	[SerializeField]
-	private float _deathTime;
+	[SerializeField] private GameObject _actorObject;
+	private IActor _actor;
 
 	[SerializeField]
 	private GameObject _graphicObject;
 
-	[SerializeField]
-	private ParticleHandler _particleHandler;
+	//[SerializeField]
+	//private ParticleHandler _particleHandler;
 
 	[SerializeField]
 	private WorldStatDisplay _statDisplay;
@@ -33,8 +30,6 @@ public class DestructibleObject : NetworkBehaviour
 	private bool _isDying;
 
 	private float _deathTimeLeft;
-
-	private int _itemToSpawn;
 
 	private DestructibleSO _destructibleSO;
 
@@ -57,10 +52,6 @@ public class DestructibleObject : NetworkBehaviour
 
 		_destructibleSO = destructibleSO;
 
-		_deathTime = destructibleSO.DeathTime;
-
-		_itemToSpawn = destructibleSO.ItemID;
-
 
 		if (destructibleSO.GraphicPrefab != null)
 		{
@@ -82,17 +73,10 @@ public class DestructibleObject : NetworkBehaviour
 			_meshRenderer.sharedMaterial = destructibleSO.Material;
 		}
 
-		if (_destructibleSO.ParticleEffects != null)
-		{
-			_particleHandler.OverrideParticleEffects(_destructibleSO.ParticleEffects);
-		}
-
-		if (_destructibleSO.CueOverrides != null)
-		{
-			_abilityActor.AddCueOverrides(_destructibleSO.CueOverrides);
-		}
-
-		_abilityActor.AddTraits(_destructibleSO.RequiredTraits, _destructibleSO.BlockingTraits);
+		//if (_destructibleSO.ParticleEffects != null)
+		//{
+		//	_particleHandler.OverrideParticleEffects(_destructibleSO.ParticleEffects);
+		//}
 	}
 
 
@@ -100,7 +84,7 @@ public class DestructibleObject : NetworkBehaviour
 	{
 		base.OnStartNetwork();
 
-		_abilityActor = GetComponent<AbilityActor>();
+		//_abilityActor = GetComponent<AbilityActor>();
 
 		// Don't really want to rely on UI events to tell when a stat has changed
 		// but most behaviour involving stats and death will be moved soon regardless
@@ -108,13 +92,16 @@ public class DestructibleObject : NetworkBehaviour
 
 		if (_stats != null)
 		{
-			_stats.UIEvent += OnStatChange;
+			//_stats.UIEvent += Stats_StatChanged;
 		}
+
+		_actor.DeathStarted += Actor_DeathStarted;
+		_actor.DeathFinished += Actor_DeathFinished;
 
 
 		if (IsServer)
 		{
-			TimeManager.OnPostTick += OnTick;
+			//TimeManager.OnPostTick += OnTick;
 		}
 		else
 		{
@@ -129,15 +116,38 @@ public class DestructibleObject : NetworkBehaviour
 	}
 
 
+	private void Actor_DeathStarted(IActor actor, ActorEventData data)
+	{
+		_graphicObject.SetActive(false);
+
+		_statDisplay.Show(false);
+
+		GetComponent<Collider>().enabled = false;
+
+		if (IsServer)
+		{
+			Vector3 spawnPosition = new Vector3(0f, 0.5f, 0f) + transform.position;
+
+			ItemManager.Instance.SpawnWorldItem(_destructibleSO.ItemID, spawnPosition);
+		}
+	}
+
+
 	private void OnDestroy()
 	{
 		if (_stats != null)
 		{
-			_stats.UIEvent -= OnStatChange;
+			//_stats.UIEvent -= Stats_StatChanged;
+		}
+
+		if (_actor != null)
+		{
+			_actor.DeathStarted -= Actor_DeathStarted;
+			_actor.DeathFinished -= Actor_DeathFinished;
 		}
 	}
 
-	private void OnStatChange(UIEventData data)
+	private void Stats_StatChanged(UIEventData data)
 	{
 		if (data.TagString == "Health" && data is UIFloatChangeEventData statData)
 		{
@@ -164,7 +174,7 @@ public class DestructibleObject : NetworkBehaviour
 		// Need some way for the server to know Death effects are finished even though they dont play on the server
 		_isDying = true;
 
-		_deathTimeLeft = _deathTime;
+		//_deathTimeLeft = _destructibleSO.DeathTime;
 
 		// I would really like either a way to know the syncvar send rate or better a callback when syncvars are actually sent
 		// The default sync rate of 0.1 is probably enough
@@ -173,7 +183,7 @@ public class DestructibleObject : NetworkBehaviour
 			_deathTimeLeft = 0.1f;
 		}
 
-		_abilityActor.IsAlive = false;
+		//_abilityActor.IsAlive = false;
 
 		//_abilityActor.PlayParticles("DEATH");
 
@@ -187,17 +197,17 @@ public class DestructibleObject : NetworkBehaviour
 		{
 			Vector3 spawnPosition = new Vector3(0f, 0.5f, 0f) + transform.position;
 
-			ItemManager.Instance.SpawnWorldItem(_itemToSpawn, spawnPosition);
+			ItemManager.Instance.SpawnWorldItem(_destructibleSO.ItemID, spawnPosition);
 		}
 	}
 
 
-	[Server]
-	private void OnDeathFinish()
+	private void Actor_DeathFinished(IActor actor, ActorEventData data)
 	{
-		Debug.Log("OnDeathFinish " + TimeManager.Tick);
-
-		Despawn(gameObject);
+		if (IsServer)
+		{
+			Despawn(gameObject);
+		}
 	}
 
 	private void OnTick()
@@ -220,7 +230,7 @@ public class DestructibleObject : NetworkBehaviour
 
 		if (IsSpawned && !_isAlive)
 		{
-			OnDeathFinish();
+			//OnDeathFinish();
 		}
 
 
@@ -236,4 +246,19 @@ public class DestructibleObject : NetworkBehaviour
 		}
 	}
 
+
+	protected override void OnValidate()
+	{
+		if (_actorObject != null)
+		{
+			_actor = _actorObject.GetComponent<IActor>();
+
+			if (_actor == null)
+			{
+				_actorObject = null;
+
+				Debug.LogWarning("ActorObject must implement IActor");
+			}
+		}
+	}
 }

@@ -2,8 +2,8 @@ using FishNet.Object;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using AbilityActor = LegacyAbility.AbilityActor;
-using Combatant = LegacyAbility.Combatant;
+
+using Actors;
 
 public class Agent : NetworkBehaviour
 {
@@ -13,8 +13,9 @@ public class Agent : NetworkBehaviour
 	public Animator Animator { get { return _animator; } set { _animator = value; } }
 	[SerializeField] private Animator _animator;
 
-	public Combatant Combatant { get { return _combatant; } private set { _combatant = value; } }
-	[SerializeField] private Combatant _combatant;
+	public GameObject ActorObject => _actorObject;
+	[SerializeField] private GameObject _actorObject;
+	private IActor _actor;
 
 	public LayerMask ViewMask { get { return _viewMask; } private set { _viewMask = value; } }
 	[SerializeField] private LayerMask _viewMask;
@@ -37,7 +38,7 @@ public class Agent : NetworkBehaviour
 	private Transform _viewTransform;
 
 
-	public AbilityActor AttackTarget;
+	public GameObject AttackTarget { get; set; }
 
 
 	public float TimeToWait;
@@ -221,6 +222,22 @@ public class Agent : NetworkBehaviour
 		if (_running)
 		{
 			_pathfinding.Tick((float)TimeManager.TickDelta);
+		}
+	}
+
+
+	protected override void OnValidate()
+	{
+		if (_actorObject != null)
+		{
+			_actor = _actorObject.GetComponent<IActor>();
+
+			if (_actor == null)
+			{
+				_actorObject = null;
+
+				Debug.LogWarning("ActorObject must implement IActor");
+			}
 		}
 	}
 }

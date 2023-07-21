@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Actor
+namespace Actors
 {
 	[System.Serializable]
 	public struct StatInitialValue

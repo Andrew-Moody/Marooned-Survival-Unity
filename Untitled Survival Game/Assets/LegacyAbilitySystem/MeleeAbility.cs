@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Scripting.APIUpdating;
-using AbilityActor = AbilitySystem.AbilityActor;
 
 
 namespace LegacyAbility

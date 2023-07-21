@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using Actors;
+
 namespace AbilitySystem
 {
 	[CreateAssetMenu(fileName = "TakeDamageCue", menuName = "AbilitySystem/Cue/TakeDamageCue")]
@@ -19,15 +21,22 @@ namespace AbilitySystem
 		{
 			base.OnExecute(data);
 
-			PlayParticleEffect(data);
+			Actor target = data.Target.Actor;
 
-			PlaySoundEffect(data);
+			if (target == null)
+			{
+				return;
+			}
 
-			PlayTransformAnimation(data);
+			PlayParticleEffect(target, data);
+
+			PlaySoundEffect(target, data);
+
+			PlayTransformAnimation(target, data);
 		}
 
 
-		private void PlayParticleEffect(CueEventData data)
+		private void PlayParticleEffect(Actor target, CueEventData data)
 		{
 			if (_particlePF == null)
 			{
@@ -43,9 +52,9 @@ namespace AbilitySystem
 
 			if (_attachToOwner)
 			{
-				if (data.Target.AttachPoints != null)
+				if (target.AttachPoints != null)
 				{
-					parent = data.Target.AttachPoints.FindAttachPoint(_attachPoint);
+					parent = target.AttachPoints.FindAttachPoint(_attachPoint);
 				}
 
 				if (parent == null)
@@ -76,9 +85,9 @@ namespace AbilitySystem
 		}
 
 
-		private void PlaySoundEffect(CueEventData data)
+		private void PlaySoundEffect(Actor target, CueEventData data)
 		{
-			AudioSource audioSource = data.Target.AudioSource;
+			AudioSource audioSource = target.AudioSource;
 
 			if (audioSource != null)
 			{
@@ -87,9 +96,9 @@ namespace AbilitySystem
 		}
 
 
-		private void PlayTransformAnimation(CueEventData data)
+		private void PlayTransformAnimation(Actor target, CueEventData data)
 		{
-			TransformAnimator transformAnimator = data.Target.TransformAnimator;
+			TransformAnimator transformAnimator = target.TransformAnimator;
 
 			if (transformAnimator != null)
 			{

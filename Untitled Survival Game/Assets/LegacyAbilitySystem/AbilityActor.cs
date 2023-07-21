@@ -89,24 +89,6 @@ namespace LegacyAbility
 			base.OnStartClient();
 		}
 
-		public void Initialize(Animator animator)
-		{
-			_animator = animator;
-
-			if (_animatorOverride != null)
-			{
-				_animator.runtimeAnimatorController = _animatorOverride;
-			}
-		}
-
-
-		public void Initialize(DestructibleSO destructibleSO)
-		{
-			_toolType = destructibleSO.ToolType;
-
-			_toolPower = destructibleSO.ToolPower;
-		}
-
 
 		public void SetAbilityItem(AbilityItem abilityItem)
 		{

@@ -10,7 +10,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-using Combatant = LegacyAbility.Combatant;
+using Actors;
 
 public class GameManager : MonoBehaviour
 {
@@ -276,9 +276,9 @@ public class GameManager : MonoBehaviour
 
 		PlayerInput.SetFPSMode(true);
 
-		if (player.TryGetComponent(out Combatant combatant))
+		if (player.TryGetComponent(out IActor actor))
 		{
-			combatant.OnDeathStartEvent += PlayerDeathHandler;
+			actor.DeathStarted += PlayerDeathStarted;
 		}
 	}
 
@@ -422,7 +422,7 @@ public class GameManager : MonoBehaviour
 	}
 
 
-	private void PlayerDeathHandler()
+	private void PlayerDeathStarted(IActor playerActor, ActorEventData data)
 	{
 		PlayerInput.SetFPSMode(false);
 

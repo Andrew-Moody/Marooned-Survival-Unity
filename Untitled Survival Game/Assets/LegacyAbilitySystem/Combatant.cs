@@ -4,15 +4,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using AbilityActor = AbilitySystem.AbilityActor;
+using Actors;
 
 namespace LegacyAbility
 {
-	public class Combatant : NetworkBehaviour
+	public class Combatant : NetworkBehaviour, IActor
 	{
-		public event Action OnDeathStartEvent;
+		public event ActorEventHandler DeathStarted;
 
-		public event Action OnDeathEndEvent;
+		public event ActorEventHandler DeathFinished;
 
 		public Transform FollowTarget;
 
@@ -20,6 +20,7 @@ namespace LegacyAbility
 		private LayerMask _attackMask;
 		public LayerMask AttackMask { get { return _attackMask; } }
 
+		
 		[SerializeField]
 		private List<AbilitySO> _abilitySOList;
 
@@ -54,7 +55,7 @@ namespace LegacyAbility
 
 			if (_stats != null)
 			{
-				_stats.UIEvent += OnStatChange;
+				_stats.UIEvent += Stats_StatChanged;
 			}
 
 			_equipment = GetComponent<EquipmentController>();
@@ -392,7 +393,7 @@ namespace LegacyAbility
 		#region OnDeath
 
 
-		private void OnStatChange(UIEventData data)
+		private void Stats_StatChanged(UIEventData data)
 		{
 			if (data.TagString == "Health" && data is UIFloatChangeEventData statData)
 			{
@@ -424,7 +425,7 @@ namespace LegacyAbility
 				}
 			}
 
-			OnDeathStartEvent?.Invoke();
+			DeathStarted?.Invoke(this, new ActorEventData());
 		}
 
 
@@ -432,7 +433,7 @@ namespace LegacyAbility
 		{
 			Debug.LogError("OnDeathEnd");
 
-			OnDeathEndEvent?.Invoke();
+			DeathFinished?.Invoke(this, new ActorEventData());
 
 			if (IsServer)
 			{

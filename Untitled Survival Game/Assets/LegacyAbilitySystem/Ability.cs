@@ -48,8 +48,6 @@ namespace LegacyAbility
 
 		private float _coolDownRemaining = 0f;
 
-		private Dictionary<string, float> _namedValueDict;
-
 		private const float _coolDownThreshold = 0.001f;
 
 

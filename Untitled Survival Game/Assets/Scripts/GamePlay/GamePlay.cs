@@ -3,8 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-using Combatant = LegacyAbility.Combatant;
-
 public class GamePlay : NetworkBehaviour
 {
 	public static GamePlay Instance;
@@ -103,11 +101,11 @@ public class GamePlay : NetworkBehaviour
 	{
 		Mob demon = MobManager.SpawnMob("Demon", _ritualAltar.transform.position, Quaternion.identity);
 
-		demon.GetComponentInChildren<Combatant>().OnDeathEndEvent += OnDemonKilled;
+		demon.GetComponentInChildren<Mob>().MobDied += OnDemonKilled;
 	}
 
 
-	private void OnDemonKilled()
+	private void OnDemonKilled(Mob mob)
 	{
 		ShowWinScreenORPC();
 	}

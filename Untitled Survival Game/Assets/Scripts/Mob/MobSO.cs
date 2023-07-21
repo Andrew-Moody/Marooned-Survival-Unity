@@ -1,8 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using LegacyAbility;
-using Actor;
+using Actors;
 
 [CreateAssetMenu(menuName = "ScriptableObjects/MobSO")]
 public class MobSO : ScriptableObject
@@ -43,17 +42,4 @@ public class MobSO : ScriptableObject
 
 		return mob;
 	}
-
-
-#if UNITY_EDITOR
-	// This could be used to open a custom editor window when double clicking the asset
-	// But cant be left in the build as it is editor only
-	[UnityEditor.Callbacks.OnOpenAssetAttribute]
-	public static bool Test(int instanceID, int line)
-	{
-		//Debug.Log("Test " + instanceID + " " + line);
-
-		return false;
-	}
-#endif
 }

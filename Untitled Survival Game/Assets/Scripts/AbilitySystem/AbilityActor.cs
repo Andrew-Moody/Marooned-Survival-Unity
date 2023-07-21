@@ -2,27 +2,16 @@ using FishNet.Object;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Actor;
+using Actors;
 
 namespace AbilitySystem
 {
 	public class AbilityActor : NetworkBehaviour
 	{
-		[SerializeField]
-		private Stats _stats;
+		[SerializeField] private Stats _stats;
 
-		public Animator Animator => _animator;
-		[SerializeField] private Animator _animator;
-
-		public AudioSource AudioSource => _audioSource;
-		[SerializeField] private AudioSource _audioSource;
-		
-		public AttachPoints AttachPoints => _attachPoints;
-		[SerializeField] private AttachPoints _attachPoints;
-
-		[SerializeField]
-		private TransformAnimator _transformAnimator;
-		public TransformAnimator TransformAnimator => _transformAnimator;
+		public Actor Actor { get; set; }
+		[SerializeField] private Actor _actor;
 
 		[Header("Optional")]
 
@@ -33,73 +22,13 @@ namespace AbilitySystem
 		private Transform _viewTransform;
 		public Transform ViewTransform { get { return _viewTransform; } }
 
-
-		[SerializeField]
-		private Inventory _inventory;
-		public Inventory Inventory { get { return _inventory; } }
-
-		[SerializeField]
-		private Transform _projectileSource;
-
-		[SerializeField]
-		private Agent _agent;
-
-		private AbilityItem _abilityItem;
-		public AbilityItem AbilityItem { get { return _abilityItem; } }
-
-		private ProjectileBase _projectile;
-
-
-		private bool _isAlive;
-		public bool IsAlive { get { return _isAlive; } set { _isAlive = value; } }
-
 		
 		public override void OnStartNetwork()
 		{
 			base.OnStartNetwork();
 
-			_isAlive = true;
-
 			SetupStartingAbilities();
-		}
-
-		public override void OnStartClient()
-		{
-			base.OnStartClient();
-		}
-
-		public void Initialize(Animator animator)
-		{
-			_animator = animator;
-		}
-
-
-		public void SetAbilityItem(AbilityItem abilityItem)
-		{
-			_abilityItem = abilityItem;
-
-			if (abilityItem == null)
-			{
-				_projectileSource.localPosition = Vector3.zero;
-				//_projectileSource.localRotation = Quaternion.identity;
-			}
-			else
-			{
-				_projectileSource.localPosition = abilityItem.ItemSO.ProjectileSource;
-			}
-		}
-
-
-		public void SetProjectileSource(ProjectileSource projectileSource)
-		{
-			if (projectileSource != null)
-			{
-				_projectileSource = projectileSource.Target;
-			}
-			else
-			{
-				_projectileSource = transform;
-			}
+			SetupCueOverrides();
 		}
 
 
@@ -123,7 +52,9 @@ namespace AbilitySystem
 
 		private List<EffectHandle> _activeEffects = new List<EffectHandle>();
 
-		private Dictionary<AbilityTrait, Cue> _cueOverrides;
+		[Tooltip("Allows Cues to be overridden")]
+		[SerializeField] private List<Cue> _cues;
+		private Dictionary<int, Cue> _cueOverrides;
 
 
 		[Server]
@@ -170,7 +101,7 @@ namespace AbilitySystem
 
 		public bool TryHandleCue(AbilityTrait trait, CueEventType eventType, CueEventData data)
 		{
-			if (_cueOverrides != null && _cueOverrides.TryGetValue(trait, out Cue cue))
+			if (_cueOverrides != null && _cueOverrides.TryGetValue(trait.GetTraitKey(), out Cue cue))
 			{
 				Debug.LogWarning($"handling cue override: {cue.name}");
 				cue.HandleCue(eventType, data);
@@ -178,24 +109,6 @@ namespace AbilitySystem
 			}
 
 			return false;
-		}
-
-
-		public void AddCueOverrides(Cue[] cues)
-		{
-			_cueOverrides = new Dictionary<AbilityTrait, Cue>();
-
-			foreach (Cue cue in cues)
-			{
-				_cueOverrides.Add(cue.Trait, cue);
-			}
-		}
-
-
-		public void AddTraits(AbilityTraits requiredTraits, AbilityTraits blockingTraits)
-		{
-			_requiredTraits.AddTraits(requiredTraits);
-			_blockingTraits.AddTraits(blockingTraits);
 		}
 
 
@@ -295,6 +208,16 @@ namespace AbilitySystem
 			}
 		}
 
+
+		private void SetupCueOverrides()
+		{
+			_cueOverrides = new Dictionary<int, Cue>();
+
+			foreach (Cue cue in _cues)
+			{
+				_cueOverrides.Add(cue.Trait.GetTraitKey(), cue);
+			}
+		}
 
 		// Handle in update for now but may move to TimeManager eventually
 		private void Tick(float deltaTime)

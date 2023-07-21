@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using AbilityActor = LegacyAbility.AbilityActor;
+using LegacyAbility;
 
 public class AttackState : BaseState
 {
@@ -10,10 +10,19 @@ public class AttackState : BaseState
 
 	private float _coolDownLeft;
 
+	private Combatant _combatant;
+
+	private AbilityActor _attackTarget;
+
 	public override void OnEnter(Agent agent)
 	{
 		Debug.Log("Entering AttackState");
 		_coolDownLeft = _attackCoolDown;
+
+		if (_combatant == null && agent.ActorObject != null)
+		{
+			_combatant = agent.ActorObject.GetComponent<Combatant>();
+		}
 	}
 
 	public override void OnExit(Agent agent)
@@ -27,6 +36,12 @@ public class AttackState : BaseState
 
 	public override void OnTick(Agent agent)
 	{
+		if (_combatant == null)
+		{
+			return;
+		}
+
+
 		if (CheckTransitions(agent))
 		{
 			return;
@@ -45,7 +60,7 @@ public class AttackState : BaseState
 
 		if (_coolDownLeft <= 0)
 		{
-			int abilityIndex = agent.Combatant.ChooseAbility(agent.AttackTarget);
+			int abilityIndex = _combatant.ChooseAbility(_attackTarget);
 
 			if (abilityIndex != -1)
 			{
@@ -53,7 +68,7 @@ public class AttackState : BaseState
 
 				_coolDownLeft = _attackCoolDown;
 
-				agent.Combatant.UseAbility(abilityIndex);
+				_combatant.UseAbility(abilityIndex);
 			}
 		}
 		else
@@ -65,17 +80,17 @@ public class AttackState : BaseState
 
 	private void FindAttackTarget(Agent agent)
 	{
-		Collider[] hits = Physics.OverlapSphere(agent.transform.position, agent.ViewRange, agent.Combatant.AttackMask);
+		Collider[] hits = Physics.OverlapSphere(agent.transform.position, agent.ViewRange, _combatant.AttackMask);
 
 		foreach (Collider hit in hits)
 		{
-			AbilityActor target = hit.GetComponent<AbilityActor>();
+			_attackTarget = hit.GetComponent<AbilityActor>();
 
-			if (target != null)
+			if (_attackTarget != null)
 			{
-				agent.AttackTarget = target;
+				agent.AttackTarget = _attackTarget.gameObject;
 
-				agent.Pathfinding.SetTarget(target.transform);
+				agent.Pathfinding.SetTarget(_attackTarget.transform);
 			}
 		}
 	}

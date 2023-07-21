@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Actor
+namespace Actors
 {
 	public class Stats : NetworkBehaviour, IUIEventPublisher
 	{

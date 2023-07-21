@@ -4,13 +4,13 @@ using FishNet.Object;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using AbilityActor = AbilitySystem.AbilityActor;
-using Combatant = LegacyAbility.Combatant;
 
-using Actor;
+using Actors;
 
 public class Mob : NetworkBehaviour
 {
+	public event System.Action<Mob> MobDied;
+
 	[SerializeField]
 	private int _id;
 	public int ID { get => _id; set => _id = value; }
@@ -29,11 +29,9 @@ public class Mob : NetworkBehaviour
 	private Agent _agent;
 
 	[SerializeField]
-	private AbilityActor _abilityActor;
+	private GameObject _actorObject;
 
-	[SerializeField]
-	private Combatant _combatant;
-	public Combatant Combatant => _combatant;
+	private IActor _actor;
 
 	[SerializeField]
 	private Stats _stats;
@@ -65,13 +63,12 @@ public class Mob : NetworkBehaviour
 
 		_agent.SetStateMachine(mobSO.MobAISO.GetRuntimeFSM());
 
-		_abilityActor.Initialize(animator);
-
-		_abilityActor.SetProjectileSource(projSource);
-
-		//_combatant.Initialize(mobSO.Abilities);
-
-		//_combatant.OnDeathEndEvent += OnDeathEndEventHandler;
+		if (_actor is Actor actor)
+		{
+			actor.Animator = animator;
+		}
+		
+		_actor.DeathFinished += IActor_DeathFinished;
 
 		_networkAnimator.SetAnimator(animator);
 
@@ -92,8 +89,7 @@ public class Mob : NetworkBehaviour
 
 	private void OnDestroy()
 	{
-		//Debug.LogError("Mob OnDestroy");
-		_combatant.OnDeathEndEvent -= OnDeathEndEventHandler;
+		_actor.DeathFinished -= IActor_DeathFinished;
 	}
 
 
@@ -103,16 +99,36 @@ public class Mob : NetworkBehaviour
 	}
 
 
-	private void OnDeathEndEventHandler()
+	private void IActor_DeathFinished(IActor actor, ActorEventData data)
 	{
-		Debug.LogError("OnDeathEndEventHandler");
 		if (IsServer)
 		{
-			Vector3 spawnPos = _agent.transform.position;
-			spawnPos.y += 0.5f;
+			Vector3 spawnPos = _agent.transform.position + new Vector3(0f, 0.5f, 0f);
 			ItemManager.Instance.SpawnWorldItem(_mobSO.ItemToDrop, spawnPos);
 
-			Debug.LogError("Spawning at " + spawnPos);
+			OnMobDied(this);
+		}
+	}
+
+
+	private void OnMobDied(Mob mob)
+	{
+		MobDied?.Invoke(mob);
+	}
+
+
+	protected override void OnValidate()
+	{
+		if (_actorObject != null)
+		{
+			_actor = _actorObject.GetComponent<IActor>();
+
+			if (_actor == null)
+			{
+				_actorObject = null;
+
+				Debug.LogWarning("ActorObject must implement IActor");
+			}
 		}
 	}
 }

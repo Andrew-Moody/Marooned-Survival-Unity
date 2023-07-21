@@ -59,7 +59,7 @@ public class MobManager : NetworkBehaviour
 
 		Instance._mobCount++;
 
-		mob.Combatant.OnDeathEndEvent += () => Instance._mobCount--;
+		mob.MobDied += (Mob mob) => Instance._mobCount--;
 
 		return mob;
 	}
