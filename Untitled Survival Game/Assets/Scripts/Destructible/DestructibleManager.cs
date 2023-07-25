@@ -37,7 +37,37 @@ public class DestructibleManager : NetworkBehaviour
 
 
 	[Server]
-	public DestructibleObject SpawnDestructable(int destructibleID, Vector3 position, Quaternion rotation, Transform parent)
+	public DestructibleObject SpawnDestructible(int destructibleID, Vector3 position, Quaternion rotation)
+	{
+		if (destructibleID != 303)
+		{
+			return null;
+		}
+
+		DestructibleObject prefab = _destructibleFactory.GetPrefab(destructibleID);
+
+		if (prefab == null)
+		{
+			Debug.Log("Failed to Spawn DestructibleObject with ID: " + destructibleID);
+			return null;
+		}
+
+		// will this work if _destructibleHolder is a networkObject?
+		// Aha that seems to be why parent wasn't set on spawn
+		// When instantiating a prefab intended to be spawned on server the parent transform
+		// needs to be attached to a gameObject that has a networkObject component (networkObject on root isn't enough)
+		// (References don't serialize over the net if they aren't networkObjects)
+		DestructibleObject dObject = Instantiate(prefab, position, rotation, _destructibleHolder);
+
+		Spawn(dObject.gameObject);
+
+		return dObject;
+	}
+
+
+
+	[Server]
+	public DestructibleObject SpawnDestructibleFromSO(int destructibleID, Vector3 position, Quaternion rotation, Transform parent)
 	{
 		DestructibleSO destructibleSO = _destructibleFactory.GetDestructible(destructibleID);
 
@@ -46,6 +76,8 @@ public class DestructibleManager : NetworkBehaviour
 			Debug.Log("Failed to Spawn DestructibleObject with ID: " + destructibleID);
 			return null;
 		}
+		// Update 7/22/23 parents are set on spawn only if the parent is a networkObject (not only a child of one)
+		// Changes to the parent after spawning are still only synced in pro version I believe
 
 		// Local position is changed (even with no network transform) but the parent is not set on clients
 		// NetworkTransform does not let you automatically sync parent unless you have pro version
@@ -89,7 +121,7 @@ public class DestructibleManager : NetworkBehaviour
 
 			Quaternion rotation = Quaternion.LookRotation(forward, hitInfo.normal);
 
-			return SpawnDestructable(destructibleID, hitInfo.point, rotation, transform);
+			return SpawnDestructible(destructibleID, hitInfo.point, rotation);
 		}
 
 

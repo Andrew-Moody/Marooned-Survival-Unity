@@ -7,6 +7,8 @@ using Actors;
 
 public class Agent : NetworkBehaviour
 {
+	[SerializeField] private MobAISO _mobAISO;
+
 	public Pathfinding Pathfinding { get { return _pathfinding; } private set { _pathfinding = value; } }
 	[SerializeField] private Pathfinding _pathfinding;
 
@@ -59,7 +61,12 @@ public class Agent : NetworkBehaviour
 	{
 		base.OnStartServer();
 
+		// Have to check timing if NetTransform gets set on Spawn before start server
+		_roamCenter = ActorObject.transform.position;
+
 		TimeToWait = 0f;
+
+		_stateMachine = _mobAISO.GetRuntimeFSM();
 
 		_running = true;
 
@@ -168,7 +175,7 @@ public class Agent : NetworkBehaviour
 				_flips = 0;
 			}
 
-			_worldStatDisplay.SetInfoText(_pathfinding.GetDistanceToTarget().ToString());
+			//_worldStatDisplay.SetInfoText(_pathfinding.GetDistanceToTarget().ToString());
 
 
 			if (_viewTransform != null && AttackTarget != null)

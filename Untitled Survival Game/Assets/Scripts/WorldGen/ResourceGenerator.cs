@@ -106,7 +106,7 @@ public class ResourceGenerator : MonoBehaviour
 			{
 				Quaternion rotation = Quaternion.FromToRotation(Vector3.up, hitInfo.normal);
 
-				DestructibleManager.Instance.SpawnDestructable(id, hitInfo.point, rotation, transform);
+				DestructibleManager.Instance.SpawnDestructible(id, hitInfo.point, rotation);
 			}
 			else
 			{

@@ -17,82 +17,84 @@ namespace AbilitySystem
 		private Targeter _targeter;
 
 
-		public override bool CanActivate(AbilityInstanceData data)
+		public override bool CanActivate(AbilityHandle handle)
 		{
-			if (data.CooldownRemaining <= 0f)
+			if (handle.AbilityData.CooldownRemaining <= 0f)
 			{
-				Debug.Log("TestAbility CanActivate returned true)");
+				Debug.Log("TestAbility CanActivate returned true");
 				return true;
 			}
 			else
 			{
-				Debug.Log($"TestAbility CanActivate returned false with {data.CooldownRemaining} seconds remaining on cooldown");
+				Debug.Log($"TestAbility CanActivate returned false with {handle.AbilityData.CooldownRemaining} seconds remaining on cooldown");
 				return false;
 			}
 		}
 
 
-		public override void Activate(AbilityInstanceData data)
+		public override void Activate(AbilityHandle handle)
 		{
-			if (data.User.AsServer)
+			if (handle.AbilityData.User.AsServer)
 			{
 				Debug.Log("TestAbility Activated AsServer");
 			}
-			else if (data.User.AsOwner)
+			else if (handle.AbilityData.User.AsOwner)
 			{
 				Debug.Log("TestAbility Activated AsOwner");
 			}
 
-			data.CooldownRemaining = _cooldown;
+			handle.AbilityData.CooldownRemaining = _cooldown;
 
 			// Use the supplied targeter to find targets
-			List<TargetResult> targetResults = _targeter.FindTargets(data.User, new TargetingArgs());
+			List<TargetResult> targetResults = _targeter.FindTargets(handle.AbilityData.User, new TargetingArgs());
 
 			Debug.Log($"TestTargetAbility found {targetResults.Count} targets");
 
 			// Apply effect to each target found
 			for (int i = 0; i < targetResults.Count; i++)
 			{
-				ApplyEffect(data, _effect, targetResults[i].Target);
+				ApplyEffect(handle, _effect, targetResults[i].Target);
 			}
 
-			End(data);
+			End(handle);
 		}
 
 
-		public override void Cancel(AbilityInstanceData data)
+		public override void Cancel(AbilityHandle handle)
 		{
-			if (data.User.AsServer)
+			if (handle.AbilityData.User.AsServer)
 			{
 				Debug.Log("TestAbility Canceled AsServer");
 			}
-			else if (data.User.AsOwner)
+			else if (handle.AbilityData.User.AsOwner)
 			{
 				Debug.Log("TestAbility Canceled AsOwner");
 			}
 
-			End(data);
+			End(handle);
 		}
 
 
-		protected override void End(AbilityInstanceData data)
+		protected override void End(AbilityHandle handle)
 		{
-			if (data.User.AsServer)
+			if (handle.AbilityData.User.AsServer)
 			{
 				Debug.Log("TestAbility End AsServer");
 			}
-			else if (data.User.AsOwner)
+			else if (handle.AbilityData.User.AsOwner)
 			{
 				Debug.Log("TestAbility End AsOwner");
 			}
+
+			handle.AbilityData.User.HandleAbilityEnd();
 		}
 
 
-		private void ApplyEffect(AbilityInstanceData data, Effect effect, AbilityActor target)
+		private void ApplyEffect(AbilityHandle handle, Effect effect, AbilityActor target)
 		{
 			EffectEventData effectData = new EffectEventData()
 			{
-				Source = data.User,
+				Source = handle.AbilityData.User,
 				Target = target
 			};
 

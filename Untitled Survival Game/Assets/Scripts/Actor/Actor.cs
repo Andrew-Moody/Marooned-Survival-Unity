@@ -15,7 +15,7 @@ namespace Actors
 		public Stats Stats => _stats;
 		[SerializeField] private Stats _stats;
 
-		public Animator Animator { get; set; } // Currently sill used by mobs during setup
+		public Animator Animator { get => _animator; set => _animator = value; } // Currently sill used by mobs during setup
 		[SerializeField] private Animator _animator;
 
 		public AudioSource AudioSource => _audioSource;
@@ -27,13 +27,12 @@ namespace Actors
 		public TransformAnimator TransformAnimator => _transformAnimator;
 		[SerializeField] private TransformAnimator _transformAnimator;
 
-
-		private ActorState _actorState;
+		//private ActorState _actorState;
 
 
 		protected virtual void StartDeath()
 		{
-			_actorState = ActorState.Dying;
+			//_actorState = ActorState.Dying;
 
 			OnDeathStarted();
 		}
@@ -41,7 +40,7 @@ namespace Actors
 
 		protected virtual void FinishDeath()
 		{
-			_actorState = ActorState.Dead;
+			//_actorState = ActorState.Dead;
 
 			OnDeathFinished();
 		}

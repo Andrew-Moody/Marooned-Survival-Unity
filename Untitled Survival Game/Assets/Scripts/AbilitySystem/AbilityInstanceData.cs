@@ -8,8 +8,10 @@ namespace AbilitySystem
 	// Will need to be derived from for new ability types
 	public class AbilityInstanceData
 	{
-		public AbilityActor User;
+		public AbilityActor User { get; set; }
 
-		public float CooldownRemaining;
+		public float CooldownRemaining { get; set; }
+
+		public AsyncTasks.IAsyncTask Task { get; set; }
 	}
 }

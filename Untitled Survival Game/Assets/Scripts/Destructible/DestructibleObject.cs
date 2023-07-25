@@ -31,7 +31,8 @@ public class DestructibleObject : NetworkBehaviour
 
 	private float _deathTimeLeft;
 
-	private DestructibleSO _destructibleSO;
+	public DestructibleSO DestructibleSO => _destructibleSO;
+	[SerializeField] private DestructibleSO _destructibleSO;
 
 
 	[ObserversRpc(BufferLast = true, RunLocally = true)]
@@ -95,6 +96,17 @@ public class DestructibleObject : NetworkBehaviour
 			//_stats.UIEvent += Stats_StatChanged;
 		}
 
+
+		if (_actor == null)
+		{
+			_actor = _actorObject.GetComponent<IActor>();
+
+			if (_actor == null)
+			{
+				Debug.LogError("DestructibleObject failed to find IActor component");
+			}
+		}
+
 		_actor.DeathStarted += Actor_DeathStarted;
 		_actor.DeathFinished += Actor_DeathFinished;
 
@@ -120,7 +132,7 @@ public class DestructibleObject : NetworkBehaviour
 	{
 		_graphicObject.SetActive(false);
 
-		_statDisplay.Show(false);
+		//_statDisplay.Show(false);
 
 		GetComponent<Collider>().enabled = false;
 

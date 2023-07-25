@@ -6,96 +6,76 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using Actors;
+using FishNet.Component.Transforming;
 
 public class Mob : NetworkBehaviour
 {
 	public event System.Action<Mob> MobDied;
 
-	[SerializeField]
-	private int _id;
 	public int ID { get => _id; set => _id = value; }
+	[SerializeField] private int _id;
 
-	[SerializeField]
-	private Transform _networkTransform;
-	public Transform NetworkTransform => _networkTransform;
+	public string MobName => _mobName;
+	[SerializeField] private string _mobName;
 
-	[SerializeField]
-	private Transform _graphicParent;
+	public MobSO MobSO => _mobSO;
+	[SerializeField] private MobSO _mobSO;
 
-	[SerializeField]
-	private NetworkAnimator _networkAnimator;
-
-	[SerializeField]
-	private Agent _agent;
-
-	[SerializeField]
-	private GameObject _actorObject;
+	[SerializeField] private GameObject _actorObject;
 
 	private IActor _actor;
 
-	[SerializeField]
-	private Stats _stats;
 
-	[SerializeField]
-	private Transform _statDisplay;
-
-	private MobSO _mobSO;
-
-
-	public void Initialize(MobSO mobSO)
+	public override void OnStartNetwork()
 	{
-		if (mobSO == null)
-		{
-			return;
-		}
+		base.OnStartNetwork();
 
-		_mobSO = mobSO;
+		InitializeFromPrefab();
+	}
 
-		GameObject mobGraphic = mobSO.InstantiatePrefab(_graphicParent);
+	public override void OnStartServer()
+	{
+		base.OnStartServer();
 
-		Animator animator = mobGraphic.GetComponent<Animator>();
-
-		ProjectileSource projSource = mobGraphic.GetComponentInChildren<ProjectileSource>();
-
-		_agent.Animator = animator;
-
-		_agent.RoamCenter = NetworkTransform.position;
-
-		_agent.SetStateMachine(mobSO.MobAISO.GetRuntimeFSM());
-
-		if (_actor is Actor actor)
-		{
-			actor.Animator = animator;
-		}
-		
-		_actor.DeathFinished += IActor_DeathFinished;
-
-		_networkAnimator.SetAnimator(animator);
-
-		_stats.SetInitialValues(_mobSO.InitialStats);
+		SetTransformOnSpawn();
 	}
 
 
-	[ObserversRpc(BufferLast = true, RunLocally = true)]
-	public void ObserversInitializeMob(int mobID)
+	[Server]
+	private void SetTransformOnSpawn()
 	{
-		MobSO mobSO = MobManager.GetMobSO(mobID);
-
-		if (mobSO != null)
+		// Reset Mob root to origin and displace net transform to spawn position
+		if (TryGetComponent(out NetworkTransform netTrans))
 		{
-			Initialize(mobSO);
+			Vector3 position = transform.position;
+			Quaternion rotation = transform.rotation;
+
+			transform.position = Vector3.zero;
+			transform.rotation = Quaternion.identity;
+
+			netTrans.transform.position = position;
+			netTrans.transform.rotation = rotation;
 		}
+	}
+
+
+	private void InitializeFromPrefab()
+	{
+		if (_actor == null)
+		{
+			_actor = _actorObject.GetComponent<IActor>();
+		}
+
+		_actor.DeathFinished += IActor_DeathFinished;
 	}
 
 	private void OnDestroy()
 	{
-		_actor.DeathFinished -= IActor_DeathFinished;
-	}
-
-
-	private void LateUpdate()
-	{
-		_statDisplay.position = _graphicParent.position;
+		if (_actor != null)
+		{
+			_actor.DeathFinished -= IActor_DeathFinished;
+		}
+		
 	}
 
 
@@ -119,16 +99,80 @@ public class Mob : NetworkBehaviour
 
 	protected override void OnValidate()
 	{
-		if (_actorObject != null)
+		if (_actorObject != null && _actorObject.GetComponent<IActor>() == null)
 		{
-			_actor = _actorObject.GetComponent<IActor>();
+			_actorObject = null;
 
-			if (_actor == null)
-			{
-				_actorObject = null;
-
-				Debug.LogWarning("ActorObject must implement IActor");
-			}
+			Debug.LogWarning("ActorObject must implement IActor");
 		}
 	}
+
+
+	#region SpawnFromSO
+	[Header("Legacy")]
+
+	[SerializeField] private Transform _graphicParent;
+
+	[SerializeField] private NetworkAnimator _networkAnimator;
+
+	[SerializeField] private Agent _agent;
+
+	[SerializeField] private Stats _stats;
+
+	[SerializeField] private Transform _networkTransform;
+
+	[SerializeField] private Transform _statDisplay;
+
+
+	// This was almost all a consequence of changing the structure of the object at runtime.
+	// While it sounded like a nice idea to not need a complete prefab for each mob variant,
+	// it seems to go against the typical Unity workflow (and againsts Fishnets)
+	// If I really need be that data driven it might be better to try to procedurally build prefabs at edit time
+	// (could be a fun excerise but wont get this project done faster)
+	private void InitializeFromSO(MobSO mobSO)
+	{
+		if (mobSO == null)
+		{
+			return;
+		}
+
+		_mobSO = mobSO;
+
+		GameObject mobGraphic = mobSO.InstantiatePrefab(_graphicParent);
+
+		Animator animator = mobGraphic.GetComponent<Animator>();
+
+		ProjectileSource projSource = mobGraphic.GetComponentInChildren<ProjectileSource>();
+
+		_agent.Animator = animator;
+
+		_agent.RoamCenter = _networkTransform.position;
+
+		_agent.SetStateMachine(mobSO.MobAISO.GetRuntimeFSM());
+
+		if (_actor is Actor actor)
+		{
+			actor.Animator = animator;
+		}
+		
+		_actor.DeathFinished += IActor_DeathFinished;
+
+		_networkAnimator.SetAnimator(animator);
+
+		_stats.SetInitialValues(_mobSO.InitialStats);
+	}
+
+
+	[ObserversRpc(BufferLast = true, RunLocally = true)]
+	public void ObserversInitializeMob(int mobID)
+	{
+		MobSO mobSO = MobManager.GetMobSO(mobID);
+
+		if (mobSO != null)
+		{
+			InitializeFromSO(mobSO);
+		}
+	}
+
+	#endregion
 }

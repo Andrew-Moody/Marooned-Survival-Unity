@@ -17,12 +17,17 @@ public class MobManager : NetworkBehaviour
 	[SerializeField]
 	private MobSO[] _mobSOs;
 
+	[SerializeField]
+	private GameObject[] _mobPrefabs;
+
 
 	public static bool IsMobCapFull { get => Instance._mobCount >= Instance._mobCap; }
 
 	private Dictionary<string, int> _nameToID;
 
 	private Dictionary<int, MobSO> _mobSODict;
+
+	private Dictionary<int, Mob> _mobPrefabDict;
 
 	private int _mobCount;
 
@@ -36,6 +41,8 @@ public class MobManager : NetworkBehaviour
 		}
 
 		Instance.LoadMobSOs();
+
+		Instance.LoadMobPrefabs();
 	}
 
 
@@ -47,15 +54,7 @@ public class MobManager : NetworkBehaviour
 			return null;
 		}
 
-		MobSO mobSO = GetMobSO(mobID);
-
-		Mob mob = Instantiate(mobSO.BaseMobPrefab, Instance._mobHolder, false);
-		mob.NetworkTransform.position = position;
-		mob.NetworkTransform.rotation = rotation;
-
-		Instance.Spawn(mob.gameObject);
-
-		mob.ObserversInitializeMob(mobID);
+		Mob mob = Instance.SpawnMobFromPrefab(mobID, position, rotation);
 
 		Instance._mobCount++;
 
@@ -119,6 +118,66 @@ public class MobManager : NetworkBehaviour
 
 			_mobSODict[so.ID] = so;
 			_nameToID[so.Name] = so.ID;
+		}
+	}
+
+
+	private Mob SpawnMobFromSO(int mobID, Vector3 position, Quaternion rotation)
+	{
+		MobSO mobSO = GetMobSO(mobID);
+
+		Mob mob = Instantiate(mobSO.BaseMobPrefab, position, rotation, _mobHolder);
+
+		Spawn(mob.gameObject);
+
+		mob.ObserversInitializeMob(mobID);
+
+		return null;
+	}
+
+
+	private Mob SpawnMobFromPrefab(int mobID, Vector3 position, Quaternion rotation)
+	{
+		if (_mobPrefabDict.TryGetValue(mobID, out Mob mobPrefab))
+		{
+			Mob mob = Instantiate(mobPrefab, position, rotation, _mobHolder);
+			Spawn(mob.gameObject);
+
+			return mob;
+		}
+
+		return null;
+	}
+
+
+	private void LoadMobPrefabs()
+	{
+		_mobPrefabDict = new Dictionary<int, Mob>();
+
+		_nameToID = new Dictionary<string, int>();
+
+		foreach (GameObject pf in _mobPrefabs)
+		{
+			if (pf.TryGetComponent(out Mob mob))
+			{
+				_mobPrefabDict.Add(mob.ID, mob);
+
+				_nameToID.Add(mob.MobName, mob.ID);
+			}
+		}
+	}
+
+
+	protected override void OnValidate()
+	{
+		for (int i = 0; i < _mobPrefabs.Length; i++)
+		{
+			if (_mobPrefabs[i] != null && _mobPrefabs[i].GetComponent<Mob>() == null)
+			{
+				_mobPrefabs[i] = null;
+
+				Debug.LogWarning("Mob prefab must have a Mob component");
+			}
 		}
 	}
 }

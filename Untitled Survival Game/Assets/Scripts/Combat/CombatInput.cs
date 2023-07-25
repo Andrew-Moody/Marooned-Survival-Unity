@@ -30,11 +30,11 @@ public class CombatInput : NetworkBehaviour
 	{
 		base.OnStartNetwork();
 
-		_abilityActor = _combatant.gameObject.GetComponent<AbilityActor>();
+		_abilityActor = GetComponent<AbilityActor>();
 
-		_legacyActor = _combatant.gameObject.GetComponent<LegacyAbility.AbilityActor>();
+		//_legacyActor = _combatant.gameObject.GetComponent<LegacyAbility.AbilityActor>();
 
-		_combatant.Initialize();
+		//_combatant.Initialize();
 	}
 
 
@@ -100,6 +100,11 @@ public class CombatInput : NetworkBehaviour
 			if (Input.GetMouseButtonDown(1))
 			{
 				Interact();
+			}
+
+			if (Input.GetKeyDown(KeyCode.F))
+			{
+				_abilityActor.HandleEvent(this, new AsyncTasks.TaskEventData());
 			}
 		}
 	}

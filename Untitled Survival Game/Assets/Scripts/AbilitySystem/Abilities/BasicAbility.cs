@@ -10,19 +10,19 @@ namespace AbilitySystem
 		[SerializeField]
 		private float _cooldown;
 
-		public override bool CanActivate(AbilityInstanceData data)
+		public override bool CanActivate(AbilityHandle handle)
 		{
-			return data.CooldownRemaining <= 0f;
+			return handle.AbilityData.CooldownRemaining <= 0f;
 		}
 
 
-		public override void Activate(AbilityInstanceData data)
+		public override void Activate(AbilityHandle handle)
 		{
 			Debug.Log("Ability Activate");
 
-			data.CooldownRemaining = _cooldown;
+			handle.AbilityData.CooldownRemaining = _cooldown;
 
-			End(data);
+			End(handle);
 		}
 	}
 }

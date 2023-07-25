@@ -3,14 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Actors;
+using AsyncTasks;
+using FishNet.Connection;
 
 namespace AbilitySystem
 {
 	public class AbilityActor : NetworkBehaviour
 	{
+		public event TaskEventHandler TaskEventRecieved;
+
 		[SerializeField] private Stats _stats;
 
-		public Actor Actor { get; set; }
+		public Actor Actor => _actor;
 		[SerializeField] private Actor _actor;
 
 		[Header("Optional")]
@@ -56,11 +60,19 @@ namespace AbilitySystem
 		[SerializeField] private List<Cue> _cues;
 		private Dictionary<int, Cue> _cueOverrides;
 
+		private AbilityHandle _activeAbility;
+
 
 		[Server]
 		public void GiveAbility(Ability ability)
 		{
 
+		}
+
+
+		public void HandleEvent(object sender, TaskEventData data)
+		{
+			OnTaskEventRecieved(sender, data);
 		}
 
 
@@ -116,14 +128,67 @@ namespace AbilitySystem
 		{
 			if (IsServer)
 			{
-				ActivateAbilityAsServer(abilityID);
+				// ActivateAbilityAsServer(abilityID);
+
+				if (TryActivateAbility(abilityID))
+				{
+					ActivateAbilityORPC(abilityID);
+				}
 			}
 			else if (IsOwner)
 			{
-				ActivateAbilityAsClient(abilityID);
+				// ActivateAbilityAsClient(abilityID);
+
+				if (TryActivateAbility(abilityID))
+				{
+					ActivateAbilitySRPC(abilityID);
+				}
 			}
 		}
 
+
+		public void HandleAbilityEnd()
+		{
+			// Ending the ability directly by the client would allow the client to then fire the next ability
+			// which would then play on the client but not on the server if the server has not finished by the time it recieves
+			// the request for the next ability
+
+			if (IsServer)
+			{
+				_activeAbility = null;
+
+				EndAbilityTRPC(Owner);
+			}
+		}
+
+
+		private bool TryActivateAbility(int abilityID)
+		{
+			if (!TryFindAbilityFromID(abilityID, out AbilityHandle abilityHandle))
+			{
+				Debug.LogWarning("Failed to fins ability with ID: " + abilityID);
+				return false;
+			}
+
+			if (!abilityHandle.CanActivate())
+			{
+				Debug.LogWarning("Ability failed CanActivate()");
+				return false;
+			}
+
+			// For now don't allow a new ability to cancel an inprogress ability
+			if (_activeAbility != null)
+			{
+				Debug.LogWarning("_activeAbility != null");
+				return false;
+			}
+
+			_activeAbility = abilityHandle;
+
+			abilityHandle.Activate();
+
+			return true;
+		}
 
 		private void ActivateAbilityAsClient(int abilityID)
 		{
@@ -132,10 +197,11 @@ namespace AbilitySystem
 				return;
 			}
 
-
 			// Activate the ability locally and request the server activate remotely
 			if (abilityHandle.CanActivate())
 			{
+				_activeAbility = abilityHandle;
+
 				abilityHandle.Activate();
 
 				ActivateAbilitySRPC(abilityID);
@@ -153,6 +219,8 @@ namespace AbilitySystem
 
 			if (abilityHandle.CanActivate())
 			{
+				_activeAbility = abilityHandle;
+
 				abilityHandle.Activate();
 
 				ActivateAbilityORPC(abilityID);
@@ -164,7 +232,12 @@ namespace AbilitySystem
 		[ServerRpc]
 		private void ActivateAbilitySRPC(int abilityID)
 		{
-			ActivateAbilityAsServer(abilityID);
+			// ActivateAbilityAsServer(abilityID);
+
+			if (TryActivateAbility(abilityID))
+			{
+				ActivateAbilityORPC(abilityID);
+			}
 		}
 
 
@@ -180,6 +253,17 @@ namespace AbilitySystem
 			}
 
 			abilityHandle.Activate();
+		}
+
+
+		[TargetRpc]
+		private void EndAbilityTRPC(NetworkConnection connection)
+		{
+			if (_activeAbility != null)
+			{
+				// May need other cleanup
+				_activeAbility = null;
+			}
 		}
 
 
@@ -286,6 +370,11 @@ namespace AbilitySystem
 			}
 		}
 
+
+		private void OnTaskEventRecieved(object sender, TaskEventData data)
+		{
+			TaskEventRecieved?.Invoke(sender, data);
+		}
 
 		#endregion
 

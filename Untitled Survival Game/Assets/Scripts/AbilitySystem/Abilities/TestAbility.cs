@@ -10,63 +10,65 @@ namespace AbilitySystem
 		[SerializeField]
 		private float _cooldown;
 
-		public override bool CanActivate(AbilityInstanceData data)
+		public override bool CanActivate(AbilityHandle handle)
 		{
-			if (data.CooldownRemaining <= 0f)
+			if (handle.AbilityData.CooldownRemaining <= 0f)
 			{
-				Debug.Log("TestAbility CanActivate returned true)");
+				Debug.Log("TestAbility CanActivate returned true");
 				return true;
 			}
 			else
 			{
-				Debug.Log($"TestAbility CanActivate returned false with {data.CooldownRemaining} seconds remaining on cooldown");
+				Debug.Log($"TestAbility CanActivate returned false with {handle.AbilityData.CooldownRemaining} seconds remaining on cooldown");
 				return false;
 			}
 		}
 
 
-		public override void Activate(AbilityInstanceData data)
+		public override void Activate(AbilityHandle handle)
 		{
-			if (data.User.AsServer)
+			if (handle.AbilityData.User.AsServer)
 			{
 				Debug.Log("TestAbility Activated AsServer");
 			}
-			else if (data.User.AsOwner)
+			else if (handle.AbilityData.User.AsOwner)
 			{
 				Debug.Log("TestAbility Activated AsOwner");
 			}
 
-			data.CooldownRemaining = _cooldown;
+			handle.AbilityData.CooldownRemaining = _cooldown;
 
-			End(data);
+			End(handle);
 		}
 
 
-		public override void Cancel(AbilityInstanceData data)
+		public override void Cancel(AbilityHandle handle)
 		{
-			if (data.User.AsServer)
+			if (handle.AbilityData.User.AsServer)
 			{
 				Debug.Log("TestAbility Canceled AsServer");
 			}
-			else if (data.User.AsOwner)
+			else if (handle.AbilityData.User.AsOwner)
 			{
 				Debug.Log("TestAbility Canceled AsOwner");
 			}
 
-			End(data);
+			End(handle);
 		}
 
 
-		protected override void End(AbilityInstanceData data)
+		protected override void End(AbilityHandle handle)
 		{
-			if (data.User.AsServer)
+			if (handle.AbilityData.User.AsServer)
 			{
 				Debug.Log("TestAbility End AsServer");
 			}
-			else if (data.User.AsOwner)
+			else if (handle.AbilityData.User.AsOwner)
 			{
 				Debug.Log("TestAbility End AsOwner");
 			}
+
+			handle.AbilityData.User.HandleAbilityEnd();
 		}
 	}
 }

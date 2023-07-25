@@ -48,6 +48,6 @@ public class DestructibleSpawner : NetworkBehaviour
 
 		Quaternion rotation = Quaternion.FromToRotation(Vector3.up, hitInfo.normal);
 
-		DestructibleManager.Instance.SpawnDestructable(destructibleID, hitInfo.point, rotation, transform);
+		DestructibleManager.Instance.SpawnDestructible(destructibleID, hitInfo.point, rotation);
 	}
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using ITaskUser = AsyncTasks.ITaskUser;
 
 namespace AbilitySystem
 {
@@ -8,10 +9,11 @@ namespace AbilitySystem
 	// Allows the ability scriptable object to define default values and behavior.
 	// Per instance runtime data (cooldown remaining for example) is held separatly so that
 	// a new instance of ability SO does not need to be instantiated
-	public class AbilityHandle
+	public class AbilityHandle : ITaskUser
 	{
 		private Ability _ability;
 
+		public AbilityInstanceData AbilityData => _abilityData;
 		private AbilityInstanceData _abilityData;
 
 		public AbilityHandle(Ability ability, AbilityActor user)
@@ -23,25 +25,25 @@ namespace AbilitySystem
 
 		public bool CanActivate()
 		{
-			return _ability.CanActivate(_abilityData);
+			return _ability.CanActivate(this);
 		}
 
 
 		public void Activate()
 		{
-			_ability.Activate(_abilityData);
+			_ability.Activate(this);
 		}
 
 
 		public void Cancel()
 		{
-			_ability.Cancel(_abilityData);
+			_ability.Cancel(this);
 		}
 
 
 		public void Tick(float deltaTime)
 		{
-			_ability.Tick(_abilityData, deltaTime);
+			_ability.Tick(this, deltaTime);
 		}
 	}
 }

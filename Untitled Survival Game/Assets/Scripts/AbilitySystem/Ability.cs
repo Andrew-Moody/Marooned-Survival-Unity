@@ -9,29 +9,31 @@ namespace AbilitySystem
 	{
 		// Override these functions to define a new ability behavior
 
-		public virtual bool CanActivate(AbilityInstanceData data) { return true; }
+		public virtual bool CanActivate(AbilityHandle handle) { return true; }
 
 
-		public virtual void Activate(AbilityInstanceData data)
+		public virtual void Activate(AbilityHandle handle)
 		{
 			Debug.Log("Ability Activate");
 
-			End(data);
+			End(handle);
 		}
 
 
-		public virtual void Cancel(AbilityInstanceData data)
+		public virtual void Cancel(AbilityHandle handle)
 		{
 			Debug.Log("Ability Cancel");
 
-			End(data);
+			End(handle);
 		}
 
 
 		// Perform any cleanup needed after the ability finishes or is canceled
-		protected virtual void End(AbilityInstanceData data)
+		protected virtual void End(AbilityHandle handle)
 		{
 			Debug.Log("Ability End");
+
+			handle.AbilityData.User.HandleAbilityEnd();
 		}
 
 
@@ -42,13 +44,13 @@ namespace AbilitySystem
 		}
 
 
-		public virtual void Tick(AbilityInstanceData data, float deltaTime)
+		public virtual void Tick(AbilityHandle handle, float deltaTime)
 		{
-			data.CooldownRemaining -= deltaTime;
+			handle.AbilityData.CooldownRemaining -= deltaTime;
 
-			if (data.CooldownRemaining < 0f)
+			if (handle.AbilityData.CooldownRemaining < 0f)
 			{
-				data.CooldownRemaining = 0f;
+				handle.AbilityData.CooldownRemaining = 0f;
 			}
 		}
 	}

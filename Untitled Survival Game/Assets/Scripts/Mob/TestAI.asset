@@ -13,14 +13,14 @@ MonoBehaviour:
   m_Name: TestAI
   m_EditorClassIdentifier: 
   States:
-  - StateName: Attack
-    StateType: 2
+  - StateName: Roam
+    StateType: 1
     State:
       id: 0
     Transitions: []
   references:
     version: 1
     00000000:
-      type: {class: AttackState, ns: , asm: Assembly-CSharp}
+      type: {class: RoamState, ns: , asm: Assembly-CSharp}
       data:
-        _attackCoolDown: 3
+        _testInt2: 0

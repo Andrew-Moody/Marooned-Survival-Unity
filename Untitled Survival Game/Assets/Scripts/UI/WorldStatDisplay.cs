@@ -15,6 +15,8 @@ public class WorldStatDisplay : MonoBehaviour
 	private TextMeshProUGUI _infoTMP;
 
 	[SerializeField]
+	private Transform _followTarget;
+
 	private Transform _lookTarget;
 
 	[SerializeField]
@@ -62,7 +64,7 @@ public class WorldStatDisplay : MonoBehaviour
 
 		if (_target != null)
 		{
-			_target.UIEvent += StatChangeHandler;
+			_target.UIEvent += UIEvent_StatChanged;
 		}
 		else
 		{
@@ -89,12 +91,12 @@ public class WorldStatDisplay : MonoBehaviour
 	{
 		if (_target != null)
 		{
-			_target.UIEvent -= StatChangeHandler;
+			_target.UIEvent -= UIEvent_StatChanged;
 		}
 	}
 
 
-	private void StatChangeHandler(UIEventData data)
+	private void UIEvent_StatChanged(UIEventData data)
 	{
 		if (_statBarDict.TryGetValue(data.TagString, out StatBar statBar))
 		{
@@ -105,6 +107,11 @@ public class WorldStatDisplay : MonoBehaviour
 
 	private void LateUpdate()
 	{
+		if (_followTarget != null)
+		{
+			transform.position = _followTarget.position;
+		}
+
 		if (_lookTarget == null)
 		{
 			return;
