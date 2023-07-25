@@ -20,6 +20,9 @@ namespace AbilitySystem
 		[SerializeField]
 		private string _animationTrigger;
 
+		[SerializeField]
+		private AudioClip _startSound;
+
 		public override bool CanActivate(AbilityHandle handle)
 		{
 			if (handle.AbilityData.CooldownRemaining > 0f)
@@ -35,12 +38,11 @@ namespace AbilitySystem
 		{
 			handle.AbilityData.CooldownRemaining = _cooldown;
 
-			Animator anim = handle.AbilityData.User.Actor.Animator;
+			AudioSource audioSource = handle.AbilityData.User.Actor.AudioSource;
 
-			if (anim == null)
-			{
-				Debug.LogWarning("Missing Animator");
-			}
+			audioSource.PlayOneShot(_startSound);
+
+			Animator anim = handle.AbilityData.User.Actor.Animator;
 
 			AnimationTask task = new AnimationTask(handle, anim, _animationTrigger);
 

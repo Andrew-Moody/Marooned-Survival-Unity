@@ -124,7 +124,7 @@ MonoBehaviour:
   _addedNetworkObject: {fileID: 2578392283353702552}
   _networkObjectCache: {fileID: 2578392283353702552}
   IgnoredParameters: []
-  _animator: {fileID: 5798172879920689046}
+  _animator: {fileID: 0}
   _smoothFloats: 1
   _interpolation: 2
   _clientAuthoritative: 0
@@ -328,7 +328,7 @@ GameObject:
   - component: {fileID: 2578392283353702656}
   - component: {fileID: 7983660517394171817}
   m_Layer: 9
-  m_Name: MobBase
+  m_Name: Man_mob
   m_TagString: Mob
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -367,7 +367,7 @@ MonoBehaviour:
   <SpawnableCollectionId>k__BackingField: 0
   _scenePathHash: 0
   <SceneId>k__BackingField: 0
-  <AssetPathHash>k__BackingField: 16283904884755079697
+  <AssetPathHash>k__BackingField: 9994812442376348477
   _sceneNetworkObjects:
   - {fileID: 2578392283353702552}
   - {fileID: 2578392283353702656}
@@ -406,9 +406,9 @@ MonoBehaviour:
   _componentIndexCache: 0
   _addedNetworkObject: {fileID: 2578392283353702656}
   _networkObjectCache: {fileID: 2578392283353702656}
-  _id: 0
-  _mobName: MobBase
-  _mobSO: {fileID: 11400000, guid: 4c88aa104579c6c4aa492ff0dab6d2d1, type: 2}
+  _id: 5
+  _mobName: Man
+  _mobSO: {fileID: 11400000, guid: 6c65e50c21fe47b47a134762fb1129bb, type: 2}
   _actorObject: {fileID: 2578392283353703508}
   _graphicParent: {fileID: 2578392283353704134}
   _networkAnimator: {fileID: 2578392283353702592}
