@@ -16,6 +16,9 @@ public class SmoothFollower : MonoBehaviour
 	[SerializeField]
 	private float _teleportThreshold = 1f;
 
+	[SerializeField]
+	private bool _controlAnimator;
+
 	private Animator _animator;
 
 	private Vector3 _velocity = Vector3.zero;
@@ -61,13 +64,11 @@ public class SmoothFollower : MonoBehaviour
 				_localVelocity = transform.InverseTransformDirection(_velocity);
 
 
-				if (_animator != null)
+				if (_animator != null && _controlAnimator)
 				{
 					_animator.SetFloat("ForwardSpeed", _localVelocity.z / _sprintSpeed);
 				}
 			}
-
-			
 		}
 	}
 

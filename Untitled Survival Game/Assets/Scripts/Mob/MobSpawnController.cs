@@ -11,11 +11,17 @@ public class MobSpawnController : MonoBehaviour
 	[SerializeField]
 	private string[] _mobs;
 
+	[SerializeField]
+	private bool _spawnInDaytime;
+
+	[SerializeField]
 	private float _delay = 5f;
 
-	private float _minDistance = 10f;
+	[SerializeField]
+	private float _minDistance = 5f;
 
-	private float _maxDistance = 20f;
+	[SerializeField]
+	private float _maxDistance = 10f;
 
 	private float _timeToSpawn;
 
@@ -35,7 +41,7 @@ public class MobSpawnController : MonoBehaviour
 		}
 		else
 		{
-			if (GamePlay.Instance.CurrentHour > 11 && MobManager.MobCount < _maxSpawns)
+			if (MobManager.MobCount < _maxSpawns && (_spawnInDaytime || GamePlay.Instance.CurrentHour > 11))
 			{
 				string mob = _mobs[Random.Range(0, _mobs.Length)];
 

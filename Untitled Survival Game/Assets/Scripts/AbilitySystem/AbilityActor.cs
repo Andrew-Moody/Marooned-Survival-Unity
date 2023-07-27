@@ -38,10 +38,6 @@ namespace AbilitySystem
 
 		#region AbilitySystem
 
-		public bool AsOwner => IsOwner;
-
-		public bool AsServer => IsServer;
-
 		[Tooltip("An Effect must have these traits to be applied")]
 		[SerializeField] private AbilityTraits _requiredTraits;
 
@@ -66,7 +62,21 @@ namespace AbilitySystem
 		[Server]
 		public void GiveAbility(Ability ability)
 		{
+			AbilityHandle handle = new AbilityHandle(ability, this);
 
+			_abilities.Add(handle);
+
+			if (handle.CanActivate())
+			{
+				if (_activeAbility != null)
+				{
+					_activeAbility.Cancel();
+				}
+
+				_activeAbility = handle;
+
+				handle.Activate();
+			}
 		}
 
 
@@ -106,6 +116,9 @@ namespace AbilitySystem
 				if (IsServer)
 				{
 					HandleStatChanges(effectHandle);
+
+					// For now only on server
+					HandleAppliedAbilities(effectHandle);
 				}
 			}
 		}
@@ -153,11 +166,19 @@ namespace AbilitySystem
 			// which would then play on the client but not on the server if the server has not finished by the time it recieves
 			// the request for the next ability
 
+			// Waiting for the server to relay back that the ability has ended may result in dropped input but that seems better than
+			// than having the client think their input has been recieved and only finding out several seconds later that it hasn't
+			
+			// I have heard of some people using a que to process input. that might help add some forgiveness
+
 			if (IsServer)
 			{
 				_activeAbility = null;
 
-				EndAbilityTRPC(Owner);
+				if (OwnerId != -1) // don't try to send TRPC to mobs
+				{
+					EndAbilityTRPC(Owner);
+				}
 			}
 		}
 
@@ -362,11 +383,18 @@ namespace AbilitySystem
 
 		private void HandleStatChanges(EffectHandle effectHandle)
 		{
-			Debug.LogError($"HandleStatChanges");
-
 			foreach (StatModifier modifier in effectHandle.Effect.Modifiers)
 			{
 				modifier.ApplyModifier(_stats);
+			}
+		}
+
+
+		private void HandleAppliedAbilities(EffectHandle effectHandle)
+		{
+			foreach (Ability ability in effectHandle.Effect.AppliedAbilities)
+			{
+				GiveAbility(ability);
 			}
 		}
 

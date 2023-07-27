@@ -410,7 +410,7 @@ MonoBehaviour:
   <SpawnableCollectionId>k__BackingField: 0
   _scenePathHash: 0
   <SceneId>k__BackingField: 0
-  <AssetPathHash>k__BackingField: 5145463761822759271
+  <AssetPathHash>k__BackingField: 14187674671731677519
   _sceneNetworkObjects:
   - {fileID: 2578392283353702552}
   - {fileID: 2578392283353702656}
@@ -816,6 +816,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1644036054473569703, guid: e47cb18e54cf9d241888fbabdb62ed42, type: 3}
+      propertyPath: _followTarget
+      value: 
+      objectReference: {fileID: 2578392283353704134}
+    - target: {fileID: 1644036054473569703, guid: e47cb18e54cf9d241888fbabdb62ed42, type: 3}
+      propertyPath: _targetObject
+      value: 
+      objectReference: {fileID: 2578392283353703508}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e47cb18e54cf9d241888fbabdb62ed42, type: 3}
 --- !u!224 &2153304843140520558 stripped

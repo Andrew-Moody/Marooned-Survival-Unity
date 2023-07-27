@@ -72,7 +72,7 @@ public class Agent : NetworkBehaviour
 
 		TimeManager.OnPostTick += TimeManager_OnPostTick;
 
-		_pathfinding.SetIsServer(true);
+		_actor = _actorObject.GetComponent<IActor>();
 	}
 
 
@@ -89,17 +89,17 @@ public class Agent : NetworkBehaviour
 
 			_pathfinding.EnableNMAgent(false);
 
-			// Ahh well the collider kinda still needs to be enabled to do attack raycasts
-			// I do have collision turned off between player and mobs though cause it just screws the prediction system
-			// to have collision between predicted and non predicted (non static) objects
+			// Ahh well the collider still needs to be enabled to do attack raycasts
+			// I do have collision turned off between player and mobs because the prediction system has
+			// trouble handling collisions between predicted and non predicted (non static) objects
 			//GetComponent<Collider>().enabled = false;
 
+			// Why tick on client?
+
 			// This is so the pathfinder gets ticked
-			_running = true;
+			//_running = true;
 
-			TimeManager.OnPostTick += TimeManager_OnPostTick;
-
-			_pathfinding.SetIsServer(false);
+			// TimeManager.OnPostTick += TimeManager_OnPostTick;
 		}
 	}
 
@@ -112,6 +112,7 @@ public class Agent : NetworkBehaviour
 	}
 
 
+	[Server]
 	public void StopAgent()
 	{
 		_pathfinding.EnableNMAgent(false);
@@ -120,72 +121,10 @@ public class Agent : NetworkBehaviour
 	}
 
 
+	[Server]
 	public void KnockBack(Vector3 direction, float strength)
 	{
-		_pathfinding.KnockBack(direction, strength, IsServer);
-	}
-
-
-	void Update()
-	{
-		if (_running)
-		{
-			if (_stateMachine != null)
-			{
-				_stateMachine.OnTick(this);
-			}
-
-			if (TimeToWait > 0)
-			{
-				TimeToWait -= Time.deltaTime;
-			}
-
-			Vector3 velocity = _pathfinding.GetNormalisedVelocity();
-
-			if (_animator != null)
-			{
-				_animator.SetFloat("ForwardSpeed", velocity.z);
-				//_animator.SetFloat("ForwardSpeed", 1f);
-				//_animator.SetFloat("RightSpeed", velocity.x);
-			}
-			else
-			{
-				Debug.Log("Animator is still null");
-			}
-
-
-
-			_textUpdateTime -= Time.deltaTime;
-			_updateTicks++;
-
-			if (_pathfinding.Flipped)
-			{
-				_flips++;
-			}
-
-			if (_textUpdateTime <= 0)
-			{
-				_textUpdateTime = 1f;
-
-				//_worldStatDisplay.SetInfoText(_flips.ToString() + ", " +_updateTicks.ToString());
-
-
-
-				_updateTicks = 0;
-				_flips = 0;
-			}
-
-			//_worldStatDisplay.SetInfoText(_pathfinding.GetDistanceToTarget().ToString());
-
-
-			if (_viewTransform != null && AttackTarget != null)
-			{
-				Vector3 targetPos = AttackTarget.transform.position;
-				targetPos.y += 1.4f;
-
-				_viewTransform.LookAt(targetPos, Vector3.up);
-			}
-		}
+		_pathfinding.KnockBack(direction, strength);
 	}
 
 
@@ -228,23 +167,43 @@ public class Agent : NetworkBehaviour
 	{
 		if (_running)
 		{
+			if (_stateMachine != null)
+			{
+				_stateMachine.OnTick(this);
+			}
+
 			_pathfinding.Tick((float)TimeManager.TickDelta);
+
+			if (TimeToWait > 0)
+			{
+				TimeToWait -= Time.deltaTime;
+			}
+
+			Vector3 velocity = _pathfinding.GetNormalisedVelocity();
+
+			_animator.SetFloat("ForwardSpeed", velocity.z);
+			//_animator.SetFloat("ForwardSpeed", 1f);
+			//_animator.SetFloat("RightSpeed", velocity.x);
+
+
+			if (_viewTransform != null && AttackTarget != null)
+			{
+				Vector3 targetPos = AttackTarget.transform.position;
+				targetPos.y += 1.4f;
+
+				_viewTransform.LookAt(targetPos, Vector3.up);
+			}
 		}
 	}
 
 
 	protected override void OnValidate()
 	{
-		if (_actorObject != null)
+		if (_actorObject != null && _actorObject.GetComponent<IActor>() == null)
 		{
-			_actor = _actorObject.GetComponent<IActor>();
+			_actorObject = null;
 
-			if (_actor == null)
-			{
-				_actorObject = null;
-
-				Debug.LogWarning("ActorObject must implement IActor");
-			}
+			Debug.LogWarning("ActorObject must implement IActor");
 		}
 	}
 }

@@ -27,11 +27,11 @@ namespace AbilitySystem
 
 		public override void Activate(AbilityHandle handle)
 		{
-			if (handle.AbilityData.User.AsServer)
+			if (handle.AbilityData.User.IsServer)
 			{
 				Debug.Log("TestAbility Activated AsServer");
 			}
-			else if (handle.AbilityData.User.AsOwner)
+			else if (handle.AbilityData.User.IsOwner)
 			{
 				Debug.Log("TestAbility Activated AsOwner");
 			}
@@ -44,11 +44,11 @@ namespace AbilitySystem
 
 		public override void Cancel(AbilityHandle handle)
 		{
-			if (handle.AbilityData.User.AsServer)
+			if (handle.AbilityData.User.IsServer)
 			{
 				Debug.Log("TestAbility Canceled AsServer");
 			}
-			else if (handle.AbilityData.User.AsOwner)
+			else if (handle.AbilityData.User.IsOwner)
 			{
 				Debug.Log("TestAbility Canceled AsOwner");
 			}
@@ -59,11 +59,11 @@ namespace AbilitySystem
 
 		protected override void End(AbilityHandle handle)
 		{
-			if (handle.AbilityData.User.AsServer)
+			if (handle.AbilityData.User.IsServer)
 			{
 				Debug.Log("TestAbility End AsServer");
 			}
-			else if (handle.AbilityData.User.AsOwner)
+			else if (handle.AbilityData.User.IsOwner)
 			{
 				Debug.Log("TestAbility End AsOwner");
 			}

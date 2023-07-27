@@ -207,7 +207,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   _viewRange: 10
-  _roamRange: {x: 2, y: 0, z: 2}
+  _roamRange: {x: 10, y: 0, z: 10}
   _roamCenter: {x: 0, y: 0, z: 0}
   _worldStatDisplay: {fileID: 3669065061277924020}
   _viewTransform: {fileID: 0}
@@ -594,6 +594,7 @@ MonoBehaviour:
   _smoothTime: 0.15
   _sprintSpeed: 0
   _teleportThreshold: 1
+  _controlAnimator: 0
 --- !u!114 &835106260871067280
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -701,6 +702,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1644036054473569703, guid: e47cb18e54cf9d241888fbabdb62ed42, type: 3}
+      propertyPath: _followTarget
+      value: 
+      objectReference: {fileID: 2578392283353704134}
+    - target: {fileID: 1644036054473569703, guid: e47cb18e54cf9d241888fbabdb62ed42, type: 3}
+      propertyPath: _targetObject
+      value: 
+      objectReference: {fileID: 2578392283353703508}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e47cb18e54cf9d241888fbabdb62ed42, type: 3}
 --- !u!224 &3669065061277923892 stripped

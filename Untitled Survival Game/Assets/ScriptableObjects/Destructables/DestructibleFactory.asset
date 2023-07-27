@@ -27,4 +27,16 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 694572550ae881744889cd5fbaf38e6c, type: 2}
   - {fileID: 11400000, guid: 2a93520bc6b8e204cbf24bc02c8d25a2, type: 2}
   _destructiblePrefabs:
-  - {fileID: 416200329961083277, guid: ff81589c3f4c979468ce13ba91520c45, type: 3}
+  - {fileID: 416200329961083277, guid: 13f6c95649c83cb44afc10332dadd98b, type: 3}
+  - {fileID: 416200329961083277, guid: 95fd1facdf726984d8f5dad6974bd3c7, type: 3}
+  - {fileID: 416200329961083277, guid: db182c78f06e6244ba82f6fa1314c57e, type: 3}
+  - {fileID: 416200329961083277, guid: 4f4da846af9b58d4c879bfbae59fa7ac, type: 3}
+  - {fileID: 416200329961083277, guid: b184d23f48872384097a81dd38174168, type: 3}
+  - {fileID: 416200329961083277, guid: abf973706a9ee514d9b7c683a56e5b2e, type: 3}
+  - {fileID: 416200329961083277, guid: 6549295d72a75a84ba400a361b5bc78e, type: 3}
+  - {fileID: 416200329961083277, guid: 5974217b9fb0ee84b9f70db391025afc, type: 3}
+  - {fileID: 416200329961083277, guid: 807aea357a9ca0e47a649c0a39ba16b9, type: 3}
+  - {fileID: 416200329961083277, guid: a44c5767eab304546b9addfb046d7a75, type: 3}
+  - {fileID: 416200329961083277, guid: 3b54cf73eb33a3241bf8f8db88c2b46a, type: 3}
+  - {fileID: 416200329961083277, guid: 568a3b477c0e8f1428dcc34626d4e770, type: 3}
+  - {fileID: 416200329961083277, guid: 4a9a697f1ebbd92478372728a812571e, type: 3}

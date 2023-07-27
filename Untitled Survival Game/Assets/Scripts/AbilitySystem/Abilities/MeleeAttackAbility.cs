@@ -23,6 +23,9 @@ namespace AbilitySystem
 		[SerializeField]
 		private AudioClip _startSound;
 
+		[SerializeField]
+		private float _knockbackStrength;
+
 		public override bool CanActivate(AbilityHandle handle)
 		{
 			if (handle.AbilityData.CooldownRemaining > 0f)
@@ -110,10 +113,30 @@ namespace AbilitySystem
 		{
 			if (task.TaskOwner is AbilityHandle handle)
 			{
-				List<TargetResult> targetResults = _targeter.FindTargets(handle.AbilityData.User, new TargetingArgs());
+				AbilityActor user = handle.AbilityData.User;
+
+				List<TargetResult> targetResults = _targeter.FindTargets(user, new TargetingArgs());
 
 				foreach (TargetResult targetResult in targetResults)
 				{
+					AbilityActor target = targetResult.Target;
+
+					Agent agent = target.Actor.GetComponent<Agent>();
+
+					if (agent != null && user.IsServer)
+					{
+						Vector3 direction = (target.transform.position - user.transform.position).normalized;
+
+						direction.y += Mathf.Atan(Mathf.Deg2Rad * 30f); // add an upward component
+
+						// Will want to calculate from target and user stats eventually
+						float strength = _knockbackStrength;
+
+						agent.KnockBack(direction, strength);
+
+						target.Actor.Animator.SetTrigger("HIT");
+					}
+
 					ApplyEffect(handle, _effect, targetResult.Target);
 				}
 			}

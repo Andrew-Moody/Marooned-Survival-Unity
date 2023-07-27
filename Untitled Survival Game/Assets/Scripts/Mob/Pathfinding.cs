@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using FishNet;
 
 public class Pathfinding : MonoBehaviour
 {
@@ -54,8 +55,6 @@ public class Pathfinding : MonoBehaviour
 	private CharacterController _characterController;
 
 	private bool _isStunned;
-
-	private bool _isServer;
 
 	private float _stunTime;
 
@@ -125,17 +124,17 @@ public class Pathfinding : MonoBehaviour
 	}
 
 
-	public void SetIsServer(bool isServer)
-	{
-		_isServer = isServer;
-	}
-
 	/// <summary>
-	/// Returns the normalized velocity of the navmeshagent relative to the transform forward direction
+	/// Returns the normalized velocity of the navmeshAgent relative to the transform forward direction
 	/// </summary>
 	/// <returns></returns>
 	public Vector3 GetNormalisedVelocity()
 	{
+		if (!_agent.enabled)
+		{
+			return Vector3.zero;
+		}
+
 		float speedZ = Vector3.Dot(_agent.velocity, transform.forward) / _agent.speed;
 		float speedX = Vector3.Dot(_agent.velocity, transform.right) / _agent.speed;
 
@@ -155,15 +154,15 @@ public class Pathfinding : MonoBehaviour
 	}
 
 
-	public void KnockBack(Vector3 direction, float strength, bool asServer)
+	public void KnockBack(Vector3 direction, float strength)
 	{
-		Debug.Log("KnockBack called on client");
-
-		if (_isServer)
+		if (!InstanceFinder.IsServer)
 		{
-			EnableNMAgent(false);
+			Debug.LogError("KnockBack called on client");
+			return;
 		}
-		
+
+		EnableNMAgent(false);
 
 		_isStunned = true;
 		_stunTime = 1.5f;
@@ -173,22 +172,6 @@ public class Pathfinding : MonoBehaviour
 		_velocity = direction * strength;
 	}
 
-
-
-	void Update()
-	{
-		//Tick(Time.deltaTime);
-
-		if (transform.position != _prevPosition)
-		{
-			_deltaPos = transform.position - _prevPosition;
-
-			//Debug.Log(_deltaPos.x);
-
-			_prevPosition = transform.position;
-		}
-		
-	}
 
 	public void Tick(float deltaTime)
 	{
@@ -207,11 +190,8 @@ public class Pathfinding : MonoBehaviour
 			{
 				_isStunned = false;
 
-				if (_isServer)
-				{
-					EnableNMAgent(true);
-				}
-				
+				EnableNMAgent(true);
+
 				//_characterController.enabled = false;
 			}
 
@@ -221,7 +201,7 @@ public class Pathfinding : MonoBehaviour
 		}
 
 
-		if (_isServer && _followTarget)
+		if (_followTarget)
 		{
 			FollowTarget(deltaTime);
 		}

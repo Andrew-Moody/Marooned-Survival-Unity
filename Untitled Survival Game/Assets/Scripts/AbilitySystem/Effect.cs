@@ -24,6 +24,10 @@ namespace AbilitySystem
 
 		public AbilityTrait[] Traits => _traits;
 		[SerializeField] private AbilityTrait[] _traits;
+
+
+		public Ability[] AppliedAbilities => _appliedAbilities;
+		[SerializeField] private Ability[] _appliedAbilities;
 	}
 
 

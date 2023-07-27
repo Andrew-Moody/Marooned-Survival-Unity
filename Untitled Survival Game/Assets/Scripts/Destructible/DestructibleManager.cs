@@ -39,11 +39,6 @@ public class DestructibleManager : NetworkBehaviour
 	[Server]
 	public DestructibleObject SpawnDestructible(int destructibleID, Vector3 position, Quaternion rotation)
 	{
-		if (destructibleID != 303)
-		{
-			return null;
-		}
-
 		DestructibleObject prefab = _destructibleFactory.GetPrefab(destructibleID);
 
 		if (prefab == null)
