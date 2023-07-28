@@ -4,9 +4,16 @@ using UnityEngine;
 
 public class TargetInViewCondition : BaseCondition
 {
+	[SerializeField]
+	private LayerMask _viewMask;
+
+	[SerializeField]
+	private float _viewRange;
+
+
 	public override bool Evaluate(Agent agent)
 	{
-		return Physics.CheckSphere(agent.transform.position, agent.ViewRange, agent.ViewMask);
+		return Physics.CheckSphere(agent.transform.position, _viewRange, _viewMask.value);
 	}
 
 
@@ -27,5 +34,9 @@ public class TargetInViewCondition : BaseCondition
 	public TargetInViewCondition(TargetInViewCondition targetInViewCondition)
 	{
 		NextState = targetInViewCondition.NextState;
+
+		_viewMask = targetInViewCondition._viewMask;
+
+		_viewRange = targetInViewCondition._viewRange;
 	}
 }

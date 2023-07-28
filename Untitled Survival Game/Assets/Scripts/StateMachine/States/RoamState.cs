@@ -5,11 +5,16 @@ using UnityEngine;
 public class RoamState : BaseState
 {
 	[SerializeField]
-	private int _testInt2;
+	private Vector3 _roamRange;
+
+	private Vector3 _roamCenter;
 
 	public override void OnEnter(Agent agent)
 	{
 		Debug.Log("Entering RoamState");
+
+		_roamCenter = agent.ActorObject.transform.position;
+
 		agent.Pathfinding.SetDestination(ChooseNextDest(agent));
 	}
 
@@ -18,7 +23,7 @@ public class RoamState : BaseState
 		Debug.Log("Exiting RoamState");
 	}
 
-	public override void OnTick(Agent agent)
+	public override void OnTick(Agent agent, float deltaTime)
 	{
 		if (CheckTransitions(agent))
 		{
@@ -40,13 +45,11 @@ public class RoamState : BaseState
 
 	private Vector3 ChooseNextDest(Agent agent)
 	{
-		Vector3 roamRange = agent.RoamRange;
+		float x = Random.Range(-_roamRange.x, _roamRange.x);
+		float y = Random.Range(-_roamRange.y, _roamRange.y);
+		float z = Random.Range(-_roamRange.z, _roamRange.z);
 
-		float x = Random.Range(-roamRange.x, roamRange.x);
-		float y = Random.Range(-roamRange.y, roamRange.y);
-		float z = Random.Range(-roamRange.z, roamRange.z);
-
-		Vector3 destination = new Vector3(x, y, z) + agent.RoamCenter;
+		Vector3 destination = new Vector3(x, y, z) + _roamCenter;
 
 		return destination;
 	}
@@ -70,6 +73,6 @@ public class RoamState : BaseState
 	public RoamState(RoamState state)
 		: base(state)
 	{
-		_testInt2 = state._testInt2;
+		_roamRange = state._roamRange;
 	}
 }

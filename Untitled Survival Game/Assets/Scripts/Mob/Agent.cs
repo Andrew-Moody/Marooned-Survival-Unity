@@ -9,50 +9,23 @@ public class Agent : NetworkBehaviour
 {
 	[SerializeField] private MobAISO _mobAISO;
 
-	public Pathfinding Pathfinding { get { return _pathfinding; } private set { _pathfinding = value; } }
+	public Pathfinding Pathfinding => _pathfinding;
 	[SerializeField] private Pathfinding _pathfinding;
-
-	public Animator Animator { get { return _animator; } set { _animator = value; } }
-	[SerializeField] private Animator _animator;
 
 	public GameObject ActorObject => _actorObject;
 	[SerializeField] private GameObject _actorObject;
 	private IActor _actor;
 
-	public LayerMask ViewMask { get { return _viewMask; } private set { _viewMask = value; } }
-	[SerializeField] private LayerMask _viewMask;
-
-	public float ViewRange {  get { return _viewRange; } private set { _viewRange = value; } }
-	[SerializeField] private float _viewRange;
-
-	public Vector3 RoamRange { get { return _roamRange; } private set { _roamRange = value; } }
-	[SerializeField] private Vector3 _roamRange;
-
-	public Vector3 RoamCenter { get { return _roamCenter; } set { _roamCenter = value; } }
-	[SerializeField] private Vector3 _roamCenter;
-
-
-	[SerializeField]
-	private WorldStatDisplay _worldStatDisplay;
-
-
 	[SerializeField]
 	private Transform _viewTransform;
 
 
-	public GameObject AttackTarget { get; set; }
-
-
-	public float TimeToWait;
-
+	public GameObject AttackTarget => _attackTarget;
+	private GameObject _attackTarget;
 
 	private StateMachine _stateMachine;
 
 	private bool _running = false;
-
-	private float _textUpdateTime;
-	private int _updateTicks;
-	private int _flips;
 
 	private Dictionary<string, float> _blackboard = new Dictionary<string, float>();
 
@@ -60,11 +33,6 @@ public class Agent : NetworkBehaviour
 	public override void OnStartServer()
 	{
 		base.OnStartServer();
-
-		// Have to check timing if NetTransform gets set on Spawn before start server
-		_roamCenter = ActorObject.transform.position;
-
-		TimeToWait = 0f;
 
 		_stateMachine = _mobAISO.GetRuntimeFSM();
 
@@ -128,6 +96,21 @@ public class Agent : NetworkBehaviour
 	}
 
 
+	public void SetAttackTarget(GameObject attackTarget)
+	{
+		_attackTarget = attackTarget;
+
+		if (_attackTarget != null)
+		{
+			_pathfinding.SetTarget(attackTarget.transform);
+		}
+		else
+		{
+			_pathfinding.SetTarget(null);
+		}
+	}
+
+
 	public void SetBlackboardValue(string name, float value)
 	{
 		_blackboard[name] = value;
@@ -169,26 +152,21 @@ public class Agent : NetworkBehaviour
 		{
 			if (_stateMachine != null)
 			{
-				_stateMachine.OnTick(this);
+				_stateMachine.OnTick(this, (float)TimeManager.TickDelta);
 			}
 
 			_pathfinding.Tick((float)TimeManager.TickDelta);
 
-			if (TimeToWait > 0)
-			{
-				TimeToWait -= Time.deltaTime;
-			}
-
 			Vector3 velocity = _pathfinding.GetNormalisedVelocity();
 
-			_animator.SetFloat("ForwardSpeed", velocity.z);
+			_actor.SetAnimFloat("ForwardSpeed", velocity.z);
 			//_animator.SetFloat("ForwardSpeed", 1f);
 			//_animator.SetFloat("RightSpeed", velocity.x);
 
 
-			if (_viewTransform != null && AttackTarget != null)
+			if (_viewTransform != null && _attackTarget != null)
 			{
-				Vector3 targetPos = AttackTarget.transform.position;
+				Vector3 targetPos = _attackTarget.transform.position;
 				targetPos.y += 1.4f;
 
 				_viewTransform.LookAt(targetPos, Vector3.up);

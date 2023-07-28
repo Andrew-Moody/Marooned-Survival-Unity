@@ -13,5 +13,7 @@ namespace AbilitySystem
 		public float CooldownRemaining { get; set; }
 
 		public AsyncTasks.IAsyncTask Task { get; set; }
+
+		public AbilityEventData AbilityEventData { get; set; }
 	}
 }

@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using LegacyAbility;
+using AbilitySystem;
 
-public class AttackState : BaseState
+public class MeleeAttackState : BaseState
 {
 	[SerializeField]
 	private float _attackCoolDown;
@@ -16,24 +16,26 @@ public class AttackState : BaseState
 
 	private float _coolDownLeft;
 
-	private Combatant _combatant;
+	private AbilityActor _abilityActor;
 
 	private AbilityActor _attackTarget;
 
 	public override void OnEnter(Agent agent)
 	{
-		Debug.Log("Entering AttackState");
+		Debug.Log("Entering MeleeAttackState");
 		_coolDownLeft = _attackCoolDown;
 
-		if (_combatant == null && agent.ActorObject != null)
+		if (_abilityActor == null && agent.ActorObject != null)
 		{
-			_combatant = agent.ActorObject.GetComponent<Combatant>();
+			_abilityActor = agent.ActorObject.GetComponent<AbilityActor>();
 		}
+
+		agent.SetBlackboardValue("DistToTarget", 0f);
 	}
 
 	public override void OnExit(Agent agent)
 	{
-		Debug.Log("Exiting AttackState");
+		Debug.Log("Exiting MeleeAttackState");
 
 		agent.SetAttackTarget(null);
 
@@ -42,12 +44,6 @@ public class AttackState : BaseState
 
 	public override void OnTick(Agent agent, float deltaTime)
 	{
-		if (_combatant == null)
-		{
-			return;
-		}
-
-
 		if (CheckTransitions(agent))
 		{
 			return;
@@ -66,15 +62,12 @@ public class AttackState : BaseState
 
 		if (_coolDownLeft <= 0)
 		{
-			int abilityIndex = _combatant.ChooseAbility(_attackTarget);
 
-			if (abilityIndex != -1)
+			if (!_abilityActor.IsAbilityActive)
 			{
-				Debug.Log("AttackState Used Ability: " + abilityIndex);
+				_abilityActor.ActivateAbility(0);
 
 				_coolDownLeft = _attackCoolDown;
-
-				_combatant.UseAbility(abilityIndex);
 			}
 		}
 		else
@@ -86,7 +79,7 @@ public class AttackState : BaseState
 
 	private void FindAttackTarget(Agent agent)
 	{
-		Collider[] hits = Physics.OverlapSphere(agent.transform.position, _viewRange, _viewMask);
+		Collider[] hits = Physics.OverlapSphere(agent.transform.position, _viewRange, _viewMask.value);
 
 		foreach (Collider hit in hits)
 		{
@@ -102,26 +95,28 @@ public class AttackState : BaseState
 
 	public static BaseState Create()
 	{
-		return new AttackState();
+		return new MeleeAttackState();
 	}
 
 
 	public override BaseState DeepCopy()
 	{
-		return new AttackState(this);
+		return new MeleeAttackState(this);
 	}
 
-	public AttackState()
+	public MeleeAttackState()
 	{
-		//Debug.LogError("Attack State Constructor");
+		
 	}
 
 
-	public AttackState(AttackState state)
+	public MeleeAttackState(MeleeAttackState state)
 		: base(state)
 	{
 		_attackCoolDown = state._attackCoolDown;
 
-		//Debug.LogError("Attack State Copy Constructor (AttackState)");
+		_viewRange = state._viewRange;
+
+		_viewMask = state._viewMask;
 	}
 }

@@ -23,7 +23,7 @@ MonoBehaviour:
         id: 1
       NextState: Attack
   - StateName: Attack
-    StateType: 2
+    StateType: 3
     State:
       id: 2
     Transitions:
@@ -36,13 +36,22 @@ MonoBehaviour:
     00000000:
       type: {class: RoamState, ns: , asm: Assembly-CSharp}
       data:
-        _testInt2: 2
+        _roamRange: {x: 10, y: 0, z: 10}
     00000001:
       type: {class: TargetInViewCondition, ns: , asm: Assembly-CSharp}
+      data:
+        _viewMask:
+          serializedVersion: 2
+          m_Bits: 256
+        _viewRange: 5
     00000002:
-      type: {class: AttackState, ns: , asm: Assembly-CSharp}
+      type: {class: MeleeAttackState, ns: , asm: Assembly-CSharp}
       data:
         _attackCoolDown: 2
+        _viewMask:
+          serializedVersion: 2
+          m_Bits: 256
+        _viewRange: 5
     00000003:
       type: {class: GreaterCondition, ns: , asm: Assembly-CSharp}
       data:

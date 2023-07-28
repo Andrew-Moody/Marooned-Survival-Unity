@@ -38,6 +38,8 @@ namespace AbilitySystem
 
 		#region AbilitySystem
 
+		public bool IsAbilityActive => _activeAbility != null;
+
 		[Tooltip("An Effect must have these traits to be applied")]
 		[SerializeField] private AbilityTraits _requiredTraits;
 
@@ -92,6 +94,7 @@ namespace AbilitySystem
 
 			if (effect == null)
 			{
+				Debug.LogError("Effect was null");
 				return;
 			}
 
@@ -99,6 +102,7 @@ namespace AbilitySystem
 			// First check that the effect can be applied based on traits
 			if (!CanApply(effectHandle))
 			{
+				Debug.LogError("Can't apply effect");
 				return;
 			}
 
@@ -109,6 +113,10 @@ namespace AbilitySystem
 				if (IsClient)
 				{
 					HandleCues(effectHandle, CueEventType.OnExecute);
+				}
+				else
+				{
+					Debug.LogError("Not a client");
 				}
 
 
@@ -273,6 +281,8 @@ namespace AbilitySystem
 				return;
 			}
 
+			Debug.LogError("ORPC recieved");
+
 			abilityHandle.Activate();
 		}
 
@@ -367,6 +377,8 @@ namespace AbilitySystem
 
 		private void HandleCues(EffectHandle effectHandle, CueEventType cueEventType)
 		{
+			Debug.LogError("HandleCues");
+
 			AbilityTrait[] traits = effectHandle.Effect.Cues;
 
 			CueEventData data = new CueEventData()

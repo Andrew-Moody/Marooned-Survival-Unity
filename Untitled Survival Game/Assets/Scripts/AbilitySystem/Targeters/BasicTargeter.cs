@@ -7,11 +7,14 @@ namespace AbilitySystem
 	[CreateAssetMenu(fileName = "NewBasicTargeter", menuName = "AbilitySystem/Targeter/BasicTargeter")]
 	public class BasicTargeter : Targeter
 	{
+		[SerializeField]
+		private LayerMask _targetMask;
+
 		public override List<TargetResult> FindTargets(AbilityActor user, TargetingArgs args)
 		{
 			// Need to get a layer mask from user, eventually based on traits
 			// To exclude as much as possible
-			int layerMask = LayerMask.GetMask("Mob");
+			// int layerMask = LayerMask.GetMask("Mob");
 
 			// user position is fine for now
 			Vector3 position = user.transform.position;
@@ -20,8 +23,9 @@ namespace AbilitySystem
 			// or passed by the ability through TargetingArgs
 			float range = 2f;
 
+			Debug.LogError($"Pos: {position}, Mask: {_targetMask.value}");
 
-			Collider[] hits = Physics.OverlapSphere(position, range, layerMask);
+			Collider[] hits = Physics.OverlapSphere(position, range, _targetMask);
 
 			List<TargetResult> targets = new List<TargetResult>();
 

@@ -35,7 +35,7 @@ public abstract class BaseState : IState
 
 	public abstract void OnExit(Agent agent);
 
-	public abstract void OnTick(Agent agent);
+	public abstract void OnTick(Agent agent, float deltaTime);
 
 
 	public BaseState()
@@ -73,7 +73,7 @@ public interface IState
 
 	public void OnExit(Agent agent);
 
-	public void OnTick(Agent agent);
+	public void OnTick(Agent agent, float deltaTime);
 
 	public BaseState DeepCopy();
 }

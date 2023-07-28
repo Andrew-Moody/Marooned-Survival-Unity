@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 303239c4ca4951d469f4ee6d201674b2, type: 3}
+  m_Name: MobMeleeAttackAbility
+  m_EditorClassIdentifier: 
+  _cooldown: 2
+  _effect: {fileID: 11400000, guid: b6fb0518b53ff9c43b00c733f0030d2d, type: 2}
+  _targeter: {fileID: 11400000, guid: 692ffc72cddbf744ba1d6ed2d1cbb718, type: 2}
+  _animationTrigger: USE_ABILITY
+  _startSound: {fileID: 8300000, guid: f894ae2060e946649b8c5d2cbc7aa8b2, type: 3}
+  _knockbackStrength: 10

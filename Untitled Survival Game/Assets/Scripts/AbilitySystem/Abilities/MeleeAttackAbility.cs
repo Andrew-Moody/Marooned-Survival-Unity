@@ -39,6 +39,8 @@ namespace AbilitySystem
 
 		public override void Activate(AbilityHandle handle)
 		{
+			Debug.LogError("Ability Activate");
+
 			handle.AbilityData.CooldownRemaining = _cooldown;
 
 			AudioSource audioSource = handle.AbilityData.User.Actor.AudioSource;
@@ -111,11 +113,18 @@ namespace AbilitySystem
 
 		private void Task_AnimEventRecieved(IAsyncTask task, TaskResultData result)
 		{
+			Debug.LogError("Anim Event");
+
 			if (task.TaskOwner is AbilityHandle handle)
 			{
 				AbilityActor user = handle.AbilityData.User;
 
 				List<TargetResult> targetResults = _targeter.FindTargets(user, new TargetingArgs());
+
+				if (targetResults.Count == 0)
+				{
+					Debug.LogError("Failed to find targets");
+				}
 
 				foreach (TargetResult targetResult in targetResults)
 				{
@@ -140,11 +149,16 @@ namespace AbilitySystem
 					ApplyEffect(handle, _effect, targetResult.Target);
 				}
 			}
+			else
+			{
+				Debug.LogError("Task Owner not set");
+			}
 		}
 
 
 		private void ApplyEffect(AbilityHandle handle, Effect effect, AbilityActor target)
 		{
+			Debug.LogError("Ability Apply Effect");
 			EffectEventData effectData = new EffectEventData()
 			{
 				Source = handle.AbilityData.User,

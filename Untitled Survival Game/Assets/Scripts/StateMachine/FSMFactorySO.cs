@@ -221,7 +221,8 @@ public enum StateType
 {
 	None,
 	Roam,
-	Attack
+	Attack,
+	MeleeAttack
 }
 
 

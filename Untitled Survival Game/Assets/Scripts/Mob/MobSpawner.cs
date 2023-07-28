@@ -10,7 +10,8 @@ public class MobSpawner : NetworkBehaviour
 
 
 	private float _delay = 5f;
-	private bool hasSpawned = false;
+	private bool _hasSpawned = false;
+	private bool _running = false;
 
 	public override void OnStartClient()
 	{
@@ -25,19 +26,21 @@ public class MobSpawner : NetworkBehaviour
 
 	public override void OnStartServer()
 	{
-		base.OnStartServer();		
+		base.OnStartServer();
+
+		_running = true;
 	}
 
 
 	private void Update()
 	{
-		if (!hasSpawned)
+		if (_running && !_hasSpawned)
 		{
 			_delay -= Time.deltaTime;
 
 			if (_delay < 0f)
 			{
-				hasSpawned = true;
+				_hasSpawned = true;
 
 				SpawnMob(_mobName);
 			}

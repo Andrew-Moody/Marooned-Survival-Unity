@@ -29,6 +29,27 @@ namespace Actors
 
 		//private ActorState _actorState;
 
+		public virtual void SetAnimTrigger(string name)
+		{
+			if (_animator != null)
+			{
+				_animator.SetTrigger(name);
+			}
+			else if (_transformAnimator != null)
+			{
+				_transformAnimator.PlayAnimation(name);
+			}
+		}
+
+
+		public virtual void SetAnimFloat(string name, float value)
+		{
+			if (_animator != null)
+			{
+				_animator.SetFloat(name, value);
+			}
+		}
+
 
 		protected virtual void StartDeath()
 		{

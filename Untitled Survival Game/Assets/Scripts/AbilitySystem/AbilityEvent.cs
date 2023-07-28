@@ -4,9 +4,9 @@ using UnityEngine;
 
 namespace AbilitySystem
 {
-	public class AbilityEvent
+	public class AbilityEventData
 	{
-
+		public AbilityActor Target { get; set; }
 	}
 }
 

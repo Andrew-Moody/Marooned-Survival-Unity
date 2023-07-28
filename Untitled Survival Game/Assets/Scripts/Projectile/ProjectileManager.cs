@@ -2,40 +2,38 @@ using FishNet.Object;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using IActor = Actors.IActor;
 
 public class ProjectileManager : NetworkBehaviour
 {
-	public static ProjectileManager Instance;
+	public static ProjectileManager Instance => _instance;
+
+	private static ProjectileManager _instance;
 
 	private void Awake()
 	{
-		if (Instance == null)
+		if (_instance == null)
 		{
-			Instance = this;
+			_instance = this;
+		}
+		else
+		{
+			Destroy(gameObject);
 		}
 	}
 
 
 	[Server]
-	public static ProjectileBase SpawnProjectile(ProjectileBase prefab)
+	public static ProjectileBase SpawnProjectile(ProjectileBase prefab, Vector3 position, Quaternion rotation, GameObject actorObject = null)
 	{
-		ProjectileBase proj = Instantiate(prefab);
+		ProjectileBase proj = Instantiate(prefab, position, rotation, Instance.transform);
 		Instance.Spawn(proj.gameObject);
 
-		proj.Spawn(Vector3.zero, Quaternion.identity);
-
-		return proj;
-	}
-
-
-	[Server]
-	public static ProjectileBase SpawnProjectile(ProjectileBase prefab, Vector3 position, Quaternion rotation)
-	{
-		ProjectileBase proj = Instantiate(prefab);
-		Instance.Spawn(proj.gameObject);
-
-		proj.Spawn(position, rotation);
-
+		if (actorObject != null)
+		{
+			proj.SetOwningActorORPC(actorObject);
+		}
+		
 		return proj;
 	}
 }

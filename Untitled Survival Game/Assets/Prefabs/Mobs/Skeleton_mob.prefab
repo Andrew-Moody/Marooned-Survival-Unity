@@ -199,19 +199,10 @@ MonoBehaviour:
   _componentIndexCache: 2
   _addedNetworkObject: {fileID: 2578392283353702552}
   _networkObjectCache: {fileID: 2578392283353702552}
-  _mobAISO: {fileID: 11400000, guid: 8eca9d756aefeaf4584f76804e47ecb4, type: 2}
+  _mobAISO: {fileID: 11400000, guid: cd6322adb2f6d0e4cb6a07cc469f02db, type: 2}
   _pathfinding: {fileID: 2578392283353702647}
-  _animator: {fileID: 2424894543613601534}
   _actorObject: {fileID: 2578392283353703508}
-  _viewMask:
-    serializedVersion: 2
-    m_Bits: 256
-  _viewRange: 10
-  _roamRange: {x: 10, y: 0, z: 10}
-  _roamCenter: {x: 0, y: 0, z: 0}
-  _worldStatDisplay: {fileID: 3669065061277924020}
   _viewTransform: {fileID: 0}
-  TimeToWait: 2
 --- !u!114 &2578392283353702647
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -256,7 +247,8 @@ MonoBehaviour:
     _traits: []
   _blockingTraits:
     _traits: []
-  _startingAbilities: []
+  _startingAbilities:
+  - {fileID: 11400000, guid: 5f8a6bec64ab6ee4a8d94ed1d588b9e1, type: 2}
   _cues: []
 --- !u!143 &2578392283353702509
 CharacterController:
@@ -717,17 +709,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1644036054473569575, guid: e47cb18e54cf9d241888fbabdb62ed42, type: 3}
   m_PrefabInstance: {fileID: 2610936797392310035}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &3669065061277924020 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1644036054473569703, guid: e47cb18e54cf9d241888fbabdb62ed42, type: 3}
-  m_PrefabInstance: {fileID: 2610936797392310035}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 01c1662d979d0c648ad57938cf39fd19, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &8561916124948663433
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -25,46 +25,43 @@ public class Mob : NetworkBehaviour
 
 	private IActor _actor;
 
+	private Vector3 _spawnPosition;
+
+	private Quaternion _spawnRotation;
+
 
 	public override void OnStartNetwork()
 	{
 		base.OnStartNetwork();
 
 		InitializeFromPrefab();
-	}
 
-	public override void OnStartServer()
-	{
-		base.OnStartServer();
+		Debug.Log("OnStartNetwork Position: " + transform.position);
 
 		SetTransformOnSpawn();
 	}
 
 
-	[Server]
 	private void SetTransformOnSpawn()
 	{
 		// Reset Mob root to origin and displace net transform to spawn position
-		if (TryGetComponent(out NetworkTransform netTrans))
+		_spawnPosition = transform.position;
+		_spawnRotation = transform.rotation;
+
+		transform.position = Vector3.zero;
+		transform.rotation = Quaternion.identity;
+
+		if (IsServer && TryGetComponent(out NetworkTransform netTrans))
 		{
-			Vector3 position = transform.position;
-			Quaternion rotation = transform.rotation;
-
-			transform.position = Vector3.zero;
-			transform.rotation = Quaternion.identity;
-
-			netTrans.transform.position = position;
-			netTrans.transform.rotation = rotation;
+			netTrans.transform.position = _spawnPosition;
+			netTrans.transform.rotation = _spawnRotation;
 		}
 	}
 
 
 	private void InitializeFromPrefab()
 	{
-		if (_actor == null)
-		{
-			_actor = _actorObject.GetComponent<IActor>();
-		}
+		_actor = _actorObject.GetComponent<IActor>();
 
 		_actor.DeathFinished += IActor_DeathFinished;
 	}
@@ -144,9 +141,9 @@ public class Mob : NetworkBehaviour
 
 		ProjectileSource projSource = mobGraphic.GetComponentInChildren<ProjectileSource>();
 
-		_agent.Animator = animator;
+		//_agent.Animator = animator;
 
-		_agent.RoamCenter = _networkTransform.position;
+		//_agent.RoamCenter = _networkTransform.position;
 
 		_agent.SetStateMachine(mobSO.MobAISO.GetRuntimeFSM());
 

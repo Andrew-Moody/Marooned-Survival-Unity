@@ -22,14 +22,14 @@ public class StateMachine
 	}
 
 
-	public void OnTick(Agent agent)
+	public void OnTick(Agent agent, float deltaTime)
 	{
 		if (_currentState == -1 && _states.Length > 0)
 		{
 			ChangeState(0, agent);
 		}
 
-		_states[_currentState].OnTick(agent);
+		_states[_currentState].OnTick(agent, deltaTime);
 	}
 
 

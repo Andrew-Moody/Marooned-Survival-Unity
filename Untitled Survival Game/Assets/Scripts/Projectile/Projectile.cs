@@ -2,8 +2,8 @@ using FishNet.Object;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using LegacyAbility;
-using AbilityActor = AbilitySystem.AbilityActor;
+using AbilitySystem;
+using Actors;
 
 
 public class Projectile : ProjectileBase
@@ -15,13 +15,13 @@ public class Projectile : ProjectileBase
 	private Transform _graphic;
 
 	[SerializeField]
+	private GameObject _startParticle;
+
+	[SerializeField]
+	private GameObject _endParticle;
+
+	[SerializeField]
 	private ProjectileCollider _collider;
-
-	[SerializeField]
-	private AbilityActor _abilityActor;
-
-	[SerializeField]
-	private LegacyAbility.AbilityActor _legacyActor;
 
 	[SerializeField]
 	private float _lifeTime;
@@ -30,24 +30,12 @@ public class Projectile : ProjectileBase
 	private float _disposeDelay;
 
 	[SerializeField]
-	private AbilitySO _abilitySO;
-
-	[SerializeReference]
 	private Ability _ability;
 
 	private bool _active = false;
 
 	private bool _dying = false;
 
-
-	private void Awake()
-	{
-		if (_abilitySO != null)
-		{
-			_ability = _abilitySO.GetRuntimeAbility();
-
-		}
-	}
 
 
 	private void Start()
@@ -80,10 +68,8 @@ public class Projectile : ProjectileBase
 			SpawnORPC(position, rotation);
 
 			Debug.Log("Setting Offset");
-			_projectileMotion.SetOffset(_offsetPos, _offsetRot);
+			_projectileMotion.SetOffset(_spawnPos, _spawnRot);
 			_projectileMotion.enabled = IsServer;
-
-			//UseAbilityORPC(null, EffectTiming.OnStart);
 		}
 	}
 
@@ -95,10 +81,7 @@ public class Projectile : ProjectileBase
 			_projectileMotion.transform.rotation = Quaternion.LookRotation(velocity);
 		}
 
-
 		_projectileMotion.Launch(velocity);
-
-		UseAbilityORPC(null, EffectTiming.OnStart);
 
 		_active = true;
 	}
@@ -106,8 +89,6 @@ public class Projectile : ProjectileBase
 
 	public override void Dispose()
 	{
-		UseAbilityORPC(null, EffectTiming.OnEnd);
-
 		HideGraphicORPC();
 
 		_active = false;
@@ -159,27 +140,12 @@ public class Projectile : ProjectileBase
 
 			_projectileMotion.Halt();
 
-			AbilityActor target = hitInfo.transform.gameObject.GetComponent<AbilityActor>();
-
-			UseAbilityORPC(target, EffectTiming.OnAnimEvent);
+			if (hitInfo.collider.gameObject.TryGetComponent(out AbilityActor target))
+			{
+				ActivateAbility(target);
+			}
 
 			Dispose();
-		}
-	}
-
-
-	[ObserversRpc(RunLocally = true)]
-	private void UseAbilityORPC(AbilityActor target, EffectTiming timing)
-	{
-		if (target == null)
-		{
-			_ability.UseAbility(_legacyActor, null, null, timing, IsServer);
-		}
-		else
-		{
-			LegacyAbility.AbilityActor targetActor = target.gameObject.GetComponent<LegacyAbility.AbilityActor>();
-
-			_ability.UseAbility(_legacyActor, null, targetActor, timing, IsServer);
 		}
 	}
 
@@ -188,13 +154,30 @@ public class Projectile : ProjectileBase
 	private void HideGraphicORPC()
 	{
 		_graphic.gameObject.SetActive(false);
+
+		_endParticle.GetComponent<ParticleSystem>().Play();
 	}
 
 
-	protected override void OnValidate()
+	[ObserversRpc(RunLocally = true)]
+	private void ActivateAbility(AbilityActor target)
 	{
-		base.OnValidate();
+		AbilityActor user = null;
+		
+		if (OwningActor is Actor actor)
+		{
+			actor.gameObject.TryGetComponent(out user);
+		}
 
-		AbilityFactory.ValidateAbility(ref _ability);
+		AbilityHandle handle = new AbilityHandle(_ability, user);
+
+		AbilityEventData data = new AbilityEventData()
+		{
+			Target = target,
+		};
+
+		handle.AbilityData.AbilityEventData = data;
+
+		handle.Activate();
 	}
 }
