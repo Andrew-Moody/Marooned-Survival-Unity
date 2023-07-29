@@ -51,10 +51,15 @@ public class Mob : NetworkBehaviour
 		transform.position = Vector3.zero;
 		transform.rotation = Quaternion.identity;
 
-		if (IsServer && TryGetComponent(out NetworkTransform netTrans))
+		if (IsServer)
 		{
-			netTrans.transform.position = _spawnPosition;
-			netTrans.transform.rotation = _spawnRotation;
+			NetworkTransform netTrans = GetComponentInChildren<NetworkTransform>();
+
+			if (netTrans != null)
+			{
+				netTrans.transform.position = _spawnPosition;
+				netTrans.transform.rotation = _spawnRotation;
+			}
 		}
 	}
 

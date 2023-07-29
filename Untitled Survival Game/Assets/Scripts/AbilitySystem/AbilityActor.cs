@@ -12,31 +12,8 @@ namespace AbilitySystem
 	{
 		public event TaskEventHandler TaskEventRecieved;
 
-		[SerializeField] private Stats _stats;
-
 		public Actor Actor => _actor;
 		[SerializeField] private Actor _actor;
-
-		[Header("Optional")]
-
-		[SerializeField]
-		private AbilityActor _parentActor;
-
-		[SerializeField]
-		private Transform _viewTransform;
-		public Transform ViewTransform { get { return _viewTransform; } }
-
-		
-		public override void OnStartNetwork()
-		{
-			base.OnStartNetwork();
-
-			SetupStartingAbilities();
-			SetupCueOverrides();
-		}
-
-
-		#region AbilitySystem
 
 		public bool IsAbilityActive => _activeAbility != null;
 
@@ -59,6 +36,15 @@ namespace AbilitySystem
 		private Dictionary<int, Cue> _cueOverrides;
 
 		private AbilityHandle _activeAbility;
+
+
+		public override void OnStartNetwork()
+		{
+			base.OnStartNetwork();
+
+			SetupStartingAbilities();
+			SetupCueOverrides();
+		}
 
 
 		[Server]
@@ -397,7 +383,7 @@ namespace AbilitySystem
 		{
 			foreach (StatModifier modifier in effectHandle.Effect.Modifiers)
 			{
-				modifier.ApplyModifier(_stats);
+				modifier.ApplyModifier(_actor.Stats);
 			}
 		}
 
@@ -416,7 +402,6 @@ namespace AbilitySystem
 			TaskEventRecieved?.Invoke(sender, data);
 		}
 
-		#endregion
 
 		private void Update()
 		{

@@ -15,5 +15,7 @@ namespace AbilitySystem
 		public AsyncTasks.IAsyncTask Task { get; set; }
 
 		public AbilityEventData AbilityEventData { get; set; }
+
+		public ProjectileBase Projectile { get; set; }
 	}
 }

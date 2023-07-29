@@ -27,6 +27,10 @@ namespace Actors
 		public TransformAnimator TransformAnimator => _transformAnimator;
 		[SerializeField] private TransformAnimator _transformAnimator;
 
+		public Transform ViewTransform => _viewTransform;
+		[SerializeField] private Transform _viewTransform;
+		
+
 		//private ActorState _actorState;
 
 		public virtual void SetAnimTrigger(string name)

@@ -42,10 +42,6 @@ public class ProjectileCollider : MonoBehaviour
 	private Vector3 _halfExtents;
 
 
-	[SerializeField]
-	private Transform _testCube;
-
-
 	void Awake()
 	{
 		CalculateBounds();	
@@ -103,11 +99,6 @@ public class ProjectileCollider : MonoBehaviour
 		Vector3 direction = currPos - prevPos;
 		Quaternion orientation = transform.rotation * _orientation;
 		float maxDistance = direction.magnitude;
-
-
-		//_testCube.position = center;
-		//_testCube.rotation = orientation;
-		//_testCube.localScale = 2f * _halfExtents;
 
 		if (_collisionType == CollisionType.Sphere)
 		{

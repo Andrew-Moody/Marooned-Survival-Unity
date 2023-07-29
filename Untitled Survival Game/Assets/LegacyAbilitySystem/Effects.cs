@@ -303,9 +303,6 @@ namespace LegacyAbility
 		[SerializeField]
 		private Vector3 _velocity;
 
-		[SerializeField]
-		private bool _alignWithVelocity;
-
 
 		public static Effect Create()
 		{
@@ -315,7 +312,7 @@ namespace LegacyAbility
 
 		public override void ApplyEffect(Ability ability, AbilityActor user, AbilityActor effected)
 		{
-			effected.LaunchProjectile(_velocity, _alignWithVelocity);
+			effected.LaunchProjectile(_velocity);
 		}
 	}
 

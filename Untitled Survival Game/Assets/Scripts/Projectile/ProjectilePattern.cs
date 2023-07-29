@@ -1,3 +1,5 @@
+using Actors;
+using FishNet.Connection;
 using FishNet.Object;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,109 +8,80 @@ using UnityEngine;
 public class ProjectilePattern : ProjectileBase
 {
 	[SerializeField]
-	private ProjectileBase[] _projectiles;
+	private ProjectileEmitter[] _emitters;
 
 	[SerializeField]
 	private bool _keepVertical;
 
+	
+
 	[SerializeField]
-	private float _lifeTime;
+	private bool _disposeChildren;
 
-	private bool _isLaunched;
+	private List<ProjectileBase> _projectiles;
 
-	public override void Spawn(Vector3 position, Quaternion rotation)
+
+	public override void Spawn()
 	{
-		_networkTransform.transform.position = position;
+		base.Spawn();
 
-		_networkTransform.transform.rotation = rotation;
+		_projectiles = new List<ProjectileBase>();
 
-		if (_keepVertical)
+		foreach (ProjectileEmitter emitter in _emitters)
 		{
-			Vector3 forward = _networkTransform.transform.forward;
-			_networkTransform.transform.rotation = Quaternion.LookRotation(forward, Vector3.up);
+			ProjectileBase projectile = emitter.Spawn(OwningActor);
+
+			projectile.SetFollowTarget(_networkTransform.transform);
+
+			_projectiles.Add(projectile);
 		}
-		
-
-		for (int i = 0; i < _projectiles.Length; i++)
-		{
-			//_projectiles[i].Spawn(_projectiles[i].transform.localPosition, _projectiles[i].transform.localRotation);
-
-			_projectiles[i].Spawn(_networkTransform.transform.position, _networkTransform.transform.rotation);
-
-			_projectiles[i].SetFollowTarget(_networkTransform.transform);
-		}
-
-		//for (int i = 0; i < _projectiles.Length; i++)
-		//{
-		//	_projectiles[i].transform.SetParent(ProjectileManager.Instance.transform);
-		//	_projectiles[i].transform.localPosition = Vector3.zero;
-		//	_projectiles[i].transform.localRotation = Quaternion.identity;
-		//}
-
-		//ResetParentsORPC();
 	}
 
 
-	public override void Launch(Vector3 velocity, bool align = false)
+	public override void Launch(Vector3 velocity)
 	{
-		_isLaunched = true;
+		base.Launch(velocity);
 
-		for (int i = 0; i < _projectiles.Length; i++)
+		for (int i = 0; i < _projectiles.Count; i++)
 		{
-			// Get the relative rotation from group to individual
-			Quaternion rot = _projectiles[i].NetworkTransform.rotation * Quaternion.Inverse(_networkTransform.transform.rotation);
+			velocity  = _emitters[i].transform.localRotation * velocity;
 
-			Vector3 vel = rot * velocity;
-
-			_projectiles[i].Launch(vel, align);
-
-			_projectiles[i].SetFollowTarget(null);
+			_projectiles[i].Launch(velocity);
 		}
 	}
 
+
+	public override void SetFollowTarget(Transform target)
+	{
+		base.SetFollowTarget(target);
+
+		foreach (ProjectileBase projectile in _projectiles)
+		{
+			projectile.SetFollowTarget(target);
+		}
+	}
+
+
+	public override void SetOwningActor(Actor actor)
+	{
+		base.SetOwningActor(actor);
+
+		foreach (ProjectileBase projectile in _projectiles)
+		{
+			projectile.SetOwningActor(actor);
+		}
+	}
 
 	public override void Dispose()
 	{
+		base.Dispose();
 
-	}
-
-
-	private void Update()
-	{
-		if (_followTarget != null)
+		if (_disposeChildren)
 		{
-			_networkTransform.transform.position = _followTarget.position;
-
-			_networkTransform.transform.rotation = _followTarget.rotation;
-
-			if (_keepVertical)
+			foreach (ProjectileBase projectile in _projectiles)
 			{
-				Vector3 forward = _networkTransform.transform.forward;
-				_networkTransform.transform.rotation = Quaternion.LookRotation(forward, Vector3.up);
+				projectile.Dispose();
 			}
 		}
-
-		if (_isLaunched && IsSpawned)
-		{
-			if (_lifeTime < 0f)
-			{
-				Despawn();
-			}
-
-			_lifeTime -= Time.deltaTime;
-		}
-	}
-
-
-	[ObserversRpc(BufferLast = true)]
-	private void ResetParentsORPC()
-	{
-		for (int i = 0; i < _projectiles.Length; i++)
-		{
-			_projectiles[i].transform.SetParent(ProjectileManager.Instance.transform);
-			_projectiles[i].transform.localPosition = Vector3.zero;
-			_projectiles[i].transform.localRotation = Quaternion.identity;
-		}
-		
 	}
 }

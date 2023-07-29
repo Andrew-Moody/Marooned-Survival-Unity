@@ -269,7 +269,7 @@ namespace LegacyAbility
 
 
 		[Server]
-		public void LaunchProjectile(Vector3 velocity, bool align)
+		public void LaunchProjectile(Vector3 velocity)
 		{
 			if (_projectile == null)
 			{
@@ -304,7 +304,7 @@ namespace LegacyAbility
 
 			_projectile.SetFollowTarget(null);
 
-			_projectile.Launch(velocity, align);
+			_projectile.Launch(velocity);
 
 			_projectile = null;
 		}

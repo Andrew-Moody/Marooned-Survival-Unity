@@ -2,7 +2,7 @@ using FishNet.Object;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using IActor = Actors.IActor;
+using Actor = Actors.Actor;
 
 public class ProjectileManager : NetworkBehaviour
 {
@@ -24,14 +24,14 @@ public class ProjectileManager : NetworkBehaviour
 
 
 	[Server]
-	public static ProjectileBase SpawnProjectile(ProjectileBase prefab, Vector3 position, Quaternion rotation, GameObject actorObject = null)
+	public static ProjectileBase SpawnProjectile(ProjectileBase prefab, Vector3 position, Quaternion rotation, Actor actor = null)
 	{
 		ProjectileBase proj = Instantiate(prefab, position, rotation, Instance.transform);
 		Instance.Spawn(proj.gameObject);
 
-		if (actorObject != null)
+		if (actor != null)
 		{
-			proj.SetOwningActorORPC(actorObject);
+			proj.SetOwningActor(actor);
 		}
 		
 		return proj;

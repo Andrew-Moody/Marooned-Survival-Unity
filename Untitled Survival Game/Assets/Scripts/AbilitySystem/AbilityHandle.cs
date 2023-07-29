@@ -23,6 +23,15 @@ namespace AbilitySystem
 			_abilityData = _ability.CreateInstanceData(user);
 		}
 
+		public AbilityHandle(Ability ability, AbilityActor user, AbilityEventData data)
+		{
+			_ability = ability;
+
+			_abilityData = _ability.CreateInstanceData(user);
+
+			_abilityData.AbilityEventData = data;
+		}
+
 		public bool CanActivate()
 		{
 			return _ability.CanActivate(this);

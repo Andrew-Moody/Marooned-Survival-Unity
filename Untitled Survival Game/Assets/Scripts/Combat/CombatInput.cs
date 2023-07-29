@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using AbilityActor = AbilitySystem.AbilityActor;
+using Actors;
 
 
 public class CombatInput : NetworkBehaviour
@@ -133,7 +134,7 @@ public class CombatInput : NetworkBehaviour
 	[ServerRpc]
 	private void Interact()
 	{
-		Transform view = _abilityActor.ViewTransform;
+		Transform view = _abilityActor.Actor.ViewTransform;
 
 		if (Physics.Raycast(view.position, view.forward, out RaycastHit hit, _interactRange, _interactMask))
 		{

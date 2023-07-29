@@ -11,9 +11,14 @@ public class ProjectileMotion : MonoBehaviour
 	private ProjectileCollider _collider;
 
 	[SerializeField]
-	private float _speed;
+	private bool _keepOffset;
 
-	//private bool _isBouncing;
+	[SerializeField]
+	private bool _keepVertical;
+
+	[SerializeField]
+	private bool _alignWithVelocity;
+
 
 	private Vector3 _preHitVelocity;
 
@@ -30,11 +35,6 @@ public class ProjectileMotion : MonoBehaviour
 	private Vector3 _acceleration;
 	private Vector3 _angularAcceleration;
 
-	//private bool _stuck;
-	//private Transform _stuckTarget;
-
-	//private bool _isLaunched = false;
-
 	private Transform _followTarget;
 
 	private Vector3 _offsetPos;
@@ -48,26 +48,63 @@ public class ProjectileMotion : MonoBehaviour
 	}
 
 
-	public void SetFollowTarget(Transform target)
+	public virtual void SetFollowTarget(Transform target)
 	{
 		_followTarget = target;
 
-		if (_followTarget != null)
+		_offsetPos = Vector3.zero;
+		_offsetRot = Quaternion.identity;
+
+		if (target != null)
 		{
-			transform.position = _followTarget.TransformPoint(_offsetPos);
-			transform.rotation = _offsetRot * _followTarget.rotation;
+			if (_keepOffset)
+			{
+				// find the offset from current world position relative to target transform
+				_offsetPos = _followTarget.InverseTransformPoint(transform.position);
+
+				// inverse of transform.rotation = _followTarget.rotation * _offsetRot;
+				_offsetRot = Quaternion.Inverse(_followTarget.rotation) * transform.rotation;
+			}
+			else
+			{
+				// Snap to new position
+				transform.position = _followTarget.TransformPoint(_offsetPos);
+				transform.rotation = _followTarget.rotation * _offsetRot;
+			}
 		}
 	}
 
 
 	public void Launch(Vector3 velocity)
 	{
-		//_isLaunched = true;
+		_followTarget = null;
+
+		if (_alignWithVelocity)
+		{
+			transform.rotation = Quaternion.LookRotation(velocity);
+		}
 
 		_prevPosition = transform.position;
 		_prevRotation = transform.rotation;
 
 		_velocity = velocity;
+	}
+
+
+	public bool CheckCollision(out RaycastHit hitInfo)
+	{
+		if (_collider.CheckCollision(_prevPosition, transform.position, out hitInfo))
+		{
+			Resolve(hitInfo);
+
+			//_projectileMotion.Stick(hitInfo.transform);
+
+			Halt();
+
+			return true;
+		}
+
+		return false;
 	}
 
 
@@ -130,8 +167,7 @@ public class ProjectileMotion : MonoBehaviour
 	}
 
 	
-	// Unclear if FixedUpdate would be better or worse but will most likely move to OnTick regardless
-	void Update()
+	public void Tick(float deltaTime)
 	{
 		//if (_stuck)
 		//{
@@ -152,21 +188,22 @@ public class ProjectileMotion : MonoBehaviour
 
 		if (_followTarget != null)
 		{
+			// Still need to add keep vertical
+
 			transform.position = _followTarget.TransformPoint(_offsetPos);
-			transform.rotation = _offsetRot * _followTarget.rotation;
+			transform.rotation = _followTarget.rotation * _offsetRot;
+			// convention seems to be Qworld = Qparent * Qchild
+			// old transform.rotation = _offsetRot * _followTarget.rotation;
 		}
 		else
 		{
-			_velocity += Time.deltaTime * _acceleration;
+			_velocity += deltaTime * _acceleration;
 
-			_angularVelocity += Time.deltaTime * _angularAcceleration;
+			_angularVelocity += deltaTime * _angularAcceleration;
 
-			transform.position += Time.deltaTime * _velocity;
+			transform.position += deltaTime * _velocity;
 
-			transform.rotation *= Quaternion.Euler(Time.deltaTime * _angularAcceleration);
+			transform.rotation *= Quaternion.Euler(deltaTime * _angularAcceleration);
 		}
-
-
-		
 	}
 }

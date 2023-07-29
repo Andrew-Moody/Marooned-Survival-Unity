@@ -115,13 +115,12 @@ MonoBehaviour:
   _addedNetworkObject: {fileID: 6261605203819184730}
   _networkObjectCache: {fileID: 6261605203819184730}
   _networkTransform: {fileID: 5800626481318469110}
+  _lifeTime: 100
+  _deathTime: 1
   _projectileMotion: {fileID: 5800626481318469105}
   _graphic: {fileID: 8935335444905319778}
-  _startParticle: {fileID: 1318945429760865770}
-  _endParticle: {fileID: 5160227806645578267}
-  _collider: {fileID: 5800626481318469108}
-  _lifeTime: 100
-  _disposeDelay: 0.3
+  _startParticle: {fileID: 7859459789826889610}
+  _endParticle: {fileID: 4090239542604302459}
   _ability: {fileID: 11400000, guid: 2235dcacf00897048b69ed4d7a13e360, type: 2}
 --- !u!114 &6261605203819184730
 MonoBehaviour:
@@ -165,7 +164,6 @@ MonoBehaviour:
   _networkBehaviours:
   - {fileID: 4478765195836222777}
   - {fileID: 5800626481318469110}
-  - {fileID: 0}
   <ParentNetworkObject>k__BackingField: {fileID: 0}
   <ChildNetworkObjects>k__BackingField: []
   _isNetworked: 1
@@ -260,7 +258,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _networkTransform: {fileID: 5800626481318469106}
   _collider: {fileID: 5800626481318469108}
-  _speed: 1
+  _keepOffset: 1
+  _keepVertical: 0
+  _alignWithVelocity: 1
 --- !u!114 &5800626481318469108
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -282,7 +282,6 @@ MonoBehaviour:
   _radius: 0.2
   _length: 1
   _direction: {x: 0, y: 1, z: 0}
-  _testCube: {fileID: 0}
 --- !u!1 &6419618811462087625
 GameObject:
   m_ObjectHideFlags: 0
@@ -308,13 +307,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6419618811462087625}
-  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.4, y: 0.4, z: 0.40000004}
   m_Children: []
   m_Father: {fileID: 3222249077665579727}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &7674099629009644278
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -421,14 +420,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 565dc0004905b724dad123c0f82f96ad, type: 3}
---- !u!1 &5160227806645578267 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5856641632776669729, guid: 565dc0004905b724dad123c0f82f96ad, type: 3}
-  m_PrefabInstance: {fileID: 1646689433134112826}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8873877649473429357 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7925332470524641111, guid: 565dc0004905b724dad123c0f82f96ad, type: 3}
+  m_PrefabInstance: {fileID: 1646689433134112826}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &4090239542604302459 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 3321761387767048257, guid: 565dc0004905b724dad123c0f82f96ad, type: 3}
   m_PrefabInstance: {fileID: 1646689433134112826}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4831004951485333451
@@ -488,13 +487,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 06ada1743f25fd142862e99ed10a1615, type: 3}
---- !u!1 &1318945429760865770 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5856641632776669729, guid: 06ada1743f25fd142862e99ed10a1615, type: 3}
-  m_PrefabInstance: {fileID: 4831004951485333451}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3384246814341513372 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7925332470524641111, guid: 06ada1743f25fd142862e99ed10a1615, type: 3}
+  m_PrefabInstance: {fileID: 4831004951485333451}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &7859459789826889610 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 3321761387767048257, guid: 06ada1743f25fd142862e99ed10a1615, type: 3}
   m_PrefabInstance: {fileID: 4831004951485333451}
   m_PrefabAsset: {fileID: 0}

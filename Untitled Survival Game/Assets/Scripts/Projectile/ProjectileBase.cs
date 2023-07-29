@@ -9,6 +9,9 @@ public class ProjectileBase : NetworkBehaviour
 	public Transform NetworkTransform => _networkTransform.transform;
 	[SerializeField] protected NetworkBehaviour _networkTransform;
 
+	[SerializeField] private float _lifeTime;
+
+	[SerializeField] private float _deathTime;
 
 	public Transform FollowTarget => _followTarget;
 	protected Transform _followTarget;
@@ -16,25 +19,65 @@ public class ProjectileBase : NetworkBehaviour
 	protected Vector3 _spawnPos;
 	protected Quaternion _spawnRot;
 
-	public IActor OwningActor => _owningActor;
-	private IActor _owningActor;
+	public Actor OwningActor => _owningActor;
+	private Actor _owningActor;
+
+	public ProjectileState State => _state;
+	protected ProjectileState _state;
+
+	private float _timeRemaining;
+
 
 
 	public override void OnStartNetwork()
 	{
 		base.OnStartNetwork();
 
-		// Preserve the spawn position and rotation
-		_spawnPos = transform.position;
-		_spawnRot = transform.rotation;
+		SetSpawnTransform();
+	}
 
-		// Reset Projectile root object transform
-		transform.position = Vector3.zero;
-		transform.rotation = Quaternion.identity;
 
-		// Move the network transform to the starting position
-		_networkTransform.transform.position = _spawnPos;
-		_networkTransform.transform.rotation = _spawnRot;
+	public override void OnStartServer()
+	{
+		base.OnStartServer();
+
+		Spawn();
+
+		TimeManager.OnTick += TimeManager_OnTick;
+	}
+
+
+	private void OnDestroy()
+	{
+		TimeManager.OnTick -= TimeManager_OnTick;
+	}
+
+
+	private void TimeManager_OnTick()
+	{
+		Tick((float)TimeManager.TickDelta);
+	}
+
+	[Server]
+	public virtual void Spawn()
+	{
+		_state = ProjectileState.Spawned;
+	}
+
+
+	[Server]
+	public virtual void Launch(Vector3 velocity)
+	{
+		_state = ProjectileState.Launched;
+		_timeRemaining = _lifeTime;
+	}
+
+
+	[Server]
+	public virtual void Dispose()
+	{
+		_timeRemaining = _deathTime;
+		_state = ProjectileState.Disposing;
 	}
 
 
@@ -45,61 +88,57 @@ public class ProjectileBase : NetworkBehaviour
 	}
 
 
-	public virtual void Spawn(Vector3 position, Quaternion rotation)
+	[Server]
+	public virtual void SetOwningActor(Actor actor)
 	{
-		if (IsServer)
-		{
-			SpawnORPC(position, rotation);
-		}
-	}
-
-
-	public virtual void Launch(Vector3 velocity, bool align = false)
-	{
-
-	}
-
-
-	public virtual void Dispose()
-	{
-
-	}
-
-
-	[ObserversRpc(RunLocally = true, BufferLast = true)]
-	public void SetOwningActorORPC(GameObject actorObject)
-	{
-		if (actorObject != null)
-		{
-			Debug.LogWarning("OwningActor set to null");
-			return;
-		}
-
-		if (!actorObject.TryGetComponent(out IActor actor))
-		{
-			Debug.LogWarning("ActorObject missing an IActor component");
-		}
-
 		_owningActor = actor;
 	}
 
 
-	[ObserversRpc(RunLocally = true, BufferLast = true)]
-	protected void SpawnORPC(Vector3 position, Quaternion rotation)
+	protected virtual void Tick(float deltaTime)
 	{
-		Debug.LogError("Projectile SpawnORPC");
+		if (_timeRemaining < 0f)
+		{
+			if (_state == ProjectileState.Launched && IsSpawned)
+			{
+				Dispose();
+			}
+			else if (_state == ProjectileState.Disposing)
+			{
+				_state = ProjectileState.Dead;
+				Despawn();
+			}
+		}
 
-		// Preserve the starting position of the prefab
+		_timeRemaining -= deltaTime;
+	}
+
+
+	private void SetSpawnTransform()
+	{
+		// Preserve the spawn position and rotation
 		_spawnPos = transform.position;
 		_spawnRot = transform.rotation;
 
-		// Reparent and reset Projectile root object
-		transform.SetParent(ProjectileManager.Instance.transform, false);
+		// Reset Projectile root object transform
 		transform.position = Vector3.zero;
 		transform.rotation = Quaternion.identity;
 
-		// Move the network transform to the starting position
-		_networkTransform.transform.position = _spawnPos + position;
-		_networkTransform.transform.rotation = _spawnRot * rotation;
+		if (IsServer)
+		{
+			// Move the network transform to the starting position
+			_networkTransform.transform.position = _spawnPos;
+			_networkTransform.transform.rotation = _spawnRot;
+		}
 	}
+
+
+	public enum ProjectileState
+	{
+		Spawned,
+		Launched,
+		Disposing,
+		Dead
+	}
+
 }

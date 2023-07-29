@@ -15,131 +15,68 @@ public class Projectile : ProjectileBase
 	private Transform _graphic;
 
 	[SerializeField]
-	private GameObject _startParticle;
+	private ParticleSystem _startParticle;
 
 	[SerializeField]
-	private GameObject _endParticle;
-
-	[SerializeField]
-	private ProjectileCollider _collider;
-
-	[SerializeField]
-	private float _lifeTime;
-
-	[SerializeField]
-	private float _disposeDelay;
+	private ParticleSystem _endParticle;
 
 	[SerializeField]
 	private Ability _ability;
 
-	private bool _active = false;
-
-	private bool _dying = false;
 
 
-
-	private void Start()
+	public override void OnStartClient()
 	{
-		enabled = IsServer;
+		base.OnStartClient();
+
+		this.enabled = IsServer;
+
+		_projectileMotion.enabled = IsServer;
+
+		_startParticle.Play();
 	}
 
 
 	public override void SetFollowTarget(Transform target)
 	{
-		if (target == null)
-		{
-			Debug.LogError("Followtarget is null");
-		}
-		else
-		{
-			Debug.LogError($"FollowTarget {target.gameObject.name}");
-		}
-
 		_followTarget = target;
 
 		_projectileMotion.SetFollowTarget(target);
 	}
 
 
-	public override void Spawn(Vector3 position, Quaternion rotation)
+	public override void Launch(Vector3 velocity)
 	{
-		if (IsServer)
-		{
-			SpawnORPC(position, rotation);
-
-			Debug.Log("Setting Offset");
-			_projectileMotion.SetOffset(_spawnPos, _spawnRot);
-			_projectileMotion.enabled = IsServer;
-		}
-	}
-
-
-	public override void Launch(Vector3 velocity, bool align = false)
-	{
-		if (align)
-		{
-			_projectileMotion.transform.rotation = Quaternion.LookRotation(velocity);
-		}
+		base.Launch(velocity);
 
 		_projectileMotion.Launch(velocity);
-
-		_active = true;
 	}
 
 
 	public override void Dispose()
 	{
+		base.Dispose();
 		HideGraphicORPC();
-
-		_active = false;
-		_dying = true;
 	}
 
 
-	private void Update()
+	protected override void Tick(float deltaTime)
 	{
-		if (!IsSpawned)
+		base.Tick(deltaTime);
+
+		_projectileMotion.Tick(deltaTime);
+
+		if (State == ProjectileState.Launched)
 		{
-			return;
-		}
-
-		if (_active)
-		{
-			if (_lifeTime < 0f)
-			{
-				_active = false;
-				_dying = true;
-			}
-
-			_lifeTime -= Time.deltaTime;
-
 			HandleCollision();
-		}
-		else if (_dying)
-		{
-			if (_disposeDelay < 0f)
-			{
-				Despawn();
-			}
-
-			_disposeDelay -= Time.deltaTime;
 		}
 	}
 
 
 	private void HandleCollision()
 	{
-		Vector3 prevPos = _projectileMotion.PrevPos;
-		Vector3 currPos = _projectileMotion.transform.position;
-
-		if (_collider.CheckCollision(prevPos, currPos, out RaycastHit hitInfo))
+		if (_projectileMotion.CheckCollision(out RaycastHit hitInfo))
 		{
-			_projectileMotion.Resolve(hitInfo);
-
-			//_projectileMotion.Stick(hitInfo.transform);
-
-			_projectileMotion.Halt();
-
 			if (hitInfo.collider.gameObject.TryGetComponent(out AbilityActor target))
 			{
 				ActivateAbility(target);
@@ -155,7 +92,7 @@ public class Projectile : ProjectileBase
 	{
 		_graphic.gameObject.SetActive(false);
 
-		_endParticle.GetComponent<ParticleSystem>().Play();
+		_endParticle.Play();
 	}
 
 
@@ -163,20 +100,14 @@ public class Projectile : ProjectileBase
 	private void ActivateAbility(AbilityActor target)
 	{
 		AbilityActor user = null;
-		
-		if (OwningActor is Actor actor)
+		if (OwningActor != null)
 		{
-			actor.gameObject.TryGetComponent(out user);
+			OwningActor.gameObject.TryGetComponent(out user);
 		}
+		
+		AbilityEventData data = new AbilityEventData() { Target = target };
 
-		AbilityHandle handle = new AbilityHandle(_ability, user);
-
-		AbilityEventData data = new AbilityEventData()
-		{
-			Target = target,
-		};
-
-		handle.AbilityData.AbilityEventData = data;
+		AbilityHandle handle = new AbilityHandle(_ability, user, data);
 
 		handle.Activate();
 	}
