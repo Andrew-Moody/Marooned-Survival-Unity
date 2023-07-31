@@ -9,9 +9,6 @@ namespace AbilitySystem
 	public class MeleeAttackAbility : Ability
 	{
 		[SerializeField]
-		private float _cooldown;
-
-		[SerializeField]
 		private Effect _effect;
 
 		[SerializeField]
@@ -26,22 +23,10 @@ namespace AbilitySystem
 		[SerializeField]
 		private float _knockbackStrength;
 
-		public override bool CanActivate(AbilityHandle handle)
-		{
-			if (handle.AbilityData.CooldownRemaining > 0f)
-			{
-				return false;
-			}
-
-			return true;
-		}
-
 
 		public override void Activate(AbilityHandle handle)
 		{
 			Debug.LogError("Ability Activate");
-
-			handle.AbilityData.CooldownRemaining = _cooldown;
 
 			AudioSource audioSource = handle.AbilityData.User.Actor.AudioSource;
 
@@ -121,16 +106,13 @@ namespace AbilitySystem
 
 				List<TargetResult> targetResults = _targeter.FindTargets(user, new TargetingArgs());
 
-				if (targetResults.Count == 0)
-				{
-					Debug.LogError("Failed to find targets");
-				}
+				Debug.LogError($"Found {targetResults.Count} targets");
 
 				foreach (TargetResult targetResult in targetResults)
 				{
 					AbilityActor target = targetResult.Target;
 
-					Agent agent = target.Actor.GetComponent<Agent>();
+					Agent agent = target.Actor.Components.Agent;
 
 					if (agent != null && user.IsServer)
 					{

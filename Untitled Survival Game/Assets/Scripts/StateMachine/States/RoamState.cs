@@ -13,7 +13,7 @@ public class RoamState : BaseState
 	{
 		Debug.Log("Entering RoamState");
 
-		_roamCenter = agent.ActorObject.transform.position;
+		_roamCenter = agent.Actor.NetTransform.position;
 
 		agent.Pathfinding.SetDestination(ChooseNextDest(agent));
 	}

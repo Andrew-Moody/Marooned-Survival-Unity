@@ -5,6 +5,9 @@ using UnityEngine;
 [System.Serializable]
 public class TransformAnimation
 {
+	public event System.Action AnimationEnded;
+
+
 	[SerializeField]
 	private string _name;
 	public string Name { get { return _name; } }
@@ -48,5 +51,7 @@ public class TransformAnimation
 		}
 
 		_playing = false;
+
+		AnimationEnded?.Invoke();
 	}
 }

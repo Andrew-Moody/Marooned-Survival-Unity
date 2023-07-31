@@ -60,35 +60,6 @@ public class DestructibleManager : NetworkBehaviour
 	}
 
 
-
-	[Server]
-	public DestructibleObject SpawnDestructibleFromSO(int destructibleID, Vector3 position, Quaternion rotation, Transform parent)
-	{
-		DestructibleSO destructibleSO = _destructibleFactory.GetDestructible(destructibleID);
-
-		if (destructibleSO == null)
-		{
-			Debug.Log("Failed to Spawn DestructibleObject with ID: " + destructibleID);
-			return null;
-		}
-		// Update 7/22/23 parents are set on spawn only if the parent is a networkObject (not only a child of one)
-		// Changes to the parent after spawning are still only synced in pro version I believe
-
-		// Local position is changed (even with no network transform) but the parent is not set on clients
-		// NetworkTransform does not let you automatically sync parent unless you have pro version
-		// As a result you will always need an RPC to set the parent on an Instantiated Prefab
-		// Note that a transform or gameobject sent in an RPC will always be null if not attached to a NetworkObject
-
-		DestructibleObject destructible = Instantiate(destructibleSO.BasePrefab, position, rotation);
-
-		Spawn(destructible.gameObject);
-
-		destructible.InitializeORPC(destructibleSO.ID);
-
-		return destructible;
-	}
-
-
 	[Server]
 	public DestructibleObject PlaceItem(AbilityActor user, int itemID)
 	{
@@ -121,12 +92,6 @@ public class DestructibleManager : NetworkBehaviour
 
 
 		return null;
-	}
-
-
-	public DestructibleSO GetDestructibleSO(int id)
-	{
-		return _destructibleFactory.GetDestructible(id);
 	}
 
 

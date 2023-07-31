@@ -12,16 +12,13 @@ public class Agent : NetworkBehaviour
 	public Pathfinding Pathfinding => _pathfinding;
 	[SerializeField] private Pathfinding _pathfinding;
 
-	public GameObject ActorObject => _actorObject;
-	[SerializeField] private GameObject _actorObject;
-	private IActor _actor;
-
-	[SerializeField]
-	private Transform _viewTransform;
-
+	public Actor Actor => _actor;
+	private Actor _actor;
 
 	public GameObject AttackTarget => _attackTarget;
 	private GameObject _attackTarget;
+
+	private ViewTransform _viewTransform;
 
 	private StateMachine _stateMachine;
 
@@ -40,7 +37,9 @@ public class Agent : NetworkBehaviour
 
 		TimeManager.OnPostTick += TimeManager_OnPostTick;
 
-		_actor = _actorObject.GetComponent<IActor>();
+		_actor = Actor.FindActor(gameObject);
+
+		_viewTransform = _actor.ViewTransform;
 	}
 
 
@@ -159,7 +158,7 @@ public class Agent : NetworkBehaviour
 
 			Vector3 velocity = _pathfinding.GetNormalisedVelocity();
 
-			_actor.SetAnimFloat("ForwardSpeed", velocity.z);
+			_actor.Animator.SetFloat("ForwardSpeed", velocity.z);
 			//_animator.SetFloat("ForwardSpeed", 1f);
 			//_animator.SetFloat("RightSpeed", velocity.x);
 
@@ -169,19 +168,8 @@ public class Agent : NetworkBehaviour
 				Vector3 targetPos = _attackTarget.transform.position;
 				targetPos.y += 1.4f;
 
-				_viewTransform.LookAt(targetPos, Vector3.up);
+				_viewTransform.transform.LookAt(targetPos, Vector3.up);
 			}
-		}
-	}
-
-
-	protected override void OnValidate()
-	{
-		if (_actorObject != null && _actorObject.GetComponent<IActor>() == null)
-		{
-			_actorObject = null;
-
-			Debug.LogWarning("ActorObject must implement IActor");
 		}
 	}
 }

@@ -8,24 +8,7 @@ namespace AbilitySystem
 	public class TestEffectAbility : Ability
 	{
 		[SerializeField]
-		private float _cooldown;
-
-		[SerializeField]
 		private Effect _effect;
-
-		public override bool CanActivate(AbilityHandle handle)
-		{
-			if (handle.AbilityData.CooldownRemaining <= 0f)
-			{
-				Debug.Log("TestAbility CanActivate returned true");
-				return true;
-			}
-			else
-			{
-				Debug.Log($"TestAbility CanActivate returned false with {handle.AbilityData.CooldownRemaining} seconds remaining on cooldown");
-				return false;
-			}
-		}
 
 
 		public override void Activate(AbilityHandle handle)
@@ -38,8 +21,6 @@ namespace AbilitySystem
 			{
 				Debug.Log("TestAbility Activated AsOwner");
 			}
-
-			handle.AbilityData.CooldownRemaining = _cooldown;
 
 			// Apply effect to self
 			ApplyEffect(handle, _effect, handle.AbilityData.User);

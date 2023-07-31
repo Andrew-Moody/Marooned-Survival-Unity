@@ -468,15 +468,5 @@ namespace LegacyAbility
 				}
 			}
 		}
-
-		public void SetAnimTrigger(string name)
-		{
-			throw new NotImplementedException();
-		}
-
-		public void SetAnimFloat(string name, float value)
-		{
-			throw new NotImplementedException();
-		}
 	}
 }

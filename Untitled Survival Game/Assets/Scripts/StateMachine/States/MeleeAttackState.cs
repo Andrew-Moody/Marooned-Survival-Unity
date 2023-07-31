@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using AbilitySystem;
+using Actors;
 
 public class MeleeAttackState : BaseState
 {
@@ -25,10 +26,7 @@ public class MeleeAttackState : BaseState
 		Debug.Log("Entering MeleeAttackState");
 		_coolDownLeft = _attackCoolDown;
 
-		if (_abilityActor == null && agent.ActorObject != null)
-		{
-			_abilityActor = agent.ActorObject.GetComponent<AbilityActor>();
-		}
+		_abilityActor = agent.Actor.AbilityActor;
 
 		agent.SetBlackboardValue("DistToTarget", 0f);
 	}
@@ -65,7 +63,7 @@ public class MeleeAttackState : BaseState
 
 			if (!_abilityActor.IsAbilityActive)
 			{
-				_abilityActor.ActivateAbility(0);
+				_abilityActor.ActivateAbility(AbilityInput.Primary);
 
 				_coolDownLeft = _attackCoolDown;
 			}
@@ -83,11 +81,14 @@ public class MeleeAttackState : BaseState
 
 		foreach (Collider hit in hits)
 		{
-			_attackTarget = hit.GetComponent<AbilityActor>();
-
-			if (_attackTarget != null)
+			if (hit.TryGetComponent(out ActorFinder finder))
 			{
-				agent.SetAttackTarget(_attackTarget.gameObject);
+				_attackTarget = finder.Actor.AbilityActor;
+
+				if (_attackTarget != null)
+				{
+					agent.SetAttackTarget(_attackTarget.gameObject);
+				}
 			}
 		}
 	}

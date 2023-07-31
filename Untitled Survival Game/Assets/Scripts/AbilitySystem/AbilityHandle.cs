@@ -13,8 +13,14 @@ namespace AbilitySystem
 	{
 		private Ability _ability;
 
+		public AbilityInput InputBinding { get; set; }
+
 		public AbilityInstanceData AbilityData => _abilityData;
 		private AbilityInstanceData _abilityData;
+
+		public bool IsOnCooldown => _coolDownRemaining > 0f;
+
+		private float _coolDownRemaining;
 
 		public AbilityHandle(Ability ability, AbilityActor user)
 		{
@@ -34,12 +40,19 @@ namespace AbilitySystem
 
 		public bool CanActivate()
 		{
+			if (_coolDownRemaining > 0f)
+			{
+				return false;
+			}
+
 			return _ability.CanActivate(this);
 		}
 
 
 		public void Activate()
 		{
+			_coolDownRemaining = _ability.Cooldown;
+
 			_ability.Activate(this);
 		}
 
@@ -50,9 +63,23 @@ namespace AbilitySystem
 		}
 
 
-		public void Tick(float deltaTime)
+		/// <summary>
+		/// Deduct time from the abilities cooldown
+		/// </summary>
+		/// <param name="deltaTime"></param>
+		/// <returns>true if cooldown has ended or false otherwise</returns>
+		public bool TickCooldown(float deltaTime)
 		{
-			_ability.Tick(this, deltaTime);
+			_coolDownRemaining -= deltaTime;
+
+			if (_coolDownRemaining < 0f)
+			{
+				_coolDownRemaining = 0f;
+
+				return true;
+			}
+
+			return false;
 		}
 	}
 }

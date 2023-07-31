@@ -276,9 +276,15 @@ public class GameManager : MonoBehaviour
 
 		PlayerInput.SetFPSMode(true);
 
-		if (player.TryGetComponent(out IActor actor))
+		Actor actor = Actor.FindActor(player);
+
+		if (actor != null)
 		{
 			actor.DeathStarted += PlayerDeathStarted;
+		}
+		else
+		{
+			Debug.LogError("Failed to find player actor");
 		}
 	}
 

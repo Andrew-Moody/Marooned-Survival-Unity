@@ -4,22 +4,36 @@ using UnityEngine;
 
 public class AttachPoints : MonoBehaviour
 {
+	private Dictionary<string, AttachPoint> _overrideAttachPoints;
+
 	private Dictionary<string, AttachPoint> _attachPoints;
+
+	private void Awake()
+	{
+		InitializeAttachPoints();
+	}
 
 
 	public Transform FindAttachPoint(string name)
 	{
-		if (_attachPoints == null)
+		if (!_overrideAttachPoints.TryGetValue(name, out AttachPoint attachPoint))
 		{
-			InitializeAttachPoints();
+			_attachPoints.TryGetValue(name, out attachPoint);
 		}
 
-		if (_attachPoints.TryGetValue(name, out AttachPoint attachPoint))
-		{
-			return attachPoint.transform;
-		}
+		return attachPoint.transform;
+	}
 
-		return null;
+
+	public void AddOverride(string name, AttachPoint attachPoint)
+	{
+		_overrideAttachPoints[name] = attachPoint;
+	}
+
+
+	public void RemoveOverride(string name)
+	{
+		_overrideAttachPoints.Remove(name);
 	}
 
 
@@ -33,5 +47,7 @@ public class AttachPoints : MonoBehaviour
 		{
 			_attachPoints.Add(point.name, point);
 		}
+
+		_overrideAttachPoints = new Dictionary<string, AttachPoint>();
 	}
 }

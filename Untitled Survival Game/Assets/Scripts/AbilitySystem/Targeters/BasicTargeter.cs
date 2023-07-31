@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Actors;
 
 namespace AbilitySystem
 {
@@ -32,8 +33,10 @@ namespace AbilitySystem
 			// Check each hit and add a target result entry if it is a valid target
 			for (int i = 0; i < hits.Length; i++)
 			{
-				if (hits[i].gameObject.TryGetComponent(out AbilityActor potentialTarget))
+				if (hits[i].gameObject.TryGetComponent(out ActorFinder actorFinder))
 				{
+					AbilityActor potentialTarget = actorFinder.Actor.AbilityActor;
+
 					if (IsValidTarget(user, potentialTarget))
 					{
 						TargetResult result = new TargetResult()

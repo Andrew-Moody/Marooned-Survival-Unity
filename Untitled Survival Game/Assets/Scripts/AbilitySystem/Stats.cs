@@ -10,6 +10,7 @@ namespace Actors
 	{
 		public event Action<UIEventData> UIEvent;
 
+		public event Action<StatKind> StatEmptied;
 
 		[SerializeField]
 		private List<StatInitialValue> _statInitialValues;
@@ -91,6 +92,11 @@ namespace Actors
 				stat.SetStatClamped(value);
 
 				UIEvent?.Invoke(stat.GetUIData());
+
+				if (stat.IsEmpty())
+				{
+					StatEmptied?.Invoke(statKind);
+				}
 
 				return stat.Value;
 			}

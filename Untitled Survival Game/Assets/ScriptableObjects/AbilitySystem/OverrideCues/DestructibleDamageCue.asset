@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fce8467d5f5912644a7b421148dcfe47, type: 3}
   m_Name: DestructibleDamageCue
   m_EditorClassIdentifier: 
-  _tag: 1
-  _addToGlobalSet: 0
-  _particlePF: {fileID: 1400737571931329616, guid: 2108a9f0e8cc7624999da2b444b82d05, type: 3}
+  _trait:
+    _trait: 2
+  _particlePF: {fileID: 5856641632776669729, guid: 49a08b234ba34974086d09acd04798a7, type: 3}
   _audioClip: {fileID: 8300000, guid: d76309bdff4fffd4ebfadbac6fee3764, type: 3}
   _attachToOwner: 1
-  _attachPoint: 
+  _attachPoint: Damage_Attach
+  _transformAnimation: Melee

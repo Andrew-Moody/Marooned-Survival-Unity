@@ -8,9 +8,5 @@ namespace Actors
 	{
 		public event ActorEventHandler DeathStarted;
 		public event ActorEventHandler DeathFinished;
-
-		public void SetAnimTrigger(string name);
-
-		public void SetAnimFloat(string name, float value);
 	}
 }

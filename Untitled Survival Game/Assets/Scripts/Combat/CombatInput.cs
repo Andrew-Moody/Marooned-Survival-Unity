@@ -31,7 +31,9 @@ public class CombatInput : NetworkBehaviour
 	{
 		base.OnStartNetwork();
 
-		_abilityActor = GetComponent<AbilityActor>();
+		Actor actor = Actor.FindActor(gameObject);
+
+		_abilityActor = actor.AbilityActor;
 
 		//_legacyActor = _combatant.gameObject.GetComponent<LegacyAbility.AbilityActor>();
 
@@ -95,7 +97,7 @@ public class CombatInput : NetworkBehaviour
 
 			if (Input.GetMouseButtonDown(0))
 			{
-				_abilityActor.ActivateAbility(0);
+				_abilityActor.ActivateAbility(AbilitySystem.AbilityInput.Primary);
 			}
 
 			if (Input.GetMouseButtonDown(1))
@@ -134,7 +136,7 @@ public class CombatInput : NetworkBehaviour
 	[ServerRpc]
 	private void Interact()
 	{
-		Transform view = _abilityActor.Actor.ViewTransform;
+		Transform view = _abilityActor.Actor.ViewTransform.transform;
 
 		if (Physics.Raycast(view.position, view.forward, out RaycastHit hit, _interactRange, _interactMask))
 		{

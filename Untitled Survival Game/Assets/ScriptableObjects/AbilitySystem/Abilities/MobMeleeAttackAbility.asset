@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 303239c4ca4951d469f4ee6d201674b2, type: 3}
   m_Name: MobMeleeAttackAbility
   m_EditorClassIdentifier: 
-  _cooldown: 2
+  _cooldown: 1
   _effect: {fileID: 11400000, guid: b6fb0518b53ff9c43b00c733f0030d2d, type: 2}
   _targeter: {fileID: 11400000, guid: 692ffc72cddbf744ba1d6ed2d1cbb718, type: 2}
   _animationTrigger: USE_ABILITY

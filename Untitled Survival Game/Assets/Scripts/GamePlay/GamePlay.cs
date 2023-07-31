@@ -2,6 +2,7 @@ using FishNet.Object;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Actors;
 
 public class GamePlay : NetworkBehaviour
 {
@@ -101,11 +102,11 @@ public class GamePlay : NetworkBehaviour
 	{
 		Mob demon = MobManager.SpawnMob("Demon", _ritualAltar.transform.position, Quaternion.identity);
 
-		demon.GetComponentInChildren<Mob>().MobDied += OnDemonKilled;
+		demon.DeathFinished += OnDemonKilled;
 	}
 
 
-	private void OnDemonKilled(Mob mob)
+	private void OnDemonKilled(IActor actor, ActorEventData data)
 	{
 		ShowWinScreenORPC();
 	}

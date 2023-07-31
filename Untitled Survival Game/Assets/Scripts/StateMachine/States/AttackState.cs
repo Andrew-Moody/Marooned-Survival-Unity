@@ -25,9 +25,9 @@ public class AttackState : BaseState
 		Debug.Log("Entering AttackState");
 		_coolDownLeft = _attackCoolDown;
 
-		if (_combatant == null && agent.ActorObject != null)
+		if (_combatant == null)
 		{
-			_combatant = agent.ActorObject.GetComponent<Combatant>();
+			_combatant = agent.transform.root.GetComponent<Combatant>();
 		}
 	}
 

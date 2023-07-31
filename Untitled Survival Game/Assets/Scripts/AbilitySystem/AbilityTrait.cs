@@ -31,7 +31,7 @@ namespace AbilitySystem
 	public enum AbilityTraitValue
 	{
 		None,
-
+		Death,
 		Damage,
 
 		// Damage class

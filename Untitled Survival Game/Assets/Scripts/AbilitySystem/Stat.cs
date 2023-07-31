@@ -38,6 +38,12 @@ namespace Actors
 		}
 
 
+		public bool IsEmpty()
+		{
+			return _currentValue <= _minValue;
+		}
+
+
 		/// <summary>
 		/// Sets the new value of stat clamped between the min and max bounds
 		/// </summary>

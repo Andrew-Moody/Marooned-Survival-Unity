@@ -206,7 +206,7 @@ namespace LegacyAbility
 		{
 			if (_transformAnimator != null)
 			{
-				_transformAnimator.PlayAnimation(transformAnimation);
+				_transformAnimator.SetTrigger(transformAnimation);
 			}
 		}
 

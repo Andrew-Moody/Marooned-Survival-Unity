@@ -13,7 +13,7 @@ namespace AbilitySystem
 		public event TaskEventHandler TaskEventRecieved;
 
 		public Actor Actor => _actor;
-		[SerializeField] private Actor _actor;
+		private Actor _actor;
 
 		public bool IsAbilityActive => _activeAbility != null;
 
@@ -24,10 +24,15 @@ namespace AbilitySystem
 		[SerializeField] private AbilityTraits _blockingTraits;
 
 		// Allow intial abilities to be defined in the inspector
-		[SerializeField] private List<Ability> _startingAbilities;
+		[SerializeField] private List<AbilityInputBinding> _startingAbilities;
 
 		// Instantiated ability instances
-		private List<AbilityHandle> _abilities;
+		private Dictionary<AbilityInput, AbilityHandle> _abilities;
+
+		// Overide ability input binding
+		private Dictionary<AbilityInput, AbilityHandle> _abilityOverrides;
+
+		private List<AbilityHandle> _abilityCooldowns = new List<AbilityHandle>();
 
 		private List<EffectHandle> _activeEffects = new List<EffectHandle>();
 
@@ -42,28 +47,37 @@ namespace AbilitySystem
 		{
 			base.OnStartNetwork();
 
+			_actor = Actor.FindActor(gameObject);
+
 			SetupStartingAbilities();
 			SetupCueOverrides();
 		}
 
 
 		[Server]
-		public void GiveAbility(Ability ability)
+		public void GiveAbility(AbilityInput abilityInput, Ability ability)
 		{
 			AbilityHandle handle = new AbilityHandle(ability, this);
 
-			_abilities.Add(handle);
+			handle.InputBinding = abilityInput;
 
-			if (handle.CanActivate())
+			if (abilityInput == AbilityInput.UseImmediate)
 			{
-				if (_activeAbility != null)
+				if (handle.CanActivate())
 				{
-					_activeAbility.Cancel();
+					if (_activeAbility != null)
+					{
+						_activeAbility.Cancel();
+					}
+
+					_activeAbility = handle;
+
+					handle.Activate();
 				}
-
-				_activeAbility = handle;
-
-				handle.Activate();
+			}
+			else
+			{
+				_abilities.Add(handle.InputBinding, handle);
 			}
 		}
 
@@ -100,10 +114,6 @@ namespace AbilitySystem
 				{
 					HandleCues(effectHandle, CueEventType.OnExecute);
 				}
-				else
-				{
-					Debug.LogError("Not a client");
-				}
 
 
 				// Handle Stat changes only on server
@@ -131,24 +141,21 @@ namespace AbilitySystem
 		}
 
 
-		public void ActivateAbility(int abilityID)
+		public void ActivateAbility(AbilityInput abilityInput)
 		{
-			if (IsServer)
+			if (TryActivateFromInput(abilityInput))
 			{
-				// ActivateAbilityAsServer(abilityID);
-
-				if (TryActivateAbility(abilityID))
+				if (IsServer)
 				{
-					ActivateAbilityORPC(abilityID);
+					ActivateAbilityORPC(abilityInput);
 				}
-			}
-			else if (IsOwner)
-			{
-				// ActivateAbilityAsClient(abilityID);
-
-				if (TryActivateAbility(abilityID))
+				else if (IsOwner)
 				{
-					ActivateAbilitySRPC(abilityID);
+					ActivateAbilitySRPC(abilityInput);
+				}
+				else
+				{
+					Debug.LogError("Ability Activated on Non Owning Client");
 				}
 			}
 		}
@@ -177,14 +184,8 @@ namespace AbilitySystem
 		}
 
 
-		private bool TryActivateAbility(int abilityID)
+		private bool TryActivateAbility(AbilityHandle abilityHandle)
 		{
-			if (!TryFindAbilityFromID(abilityID, out AbilityHandle abilityHandle))
-			{
-				Debug.LogWarning("Failed to fins ability with ID: " + abilityID);
-				return false;
-			}
-
 			if (!abilityHandle.CanActivate())
 			{
 				Debug.LogWarning("Ability failed CanActivate()");
@@ -194,64 +195,49 @@ namespace AbilitySystem
 			// For now don't allow a new ability to cancel an inprogress ability
 			if (_activeAbility != null)
 			{
-				Debug.LogWarning("_activeAbility != null");
-				return false;
+				// Need to check if the new ability is allowed to cancel the old ability (using traits?)
+
+				if (abilityHandle == _activeAbility)
+				{
+					// For now at least block repeated abilities from cancelling
+					return false;
+				}
+
+				_activeAbility.Cancel();
 			}
 
 			_activeAbility = abilityHandle;
 
 			abilityHandle.Activate();
 
+			if (abilityHandle.IsOnCooldown)
+			{
+				_abilityCooldowns.Add(abilityHandle);
+			}
+
 			return true;
 		}
 
-		private void ActivateAbilityAsClient(int abilityID)
+
+		private bool TryActivateFromInput(AbilityInput abilityInput)
 		{
-			if (!TryFindAbilityFromID(abilityID, out AbilityHandle abilityHandle))
+			if (TryFindAbility(abilityInput, out AbilityHandle abilityHandle))
 			{
-				return;
+				return TryActivateAbility(abilityHandle);
 			}
 
-			// Activate the ability locally and request the server activate remotely
-			if (abilityHandle.CanActivate())
-			{
-				_activeAbility = abilityHandle;
-
-				abilityHandle.Activate();
-
-				ActivateAbilitySRPC(abilityID);
-			}
-		}
-
-
-		[Server]
-		private void ActivateAbilityAsServer(int abilityID)
-		{
-			if (!TryFindAbilityFromID(abilityID, out AbilityHandle abilityHandle))
-			{
-				return;
-			}
-
-			if (abilityHandle.CanActivate())
-			{
-				_activeAbility = abilityHandle;
-
-				abilityHandle.Activate();
-
-				ActivateAbilityORPC(abilityID);
-			}
+			Debug.LogWarning("Failed to find ability with ID: " + abilityInput);
+			return false;
 		}
 
 
 		// Request the server to activate the ability
 		[ServerRpc]
-		private void ActivateAbilitySRPC(int abilityID)
+		private void ActivateAbilitySRPC(AbilityInput abilityInput)
 		{
-			// ActivateAbilityAsServer(abilityID);
-
-			if (TryActivateAbility(abilityID))
+			if (TryActivateFromInput(abilityInput))
 			{
-				ActivateAbilityORPC(abilityID);
+				ActivateAbilityORPC(abilityInput);
 			}
 		}
 
@@ -260,16 +246,12 @@ namespace AbilitySystem
 		// may be preferable to activate only the cues but they typically need extra data
 		// this will save a lot of bandwidth unless I find a better way to activate cues over the network
 		[ObserversRpc(ExcludeOwner = true, ExcludeServer = true)]
-		private void ActivateAbilityORPC(int abilityID)
+		private void ActivateAbilityORPC(AbilityInput abilityInput)
 		{
-			if (!TryFindAbilityFromID(abilityID, out AbilityHandle abilityHandle))
+			if (TryFindAbility(abilityInput, out AbilityHandle abilityHandle))
 			{
-				return;
+				abilityHandle.Activate();
 			}
-
-			Debug.LogError("ORPC recieved");
-
-			abilityHandle.Activate();
 		}
 
 
@@ -286,27 +268,31 @@ namespace AbilitySystem
 
 		// The underlying relationship between ID and ability handle will most likely be more complex
 		// This will suffice for testing
-		private bool TryFindAbilityFromID(int abilityID, out AbilityHandle abilityHandle)
+		private bool TryFindAbility(AbilityInput abilityInput, out AbilityHandle abilityHandle)
 		{
-			if (abilityID > -1 && abilityID < _abilities.Count)
+			if (_abilityOverrides.TryGetValue(abilityInput, out abilityHandle))
 			{
-				abilityHandle = _abilities[abilityID];
+				return true;
+			}
+			else if (_abilities.TryGetValue(abilityInput, out abilityHandle))
+			{
 				return true;
 			}
 
-			abilityHandle = null;
 			return false;
 		}
 
 
 		private void SetupStartingAbilities()
 		{
-			_abilities = new List<AbilityHandle>();
+			_abilities = new Dictionary<AbilityInput, AbilityHandle>();
 
-			foreach (Ability ability in _startingAbilities)
+			foreach (AbilityInputBinding binding in _startingAbilities)
 			{
-				_abilities.Add(new AbilityHandle(ability, this));
+				_abilities.Add(binding.Input, new AbilityHandle(binding.Ability, this));
 			}
+
+			_abilityOverrides = new Dictionary<AbilityInput, AbilityHandle>();
 		}
 
 
@@ -323,17 +309,21 @@ namespace AbilitySystem
 		// Handle in update for now but may move to TimeManager eventually
 		private void Tick(float deltaTime)
 		{
-			TickAbilities(deltaTime);
+			TickCooldowns(deltaTime);
 
 			TickEffects(deltaTime);
 		}
 
-		// If cooldown ends up being the only thing updated here I may find a different way to handle cooldowns
-		private void TickAbilities(float deltaTime)
+		
+		private void TickCooldowns(float deltaTime)
 		{
-			foreach (AbilityHandle handle in _abilities)
+			// Tick each ability on cooldown and remove if cooldown has ended
+			for (int i = _abilityCooldowns.Count - 1; i >= 0; i--)
 			{
-				handle.Tick(deltaTime);
+				if (_abilityCooldowns[i].TickCooldown(deltaTime))
+				{
+					_abilityCooldowns.RemoveAt(i);
+				}
 			}
 		}
 
@@ -363,7 +353,7 @@ namespace AbilitySystem
 
 		private void HandleCues(EffectHandle effectHandle, CueEventType cueEventType)
 		{
-			Debug.LogError("HandleCues");
+			//Debug.LogError("HandleCues");
 
 			AbilityTrait[] traits = effectHandle.Effect.Cues;
 
@@ -381,6 +371,8 @@ namespace AbilitySystem
 
 		private void HandleStatChanges(EffectHandle effectHandle)
 		{
+			Debug.LogError("HandleStatChanges");
+
 			foreach (StatModifier modifier in effectHandle.Effect.Modifiers)
 			{
 				modifier.ApplyModifier(_actor.Stats);
@@ -390,9 +382,9 @@ namespace AbilitySystem
 
 		private void HandleAppliedAbilities(EffectHandle effectHandle)
 		{
-			foreach (Ability ability in effectHandle.Effect.AppliedAbilities)
+			foreach (AbilityInputBinding abilityBinding in effectHandle.Effect.AppliedAbilities)
 			{
-				GiveAbility(ability);
+				GiveAbility(abilityBinding.Input, abilityBinding.Ability);
 			}
 		}
 

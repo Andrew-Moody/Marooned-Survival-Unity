@@ -17,6 +17,9 @@ namespace AbilitySystem
 
 		[SerializeField] private string _attachPoint;
 
+		[SerializeField] private string _transformAnimation;
+
+
 		public override void OnExecute(CueEventData data)
 		{
 			base.OnExecute(data);
@@ -98,11 +101,16 @@ namespace AbilitySystem
 
 		private void PlayTransformAnimation(Actor target, CueEventData data)
 		{
+			if (_transformAnimation == null || _transformAnimation == "")
+			{
+				return;
+			}
+
 			TransformAnimator transformAnimator = target.TransformAnimator;
 
 			if (transformAnimator != null)
 			{
-				transformAnimator.PlayAnimation(_trait.ToString());
+				transformAnimator.SetTrigger(_transformAnimation);
 			}
 		}
 

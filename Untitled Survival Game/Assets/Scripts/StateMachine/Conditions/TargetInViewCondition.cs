@@ -13,7 +13,7 @@ public class TargetInViewCondition : BaseCondition
 
 	public override bool Evaluate(Agent agent)
 	{
-		return Physics.CheckSphere(agent.transform.position, _viewRange, _viewMask.value);
+		return Physics.CheckSphere(agent.Actor.NetTransform.position, _viewRange, _viewMask.value);
 	}
 
 

@@ -9,47 +9,76 @@ using UnityEngine;
 public class MobFactory : ScriptableObject
 {
 	[SerializeField]
-	private List<MobSO> _mobs;
+	private GameObject[] _mobPrefabs;
+
+	private Dictionary<int, Mob> _mobDict;
+
+	private Dictionary<string, int> _nameToID;
 
 
-	private Dictionary<int, MobSO> _mobDict;
-
-
-	public MobSO GetMobSO(int mobID)
+	public Mob GetMobPrefab(int mobID)
 	{
 		if (_mobDict == null)
 		{
-			InitializeDict();
+			LoadMobPrefabs();
 		}
 
-		if (_mobDict.TryGetValue(mobID, out MobSO mobSO))
+		if (_mobDict.TryGetValue(mobID, out Mob mob))
 		{
-			return mobSO;
+			return mob;
 		}
-		else
-		{
-			Debug.LogWarning($"Failed to create mob with ID: {mobID}");
-		}
+		
+		Debug.LogWarning($"Failed to create mob with ID: {mobID}");
 
 		return null;
 	}
 
 
-	private void OnValidate()
+	public int GetMobID(string name)
 	{
-		InitializeDict();
+		if (_nameToID == null)
+		{
+			LoadMobPrefabs();
+		}
+
+		if (_nameToID.TryGetValue(name, out int mobID))
+		{
+			return mobID;
+		}
+
+		Debug.LogWarning($"Failed to create mob with Name: {name}");
+
+		return -1;
 	}
 
 
-	private void InitializeDict()
+	private void LoadMobPrefabs()
 	{
-		_mobDict = new Dictionary<int, MobSO>();
+		_mobDict = new Dictionary<int, Mob>();
 
-		foreach (MobSO mob in _mobs)
+		_nameToID = new Dictionary<string, int>();
+
+		foreach (GameObject pf in _mobPrefabs)
 		{
-			if (mob != null)
+			if (pf.TryGetComponent(out Mob mob))
 			{
 				_mobDict.Add(mob.ID, mob);
+
+				_nameToID.Add(mob.MobName, mob.ID);
+			}
+		}
+	}
+
+
+	private void OnValidate()
+	{
+		for (int i = 0; i < _mobPrefabs.Length; i++)
+		{
+			if (_mobPrefabs[i] != null && _mobPrefabs[i].GetComponent<Mob>() == null)
+			{
+				_mobPrefabs[i] = null;
+
+				Debug.LogWarning("Mob prefab must have a Mob component");
 			}
 		}
 	}

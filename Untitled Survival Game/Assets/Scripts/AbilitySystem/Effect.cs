@@ -26,8 +26,8 @@ namespace AbilitySystem
 		[SerializeField] private AbilityTrait[] _traits;
 
 
-		public Ability[] AppliedAbilities => _appliedAbilities;
-		[SerializeField] private Ability[] _appliedAbilities;
+		public AbilityInputBinding[] AppliedAbilities => _appliedAbilities;
+		[SerializeField] private AbilityInputBinding[] _appliedAbilities;
 	}
 
 

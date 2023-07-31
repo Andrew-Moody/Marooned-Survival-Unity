@@ -2,6 +2,7 @@ using FishNet.Object;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using AbilityActor = AbilitySystem.AbilityActor;
 
 namespace Actors
 {
@@ -12,74 +13,175 @@ namespace Actors
 		public event ActorEventHandler DeathFinished;
 
 
-		public Stats Stats => _stats;
-		[SerializeField] private Stats _stats;
+		#region ComponentFinder
 
-		public Animator Animator { get => _animator; set => _animator = value; } // Currently sill used by mobs during setup
-		[SerializeField] private Animator _animator;
+		public Transform NetTransform => Components.NetTransform.transform;
 
-		public AudioSource AudioSource => _audioSource;
-		[SerializeField] private AudioSource _audioSource;
+		public Stats Stats => Components.Stats;
 
-		public AttachPoints AttachPoints => _attachPoints;
-		[SerializeField] private AttachPoints _attachPoints;
+		public Animator Animator => Components.Animator;
 
-		public TransformAnimator TransformAnimator => _transformAnimator;
-		[SerializeField] private TransformAnimator _transformAnimator;
+		public AudioSource AudioSource => Components.AudioSource;
 
-		public Transform ViewTransform => _viewTransform;
-		[SerializeField] private Transform _viewTransform;
-		
+		public AttachPoints AttachPoints => Components.AttachPoints;
+
+		public TransformAnimator TransformAnimator => Components.TransformAnimator;
+
+		public ViewTransform ViewTransform => Components.ViewTransform;
+
+		public AbilityActor AbilityActor => Components.AbilityActor;
+
+		public ComponentFinder Components
+		{
+			get
+			{
+				if (_components == null)
+				{
+					_components = GetComponent<ComponentFinder>();
+				}
+
+				return _components;
+			}
+		}
+
+		private ComponentFinder _components;
+
+		#endregion
 
 		//private ActorState _actorState;
 
-		public virtual void SetAnimTrigger(string name)
+		private Vector3 _spawnPosition;
+		private Quaternion _spawnRotation;
+
+
+		public override void OnStartNetwork()
 		{
-			if (_animator != null)
-			{
-				_animator.SetTrigger(name);
-			}
-			else if (_transformAnimator != null)
-			{
-				_transformAnimator.PlayAnimation(name);
-			}
+			base.OnStartNetwork();
+
+			SetupServerAndClient();
 		}
 
 
-		public virtual void SetAnimFloat(string name, float value)
+		public override void OnStartServer()
 		{
-			if (_animator != null)
-			{
-				_animator.SetFloat(name, value);
-			}
+			base.OnStartServer();
+
+			Stats.StatEmptied += Stats_StatEmptied;
 		}
 
 
-		protected virtual void StartDeath()
+		public override void OnStopServer()
+		{
+			base.OnStopServer();
+
+			Stats.StatEmptied -= Stats_StatEmptied;
+		}
+
+
+		private void StartDeath()
 		{
 			//_actorState = ActorState.Dying;
 
-			OnDeathStarted();
+			DeathStarted?.Invoke(this, new ActorEventData());
+
+			DoDeathStart();
 		}
 
 
-		protected virtual void FinishDeath()
+		private void FinishDeath()
 		{
 			//_actorState = ActorState.Dead;
 
-			OnDeathFinished();
-		}
-
-
-		protected void OnDeathStarted()
-		{
-			DeathStarted?.Invoke(this, new ActorEventData());
-		}
-
-
-		protected void OnDeathFinished()
-		{
 			DeathFinished?.Invoke(this, new ActorEventData());
+
+			DoDeathFinish();
+
+			Despawn();
+		}
+
+
+		public void NotifyDeathAbilityEnd()
+		{
+			FinishDeath();
+		}
+
+
+		/// <summary>
+		/// Intended to be used only by StartDeath Template method
+		/// </summary>
+		protected virtual void DoDeathStart()
+		{
+			// By default attempt to activate a death ability
+			if (AbilityActor != null)
+			{
+				AbilityActor.ActivateAbility(AbilitySystem.AbilityInput.UseOnDeath);
+			}
+		}
+
+
+		/// <summary>
+		/// Intended to be used only by FinishDeath Template method
+		/// </summary>
+		protected virtual void DoDeathFinish()
+		{
+			// Derived actors might use this to spawn items
+		}
+
+
+		private void Stats_StatEmptied(StatKind kind)
+		{
+			if (kind == StatKind.Health)
+			{
+				StartDeath();
+			}
+		}
+
+
+		private void SetupServerAndClient()
+		{
+			if (!TryGetComponent(out _components))
+			{
+				Debug.LogError($"{gameObject.name} Missing Component Finder");
+			}
+
+			// Reset root to origin and displace net transform to spawn position
+			_spawnPosition = transform.position;
+			_spawnRotation = transform.rotation;
+
+			// Root must be reset on client and server since root is not a network transform
+			transform.position = Vector3.zero;
+			transform.rotation = Quaternion.identity;
+
+			// Set the net transform to the original spawn position on server
+			if (IsServer)
+			{
+				NetTransform.position = _spawnPosition;
+				NetTransform.rotation = _spawnRotation;
+			}
+		}
+
+
+		public static Actor FindActor(GameObject gameObject)
+		{
+			Actor actor;
+
+			Transform trans = gameObject.transform;
+
+			while(trans != null)
+			{
+				actor = trans.GetComponent<Actor>();
+
+				if (actor != null)
+				{
+					return actor;
+				}
+
+				trans = trans.parent;
+			}
+
+			Debug.LogError("Failed to find Actor");
+
+			return null;
 		}
 
 

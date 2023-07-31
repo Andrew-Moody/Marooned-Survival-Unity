@@ -10,9 +10,6 @@ namespace AbilitySystem
 	public class ProjectileAbility : Ability
 	{
 		[SerializeField]
-		private float _cooldown;
-
-		[SerializeField]
 		private GameObject _projectilePrefab;
 
 		[SerializeField]
@@ -24,16 +21,9 @@ namespace AbilitySystem
 		[SerializeField]
 		private string _animationTrigger;
 
-		public override bool CanActivate(AbilityHandle handle)
-		{
-			return handle.AbilityData.CooldownRemaining <= 0f;
-		}
-
-
+		
 		public override void Activate(AbilityHandle handle)
 		{
-			handle.AbilityData.CooldownRemaining = _cooldown;
-
 			handle.AbilityData.User.Actor.AudioSource.PlayOneShot(_launchSound);
 
 			if (handle.AbilityData.User.IsServer)
@@ -150,7 +140,7 @@ namespace AbilitySystem
 		{
 			ProjectileBase projectile = handle.AbilityData.Projectile;
 
-			Vector3 velocity = _speed * handle.AbilityData.User.Actor.ViewTransform.forward;
+			Vector3 velocity = _speed * handle.AbilityData.User.Actor.ViewTransform.transform.forward;
 			projectile.Launch(velocity);
 		}
 

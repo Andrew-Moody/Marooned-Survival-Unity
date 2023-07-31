@@ -201,17 +201,8 @@ MonoBehaviour:
   _networkObjectCache: {fileID: 2578392283353702552}
   _mobAISO: {fileID: 11400000, guid: 8eca9d756aefeaf4584f76804e47ecb4, type: 2}
   _pathfinding: {fileID: 2578392283353702647}
-  _animator: {fileID: 5798172879920689046}
   _actorObject: {fileID: 2578392283353703508}
-  _viewMask:
-    serializedVersion: 2
-    m_Bits: 256
-  _viewRange: 10
-  _roamRange: {x: 10, y: 0, z: 10}
-  _roamCenter: {x: 0, y: 0, z: 0}
-  _worldStatDisplay: {fileID: 8361989512488953544}
   _viewTransform: {fileID: 0}
-  TimeToWait: 2
 --- !u!114 &2578392283353702647
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -248,10 +239,7 @@ MonoBehaviour:
   _componentIndexCache: 3
   _addedNetworkObject: {fileID: 2578392283353702552}
   _networkObjectCache: {fileID: 2578392283353702552}
-  _stats: {fileID: 3677682243416112616}
   _actor: {fileID: 5605655453245744763}
-  _parentActor: {fileID: 0}
-  _viewTransform: {fileID: 0}
   _requiredTraits:
     _traits: []
   _blockingTraits:
@@ -311,11 +299,6 @@ MonoBehaviour:
   _componentIndexCache: 5
   _addedNetworkObject: {fileID: 2578392283353702552}
   _networkObjectCache: {fileID: 2578392283353702552}
-  _stats: {fileID: 3677682243416112616}
-  _animator: {fileID: 5798172879920689046}
-  _audioSource: {fileID: 2578392283353702435}
-  _attachPoints: {fileID: 835106260871067280}
-  _transformAnimator: {fileID: 0}
 --- !u!1 &2578392283353703598
 GameObject:
   m_ObjectHideFlags: 0
@@ -406,16 +389,7 @@ MonoBehaviour:
   _componentIndexCache: 0
   _addedNetworkObject: {fileID: 2578392283353702656}
   _networkObjectCache: {fileID: 2578392283353702656}
-  _id: 5
-  _mobName: Man
   _mobSO: {fileID: 11400000, guid: 6c65e50c21fe47b47a134762fb1129bb, type: 2}
-  _actorObject: {fileID: 2578392283353703508}
-  _graphicParent: {fileID: 2578392283353704134}
-  _networkAnimator: {fileID: 2578392283353702592}
-  _agent: {fileID: 2578392283353702718}
-  _stats: {fileID: 3677682243416112616}
-  _networkTransform: {fileID: 2578392283353704282}
-  _statDisplay: {fileID: 0}
 --- !u!1 &2578392283353703724
 GameObject:
   m_ObjectHideFlags: 0
@@ -594,6 +568,7 @@ MonoBehaviour:
   _smoothTime: 0.15
   _sprintSpeed: 0
   _teleportThreshold: 1
+  _controlAnimator: 0
 --- !u!114 &835106260871067280
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -696,11 +671,6 @@ PrefabInstance:
 --- !u!4 &7370854858698808029 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7010216850891185980, guid: 338f58dda4ffefb4db4057e3b87b8ee0, type: 3}
-  m_PrefabInstance: {fileID: 505461320303756769}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &5798172879920689046 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 6301940947875670647, guid: 338f58dda4ffefb4db4057e3b87b8ee0, type: 3}
   m_PrefabInstance: {fileID: 505461320303756769}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &675574294169990401 stripped
@@ -818,14 +788,3 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1644036054473569575, guid: e47cb18e54cf9d241888fbabdb62ed42, type: 3}
   m_PrefabInstance: {fileID: 7123299590822351727}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &8361989512488953544 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1644036054473569703, guid: e47cb18e54cf9d241888fbabdb62ed42, type: 3}
-  m_PrefabInstance: {fileID: 7123299590822351727}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 01c1662d979d0c648ad57938cf39fd19, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

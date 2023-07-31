@@ -7,22 +7,6 @@ namespace AbilitySystem
 	[CreateAssetMenu(fileName = "NewTestAbility", menuName = "AbilitySystem/Ability/TestAbility")]
 	public class TestAbility : Ability
 	{
-		[SerializeField]
-		private float _cooldown;
-
-		public override bool CanActivate(AbilityHandle handle)
-		{
-			if (handle.AbilityData.CooldownRemaining <= 0f)
-			{
-				Debug.Log("TestAbility CanActivate returned true");
-				return true;
-			}
-			else
-			{
-				Debug.Log($"TestAbility CanActivate returned false with {handle.AbilityData.CooldownRemaining} seconds remaining on cooldown");
-				return false;
-			}
-		}
 
 
 		public override void Activate(AbilityHandle handle)
@@ -35,8 +19,6 @@ namespace AbilitySystem
 			{
 				Debug.Log("TestAbility Activated AsOwner");
 			}
-
-			handle.AbilityData.CooldownRemaining = _cooldown;
 
 			End(handle);
 		}

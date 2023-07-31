@@ -7,6 +7,9 @@ namespace AbilitySystem
 	[CreateAssetMenu(menuName = "AbilitySystem/Ability")]
 	public class Ability : ScriptableObject
 	{
+		public float Cooldown => _cooldown;
+		[SerializeField] private float _cooldown = 0f;
+
 		// Override these functions to define a new ability behavior
 
 		public virtual bool CanActivate(AbilityHandle handle) { return true; }
@@ -41,17 +44,6 @@ namespace AbilitySystem
 		{
 			// Derive from AbilityInstanceData for more complex abilities
 			return new AbilityInstanceData() { User = user };
-		}
-
-
-		public virtual void Tick(AbilityHandle handle, float deltaTime)
-		{
-			handle.AbilityData.CooldownRemaining -= deltaTime;
-
-			if (handle.AbilityData.CooldownRemaining < 0f)
-			{
-				handle.AbilityData.CooldownRemaining = 0f;
-			}
 		}
 	}
 }

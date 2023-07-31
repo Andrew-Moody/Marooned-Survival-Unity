@@ -2,12 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using Actors;
 
 public class WorldStatDisplay : MonoBehaviour
 {
-	[SerializeField][Tooltip("Must implement IUIEventPublisher")]
-	private GameObject _targetObject;
-
 	[SerializeField]
 	private List<StatBar> _statBars;
 
@@ -57,10 +55,12 @@ public class WorldStatDisplay : MonoBehaviour
 		}
 
 
-		if (_targetObject != null)
-		{
-			_target = _targetObject.gameObject.GetComponent<IUIEventPublisher>();
-		}
+		Actor actor = Actor.FindActor(gameObject);
+
+		actor.DeathFinished += Actor_DeathFinished;
+
+
+		_target = actor.Stats;
 
 		if (_target != null)
 		{
@@ -77,6 +77,11 @@ public class WorldStatDisplay : MonoBehaviour
 		}
 	}
 
+	private void Actor_DeathFinished(IActor actor, ActorEventData data)
+	{
+		actor.DeathFinished -= Actor_DeathFinished;
+		Destroy(gameObject);
+	}
 
 	private void Start()
 	{
@@ -132,20 +137,6 @@ public class WorldStatDisplay : MonoBehaviour
 			foreach (StatBar stat in _statBars)
 			{
 				stat.SetAlpha(alpha);
-			}
-		}
-	}
-
-
-	private void OnValidate()
-	{
-		if (_targetObject != null)
-		{
-			if (_targetObject.GetComponent<IUIEventPublisher>() == null)
-			{
-				_targetObject = null;
-
-				Debug.LogError("TargetObject must implement IUIEventPublisher");
 			}
 		}
 	}
