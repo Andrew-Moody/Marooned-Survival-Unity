@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using AsyncTasks;
+using Actors;
 
 namespace AbilitySystem
 {
@@ -98,49 +99,52 @@ namespace AbilitySystem
 
 		private void Task_AnimEventRecieved(IAsyncTask task, TaskResultData result)
 		{
-			Debug.LogError("Anim Event");
-
-			if (task.TaskOwner is AbilityHandle handle)
-			{
-				AbilityActor user = handle.AbilityData.User;
-
-				List<TargetResult> targetResults = _targeter.FindTargets(user, new TargetingArgs());
-
-				Debug.LogError($"Found {targetResults.Count} targets");
-
-				foreach (TargetResult targetResult in targetResults)
-				{
-					AbilityActor target = targetResult.Target;
-
-					Agent agent = target.Actor.Components.Agent;
-
-					if (agent != null && user.IsServer)
-					{
-						Vector3 direction = (target.transform.position - user.transform.position).normalized;
-
-						direction.y += Mathf.Atan(Mathf.Deg2Rad * 30f); // add an upward component
-
-						// Will want to calculate from target and user stats eventually
-						float strength = _knockbackStrength;
-
-						agent.KnockBack(direction, strength);
-
-						target.Actor.Animator.SetTrigger("HIT");
-					}
-
-					ApplyEffect(handle, _effect, targetResult.Target);
-				}
-			}
-			else
+			if (!(task.TaskOwner is AbilityHandle handle))
 			{
 				Debug.LogError("Task Owner not set");
+				return;
+			}
+
+			AbilityActor user = handle.AbilityData.User;
+
+			List<TargetResult> targetResults = _targeter.FindTargets(user, new TargetingArgs());
+
+			Debug.LogError($"Found {targetResults.Count} targets");
+
+			foreach (TargetResult targetResult in targetResults)
+			{
+				if (!(targetResult is ActorTargetResult actorResult))
+				{
+					continue;
+				}
+
+				Actor actor = actorResult.Actor;
+
+				AbilityActor target = actor.AbilityActor;
+
+				Agent agent = actor.Components.Agent;
+
+				if (agent != null && user.IsServer)
+				{
+					Vector3 direction = (target.transform.position - user.transform.position).normalized;
+
+					direction.y += Mathf.Atan(Mathf.Deg2Rad * 30f); // add an upward component
+
+					// Will want to calculate from target and user stats eventually
+					float strength = _knockbackStrength;
+
+					agent.KnockBack(direction, strength);
+
+					target.Actor.Animator.SetTrigger("HIT");
+				}
+
+				ApplyEffect(handle, _effect, target);
 			}
 		}
 
 
 		private void ApplyEffect(AbilityHandle handle, Effect effect, AbilityActor target)
 		{
-			Debug.LogError("Ability Apply Effect");
 			EffectEventData effectData = new EffectEventData()
 			{
 				Source = handle.AbilityData.User,

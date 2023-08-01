@@ -31,6 +31,9 @@ namespace Actors
 
 		public AbilityActor AbilityActor => Components.AbilityActor;
 
+		public Inventory Inventory => Components.Inventory;
+
+
 		public ComponentFinder Components
 		{
 			get

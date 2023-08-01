@@ -102,7 +102,9 @@ public class CombatInput : NetworkBehaviour
 
 			if (Input.GetMouseButtonDown(1))
 			{
-				Interact();
+				//Interact();
+
+				_abilityActor.ActivateAbility(AbilitySystem.AbilityInput.Interact);
 			}
 
 			if (Input.GetKeyDown(KeyCode.F))

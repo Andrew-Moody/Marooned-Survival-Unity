@@ -38,9 +38,12 @@ public class ItemPedestal : Interactable
 	{
 		base.Interact(user);
 
-		Debug.LogError($"User first object {user.FirstObject.name}");
+		GameObject playerObject = GameManager.Instance.GetPlayer(user);
 
-		Inventory inventory = user.FirstObject.GetComponentInChildren<Inventory>();
+		Inventory inventory = playerObject.GetComponentInChildren<Inventory>();
+
+		//Debug.LogError($"User first object {user.FirstObject.name}"); Not reliable
+		//Inventory inventory = user.FirstObject.GetComponentInChildren<Inventory>();
 
 		if (inventory != null)
 		{

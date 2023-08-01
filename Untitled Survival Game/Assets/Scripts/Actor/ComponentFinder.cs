@@ -34,9 +34,14 @@ public class ComponentFinder : MonoBehaviour
 	public Agent Agent => _agent;
 	[SerializeField] private Agent _agent;
 
-	// This looks bad, but keep in mind it is only ever run at edit time
+	public Inventory Inventory => _inventory;
+	[SerializeField] private Inventory _inventory;
+
+	// This looks bad, but keep in mind it is only ever run at edit time to help setup prefabs
 	public void SearchComponents()
 	{
+#if UNITY_EDITOR
+
 		Debug.Log("Searching");
 
 		_netTransform = GetComponentInChildren<NetworkTransform>();
@@ -56,5 +61,11 @@ public class ComponentFinder : MonoBehaviour
 		_abilityActor = GetComponentInChildren<AbilityActor>();
 
 		_agent = GetComponentInChildren<Agent>();
+
+		_inventory = GetComponentInChildren<Inventory>();
+
+#else
+		Debug.LogError("ComponentFinder should not be used to search components at runtime");
+#endif
 	}
 }

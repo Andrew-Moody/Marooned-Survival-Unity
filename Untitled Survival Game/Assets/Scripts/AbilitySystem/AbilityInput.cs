@@ -19,7 +19,9 @@ namespace AbilitySystem
 		AbilitySlot9,
 		AbilitySlot10,
 		UseImmediate,
-		UseOnDeath
+		UseOnDeath,
+		Interact,
+		UseItem
 	}
 
 

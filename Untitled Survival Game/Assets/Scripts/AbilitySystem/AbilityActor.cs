@@ -12,6 +12,8 @@ namespace AbilitySystem
 	{
 		public event TaskEventHandler TaskEventRecieved;
 
+		public event System.Action<float> ActorTicked;
+
 		public Actor Actor => _actor;
 		private Actor _actor;
 
@@ -57,9 +59,7 @@ namespace AbilitySystem
 		[Server]
 		public void GiveAbility(AbilityInput abilityInput, Ability ability)
 		{
-			AbilityHandle handle = new AbilityHandle(ability, this);
-
-			handle.InputBinding = abilityInput;
+			AbilityHandle handle = new AbilityHandle(ability, this, abilityInput);
 
 			if (abilityInput == AbilityInput.UseImmediate)
 			{
@@ -274,12 +274,8 @@ namespace AbilitySystem
 			{
 				return true;
 			}
-			else if (_abilities.TryGetValue(abilityInput, out abilityHandle))
-			{
-				return true;
-			}
 
-			return false;
+			return _abilities.TryGetValue(abilityInput, out abilityHandle);
 		}
 
 
@@ -289,7 +285,7 @@ namespace AbilitySystem
 
 			foreach (AbilityInputBinding binding in _startingAbilities)
 			{
-				_abilities.Add(binding.Input, new AbilityHandle(binding.Ability, this));
+				_abilities.Add(binding.Input, new AbilityHandle(binding.Ability, this, binding.Input));
 			}
 
 			_abilityOverrides = new Dictionary<AbilityInput, AbilityHandle>();
@@ -306,26 +302,28 @@ namespace AbilitySystem
 			}
 		}
 
-		// Handle in update for now but may move to TimeManager eventually
-		private void Tick(float deltaTime)
+		
+		private void OnTick(float deltaTime)
 		{
-			TickCooldowns(deltaTime);
+			ActorTicked?.Invoke(deltaTime);
+
+			//TickCooldowns(deltaTime);
 
 			TickEffects(deltaTime);
 		}
 
 		
-		private void TickCooldowns(float deltaTime)
-		{
-			// Tick each ability on cooldown and remove if cooldown has ended
-			for (int i = _abilityCooldowns.Count - 1; i >= 0; i--)
-			{
-				if (_abilityCooldowns[i].TickCooldown(deltaTime))
-				{
-					_abilityCooldowns.RemoveAt(i);
-				}
-			}
-		}
+		//private void TickCooldowns(float deltaTime)
+		//{
+		//	// Tick each ability on cooldown and remove if cooldown has ended
+		//	for (int i = _abilityCooldowns.Count - 1; i >= 0; i--)
+		//	{
+		//		if (_abilityCooldowns[i].TickCooldown(deltaTime))
+		//		{
+		//			_abilityCooldowns.RemoveAt(i);
+		//		}
+		//	}
+		//}
 
 
 		private void TickEffects(float deltaTime)
@@ -395,9 +393,10 @@ namespace AbilitySystem
 		}
 
 
+		// Handle in update for now but may move to TimeManager eventually
 		private void Update()
 		{
-			Tick(Time.deltaTime);
+			OnTick(Time.deltaTime);
 		}
 	}
 }

@@ -44,6 +44,10 @@ public class ItemSO : ScriptableObject
 	private LegacyAbility.AbilitySet _abilitySet;
 
 
+	[SerializeField]
+	private List<AbilitySystem.AbilityInputBinding> _abilities;
+
+
 	public AbilityItem GetAbilityItem()
 	{
 		return new AbilityItem(this);
@@ -53,6 +57,14 @@ public class ItemSO : ScriptableObject
 	public LegacyAbility.Ability[] GetRuntimeAbilities()
 	{
 		return _abilitySet.GetRuntimeAbilities();
+	}
+
+
+	public List<AbilitySystem.AbilityHandle> GetAbilityHandles()
+	{
+		List<AbilitySystem.AbilityHandle> abilities = new List<AbilitySystem.AbilityHandle>();
+
+		return abilities;
 	}
 
 	private void OnValidate()

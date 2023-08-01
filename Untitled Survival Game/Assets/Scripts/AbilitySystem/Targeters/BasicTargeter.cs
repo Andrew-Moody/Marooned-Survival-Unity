@@ -18,7 +18,7 @@ namespace AbilitySystem
 			// int layerMask = LayerMask.GetMask("Mob");
 
 			// user position is fine for now
-			Vector3 position = user.transform.position;
+			Vector3 position = user.Actor.NetTransform.position;
 
 			// Range could be a stat held by the actor set by the current weapon
 			// or passed by the ability through TargetingArgs
@@ -35,13 +35,11 @@ namespace AbilitySystem
 			{
 				if (hits[i].gameObject.TryGetComponent(out ActorFinder actorFinder))
 				{
-					AbilityActor potentialTarget = actorFinder.Actor.AbilityActor;
-
-					if (IsValidTarget(user, potentialTarget))
+					if (IsValidTarget(user.Actor, actorFinder.Actor))
 					{
-						TargetResult result = new TargetResult()
+						TargetResult result = new ActorTargetResult()
 						{ 
-							Target = potentialTarget
+							Actor = actorFinder.Actor
 						};
 
 						targets.Add(result);
@@ -53,10 +51,9 @@ namespace AbilitySystem
 		}
 
 
-		private bool IsValidTarget(AbilityActor user, AbilityActor target)
+		private bool IsValidTarget(Actor user, Actor target)
 		{
 			// May or may not want to exclude self as a target
-			// May need to double check Fishnet objects equality test isn't overridden in a way that this fails
 			if (user == target)
 			{
 				return false;

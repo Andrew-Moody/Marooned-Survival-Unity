@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Actor = Actors.Actor;
 using ITaskUser = AsyncTasks.ITaskUser;
 
 namespace AbilitySystem
@@ -11,30 +12,39 @@ namespace AbilitySystem
 	// a new instance of ability SO does not need to be instantiated
 	public class AbilityHandle : ITaskUser
 	{
-		private Ability _ability;
+		public Actor Actor => _actor;
+		private Actor _actor;
 
-		public AbilityInput InputBinding { get; set; }
+		public AbilityActor User => _user;
+		private AbilityActor _user;
+
+		public AbilityInput InputBinding => _inputBinding;
+		private AbilityInput _inputBinding;
 
 		public AbilityInstanceData AbilityData => _abilityData;
 		private AbilityInstanceData _abilityData;
 
 		public bool IsOnCooldown => _coolDownRemaining > 0f;
-
 		private float _coolDownRemaining;
 
-		public AbilityHandle(Ability ability, AbilityActor user)
+		private Ability _ability;
+
+		public AbilityHandle(Ability ability, AbilityActor user, AbilityInput inputBinding)
 		{
+			_user = user;
+
+			_actor = user.Actor;
+
 			_ability = ability;
 
 			_abilityData = _ability.CreateInstanceData(user);
+
+			_inputBinding = inputBinding;
 		}
 
-		public AbilityHandle(Ability ability, AbilityActor user, AbilityEventData data)
+		public AbilityHandle(Ability ability, AbilityActor user, AbilityInput inputBinding, AbilityEventData data)
+			: this(ability, user, inputBinding)
 		{
-			_ability = ability;
-
-			_abilityData = _ability.CreateInstanceData(user);
-
 			_abilityData.AbilityEventData = data;
 		}
 
@@ -53,6 +63,11 @@ namespace AbilitySystem
 		{
 			_coolDownRemaining = _ability.Cooldown;
 
+			if (_coolDownRemaining > 0)
+			{
+				User.ActorTicked += User_ActorTicked;
+			}
+
 			_ability.Activate(this);
 		}
 
@@ -67,8 +82,7 @@ namespace AbilitySystem
 		/// Deduct time from the abilities cooldown
 		/// </summary>
 		/// <param name="deltaTime"></param>
-		/// <returns>true if cooldown has ended or false otherwise</returns>
-		public bool TickCooldown(float deltaTime)
+		private void User_ActorTicked(float deltaTime)
 		{
 			_coolDownRemaining -= deltaTime;
 
@@ -76,10 +90,8 @@ namespace AbilitySystem
 			{
 				_coolDownRemaining = 0f;
 
-				return true;
+				User.ActorTicked -= User_ActorTicked;
 			}
-
-			return false;
 		}
 	}
 }

@@ -107,7 +107,7 @@ public class Projectile : ProjectileBase
 		
 		AbilityEventData data = new AbilityEventData() { Target = target };
 
-		AbilityHandle handle = new AbilityHandle(_ability, user, data);
+		AbilityHandle handle = new AbilityHandle(_ability, user, AbilityInput.Primary, data);
 
 		handle.Activate();
 	}

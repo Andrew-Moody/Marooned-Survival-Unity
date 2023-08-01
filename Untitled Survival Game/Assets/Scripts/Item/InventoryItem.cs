@@ -9,22 +9,28 @@ using UnityEngine;
 /// </summary>
 public class InventoryItem
 {
-	public int ItemID;
+	public ItemSO ItemSO => _itemSO;
+	private ItemSO _itemSO;
 
-	public int Quantity;
+	public int ItemID => _itemSO.ItemID;
 
-	public EquipSlot EquipSlot;
+	public int Quantity { get => _quantity; set => _quantity = value; }
+	private int _quantity;
 
-	public bool ConsumeOnUse = true;
+	public EquipSlot EquipSlot =>_itemSO.equipSlot;
 
-	public Sprite Sprite;
+	public bool ConsumeOnUse => _consumeOnUse;
+	private bool _consumeOnUse = true;
 
-	public ItemSO ItemSO;
+	public Sprite Sprite => ItemSO.Sprite;
 
-	public AbilityItem AbilityItem;
+	
+
+	public AbilityItem AbilityItem => _abilityItem;
+	private AbilityItem _abilityItem;
 
 
-	public int StackSpace { get { return (ItemSO.StackLimit - Quantity); } }
+	public int StackSpace => ItemSO.StackLimit - Quantity;
 
 	
 
@@ -35,24 +41,15 @@ public class InventoryItem
 	public InventoryItem(int itemID, int quantity)
 		: this(ItemManager.Instance.GetItemSO(itemID))
 	{
-		ItemID = itemID;
 		Quantity = quantity;
 	}
 
 
 	public InventoryItem(ItemSO itemSO)
 	{
-		ItemSO = itemSO;
+		_itemSO = itemSO;
 
-		if (ItemSO == null)
-		{
-			return;
-		}
-
-		EquipSlot = itemSO.equipSlot;
-		Sprite = itemSO.Sprite;
-
-		AbilityItem = itemSO.GetAbilityItem();
+		_abilityItem = itemSO.GetAbilityItem();
 	}
 
 

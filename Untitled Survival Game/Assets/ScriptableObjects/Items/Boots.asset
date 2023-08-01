@@ -23,4 +23,12 @@ MonoBehaviour:
   Mesh: {fileID: -2785905844601245878, guid: a34f2016bbf30d8468fa7e25a35b32aa, type: 3}
   Material: {fileID: 2100000, guid: 4c23086cc53d05b42a8a5004832ae24a, type: 2}
   WorldOptions: 00000000
-  AbilityItemSO: {fileID: 0}
+  ProjectileSource: {x: 0, y: 0, z: 0}
+  _useItemSO: {fileID: 0}
+  _abilitySet:
+    _abilitySetSO: {fileID: 0}
+    _abilitySOList: []
+    _abilities: []
+  _abilities: []
+  references:
+    version: 1

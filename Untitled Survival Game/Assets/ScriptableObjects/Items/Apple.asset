@@ -30,5 +30,6 @@ MonoBehaviour:
     _abilitySOList:
     - {fileID: 11400000, guid: a8a8cca34f82052468ae7e28c0d9f57f, type: 2}
     _abilities: []
+  _abilities: []
   references:
     version: 1

@@ -33,7 +33,10 @@ namespace AbilitySystem
 			// Apply effect to each target found
 			for (int i = 0; i < targetResults.Count; i++)
 			{
-				ApplyEffect(handle, _effect, targetResults[i].Target);
+				if (targetResults[i] is ActorTargetResult actorResult)
+				{
+					ApplyEffect(handle, _effect, actorResult.Actor.AbilityActor);
+				}
 			}
 
 			End(handle);

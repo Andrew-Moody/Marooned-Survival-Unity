@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class PlayerInput : MonoBehaviour
 {
-	// Loosely based on tutorial by "Dave / GameDevelopment" (added y inversion, ability to toggle off, and integration with fishnetworking)
-
 	private static PlayerInput _instance;
 
 	[SerializeField]
@@ -31,15 +29,13 @@ public class PlayerInput : MonoBehaviour
 
 	public static bool CheckJump()
 	{
-		bool jump = false;
-
-		if (_instance != null)
+		if (_instance != null && _instance._jumpQueued)
 		{
-			jump = _instance._jumpQueued;
 			_instance._jumpQueued = false;
+			return true;
 		}
 
-		return jump;
+		return false;
 	}
 
 	public static void SetFPSMode(bool fpsMode)
@@ -81,6 +77,14 @@ public class PlayerInput : MonoBehaviour
 		{
 			CameraController.Instance.IncrementCameraMode();
 		}
+
+		HandleMovement();
+	}
+
+
+	private void HandleMovement()
+	{
+		// Loosely based on tutorial by "Dave / GameDevelopment" (added y inversion, ability to toggle off, and integration with fishnetworking)
 
 		if (!_fpsMode)
 		{
