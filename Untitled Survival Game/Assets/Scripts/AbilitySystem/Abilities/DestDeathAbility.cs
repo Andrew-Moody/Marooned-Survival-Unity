@@ -65,12 +65,7 @@ namespace AbilitySystem
 				handle.AbilityData.Task = null;
 			}
 
-			handle.AbilityData.User.HandleAbilityEnd();
-
-			if (handle.AbilityData.User.IsServer)
-			{
-				handle.AbilityData.User.Actor.NotifyDeathAbilityEnd();
-			}
+			handle.OnAbilityEnded(null);
 		}
 
 

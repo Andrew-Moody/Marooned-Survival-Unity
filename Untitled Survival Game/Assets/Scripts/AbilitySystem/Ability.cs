@@ -36,7 +36,7 @@ namespace AbilitySystem
 		{
 			Debug.Log("Ability End");
 
-			handle.AbilityData.User.HandleAbilityEnd();
+			handle.OnAbilityEnded(null);
 		}
 
 

@@ -2,7 +2,7 @@ using FishNet.Object;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using AbilityActor = AbilitySystem.AbilityActor;
+using AbilitySystem;
 
 namespace Actors
 {
@@ -103,7 +103,7 @@ namespace Actors
 		}
 
 
-		public void NotifyDeathAbilityEnd()
+		private void AbilityHandle_AbilityEnded(AbilityHandle handle, AbilityEventData data)
 		{
 			FinishDeath();
 		}
@@ -117,7 +117,7 @@ namespace Actors
 			// By default attempt to activate a death ability
 			if (AbilityActor != null)
 			{
-				AbilityActor.ActivateAbility(AbilitySystem.AbilityInput.UseOnDeath);
+				AbilityActor.ActivateAbility(AbilitySystem.AbilityInput.UseOnDeath, AbilityHandle_AbilityEnded);
 			}
 		}
 

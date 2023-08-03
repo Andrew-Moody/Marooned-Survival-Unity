@@ -10,29 +10,29 @@ namespace AbilitySystem
 
 
 		// Instantiated ability instances
-		private Dictionary<AbilityInput, AbilityHandle> _abilities;
+		private Dictionary<AbilityInput, AbilityHandle> _abilityDefaults;
 
 		// Overide ability input binding
 		private Dictionary<AbilityInput, AbilityHandle> _abilityOverrides;
 
 
-		public AbilitySet(AbilityActor user, List<AbilityInputBinding> startingAbilities)
+		public AbilitySet(AbilityActor user, List<AbilityInputBinding> defaultAbilities)
 		{
 			_user = user;
 
-			SetStartingAbilities(startingAbilities);
+			SetDefaultAbilities(defaultAbilities);
 		}
 
 
-		public void SetStartingAbilities(List<AbilityInputBinding> abilities)
+		public void SetDefaultAbilities(List<AbilityInputBinding> abilities)
 		{
-			_abilities = new Dictionary<AbilityInput, AbilityHandle>();
+			_abilityDefaults = new Dictionary<AbilityInput, AbilityHandle>();
 
 			foreach (AbilityInputBinding binding in abilities)
 			{
 				AbilityHandle handle = new AbilityHandle(binding.Ability, _user, binding.Input);
 
-				_abilities.Add(binding.Input, handle);
+				_abilityDefaults.Add(binding.Input, handle);
 			}
 
 			_abilityOverrides = new Dictionary<AbilityInput, AbilityHandle>();
@@ -46,19 +46,37 @@ namespace AbilitySystem
 				return true;
 			}
 
-			return _abilities.TryGetValue(abilityInput, out abilityHandle);
+			return _abilityDefaults.TryGetValue(abilityInput, out abilityHandle);
 		}
 
 
-		public void SetAbilityOverride(AbilityHandle abilityHandle)
+		public void SetAbilityOverride(AbilityHandle handle)
 		{
-			_abilityOverrides[abilityHandle.InputBinding] = abilityHandle;
+			_abilityOverrides[handle.InputBinding] = handle;
 		}
 
 
-		public void RemoveAbilityOverride(AbilityHandle abilityHandle)
+		public void RemoveAbilityOverride(AbilityHandle handle)
 		{
-			_abilityOverrides.Remove(abilityHandle.InputBinding);
+			_abilityOverrides.Remove(handle.InputBinding);
+		}
+
+
+		public void SetAbilityOverrides(List<AbilityHandle> handles)
+		{
+			foreach (AbilityHandle handle in handles)
+			{
+				_abilityOverrides[handle.InputBinding] = handle;
+			}
+		}
+
+
+		public void RemoveAbilityOverrides(List<AbilityHandle> handles)
+		{
+			foreach (AbilityHandle handle in handles)
+			{
+				_abilityOverrides.Remove(handle.InputBinding);
+			}
 		}
 	}
 }

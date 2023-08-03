@@ -12,6 +12,9 @@ namespace AbilitySystem
 	// a new instance of ability SO does not need to be instantiated
 	public class AbilityHandle : ITaskUser
 	{
+		public event AbilityEventHandler AbilityEnded;
+		public event AbilityEventHandler CooldownEnded;
+
 		public Actor Actor => _actor;
 		private Actor _actor;
 
@@ -78,6 +81,11 @@ namespace AbilitySystem
 		}
 
 
+		public void OnAbilityEnded(AbilityEventData data)
+		{
+			AbilityEnded?.Invoke(this, data);
+		}
+
 		/// <summary>
 		/// Deduct time from the abilities cooldown
 		/// </summary>
@@ -91,6 +99,8 @@ namespace AbilitySystem
 				_coolDownRemaining = 0f;
 
 				User.ActorTicked -= User_ActorTicked;
+
+				CooldownEnded?.Invoke(this, null);
 			}
 		}
 	}

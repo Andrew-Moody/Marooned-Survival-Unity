@@ -50,7 +50,7 @@ namespace AbilitySystem
 				Debug.Log("TestAbility End AsOwner");
 			}
 
-			handle.AbilityData.User.HandleAbilityEnd();
+			handle.OnAbilityEnded(null);
 		}
 	}
 }

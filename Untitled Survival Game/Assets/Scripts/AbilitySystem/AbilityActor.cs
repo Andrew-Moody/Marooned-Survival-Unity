@@ -28,13 +28,7 @@ namespace AbilitySystem
 		// Allow intial abilities to be defined in the inspector
 		[SerializeField] private List<AbilityInputBinding> _startingAbilities;
 
-		// Instantiated ability instances
-		private Dictionary<AbilityInput, AbilityHandle> _abilities;
-
-		// Overide ability input binding
-		private Dictionary<AbilityInput, AbilityHandle> _abilityOverrides;
-
-		private List<AbilityHandle> _abilityCooldowns = new List<AbilityHandle>();
+		private AbilitySet _abilitySet;
 
 		private List<EffectHandle> _activeEffects = new List<EffectHandle>();
 
@@ -77,7 +71,7 @@ namespace AbilitySystem
 			}
 			else
 			{
-				_abilities.Add(handle.InputBinding, handle);
+				_abilitySet.SetAbilityOverride(handle);
 			}
 		}
 
@@ -141,9 +135,9 @@ namespace AbilitySystem
 		}
 
 
-		public void ActivateAbility(AbilityInput abilityInput)
+		public void ActivateAbility(AbilityInput abilityInput, AbilityEventHandler abilityEndedCallback = null)
 		{
-			if (TryActivateFromInput(abilityInput))
+			if (TryActivateFromInput(abilityInput, abilityEndedCallback))
 			{
 				if (IsServer)
 				{
@@ -161,7 +155,7 @@ namespace AbilitySystem
 		}
 
 
-		public void HandleAbilityEnd()
+		private void AbilityHandle_AbilityEnded(AbilityHandle handle, AbilityEventData data)
 		{
 			// Ending the ability directly by the client would allow the client to then fire the next ability
 			// which would then play on the client but not on the server if the server has not finished by the time it recieves
@@ -184,7 +178,7 @@ namespace AbilitySystem
 		}
 
 
-		private bool TryActivateAbility(AbilityHandle abilityHandle)
+		private bool TryActivateAbility(AbilityHandle abilityHandle, AbilityEventHandler abilityEndCallback = null)
 		{
 			if (!abilityHandle.CanActivate())
 			{
@@ -208,22 +202,24 @@ namespace AbilitySystem
 
 			_activeAbility = abilityHandle;
 
-			abilityHandle.Activate();
+			abilityHandle.AbilityEnded += AbilityHandle_AbilityEnded;
 
-			if (abilityHandle.IsOnCooldown)
+			if (abilityEndCallback != null)
 			{
-				_abilityCooldowns.Add(abilityHandle);
+				abilityHandle.AbilityEnded += abilityEndCallback;
 			}
+
+			abilityHandle.Activate();
 
 			return true;
 		}
 
 
-		private bool TryActivateFromInput(AbilityInput abilityInput)
+		private bool TryActivateFromInput(AbilityInput abilityInput, AbilityEventHandler abilityEndedCallback = null)
 		{
-			if (TryFindAbility(abilityInput, out AbilityHandle abilityHandle))
+			if (_abilitySet.TryFindAbility(abilityInput, out AbilityHandle abilityHandle))
 			{
-				return TryActivateAbility(abilityHandle);
+				return TryActivateAbility(abilityHandle, abilityEndedCallback);
 			}
 
 			Debug.LogWarning("Failed to find ability with ID: " + abilityInput);
@@ -248,7 +244,7 @@ namespace AbilitySystem
 		[ObserversRpc(ExcludeOwner = true, ExcludeServer = true)]
 		private void ActivateAbilityORPC(AbilityInput abilityInput)
 		{
-			if (TryFindAbility(abilityInput, out AbilityHandle abilityHandle))
+			if (_abilitySet.TryFindAbility(abilityInput, out AbilityHandle abilityHandle))
 			{
 				abilityHandle.Activate();
 			}
@@ -266,29 +262,9 @@ namespace AbilitySystem
 		}
 
 
-		// The underlying relationship between ID and ability handle will most likely be more complex
-		// This will suffice for testing
-		private bool TryFindAbility(AbilityInput abilityInput, out AbilityHandle abilityHandle)
-		{
-			if (_abilityOverrides.TryGetValue(abilityInput, out abilityHandle))
-			{
-				return true;
-			}
-
-			return _abilities.TryGetValue(abilityInput, out abilityHandle);
-		}
-
-
 		private void SetupStartingAbilities()
 		{
-			_abilities = new Dictionary<AbilityInput, AbilityHandle>();
-
-			foreach (AbilityInputBinding binding in _startingAbilities)
-			{
-				_abilities.Add(binding.Input, new AbilityHandle(binding.Ability, this, binding.Input));
-			}
-
-			_abilityOverrides = new Dictionary<AbilityInput, AbilityHandle>();
+			_abilitySet = new AbilitySet(this, _startingAbilities);
 		}
 
 
@@ -307,23 +283,8 @@ namespace AbilitySystem
 		{
 			ActorTicked?.Invoke(deltaTime);
 
-			//TickCooldowns(deltaTime);
-
 			TickEffects(deltaTime);
 		}
-
-		
-		//private void TickCooldowns(float deltaTime)
-		//{
-		//	// Tick each ability on cooldown and remove if cooldown has ended
-		//	for (int i = _abilityCooldowns.Count - 1; i >= 0; i--)
-		//	{
-		//		if (_abilityCooldowns[i].TickCooldown(deltaTime))
-		//		{
-		//			_abilityCooldowns.RemoveAt(i);
-		//		}
-		//	}
-		//}
 
 
 		private void TickEffects(float deltaTime)

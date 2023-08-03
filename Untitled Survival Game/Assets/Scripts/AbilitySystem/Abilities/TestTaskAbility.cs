@@ -105,7 +105,7 @@ namespace AbilitySystem
 				handle.AbilityData.Task = null;
 			}
 
-			handle.AbilityData.User.HandleAbilityEnd();
+			handle.OnAbilityEnded(null);
 		}
 
 

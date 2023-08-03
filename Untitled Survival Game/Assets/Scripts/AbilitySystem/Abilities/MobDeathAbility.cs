@@ -61,9 +61,7 @@ namespace AbilitySystem
 				handle.AbilityData.Task = null;
 			}
 
-			handle.AbilityData.User.HandleAbilityEnd();
-
-			handle.AbilityData.User.Actor.NotifyDeathAbilityEnd();
+			handle.OnAbilityEnded(null);
 		}
 
 
