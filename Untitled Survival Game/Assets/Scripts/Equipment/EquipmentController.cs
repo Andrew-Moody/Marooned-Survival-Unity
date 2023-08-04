@@ -3,21 +3,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using FishNet.Object;
-using FishNet.Object.Synchronizing;
 
-using LegacyAbility;
+using Actors;
+
 
 public class EquipmentController : NetworkBehaviour
 {
 	[SerializeField]
 	private SkinnedMeshRenderer _parentSMR;
 
-	private Dictionary<EquipSlot, EquipmentSlot> _equipSlotsDict;
-
-	//private Dictionary<EquipSlot, AbilityItem> _equipedItems;
-
 	[SerializeField]
 	private List<EquipmentSlot> _equipmentSlots;
+
+	private Dictionary<EquipSlot, EquipmentSlot> _equipSlotsDict;
 
 
 	public override void OnStartNetwork()
@@ -32,50 +30,22 @@ public class EquipmentController : NetworkBehaviour
 
 			_equipmentSlots[i].Initialize(_parentSMR);
 		}
+
+		Actor.FindActor(gameObject).Inventory.ItemEquipped += Inventory_ItemEquipped;
 	}
+	
 
-
-	public AbilityItem GetItemAtSlot(EquipSlot slot)
+	private void Inventory_ItemEquipped(object sender, ItemEquippedArgs args)
 	{
-		return _equipSlotsDict[slot].EquipedItem;
-	}
-
-
-	public void EquipItem(InventoryItem item, EquipSlot slot)
-	{
-		if (slot == EquipSlot.None)
+		if (args.EquipSlot == EquipSlot.None)
 		{
 			Debug.LogError("Cant equip item with EquipSlot = None");
+			return;
 		}
 
 		if (IsServer)
 		{
-			//Debug.LogError($"EquipItem: {item.ItemID}");
-			_equipSlotsDict[slot].ObserversEquipItem(item.GetNetData());
-		}
-	}
-
-
-	public void UnequipItem(EquipSlot slot)
-	{
-		if (IsServer)
-		{
-			_equipSlotsDict[slot].ObserversClearSlot();
-		}
-	}
-
-
-	private void Update()
-	{
-		foreach (KeyValuePair<EquipSlot, EquipmentSlot> pair in _equipSlotsDict)
-		{
-			if (pair.Value.EquipedItem != null)
-			{
-				foreach (Ability ability in pair.Value.EquipedItem.Abilities)
-				{
-					ability.TickAbility(Time.deltaTime);
-				}
-			}
+			_equipSlotsDict[args.EquipSlot].ObserversEquipItem(args.Item.ItemID);
 		}
 	}
 }

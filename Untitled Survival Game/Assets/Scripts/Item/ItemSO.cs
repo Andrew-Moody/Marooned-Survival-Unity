@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using AbilityInputBinding = AbilitySystem.AbilityInputBinding;
+
 
 [CreateAssetMenu(fileName = "Item", menuName = "ScriptableObjects/ItemSO")]
 public class ItemSO : ScriptableObject
@@ -30,45 +32,6 @@ public class ItemSO : ScriptableObject
 
 	public List<Options> WorldOptions;
 
-	// Wieldable Data
-
-	public Vector3 ProjectileSource;
-
-
-	// Ability Data
-	[SerializeField]
-	private UseItemSO _useItemSO;
-	public UseItemSO UseItemSO => _useItemSO;
-
-	[SerializeField]
-	private LegacyAbility.AbilitySet _abilitySet;
-
-
-	[SerializeField]
-	private List<AbilitySystem.AbilityInputBinding> _abilities;
-
-
-	public AbilityItem GetAbilityItem()
-	{
-		return new AbilityItem(this);
-	}
-
-
-	public LegacyAbility.Ability[] GetRuntimeAbilities()
-	{
-		return _abilitySet.GetRuntimeAbilities();
-	}
-
-
-	public List<AbilitySystem.AbilityHandle> GetAbilityHandles()
-	{
-		List<AbilitySystem.AbilityHandle> abilities = new List<AbilitySystem.AbilityHandle>();
-
-		return abilities;
-	}
-
-	private void OnValidate()
-	{
-		_abilitySet.ValidateAbilities();
-	}
+	public List<AbilityInputBinding> Abilities => new List<AbilityInputBinding>(_abilities);
+	[SerializeField] private List<AbilityInputBinding> _abilities;
 }

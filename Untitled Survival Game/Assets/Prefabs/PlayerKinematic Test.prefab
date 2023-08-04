@@ -430,7 +430,6 @@ MonoBehaviour:
   _componentIndexCache: 8
   _addedNetworkObject: {fileID: 8748319289121584179}
   _networkObjectCache: {fileID: 8748319289121584179}
-  _abilityActor: {fileID: 0}
   _equipSlot: 3
   _isSkinnedMesh: 1
 --- !u!1 &4249734424471866194
@@ -558,7 +557,6 @@ MonoBehaviour:
   _componentIndexCache: 7
   _addedNetworkObject: {fileID: 8748319289121584179}
   _networkObjectCache: {fileID: 8748319289121584179}
-  _abilityActor: {fileID: 0}
   _equipSlot: 4
   _isSkinnedMesh: 1
 --- !u!1 &4866374047602873026
@@ -686,7 +684,6 @@ MonoBehaviour:
   _componentIndexCache: 6
   _addedNetworkObject: {fileID: 8748319289121584179}
   _networkObjectCache: {fileID: 8748319289121584179}
-  _abilityActor: {fileID: 0}
   _equipSlot: 2
   _isSkinnedMesh: 1
 --- !u!1 &5151277710549530159
@@ -814,7 +811,6 @@ MonoBehaviour:
   _componentIndexCache: 5
   _addedNetworkObject: {fileID: 8748319289121584179}
   _networkObjectCache: {fileID: 8748319289121584179}
-  _abilityActor: {fileID: 0}
   _equipSlot: 1
   _isSkinnedMesh: 1
 --- !u!1 &5619585887363166661
@@ -1015,7 +1011,6 @@ MonoBehaviour:
   _componentIndexCache: 9
   _addedNetworkObject: {fileID: 8748319289121584179}
   _networkObjectCache: {fileID: 8748319289121584179}
-  _abilityActor: {fileID: 8201508245467690289}
   _equipSlot: 5
   _isSkinnedMesh: 0
 --- !u!33 &2059881107077816103
@@ -1971,6 +1966,7 @@ MonoBehaviour:
   _viewTransform: {fileID: 5481783200142197391}
   _abilityActor: {fileID: 2597921926092322686}
   _agent: {fileID: 0}
+  _inventory: {fileID: 5271580255148344578}
 --- !u!114 &4737700254914923209
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -20,14 +20,16 @@ namespace AbilitySystem
 				return targets;
 			}
 
-			float range = 2f;
+			float range = 4f;
 
 			if (args is RaycastTargetArgs raycastArgs)
 			{
 				range = raycastArgs.Range;
 			}
 
-			if (Physics.Raycast(view.position, view.forward, out RaycastHit hit, range, LayerMask.GetMask("Ground")))
+			int layermask = LayerMask.GetMask("Ground");
+
+			if (Physics.Raycast(view.position, view.forward, out RaycastHit hit, range, layermask))
 			{
 				TargetResult result = new PointNormalTargetResult()
 				{

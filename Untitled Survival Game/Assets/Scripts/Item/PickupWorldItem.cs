@@ -51,7 +51,7 @@ public class PickupWorldItem : NetworkBehaviour
 						return;
 					}
 
-					if (inventory.TryTakeItem(ref itemData))
+					if (inventory.TryAcceptItem(ref itemData))
 					{
 						Despawn(item.gameObject);
 					}

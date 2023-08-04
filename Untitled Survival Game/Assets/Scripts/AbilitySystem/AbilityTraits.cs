@@ -54,6 +54,48 @@ namespace AbilitySystem
 		}
 
 
+		public bool MatchAny(AbilityTrait[] traits)
+		{
+			foreach (AbilityTrait trait in traits)
+			{
+				if (ContainsTrait(trait))
+				{
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+
+		public bool MeetsAllRequirements(AbilityTrait[] traits)
+		{
+			foreach (AbilityTrait reqTrait in _traits)
+			{
+				if (!ContainsTrait(traits, reqTrait))
+				{
+					return false;
+				}
+			}
+
+			return true;
+		}
+
+
+		public bool ContainsTrait(AbilityTrait[] traits, AbilityTrait traitToMatch)
+		{
+			foreach (AbilityTrait trait in traits)
+			{
+				if (traitToMatch == trait)
+				{
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+
 		public void AddTraits(AbilityTraits traits)
 		{
 			foreach (AbilityTrait trait in traits._traits)

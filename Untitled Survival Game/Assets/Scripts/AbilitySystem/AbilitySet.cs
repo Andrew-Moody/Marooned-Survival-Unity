@@ -16,11 +16,25 @@ namespace AbilitySystem
 		private Dictionary<AbilityInput, AbilityHandle> _abilityOverrides;
 
 
-		public AbilitySet(AbilityActor user, List<AbilityInputBinding> defaultAbilities)
+		private Dictionary<EquipSlot, ItemHandle> _equippedItems;
+
+
+		public AbilitySet(AbilityActor user, List<AbilityInputBinding> defaultAbilities, Inventory inventory)
 		{
 			_user = user;
 
+			
+
 			SetDefaultAbilities(defaultAbilities);
+
+			
+
+			if (inventory != null)
+			{
+				_equippedItems = new Dictionary<EquipSlot, ItemHandle>();
+
+				inventory.ItemEquipped += Inventory_ItemEquipped;
+			}
 		}
 
 
@@ -76,6 +90,41 @@ namespace AbilitySystem
 			foreach (AbilityHandle handle in handles)
 			{
 				_abilityOverrides.Remove(handle.InputBinding);
+			}
+		}
+
+
+		private void Inventory_ItemEquipped(object sender, ItemEquippedArgs args)
+		{
+			// Remove the abilities from the previous item
+			if (_equippedItems.TryGetValue(args.EquipSlot, out ItemHandle prevItem))
+			{
+				RemoveAbilityOverrides(prevItem.AbilityHandles);
+			}
+
+			// Add the new item and set the appropriate overrides (currently assumes a dummy item exist for case when no item is equipped)
+			_equippedItems[args.EquipSlot] = args.Item;
+
+			SetItemActivationData(args.Item);
+
+			SetAbilityOverrides(args.Item.AbilityHandles);
+		}
+
+
+		private void SetItemActivationData(ItemHandle item)
+		{
+			// Setup abilityHandles for the item if not already done
+			if (item.AbilityHandles == null)
+			{
+				item.CreateAbilityHandles(_user);
+			}
+
+			// Eventually the abilityHandles may be shared between multiple items
+			// Whenever an item is equipped the abilityHandle must have the activation data updated to point
+			// the currently equipped item
+			foreach (AbilityHandle handle in item.AbilityHandles)
+			{
+				handle.AbilityData.AbilityEventData = new ItemActivateEventData() { Item = item };
 			}
 		}
 	}

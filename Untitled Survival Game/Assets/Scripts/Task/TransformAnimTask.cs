@@ -8,13 +8,9 @@ namespace AsyncTasks
 {
 	public class TransformAnimTask : AsyncTask
 	{
-		public event TaskResultHandler AnimEventRecieved;
-
 		private TransformAnimator _animator;
 
 		private string _trigger;
-
-		private AnimEventHandler _animEventHandler;
 
 
 		public TransformAnimTask(ITaskUser taskOwner, TransformAnimator animator, string trigger)
@@ -22,7 +18,6 @@ namespace AsyncTasks
 		{
 			_animator = animator;
 			_trigger = trigger;
-			_animEventHandler = _animator.gameObject.GetComponent<AnimEventHandler>();
 		}
 		
 

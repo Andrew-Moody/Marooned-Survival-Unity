@@ -24,13 +24,12 @@ public class InventoryItem
 
 	public Sprite Sprite => ItemSO.Sprite;
 
-	
-
-	public AbilityItem AbilityItem => _abilityItem;
-	private AbilityItem _abilityItem;
-
 
 	public int StackSpace => ItemSO.StackLimit - Quantity;
+
+	// Representation of an item for use outside the inventory (mainly AbilitySystem for now) not sure if it should be stored here
+	public ItemHandle ItemHandle { get => _itemHandle; set => _itemHandle = value; }
+	private ItemHandle _itemHandle;
 
 	
 
@@ -48,8 +47,6 @@ public class InventoryItem
 	public InventoryItem(ItemSO itemSO)
 	{
 		_itemSO = itemSO;
-
-		_abilityItem = itemSO.GetAbilityItem();
 	}
 
 
@@ -145,7 +142,8 @@ public class InventoryItem
 		return _equipedOptions;
 	}
 
-
+	// TODO Eliminate use of Inventory.ClientInstance there are safer ways to access the players inventory already
+	// but while reworking item abilities might add a better way
 
 	public void Examine(int index)
 	{

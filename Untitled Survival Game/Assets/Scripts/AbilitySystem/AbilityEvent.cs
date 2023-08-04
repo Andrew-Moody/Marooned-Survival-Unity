@@ -8,11 +8,17 @@ namespace AbilitySystem
 
 	public class AbilityEventData
 	{
+		
+	}
+
+
+	public class ProjectileActivateEventData : AbilityEventData
+	{
 		public AbilityActor Target { get; set; }
 	}
 
 
-	public class ItemActivateEventData
+	public class ItemActivateEventData : AbilityEventData
 	{
 		public ItemHandle Item { get; set; }
 	}

@@ -2,24 +2,13 @@ using FishNet.Object;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using AbilityActor = AbilitySystem.AbilityActor;
 
 public class EquipmentSlot : NetworkBehaviour
 {
-	[SerializeField]
-	private AbilityActor _abilityActor;
+	public EquipSlot EquipSlot => _equipSlot;
+	[SerializeField] private EquipSlot _equipSlot;
 
-	[SerializeField]
-	private EquipSlot _equipSlot;
-	public EquipSlot EquipSlot { get { return _equipSlot; } }
-
-	private AbilityItem _equippedItem;
-	public AbilityItem EquipedItem { get { return _equippedItem; } }
-
-
-
-	[SerializeField]
-	private bool _isSkinnedMesh;
+	[SerializeField] private bool _isSkinnedMesh;
 
 	private IRenderable _renderable;
 
@@ -34,50 +23,23 @@ public class EquipmentSlot : NetworkBehaviour
 		{
 			_renderable = new MeshFilterRenderable(gameObject);
 		}
-
-		
 	}
 
 
 	[ObserversRpc(BufferLast = true, RunLocally = true)]
-	public void ObserversEquipItem(ItemNetData itemNetData)
+	public void ObserversEquipItem(int itemID)
 	{
-		//Debug.LogError($"ObserversEquipItem: {itemNetData.ItemID}");
+		ItemSO itemSO = ItemManager.Instance.GetItemSO(itemID);
 
-		if (itemNetData.ItemID != 0)
+		if (itemSO != null)
 		{
-			InventoryItem item = new InventoryItem(itemNetData);
-
-			_equippedItem = item.AbilityItem;
-
-			if (_abilityActor != null)
-			{
-				//_abilityActor.SetAbilityItem(item.AbilityItem);
-			}
-
-			_renderable.SetMesh(item.ItemSO.Mesh);
-			_renderable.SetMaterial(item.ItemSO.Material);
+			_renderable.SetMesh(itemSO.Mesh);
+			_renderable.SetMaterial(itemSO.Material);
 		}
 		else
 		{
-			if (_abilityActor != null)
-			{
-				//_abilityActor.SetAbilityItem(null);
-			}
-
-			_equippedItem = null;
 			_renderable.SetMesh(null);
 		}
-		
-	}
-
-
-	[ObserversRpc(BufferLast = true)]
-	public void ObserversClearSlot()
-	{
-		_equippedItem = null;
-
-		_renderable.SetMesh(null);
 	}
 }
 

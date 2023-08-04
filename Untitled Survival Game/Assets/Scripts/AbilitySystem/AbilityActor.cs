@@ -264,7 +264,7 @@ namespace AbilitySystem
 
 		private void SetupStartingAbilities()
 		{
-			_abilitySet = new AbilitySet(this, _startingAbilities);
+			_abilitySet = new AbilitySet(this, _startingAbilities, Actor.Inventory);
 		}
 
 
@@ -298,10 +298,18 @@ namespace AbilitySystem
 
 		private bool CanApply(EffectHandle effectHandle)
 		{
+			if (!_requiredTraits.MeetsAllRequirements(effectHandle.Effect.Traits))
+			{
+				Debug.Log($"Effect does not contain all required traits");
+				return false;
+			}
+
+
 			foreach (AbilityTrait trait in effectHandle.Effect.Traits)
 			{
-				if (!_requiredTraits.ContainsTrait(trait) || _blockingTraits.ContainsTrait(trait))
+				if (_blockingTraits.ContainsTrait(trait))
 				{
+					Debug.Log($"Effect contains blocked trait: {trait.ToString()}");
 					return false;
 				}
 			}

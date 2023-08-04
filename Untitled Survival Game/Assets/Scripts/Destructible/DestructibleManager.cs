@@ -60,6 +60,17 @@ public class DestructibleManager : NetworkBehaviour
 	}
 
 
+	public DestructibleObject PlaceItem(int itemID, Vector3 position, Quaternion rotation)
+	{
+		if (!_placeableItemDict.TryGetValue(itemID, out int destructibleID))
+		{
+			Debug.LogError($"Attempted to place item: {itemID} with no corresponding destructibleID");
+			return null;
+		}
+
+		return SpawnDestructible(destructibleID, position, rotation);
+	}
+
 	[Server]
 	public DestructibleObject PlaceItem(AbilityActor user, int itemID)
 	{

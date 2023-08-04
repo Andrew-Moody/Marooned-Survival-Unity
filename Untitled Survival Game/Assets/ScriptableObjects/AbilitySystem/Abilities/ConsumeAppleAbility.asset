@@ -9,9 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2441f15444f64d74a8a8b7769b297f58, type: 3}
-  m_Name: 0CueDatabase
+  m_Script: {fileID: 11500000, guid: 24e667f86a5bf6a4f852b4bab603bfe4, type: 3}
+  m_Name: ConsumeAppleAbility
   m_EditorClassIdentifier: 
-  _cues:
-  - {fileID: 11400000, guid: 6adf0ea01cb8f8e4e908da4300c5d7ad, type: 2}
-  - {fileID: 11400000, guid: df7a6134143a1464ab514f0cc30dbbd0, type: 2}
+  _cooldown: 0.2
+  _consumeEffect: {fileID: 11400000, guid: 8da483e8040635445aaddd2cc04343ab, type: 2}

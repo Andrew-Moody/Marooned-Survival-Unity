@@ -13,7 +13,7 @@ namespace AbilitySystem
 		
 		public override void Activate(AbilityHandle handle)
 		{
-			AbilityEventData data = handle.AbilityData.AbilityEventData;
+			ProjectileActivateEventData data = handle.AbilityData.AbilityEventData as ProjectileActivateEventData;
 
 			if (data != null && data.Target != null)
 			{

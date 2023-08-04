@@ -9,9 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2441f15444f64d74a8a8b7769b297f58, type: 3}
-  m_Name: 0CueDatabase
+  m_Script: {fileID: 11500000, guid: d9b9d5a0e4755c447ac16c4b0cf5cfa3, type: 3}
+  m_Name: PlaceItemAbility
   m_EditorClassIdentifier: 
-  _cues:
-  - {fileID: 11400000, guid: 6adf0ea01cb8f8e4e908da4300c5d7ad, type: 2}
-  - {fileID: 11400000, guid: df7a6134143a1464ab514f0cc30dbbd0, type: 2}
+  _cooldown: 0.2
+  _targeter: {fileID: 11400000, guid: d9959f2a9dc4c1a46a9439d9a22b4cdb, type: 2}
+  _placementCue:
+    _trait: 10

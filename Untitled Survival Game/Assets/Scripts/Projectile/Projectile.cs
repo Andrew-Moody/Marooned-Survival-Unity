@@ -105,7 +105,7 @@ public class Projectile : ProjectileBase
 			OwningActor.gameObject.TryGetComponent(out user);
 		}
 		
-		AbilityEventData data = new AbilityEventData() { Target = target };
+		AbilityEventData data = new ProjectileActivateEventData() { Target = target };
 
 		AbilityHandle handle = new AbilityHandle(_ability, user, AbilityInput.Primary, data);
 

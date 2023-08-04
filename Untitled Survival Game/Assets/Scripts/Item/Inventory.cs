@@ -7,6 +7,13 @@ using UnityEngine;
 
 public class Inventory : NetworkBehaviour
 {
+	public event EventHandler<SlotUpdateEventArgs> SlotUpdated;
+
+	public event Action OnSyncContents;
+
+	public event Action<int> OnHotbarSelect;
+
+	public event EventHandler<ItemEquippedArgs> ItemEquipped;
 
 	[SerializeField]
 	private int _inventorySize;
@@ -23,19 +30,16 @@ public class Inventory : NetworkBehaviour
 	[SerializeField]
 	private List<InventoryItem> _items;
 
-	public event EventHandler<SlotUpdateEventArgs> SlotUpdated;
-
-	public event Action OnSyncContents;
-
-	public event Action<int> OnHotbarSelect;
 
 	// Points to the inventory only for the player owned by this client
-	public static Inventory ClientInstance;
+	// Seems to be used only by inventory items to carry out context menu operations
+	// Try to eliminate this while reworking item abilities
+	public static Inventory ClientInstance => _clientInstance;
+	private static Inventory _clientInstance;
 
-	private EquipmentController _equipmentController;
 
-	private int _hotbarSelection;
 	public int HotbarSelection => _hotbarSelection;
+	private int _hotbarSelection;
 
 	public int MouseIndex => _items.Count - 1;
 
@@ -46,7 +50,7 @@ public class Inventory : NetworkBehaviour
 
 		if (Owner.IsLocalClient)
 		{
-			ClientInstance = this;
+			_clientInstance = this;
 		}
 
 		if (IsServer || Owner.IsLocalClient)
@@ -75,8 +79,6 @@ public class Inventory : NetworkBehaviour
 		{
 			_items.Add(InventoryItem.Empty());
 		}
-
-		_equipmentController = GetComponent<EquipmentController>();
 	}
 
 
@@ -123,34 +125,43 @@ public class Inventory : NetworkBehaviour
 	
 	private void UpdateSlot(int index)
 	{
-		// Check if item needs to be equiped
-		if (index >= _inventorySize && index != MouseIndex)
+		InventoryItem item = _items[index];
+
+		if (item.ItemHandle == null)
 		{
-			_equipmentController.EquipItem(_items[index], IndexToSlot(index));
+			item.ItemHandle = new ItemHandle(item.ItemSO, this, index);
 		}
-		else if (index == _hotbarSelection)
+		else
 		{
-			_equipmentController.EquipItem(_items[index], EquipSlot.MainHand);
+			item.ItemHandle.Slot = index;
+		}
+
+		// Check if item needs to be equipped
+		EquipSlot equipSlot = IndexToSlot(index);
+
+		if (equipSlot != EquipSlot.None)
+		{
+			ItemEquippedArgs args = new ItemEquippedArgs()
+			{
+				Item = item.ItemHandle,
+				EquipSlot = equipSlot
+			};
+
+			ItemEquipped?.Invoke(this, args);
 		}
 
 
-		// Update UI for Owning Client (this is called by OnStartNetwork so IsOwner is always false)
+		// Update UI for Owning Client (When this is called by OnStartNetwork IsOwner would always be false)
 		if (Owner.IsLocalClient)
 		{
-			SlotUpdateEventArgs args = new SlotUpdateEventArgs(index, _items[index]);
+			SlotUpdateEventArgs args = new SlotUpdateEventArgs(index, item);
 
 			SlotUpdated?.Invoke(this, args);
 
 			if (index == _hotbarSelection)
 			{
-				OnHotbarSelect?.Invoke(_items[_hotbarSelection].ItemID);
+				OnHotbarSelect?.Invoke(item.ItemID);
 			}
-		}
-		else
-
-		if (!Owner.IsLocalClient && !IsServer)
-		{
-			Debug.LogError("Calling UpdateSlot is not needed on Observing Clients");
 		}
 	}
 
@@ -286,7 +297,7 @@ public class Inventory : NetworkBehaviour
 
 
 	[Server]
-	public bool TryTakeItem(ref ItemNetData itemNetData)
+	public bool TryAcceptItem(ref ItemNetData itemNetData)
 	{
 		Debug.LogWarning("TryTakeItem for Client: " + OwnerId);
 
@@ -341,36 +352,38 @@ public class Inventory : NetworkBehaviour
 	}
 
 
+	// Plan to implement item usage as abilities
+
 	[Server]
 	public void UseItem(LegacyAbility.AbilityActor user, AbilityItem abilityItem)
 	{
-		if (_items[_hotbarSelection].ItemID != abilityItem.ItemID)
-		{
-			Debug.LogError("Attempted to use AbilityActor item not selected by hotbar");
-			return;
-		}
+		//if (_items[_hotbarSelection].ItemID != abilityItem.ItemID)
+		//{
+		//	Debug.LogError("Attempted to use AbilityActor item not selected by hotbar");
+		//	return;
+		//}
 
-		InventoryItem item = _items[_hotbarSelection];
+		//InventoryItem item = _items[_hotbarSelection];
 
-		Debug.LogError("Using Item");
+		//Debug.LogError("Using Item");
 
-		if (item.ItemSO.UseItemSO != null)
-		{
-			item.ItemSO.UseItemSO.UseItem(user, item.ItemSO);
-		}
+		//if (item.ItemSO.UseItemSO != null)
+		//{
+		//	item.ItemSO.UseItemSO.UseItem(user, item.ItemSO);
+		//}
 
-		if (item.ConsumeOnUse)
-		{
-			item.Quantity -= 1;
+		//if (item.ConsumeOnUse)
+		//{
+		//	item.Quantity -= 1;
 
-			if (item.Quantity == 0)
-			{
-				_items[_hotbarSelection] = InventoryItem.Empty();
-			}
+		//	if (item.Quantity == 0)
+		//	{
+		//		_items[_hotbarSelection] = InventoryItem.Empty();
+		//	}
 
-			UpdateSlot(_hotbarSelection);
-			TargetSyncSlot(Owner, _items[_hotbarSelection].GetNetData(), _hotbarSelection);
-		}
+		//	UpdateSlot(_hotbarSelection);
+		//	TargetSyncSlot(Owner, _items[_hotbarSelection].GetNetData(), _hotbarSelection);
+		//}
 	}
 
 
@@ -477,7 +490,11 @@ public class Inventory : NetworkBehaviour
 
 	private EquipSlot IndexToSlot(int index)
 	{
-		if (index < _inventorySize || index == MouseIndex)
+		if (index == _hotbarSelection)
+		{
+			return EquipSlot.MainHand;
+		}
+		else if (index < _inventorySize || index == MouseIndex)
 		{
 			return EquipSlot.None;
 		}
@@ -614,4 +631,12 @@ public class SlotUpdateEventArgs : EventArgs
 		ItemName = item.ItemSO.ItemName;
 		ItemDescription = item.ItemSO.ExamineText;
 	}
+}
+
+
+public class ItemEquippedArgs : EventArgs
+{
+	public ItemHandle Item { get; set; }
+
+	public EquipSlot EquipSlot { get; set; }
 }

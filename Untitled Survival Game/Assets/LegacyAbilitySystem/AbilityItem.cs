@@ -21,6 +21,6 @@ public class AbilityItem
 
 		ItemID = itemSO.ItemID;
 
-		Abilities = itemSO.GetRuntimeAbilities();
+		//Abilities = itemSO.GetRuntimeAbilities();
 	}
 }

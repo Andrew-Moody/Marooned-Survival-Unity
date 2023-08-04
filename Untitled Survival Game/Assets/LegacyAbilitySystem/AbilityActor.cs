@@ -101,7 +101,7 @@ namespace LegacyAbility
 			}
 			else
 			{
-				_projectileSource.localPosition = abilityItem.ItemSO.ProjectileSource;
+				//_projectileSource.localPosition = abilityItem.ItemSO.ProjectileSource;
 			}
 		}
 

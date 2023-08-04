@@ -45,7 +45,12 @@ namespace AbilitySystem
 
 		// Stat traits
 		Health,
-		MagicEnergy
+		MagicEnergy,
+
+		// Other
+		Placement,
+		Interaction,
+		Consume
 	}
 }
 
