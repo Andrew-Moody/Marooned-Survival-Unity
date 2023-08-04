@@ -17,33 +17,33 @@ namespace AbilitySystem
 		{
 			CueEventData data = new CueEventData()
 			{
-				Target = handle.AbilityData.User,
+				Target = handle.User,
 			};
 
 			CueManager.HandleCue(_cueOnStart, CueEventType.OnExecute, data);
 
 
-			Animator anim = handle.AbilityData.User.Actor.Animator;
+			Animator anim = handle.Actor.Animator;
 
 			AnimationTask task = new AnimationTask(handle, anim, _animTrigger);
 
-			handle.AbilityData.Task = task;
+			handle.Task = task;
 
-			handle.AbilityData.Task.TaskCanceled += Task_Canceled;
+			handle.Task.TaskCanceled += Task_Canceled;
 
-			handle.AbilityData.Task.TaskCompleted += Task_Completed;
+			handle.Task.TaskCompleted += Task_Completed;
 
-			handle.AbilityData.User.TaskEventRecieved += handle.AbilityData.Task.HandleTaskEvent;
+			handle.User.TaskEventRecieved += handle.Task.HandleTaskEvent;
 
-			handle.AbilityData.Task.Start();
+			handle.Task.Start();
 		}
 
 
 		public override void Cancel(AbilityHandle handle)
 		{
-			if (handle.AbilityData.Task != null)
+			if (handle.Task != null)
 			{
-				handle.AbilityData.Task.Stop();
+				handle.Task.Stop();
 			}
 			else
 			{
@@ -54,11 +54,11 @@ namespace AbilitySystem
 
 		protected override void End(AbilityHandle handle)
 		{
-			if (handle.AbilityData.Task != null)
+			if (handle.Task != null)
 			{
-				handle.AbilityData.User.TaskEventRecieved -= handle.AbilityData.Task.HandleTaskEvent;
+				handle.User.TaskEventRecieved -= handle.Task.HandleTaskEvent;
 
-				handle.AbilityData.Task = null;
+				handle.Task = null;
 			}
 
 			handle.OnAbilityEnded(null);

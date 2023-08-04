@@ -307,6 +307,7 @@ namespace AbilitySystem
 
 			foreach (AbilityTrait trait in effectHandle.Effect.Traits)
 			{
+
 				if (_blockingTraits.ContainsTrait(trait))
 				{
 					Debug.Log($"Effect contains blocked trait: {trait.ToString()}");

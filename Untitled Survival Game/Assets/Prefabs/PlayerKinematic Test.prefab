@@ -1539,14 +1539,12 @@ MonoBehaviour:
   _blockingTraits:
     _traits: []
   _startingAbilities:
-  - _input: 0
+  - _input: 1
     _ability: {fileID: 11400000, guid: 9ee66932109353e4bb0cf039ace47d8f, type: 2}
-  - _input: 13
-    _ability: {fileID: 11400000, guid: e7529e5a597f9fd41a5b03c6939d2d56, type: 2}
   - _input: 14
-    _ability: {fileID: 11400000, guid: 762e0d837ca18d945b99c12d21180f9c, type: 2}
+    _ability: {fileID: 11400000, guid: e7529e5a597f9fd41a5b03c6939d2d56, type: 2}
   - _input: 15
-    _ability: {fileID: 11400000, guid: 9ee66932109353e4bb0cf039ace47d8f, type: 2}
+    _ability: {fileID: 11400000, guid: 762e0d837ca18d945b99c12d21180f9c, type: 2}
   _cues: []
 --- !u!1 &6729147989952191722
 GameObject:

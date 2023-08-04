@@ -13,17 +13,17 @@ namespace AbilitySystem
 
 		public override void Activate(AbilityHandle handle)
 		{
-			if (handle.AbilityData.User.IsServer)
+			if (handle.User.IsServer)
 			{
 				Debug.Log("TestAbility Activated AsServer");
 			}
-			else if (handle.AbilityData.User.IsOwner)
+			else if (handle.User.IsOwner)
 			{
 				Debug.Log("TestAbility Activated AsOwner");
 			}
 
 			// Apply effect to self
-			ApplyEffect(handle, _effect, handle.AbilityData.User);
+			ApplyEffect(handle, _effect, handle.User);
 
 			End(handle);
 		}
@@ -31,11 +31,11 @@ namespace AbilitySystem
 
 		public override void Cancel(AbilityHandle handle)
 		{
-			if (handle.AbilityData.User.IsServer)
+			if (handle.User.IsServer)
 			{
 				Debug.Log("TestAbility Canceled AsServer");
 			}
-			else if (handle.AbilityData.User.IsOwner)
+			else if (handle.User.IsOwner)
 			{
 				Debug.Log("TestAbility Canceled AsOwner");
 			}
@@ -46,11 +46,11 @@ namespace AbilitySystem
 
 		protected override void End(AbilityHandle handle)
 		{
-			if (handle.AbilityData.User.IsServer)
+			if (handle.User.IsServer)
 			{
 				Debug.Log("TestAbility End AsServer");
 			}
-			else if (handle.AbilityData.User.IsOwner)
+			else if (handle.User.IsOwner)
 			{
 				Debug.Log("TestAbility End AsOwner");
 			}
@@ -63,7 +63,7 @@ namespace AbilitySystem
 		{
 			EffectEventData effectData = new EffectEventData()
 			{
-				Source = handle.AbilityData.User,
+				Source = handle.User,
 				Target = target
 			};
 

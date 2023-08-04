@@ -24,18 +24,18 @@ namespace AbilitySystem
 		
 		public override void Activate(AbilityHandle handle)
 		{
-			handle.AbilityData.User.Actor.AudioSource.PlayOneShot(_launchSound);
+			handle.Actor.AudioSource.PlayOneShot(_launchSound);
 
-			if (handle.AbilityData.User.IsServer)
+			if (handle.User.IsServer)
 			{
 				SpawnProjectile(handle);
 			}
 
-			Animator anim = handle.AbilityData.User.Actor.Animator;
+			Animator anim = handle.Actor.Animator;
 
 			AnimationTask task = new AnimationTask(handle, anim, _animationTrigger);
 
-			handle.AbilityData.Task = task;
+			handle.Task = task;
 
 			task.AnimEventRecieved += Task_AnimEventRecieved;
 
@@ -43,7 +43,7 @@ namespace AbilitySystem
 
 			task.TaskCompleted += Task_Completed;
 
-			handle.AbilityData.User.TaskEventRecieved += task.HandleTaskEvent;
+			handle.User.TaskEventRecieved += task.HandleTaskEvent;
 
 			task.Start();
 
@@ -54,9 +54,9 @@ namespace AbilitySystem
 
 		public override void Cancel(AbilityHandle handle)
 		{
-			if (handle.AbilityData.Task != null)
+			if (handle.Task != null)
 			{
-				handle.AbilityData.Task.Stop();
+				handle.Task.Stop();
 			}
 			else
 			{
@@ -67,11 +67,11 @@ namespace AbilitySystem
 
 		protected override void End(AbilityHandle handle)
 		{
-			if (handle.AbilityData.Task != null)
+			if (handle.Task != null)
 			{
-				handle.AbilityData.User.TaskEventRecieved -= handle.AbilityData.Task.HandleTaskEvent;
+				handle.User.TaskEventRecieved -= handle.Task.HandleTaskEvent;
 
-				handle.AbilityData.Task = null;
+				handle.Task = null;
 			}
 
 			handle.OnAbilityEnded(null);
@@ -100,7 +100,7 @@ namespace AbilitySystem
 		{
 			if (task.TaskOwner is AbilityHandle handle)
 			{
-				if (handle.AbilityData.User.IsServer)
+				if (handle.User.IsServer)
 				{
 					LaunchProjectile(handle);
 				}
@@ -114,7 +114,7 @@ namespace AbilitySystem
 
 		private void SpawnProjectile(AbilityHandle handle)
 		{
-			Actor actor = handle.AbilityData.User.Actor;
+			Actor actor = handle.Actor;
 
 			ProjectileBase prefab = _projectilePrefab.GetComponent<ProjectileBase>();
 
@@ -132,16 +132,26 @@ namespace AbilitySystem
 
 			projectile.SetFollowTarget(attachPoint);
 
-			handle.AbilityData.Projectile = projectile;
+			if (handle.AbilityData is ProjectileAbilityData data)
+			{
+				data.Projectile = projectile;
+			}
 		}
 
 
 		private void LaunchProjectile(AbilityHandle handle)
 		{
-			ProjectileBase projectile = handle.AbilityData.Projectile;
+			if (handle.AbilityData is ProjectileAbilityData data)
+			{
+				ProjectileBase projectile = data.Projectile;
 
-			Vector3 velocity = _speed * handle.AbilityData.User.Actor.ViewTransform.transform.forward;
-			projectile.Launch(velocity);
+				Vector3 velocity = _speed * handle.Actor.ViewTransform.transform.forward;
+				projectile.Launch(velocity);
+			}
+			else
+			{
+				Debug.LogError("Failed to launch projectile: AbilityData was not of type ProjectileAbilityData");
+			}
 		}
 
 
@@ -152,6 +162,12 @@ namespace AbilitySystem
 				_projectilePrefab = null;
 				Debug.LogWarning("Prefab must have a Projectile component");
 			}
+		}
+
+
+		public override AbilityInstanceData CreateInstanceData(AbilityActor user)
+		{
+			return new ProjectileAbilityData() { };
 		}
 	}
 }

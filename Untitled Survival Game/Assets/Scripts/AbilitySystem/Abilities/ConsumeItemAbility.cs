@@ -21,7 +21,7 @@ namespace AbilitySystem
 		{
 			ItemHandle item = null;
 
-			if (handle.AbilityData.AbilityEventData is ItemActivateEventData data)
+			if (handle.ActivationData is ItemActivateEventData data)
 			{
 				item = data.Item;
 			}

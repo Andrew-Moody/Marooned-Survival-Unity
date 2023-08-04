@@ -80,9 +80,9 @@ MonoBehaviour:
   _blockingTraits:
     _traits: []
   _startingAbilities:
-  - _input: 0
+  - _input: 1
     _ability: {fileID: 11400000, guid: 5f8a6bec64ab6ee4a8d94ed1d588b9e1, type: 2}
-  - _input: 13
+  - _input: 14
     _ability: {fileID: 11400000, guid: e7529e5a597f9fd41a5b03c6939d2d56, type: 2}
   _cues: []
 --- !u!114 &972570578531332002
@@ -97,9 +97,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bb0dbe57eb116d42af5d281eef26f0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 1
+  _componentIndexCache: 4
   _addedNetworkObject: {fileID: 2578392283353702552}
-  _networkObjectCache: {fileID: 2578392283353702656}
+  _networkObjectCache: {fileID: 2578392283353702552}
   _statInitialValues:
   - StatKind: 0
     Value: 100
@@ -180,7 +180,8 @@ MonoBehaviour:
   - {fileID: 2578392283353702592}
   - {fileID: 2578392283353702706}
   - {fileID: 2578392283353702718}
-  - {fileID: 0}
+  - {fileID: 6683097203788443856}
+  - {fileID: 972570578531332002}
   <ParentNetworkObject>k__BackingField: {fileID: 2578392283353702656}
   <ChildNetworkObjects>k__BackingField: []
   _isNetworked: 1
@@ -410,7 +411,6 @@ MonoBehaviour:
   <PredictedSpawn>k__BackingField: {fileID: 0}
   _networkBehaviours:
   - {fileID: 7983660517394171817}
-  - {fileID: 0}
   <ParentNetworkObject>k__BackingField: {fileID: 0}
   <ChildNetworkObjects>k__BackingField:
   - {fileID: 2578392283353702552}
@@ -455,6 +455,7 @@ MonoBehaviour:
   _viewTransform: {fileID: 0}
   _abilityActor: {fileID: 6683097203788443856}
   _agent: {fileID: 2578392283353702718}
+  _inventory: {fileID: 0}
 --- !u!1 &2578392283353703724
 GameObject:
   m_ObjectHideFlags: 0

@@ -19,7 +19,7 @@ namespace AbilitySystem
 			{
 				CueEventData data = new CueEventData()
 				{
-					Target = handle.AbilityData.User,
+					Target = handle.User,
 				};
 
 				CueManager.HandleCue(_placementCue, CueEventType.OnExecute, data);
@@ -38,7 +38,7 @@ namespace AbilitySystem
 		{
 			TargetingArgs args = new RaycastTargetArgs() { Range = 4f };
 
-			List<TargetResult> results = _targeter.FindTargets(handle.AbilityData.User, args);
+			List<TargetResult> results = _targeter.FindTargets(handle.User, args);
 
 			if (results.Count > 0 && results[0] is PointNormalTargetResult result)
 			{
@@ -53,7 +53,7 @@ namespace AbilitySystem
 		{
 			ItemHandle item = null;
 
-			if (handle.AbilityData.AbilityEventData is ItemActivateEventData data)
+			if (handle.ActivationData is ItemActivateEventData data)
 			{
 				item = data.Item;
 			}

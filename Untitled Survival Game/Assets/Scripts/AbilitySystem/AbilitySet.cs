@@ -124,7 +124,7 @@ namespace AbilitySystem
 			// the currently equipped item
 			foreach (AbilityHandle handle in item.AbilityHandles)
 			{
-				handle.AbilityData.AbilityEventData = new ItemActivateEventData() { Item = item };
+				handle.ActivationData = new ItemActivateEventData() { Item = item };
 			}
 		}
 	}

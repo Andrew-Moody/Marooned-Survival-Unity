@@ -14,30 +14,30 @@ namespace AbilitySystem
 
 		public override void Activate(AbilityHandle handle)
 		{
-			if (handle.AbilityData.User.IsServer)
+			if (handle.User.IsServer)
 			{
 				Debug.Log("TestAbility Activated AsServer");
 			}
-			else if (handle.AbilityData.User.IsOwner)
+			else if (handle.User.IsOwner)
 			{
 				Debug.Log("TestAbility Activated AsOwner");
 			}
 
-			handle.AbilityData.Task = new WaitForEventTask(handle);
+			handle.Task = new WaitForEventTask(handle);
 
 			// Using lambdas to capture the AbilityDataInstance works for now until I decide on
 			// the best way to get the instance from the task
-			// handle.AbilityData.Task.TaskCanceled += (task, result) => Task_Canceled(task, result, handle);
-			// handle.AbilityData.Task.TaskCompleted += (task, result) => Task_Completed(task, result, handle);
+			// handle.Task.TaskCanceled += (task, result) => Task_Canceled(task, result, handle);
+			// handle.Task.TaskCompleted += (task, result) => Task_Completed(task, result, handle);
 			// Actually it doesn't as then there is no way to unsubscribe
 
-			handle.AbilityData.Task.TaskCanceled += Task_Canceled;
+			handle.Task.TaskCanceled += Task_Canceled;
 
-			handle.AbilityData.Task.TaskCompleted += Task_Completed;
+			handle.Task.TaskCompleted += Task_Completed;
 
-			handle.AbilityData.User.TaskEventRecieved += handle.AbilityData.Task.HandleTaskEvent;
+			handle.User.TaskEventRecieved += handle.Task.HandleTaskEvent;
 
-			handle.AbilityData.Task.Start();
+			handle.Task.Start();
 		}
 
 
@@ -57,7 +57,7 @@ namespace AbilitySystem
 		{
 			if (task.TaskOwner is AbilityHandle handle)
 			{
-				ApplyEffect(handle, handle.AbilityData.User);
+				ApplyEffect(handle, handle.User);
 
 				End(handle);
 			}
@@ -67,18 +67,18 @@ namespace AbilitySystem
 
 		public override void Cancel(AbilityHandle handle)
 		{
-			if (handle.AbilityData.User.IsServer)
+			if (handle.User.IsServer)
 			{
 				Debug.Log("TestAbility Canceled AsServer");
 			}
-			else if (handle.AbilityData.User.IsOwner)
+			else if (handle.User.IsOwner)
 			{
 				Debug.Log("TestAbility Canceled AsOwner");
 			}
 
-			if (handle.AbilityData.Task != null)
+			if (handle.Task != null)
 			{
-				handle.AbilityData.Task.Stop();
+				handle.Task.Stop();
 			}
 			else
 			{
@@ -89,20 +89,20 @@ namespace AbilitySystem
 
 		protected override void End(AbilityHandle handle)
 		{
-			if (handle.AbilityData.User.IsServer)
+			if (handle.User.IsServer)
 			{
 				Debug.Log("TestAbility End AsServer");
 			}
-			else if (handle.AbilityData.User.IsOwner)
+			else if (handle.User.IsOwner)
 			{
 				Debug.Log("TestAbility End AsOwner");
 			}
 
-			if (handle.AbilityData.Task != null)
+			if (handle.Task != null)
 			{
-				handle.AbilityData.User.TaskEventRecieved -= handle.AbilityData.Task.HandleTaskEvent;
+				handle.User.TaskEventRecieved -= handle.Task.HandleTaskEvent;
 
-				handle.AbilityData.Task = null;
+				handle.Task = null;
 			}
 
 			handle.OnAbilityEnded(null);
@@ -113,7 +113,7 @@ namespace AbilitySystem
 		{
 			EffectEventData effectData = new EffectEventData()
 			{
-				Source = handle.AbilityData.User,
+				Source = handle.User,
 				Target = target
 			};
 

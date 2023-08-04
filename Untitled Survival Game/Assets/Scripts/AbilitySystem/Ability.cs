@@ -43,7 +43,7 @@ namespace AbilitySystem
 		public virtual AbilityInstanceData CreateInstanceData(AbilityActor user)
 		{
 			// Derive from AbilityInstanceData for more complex abilities
-			return new AbilityInstanceData() { User = user };
+			return new AbilityInstanceData();
 		}
 	}
 }

@@ -4,18 +4,20 @@ using UnityEngine;
 
 namespace AbilitySystem
 {
-	// Used to store runtime data for specific instance of an ability
-	// Will need to be derived from for new ability types
-	public class AbilityInstanceData
+	// Used to store runtime data for a specific instance of an ability
+	public class AbilityInstanceData { }
+
+
+	public class ProjectileAbilityData : AbilityInstanceData
 	{
-		public AbilityActor User { get; set; }
-
-		public float CooldownRemaining { get; set; }
-
-		public AsyncTasks.IAsyncTask Task { get; set; }
-
-		public AbilityEventData AbilityEventData { get; set; }
-
 		public ProjectileBase Projectile { get; set; }
+	}
+
+
+	public class SequenceAbilityData : AbilityInstanceData
+	{
+		public int SequenceIndex { get; set; }
+
+		public List<AbilityHandle> AbilityHandles { get; set; }
 	}
 }

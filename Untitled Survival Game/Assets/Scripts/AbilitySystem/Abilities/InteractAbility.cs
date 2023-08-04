@@ -12,7 +12,7 @@ namespace AbilitySystem
 		public override void Activate(AbilityHandle handle)
 		{
 
-			if (!handle.AbilityData.User.IsServer)
+			if (!handle.User.IsServer)
 			{
 				End(handle);
 				return;
@@ -22,7 +22,7 @@ namespace AbilitySystem
 
 			if (interactable != null)
 			{
-				interactable.Interact(handle.AbilityData.User.Owner);
+				interactable.Interact(handle.User.Owner);
 				End(handle);
 				return;
 			}
@@ -32,7 +32,7 @@ namespace AbilitySystem
 			// Haven't worked out best way to chain abilities but this will do
 			End(handle);
 
-			handle.AbilityData.User.ActivateAbility(AbilityInput.UseItem);
+			handle.User.ActivateAbility(AbilityInput.UseItem);
 		}
 
 
@@ -40,7 +40,7 @@ namespace AbilitySystem
 		{
 			TargetingArgs args = new RaycastTargetArgs() { Range = 2f };
 
-			List<TargetResult> results = targeter.FindTargets(handle.AbilityData.User, args);
+			List<TargetResult> results = targeter.FindTargets(handle.User, args);
 
 			if (results.Count > 0 && results[0] is InteractTargetResult result)
 			{

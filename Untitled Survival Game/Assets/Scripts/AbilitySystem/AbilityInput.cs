@@ -6,6 +6,7 @@ namespace AbilitySystem
 {
 	public enum AbilityInput
 	{
+		None,
 		Primary,
 		Secondary,
 		AbilitySlot1,

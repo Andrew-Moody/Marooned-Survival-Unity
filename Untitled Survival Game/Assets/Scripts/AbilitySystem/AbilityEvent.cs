@@ -22,5 +22,11 @@ namespace AbilitySystem
 	{
 		public ItemHandle Item { get; set; }
 	}
+
+
+	public class SequenceActivateEventData : AbilityEventData
+	{
+		public AbilityHandle ParentHandle { get; set; }
+	}
 }
 

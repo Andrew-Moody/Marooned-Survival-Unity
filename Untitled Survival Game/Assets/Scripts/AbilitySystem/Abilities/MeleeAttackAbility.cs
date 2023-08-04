@@ -29,35 +29,35 @@ namespace AbilitySystem
 		{
 			Debug.LogError("Ability Activate");
 
-			AudioSource audioSource = handle.AbilityData.User.Actor.AudioSource;
+			AudioSource audioSource = handle.Actor.AudioSource;
 
 			audioSource.PlayOneShot(_startSound);
 
-			Animator anim = handle.AbilityData.User.Actor.Animator;
+			Animator anim = handle.Actor.Animator;
 
 			AnimationTask task = new AnimationTask(handle, anim, _animationTrigger);
 
 			task.AnimEventRecieved += Task_AnimEventRecieved;
 
-			handle.AbilityData.Task = task;
+			handle.Task = task;
 
-			handle.AbilityData.Task.TaskCanceled += Task_Canceled;
+			handle.Task.TaskCanceled += Task_Canceled;
 
-			handle.AbilityData.Task.TaskCompleted += Task_Completed;
+			handle.Task.TaskCompleted += Task_Completed;
 
 			
 
-			handle.AbilityData.User.TaskEventRecieved += handle.AbilityData.Task.HandleTaskEvent;
+			handle.User.TaskEventRecieved += handle.Task.HandleTaskEvent;
 
-			handle.AbilityData.Task.Start();
+			handle.Task.Start();
 		}
 
 
 		public override void Cancel(AbilityHandle handle)
 		{
-			if (handle.AbilityData.Task != null)
+			if (handle.Task != null)
 			{
-				handle.AbilityData.Task.Stop();
+				handle.Task.Stop();
 			}
 			else
 			{
@@ -68,11 +68,11 @@ namespace AbilitySystem
 
 		protected override void End(AbilityHandle handle)
 		{
-			if (handle.AbilityData.Task != null)
+			if (handle.Task != null)
 			{
-				handle.AbilityData.User.TaskEventRecieved -= handle.AbilityData.Task.HandleTaskEvent;
+				handle.User.TaskEventRecieved -= handle.Task.HandleTaskEvent;
 
-				handle.AbilityData.Task = null;
+				handle.Task = null;
 			}
 
 			handle.OnAbilityEnded(null);
@@ -105,7 +105,7 @@ namespace AbilitySystem
 				return;
 			}
 
-			AbilityActor user = handle.AbilityData.User;
+			AbilityActor user = handle.User;
 
 			List<TargetResult> targetResults = _targeter.FindTargets(user, new TargetingArgs());
 
@@ -147,7 +147,7 @@ namespace AbilitySystem
 		{
 			EffectEventData effectData = new EffectEventData()
 			{
-				Source = handle.AbilityData.User,
+				Source = handle.User,
 				Target = target
 			};
 
