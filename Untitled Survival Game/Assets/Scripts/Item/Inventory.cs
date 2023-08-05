@@ -352,41 +352,6 @@ public class Inventory : NetworkBehaviour
 	}
 
 
-	// Plan to implement item usage as abilities
-
-	[Server]
-	public void UseItem(LegacyAbility.AbilityActor user, AbilityItem abilityItem)
-	{
-		//if (_items[_hotbarSelection].ItemID != abilityItem.ItemID)
-		//{
-		//	Debug.LogError("Attempted to use AbilityActor item not selected by hotbar");
-		//	return;
-		//}
-
-		//InventoryItem item = _items[_hotbarSelection];
-
-		//Debug.LogError("Using Item");
-
-		//if (item.ItemSO.UseItemSO != null)
-		//{
-		//	item.ItemSO.UseItemSO.UseItem(user, item.ItemSO);
-		//}
-
-		//if (item.ConsumeOnUse)
-		//{
-		//	item.Quantity -= 1;
-
-		//	if (item.Quantity == 0)
-		//	{
-		//		_items[_hotbarSelection] = InventoryItem.Empty();
-		//	}
-
-		//	UpdateSlot(_hotbarSelection);
-		//	TargetSyncSlot(Owner, _items[_hotbarSelection].GetNetData(), _hotbarSelection);
-		//}
-	}
-
-
 	public List<ItemNetData> GetContents()
 	{
 		List<ItemNetData> contents = new List<ItemNetData>();

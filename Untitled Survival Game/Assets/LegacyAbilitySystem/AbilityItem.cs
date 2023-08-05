@@ -2,25 +2,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AbilityItem
+namespace LegacyAbility
 {
-	public string ItemName;
-
-	public int ItemID;
-
-	public LegacyAbility.Ability[] Abilities;
-
-	public ItemSO ItemSO;
-
-
-	public AbilityItem(ItemSO itemSO)
+	public class AbilityItem
 	{
-		ItemSO = itemSO;
+		public string ItemName;
 
-		ItemName = itemSO.ItemName;
+		public int ItemID;
 
-		ItemID = itemSO.ItemID;
+		public LegacyAbility.Ability[] Abilities;
 
-		//Abilities = itemSO.GetRuntimeAbilities();
+		public ItemSO ItemSO;
+
+
+		public AbilityItem(ItemSO itemSO)
+		{
+			ItemSO = itemSO;
+
+			ItemName = itemSO.ItemName;
+
+			ItemID = itemSO.ItemID;
+
+			//Abilities = itemSO.GetRuntimeAbilities();
+		}
 	}
 }

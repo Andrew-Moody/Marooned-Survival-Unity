@@ -240,12 +240,12 @@ namespace LegacyAbility
 			{
 				if (_parentActor.Inventory != null)
 				{
-					_parentActor.Inventory.UseItem(_parentActor, _abilityItem);
+					//_parentActor.Inventory.UseItem(_parentActor, _abilityItem);
 				}
 			}
 			else if (_inventory != null)
 			{
-				_inventory.UseItem(this, _abilityItem);
+				//_inventory.UseItem(this, _abilityItem);
 			}
 		}
 
