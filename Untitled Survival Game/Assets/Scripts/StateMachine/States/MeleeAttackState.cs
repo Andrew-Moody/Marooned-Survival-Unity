@@ -87,7 +87,7 @@ public class MeleeAttackState : BaseState
 
 				if (_attackTarget != null)
 				{
-					agent.SetAttackTarget(_attackTarget.gameObject);
+					agent.SetAttackTarget(finder.Actor.NetTransform.gameObject);
 				}
 			}
 		}

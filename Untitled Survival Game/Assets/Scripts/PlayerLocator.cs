@@ -20,15 +20,4 @@ public class PlayerLocator : NetworkBehaviour
 			_player = gameObject;
 		}
 	}
-
-
-	public override void OnStartClient()
-	{
-		base.OnStartClient();
-
-		if (IsOwner)
-		{
-			GameManager.Instance.OnLocalPlayerStartClient(_player);
-		}
-	}
 }

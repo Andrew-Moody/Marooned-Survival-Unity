@@ -51,6 +51,9 @@ namespace Actors
 
 		#endregion
 
+		public LayerMask HostilityMask => _hostilityMask;
+		[SerializeField] private LayerMask _hostilityMask;
+
 		//private ActorState _actorState;
 
 		private Vector3 _spawnPosition;

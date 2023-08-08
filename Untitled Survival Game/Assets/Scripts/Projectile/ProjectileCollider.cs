@@ -9,9 +9,6 @@ using UnityEditor;
 public class ProjectileCollider : MonoBehaviour
 {
 	[SerializeField]
-	private LayerMask _layerMask;
-
-	[SerializeField]
 	private CollisionType _collisionType;
 
 	[SerializeField]
@@ -93,7 +90,7 @@ public class ProjectileCollider : MonoBehaviour
 	}
 
 
-	public bool CheckCollision(Vector3 prevPos, Vector3 currPos, out RaycastHit hitInfo)
+	public bool CheckCollision(Vector3 prevPos, Vector3 currPos, out RaycastHit hitInfo, int layerMask)
 	{
 		Vector3 center = prevPos + _center;
 		Vector3 direction = currPos - prevPos;
@@ -102,11 +99,11 @@ public class ProjectileCollider : MonoBehaviour
 
 		if (_collisionType == CollisionType.Sphere)
 		{
-			bool hit = Physics.SphereCast(center, _radius, direction, out hitInfo, maxDistance, _layerMask.value);
+			bool hit = Physics.SphereCast(center, _radius, direction, out hitInfo, maxDistance, layerMask);
 
-			if (!hit && Physics.CheckSphere(center, _radius, _layerMask.value))
+			if (!hit && Physics.CheckSphere(center, _radius, layerMask))
 			{
-				if (Physics.SphereCast(center - (10f * direction), _radius, direction, out hitInfo, 11f * maxDistance, _layerMask.value))
+				if (Physics.SphereCast(center - (10f * direction), _radius, direction, out hitInfo, 11f * maxDistance, layerMask))
 				{
 					//Debug.LogWarning("SphereCast success starting from center minus direction");
 
@@ -114,7 +111,7 @@ public class ProjectileCollider : MonoBehaviour
 				}
 				else
 				{
-					if (Physics.CheckSphere(center - (10f * direction), _radius, _layerMask.value))
+					if (Physics.CheckSphere(center - (10f * direction), _radius, layerMask))
 					{
 						Debug.LogWarning("CheckSphere true at center - 10 * direction");
 					}
@@ -130,7 +127,7 @@ public class ProjectileCollider : MonoBehaviour
 			return hit;
 		}
 
-		return Physics.BoxCast(center, _halfExtents, direction, out hitInfo, orientation, maxDistance, _layerMask.value);
+		return Physics.BoxCast(center, _halfExtents, direction, out hitInfo, orientation, maxDistance, layerMask);
 	}
 
 

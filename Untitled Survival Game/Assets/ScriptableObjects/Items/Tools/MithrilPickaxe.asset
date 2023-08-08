@@ -25,4 +25,4 @@ MonoBehaviour:
   WorldOptions: 00000000
   _abilities:
   - _input: 1
-    _ability: {fileID: 11400000, guid: eaeb3dff9f70c0e4c8046083224bdf4b, type: 2}
+    _ability: {fileID: 11400000, guid: 04bf322941a054c42970e831d27103d2, type: 2}

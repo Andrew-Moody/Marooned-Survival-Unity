@@ -13,4 +13,10 @@ MonoBehaviour:
   m_Name: MobFactory
   m_EditorClassIdentifier: 
   _mobPrefabs:
+  - {fileID: 2578392283353703598, guid: 8fd33855ef2b2ac4b9bf50bdf594d79f, type: 3}
+  - {fileID: 2578392283353703598, guid: c52dc80df4f61734db2ce67c739613bd, type: 3}
+  - {fileID: 2578392283353703598, guid: 31895e06c44869b449f22010cd309eb6, type: 3}
+  - {fileID: 2578392283353703598, guid: e372e3f90125a664898453517cb49222, type: 3}
+  - {fileID: 2578392283353703598, guid: 73060db824565d94d85453d4b71d25af, type: 3}
   - {fileID: 2578392283353703598, guid: b84035329fdbbf94e98cba00ab2f552d, type: 3}
+  - {fileID: 2578392283353703598, guid: 6b67611ec001da5419cd608d6df43ab2, type: 3}

@@ -24,7 +24,6 @@ public class Projectile : ProjectileBase
 	private Ability _ability;
 
 
-
 	public override void OnStartClient()
 	{
 		base.OnStartClient();
@@ -75,11 +74,11 @@ public class Projectile : ProjectileBase
 
 	private void HandleCollision()
 	{
-		if (_projectileMotion.CheckCollision(out RaycastHit hitInfo))
+		if (_projectileMotion.CheckCollision(out RaycastHit hitInfo, _layerMask))
 		{
-			if (hitInfo.collider.gameObject.TryGetComponent(out AbilityActor target))
+			if (hitInfo.collider.gameObject.TryGetComponent(out ActorFinder actorFinder))
 			{
-				ActivateAbility(target);
+				ActivateAbility(actorFinder.Actor.AbilityActor);
 			}
 
 			Dispose();

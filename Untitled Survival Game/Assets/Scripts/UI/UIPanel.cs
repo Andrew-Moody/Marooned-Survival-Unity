@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Actors;
 
 public class UIPanel : MonoBehaviour
 {
@@ -8,7 +9,7 @@ public class UIPanel : MonoBehaviour
 	private string _panelName;
 	public string PanelName => _panelName;
 
-	protected GameObject _player;
+	protected Actor _player;
 
 
 	public virtual void Initialize()
@@ -17,7 +18,7 @@ public class UIPanel : MonoBehaviour
 	}
 
 
-	public virtual void SetPlayer(GameObject player)
+	public virtual void SetPlayer(Actor player)
 	{
 		_player = player;
 	}

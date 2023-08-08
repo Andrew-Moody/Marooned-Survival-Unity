@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using Actors;
 
 public class InventoryUI : UIPanel
 {
@@ -54,13 +55,13 @@ public class InventoryUI : UIPanel
 	}
 
 
-	public override void SetPlayer(GameObject player)
+	public override void SetPlayer(Actor player)
 	{
 		_player = player;
 
 		if (_player != null)
 		{
-			_inventory = player.GetComponent<Inventory>();
+			_inventory = player.Inventory;
 
 			if (_inventory == null)
 			{

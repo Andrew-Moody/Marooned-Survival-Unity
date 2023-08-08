@@ -79,7 +79,7 @@ public class GamePlay : NetworkBehaviour
 	}
 
 
-	public static GameObject GetRandomPlayer()
+	public static PlayerActor GetRandomPlayer()
 	{
 		int index = Random.Range(0, GameManager.Instance.PlayerCount);
 

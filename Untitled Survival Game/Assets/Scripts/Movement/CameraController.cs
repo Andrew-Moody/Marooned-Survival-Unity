@@ -4,6 +4,8 @@ using UnityEngine;
 using FishNet.Object;
 using FishNet.Managing;
 using System;
+using Actors;
+
 
 public class CameraController : MonoBehaviour
 {
@@ -49,15 +51,15 @@ public class CameraController : MonoBehaviour
 	}
 
 
-	public void SetPlayer(GameObject player)
+	public void SetPlayer(Actor player)
 	{
 		if (player != null)
 		{
 			// The transform of the graphical Object;
-			_graphicTarget = PlayerLocator.Player.transform.parent.GetComponentInChildren<SmoothFollower>().transform;
+			_graphicTarget = player.GetComponentInChildren<SmoothFollower>().transform;
 
 			// The transform of the actual NetworkObject
-			_networkTarget = PlayerLocator.Player.transform;
+			_networkTarget = player.NetTransform;
 		}
 	}
 

@@ -30,8 +30,8 @@ public class GameManager : MonoBehaviour
 
 	private NetworkManager _networkManager;
 
-	private List<GameObject> _players = new List<GameObject>();
-	private Dictionary<NetworkConnection, GameObject> _playersByConnection = new Dictionary<NetworkConnection, GameObject>();
+	private List<PlayerActor> _players = new List<PlayerActor>();
+	private Dictionary<NetworkConnection, PlayerActor> _playersByConnection = new Dictionary<NetworkConnection, PlayerActor>();
 
 	private const string MENU_SCENE = "MainMenuScene";
 	private const string GAME_SCENE = "GameScene";
@@ -145,15 +145,15 @@ public class GameManager : MonoBehaviour
 	}
 
 
-	public GameObject GetPlayer(int index)
+	public PlayerActor GetPlayer(int index)
 	{
 		return index < _players.Count ? _players[index] : null;
 	}
 
 
-	public GameObject GetPlayer(NetworkConnection connection)
+	public PlayerActor GetPlayer(NetworkConnection connection)
 	{
-		_playersByConnection.TryGetValue(connection, out GameObject player);
+		_playersByConnection.TryGetValue(connection, out PlayerActor player);
 		return player;
 	}
 
@@ -262,7 +262,7 @@ public class GameManager : MonoBehaviour
 	}
 
 
-	public void OnLocalPlayerStartClient(GameObject player)
+	public void OnLocalPlayerStartClient(Actor player)
 	{
 		_loadCamera.gameObject.SetActive(false);
 
@@ -276,16 +276,7 @@ public class GameManager : MonoBehaviour
 
 		PlayerInput.SetFPSMode(true);
 
-		Actor actor = Actor.FindActor(player);
-
-		if (actor != null)
-		{
-			actor.DeathStarted += PlayerDeathStarted;
-		}
-		else
-		{
-			Debug.LogError("Failed to find player actor");
-		}
+		player.DeathStarted += PlayerDeathStarted;
 	}
 
 
@@ -403,15 +394,15 @@ public class GameManager : MonoBehaviour
 
 		_networkManager.ServerManager.Spawn(nob, connection);
 
-		PlayerLocator playerlocator = nob.GetComponentInChildren<PlayerLocator>();
+		PlayerActor player = nob.GetComponentInChildren<PlayerActor>();
 
-		if (playerlocator == null)
+		if (player == null)
 		{
-			Debug.LogError("PlayerPrefab not setup correctly: missing PlayerLocator");
+			Debug.LogError("PlayerPrefab not setup correctly: missing PlayerActor");
 		}
 
-		_players.Add(playerlocator.gameObject);
-		_playersByConnection.Add(connection, playerlocator.gameObject);
+		_players.Add(player);
+		_playersByConnection.Add(connection, player);
 	}
 
 
@@ -453,7 +444,7 @@ public class GameManager : MonoBehaviour
 	{
 		Debug.LogError($"Remote Connection State Changed: {args.ConnectionState}");
 
-		if (_playersByConnection.TryGetValue(connection, out GameObject player))
+		if (_playersByConnection.TryGetValue(connection, out PlayerActor player))
 		{
 			_players.Remove(player);
 			_playersByConnection.Remove(connection);

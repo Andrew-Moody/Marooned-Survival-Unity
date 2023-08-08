@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using Actors;
 
 public class CraftingUI : UIPanel
 {
@@ -20,13 +21,13 @@ public class CraftingUI : UIPanel
 	private Inventory _inventory;
 
 
-	public override void SetPlayer(GameObject player)
+	public override void SetPlayer(Actor player)
 	{
 		base.SetPlayer(player);
 
 		if (_player != null)
 		{
-			_inventory = _player.GetComponent<Inventory>();
+			_inventory = _player.Inventory;
 
 			CraftingManager.Instance.OnCraftItem += PopulateRecipes;
 		}

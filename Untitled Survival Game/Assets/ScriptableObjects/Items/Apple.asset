@@ -24,5 +24,5 @@ MonoBehaviour:
   Material: {fileID: 2100000, guid: ad19eb8def9f2c240af6b3a517fa5670, type: 2}
   WorldOptions: 
   _abilities:
-  - _input: 0
+  - _input: 1
     _ability: {fileID: 11400000, guid: 614847c640d7d94429a7bcb1814dc519, type: 2}

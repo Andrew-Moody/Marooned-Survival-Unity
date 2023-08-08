@@ -120,7 +120,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 270, y: 34}
+  m_SizeDelta: {x: 274, y: 34}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1092547254416199675
 MonoBehaviour:
@@ -136,9 +136,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Padding:
     m_Left: 2
-    m_Right: 0
+    m_Right: 2
     m_Top: 2
-    m_Bottom: 0
+    m_Bottom: 2
   m_ChildAlignment: 0
   m_StartCorner: 0
   m_StartAxis: 1
@@ -247,7 +247,6 @@ MonoBehaviour:
   - {fileID: 4686426756754929368}
   - {fileID: 4006675817566027344}
   - {fileID: 1734099334208637078}
-  _statsUI: {fileID: 0}
 --- !u!1 &5015341098593576098
 GameObject:
   m_ObjectHideFlags: 0
@@ -283,7 +282,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 0, y: 30}
-  m_SizeDelta: {x: 270, y: 34}
+  m_SizeDelta: {x: 274, y: 34}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!1001 &303923808693978974
 PrefabInstance:

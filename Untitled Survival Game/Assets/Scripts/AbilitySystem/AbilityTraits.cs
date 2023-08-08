@@ -86,7 +86,9 @@ namespace AbilitySystem
 		{
 			foreach (AbilityTrait trait in traits)
 			{
-				if (traitToMatch == trait)
+				Debug.Log($"Trait: {trait}, Required Trait: {traitToMatch}");
+
+				if (traitToMatch.Matches(trait))
 				{
 					return true;
 				}

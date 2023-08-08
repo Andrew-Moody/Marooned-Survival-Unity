@@ -56,7 +56,7 @@ public class ItemRequirementKey : Interactable
 		}
 
 		
-		Inventory inventory = GameManager.Instance.GetPlayer(user).GetComponent<Inventory>();
+		Inventory inventory = GameManager.Instance.GetPlayer(user).Inventory;
 
 		if (inventory != null && inventory.HasItem(out int slot, _requiredItemID, _requiredQuantity))
 		{

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using Actors;
 
 public class UIManager : MonoBehaviour
 {
@@ -53,7 +54,7 @@ public class UIManager : MonoBehaviour
 	}
 
 
-	public static void SetPlayer(GameObject player)
+	public static void SetPlayer(Actor player)
 	{
 		Debug.LogError("UIManager SetPlayer");
 

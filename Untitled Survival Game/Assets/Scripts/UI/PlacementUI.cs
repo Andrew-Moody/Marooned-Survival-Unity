@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Actors;
 
 public class PlacementUI : UIPanel
 {
@@ -31,7 +32,7 @@ public class PlacementUI : UIPanel
 	}
 
 
-	public override void SetPlayer(GameObject player)
+	public override void SetPlayer(Actor player)
 	{
 		base.SetPlayer(player);
 
@@ -42,7 +43,7 @@ public class PlacementUI : UIPanel
 
 		if (_player != null)
 		{
-			_inventory = _player.GetComponent<Inventory>();
+			_inventory = _player.Inventory;
 
 			if (_inventory != null)
 			{

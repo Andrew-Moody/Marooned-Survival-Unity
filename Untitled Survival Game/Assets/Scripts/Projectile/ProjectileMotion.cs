@@ -91,9 +91,9 @@ public class ProjectileMotion : MonoBehaviour
 	}
 
 
-	public bool CheckCollision(out RaycastHit hitInfo)
+	public bool CheckCollision(out RaycastHit hitInfo, int layerMask)
 	{
-		if (_collider.CheckCollision(_prevPosition, transform.position, out hitInfo))
+		if (_collider.CheckCollision(_prevPosition, transform.position, out hitInfo, layerMask))
 		{
 			Resolve(hitInfo);
 

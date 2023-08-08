@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Actors;
 
 public class HeadsupUI : UIPanel
 {
@@ -41,7 +42,7 @@ public class HeadsupUI : UIPanel
 	}
 
 
-	public override void SetPlayer(GameObject player)
+	public override void SetPlayer(Actor player)
 	{
 		base.SetPlayer(player);
 

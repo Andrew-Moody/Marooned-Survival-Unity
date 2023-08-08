@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Actors;
 
 public class StatsUI : UIPanel
 {
@@ -21,13 +22,13 @@ public class StatsUI : UIPanel
 	}
 
 
-	public override void SetPlayer(GameObject player)
+	public override void SetPlayer(Actor player)
 	{
 		base.SetPlayer(player);
 
 		if (_player != null)
 		{
-			_target = player.GetComponent<IUIEventPublisher>();
+			_target = player.Stats;
 
 			if (_target != null)
 			{

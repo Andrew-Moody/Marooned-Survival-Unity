@@ -56,7 +56,9 @@ public class MobSpawnController : MonoBehaviour
 
 	private void SpawnMobAtRandomPlayer(string name)
 	{
-		Vector3 playerPos = GamePlay.GetRandomPlayer().transform.position;
+		PlayerActor player = GamePlay.GetRandomPlayer();
+
+		Vector3 playerPos = player.NetTransform.position;
 
 		Vector3 spawnPos = Vector3.zero;
 		spawnPos.x = Random.Range(-1f, 1f);

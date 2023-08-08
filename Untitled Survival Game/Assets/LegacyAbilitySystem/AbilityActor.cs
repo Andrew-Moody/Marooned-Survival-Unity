@@ -32,9 +32,6 @@ namespace LegacyAbility
 		[SerializeField]
 		private ParticleHandler _particleHandler;
 
-		public AttachPoints AttachPoints => _attachPoints;
-		[SerializeField] private AttachPoints _attachPoints;
-
 		[SerializeField]
 		private TransformAnimator _transformAnimator;
 		public TransformAnimator TransformAnimator => _transformAnimator;

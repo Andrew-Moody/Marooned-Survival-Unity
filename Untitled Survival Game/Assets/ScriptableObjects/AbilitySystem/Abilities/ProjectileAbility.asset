@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ProjectileAbility
   m_EditorClassIdentifier: 
   _cooldown: 1
-  _projectilePrefab: {fileID: 1621567993699045949, guid: 20ce575fa27e8e24ba147d28f0664121, type: 3}
+  _projectilePrefab: {fileID: 5138004490912549838, guid: 0df770e97aea7e34887ee6d80beb8717, type: 3}
   _speed: 5
   _launchSound: {fileID: 8300000, guid: f894ae2060e946649b8c5d2cbc7aa8b2, type: 3}
   _animationTrigger: USE_ABILITY

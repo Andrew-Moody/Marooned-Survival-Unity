@@ -25,8 +25,9 @@ public class ProjectileBase : NetworkBehaviour
 	public ProjectileState State => _state;
 	protected ProjectileState _state;
 
+	protected int _layerMask;
+	
 	private float _timeRemaining;
-
 
 
 	public override void OnStartNetwork()
@@ -92,6 +93,11 @@ public class ProjectileBase : NetworkBehaviour
 	public virtual void SetOwningActor(Actor actor)
 	{
 		_owningActor = actor;
+
+		if (actor != null)
+		{
+			_layerMask = actor.HostilityMask.value;
+		}
 	}
 
 

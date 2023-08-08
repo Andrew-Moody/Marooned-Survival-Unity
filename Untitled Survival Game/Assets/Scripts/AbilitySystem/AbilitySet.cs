@@ -21,13 +21,9 @@ namespace AbilitySystem
 
 		public AbilitySet(AbilityActor user, List<AbilityInputBinding> defaultAbilities, Inventory inventory)
 		{
-			_user = user;
-
-			
+			_user = user;			
 
 			SetDefaultAbilities(defaultAbilities);
-
-			
 
 			if (inventory != null)
 			{

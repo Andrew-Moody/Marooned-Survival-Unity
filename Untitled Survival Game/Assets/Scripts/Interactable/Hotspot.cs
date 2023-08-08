@@ -58,7 +58,7 @@ public class Hotspot : Interactable
 			return;
 		}
 
-		Inventory inventory = GameManager.Instance.GetPlayer(user).GetComponent<Inventory>();
+		Inventory inventory = GameManager.Instance.GetPlayer(user).Inventory;
 
 		StringBuilder stringBuilder = new StringBuilder();
 

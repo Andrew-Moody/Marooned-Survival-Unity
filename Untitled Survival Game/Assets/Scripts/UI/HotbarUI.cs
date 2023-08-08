@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Actors;
 
 public class HotbarUI : UIPanel
 {
@@ -32,13 +33,13 @@ public class HotbarUI : UIPanel
 		}
 	}
 
-	public override void SetPlayer(GameObject player)
+	public override void SetPlayer(Actor player)
 	{
 		base.SetPlayer(player);
 
 		if (_player != null)
 		{
-			_inventory = player.GetComponent<Inventory>();
+			_inventory = player.Inventory;
 
 			if (_inventory == null)
 			{

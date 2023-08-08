@@ -126,7 +126,7 @@ namespace AbilitySystem
 
 				if (agent != null && user.IsServer)
 				{
-					Vector3 direction = (target.transform.position - user.transform.position).normalized;
+					Vector3 direction = (target.Actor.NetTransform.position - user.Actor.NetTransform.position).normalized;
 
 					direction.y += Mathf.Atan(Mathf.Deg2Rad * 30f); // add an upward component
 

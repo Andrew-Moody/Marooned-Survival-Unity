@@ -53,8 +53,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5098025153957249467}
-  - component: {fileID: 7208833085580975929}
   - component: {fileID: 8624961983116783470}
+  - component: {fileID: 7208833085580975929}
   m_Layer: 0
   m_Name: FireballBurst
   m_TagString: Untagged
@@ -77,29 +77,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7208833085580975929
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1621567993699045949}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be82cdf736a05344bbe21b16530cbd5b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _componentIndexCache: 0
-  _addedNetworkObject: {fileID: 8624961983116783470}
-  _networkObjectCache: {fileID: 8624961983116783470}
-  _networkTransform: {fileID: 6725420340588896660}
-  _lifeTime: 30
-  _deathTime: 0
-  _emitters:
-  - {fileID: 5417409659209765207}
-  - {fileID: 6690053493937967323}
-  _keepVertical: 1
-  _disposeChildren: 0
 --- !u!114 &8624961983116783470
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -152,6 +129,29 @@ MonoBehaviour:
   _isGlobal: 0
   _initializeOrder: 0
   _defaultDespawnType: 0
+--- !u!114 &7208833085580975929
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1621567993699045949}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be82cdf736a05344bbe21b16530cbd5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _componentIndexCache: 0
+  _addedNetworkObject: {fileID: 8624961983116783470}
+  _networkObjectCache: {fileID: 8624961983116783470}
+  _networkTransform: {fileID: 6725420340588896660}
+  _lifeTime: 30
+  _deathTime: 0
+  _emitters:
+  - {fileID: 5417409659209765207}
+  - {fileID: 6690053493937967323}
+  _keepVertical: 1
+  _disposeChildren: 0
 --- !u!1 &3935350782206337259
 GameObject:
   m_ObjectHideFlags: 0

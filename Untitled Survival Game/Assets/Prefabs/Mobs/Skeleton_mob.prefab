@@ -11,8 +11,6 @@ GameObject:
   - component: {fileID: 5022243072253628300}
   - component: {fileID: 7998076479500166674}
   - component: {fileID: 5762114993510601106}
-  - component: {fileID: 6683097203788443856}
-  - component: {fileID: 972570578531332002}
   m_Layer: 9
   m_Name: CombatCollider
   m_TagString: Untagged
@@ -60,51 +58,6 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
---- !u!114 &6683097203788443856
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 448698024357801150}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f33333c45bbd6244b0e22cd1ad54732, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _componentIndexCache: 3
-  _addedNetworkObject: {fileID: 2578392283353702552}
-  _networkObjectCache: {fileID: 2578392283353702552}
-  _requiredTraits:
-    _traits: []
-  _blockingTraits:
-    _traits: []
-  _startingAbilities:
-  - _input: 1
-    _ability: {fileID: 11400000, guid: 5f8a6bec64ab6ee4a8d94ed1d588b9e1, type: 2}
-  - _input: 14
-    _ability: {fileID: 11400000, guid: e7529e5a597f9fd41a5b03c6939d2d56, type: 2}
-  _cues: []
---- !u!114 &972570578531332002
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 448698024357801150}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6bb0dbe57eb116d42af5d281eef26f0f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _componentIndexCache: 4
-  _addedNetworkObject: {fileID: 2578392283353702552}
-  _networkObjectCache: {fileID: 2578392283353702552}
-  _statInitialValues:
-  - StatKind: 0
-    Value: 100
-  - StatKind: 1
-    Value: 100
 --- !u!1 &2578392283353703508
 GameObject:
   m_ObjectHideFlags: 0
@@ -118,7 +71,6 @@ GameObject:
   - component: {fileID: 2578392283353702504}
   - component: {fileID: 2578392283353702592}
   - component: {fileID: 2578392283353702706}
-  - component: {fileID: 2578392283353702410}
   - component: {fileID: 2578392283353702718}
   - component: {fileID: 2578392283353702647}
   - component: {fileID: 2578392283353702509}
@@ -180,8 +132,6 @@ MonoBehaviour:
   - {fileID: 2578392283353702592}
   - {fileID: 2578392283353702706}
   - {fileID: 2578392283353702718}
-  - {fileID: 6683097203788443856}
-  - {fileID: 972570578531332002}
   <ParentNetworkObject>k__BackingField: {fileID: 2578392283353702656}
   <ChildNetworkObjects>k__BackingField: []
   _isNetworked: 1
@@ -272,20 +222,6 @@ MonoBehaviour:
     X: 0
     Y: 0
     Z: 0
---- !u!136 &2578392283353702410
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2578392283353703508}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  m_Radius: 0.3
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 1, z: 0}
 --- !u!114 &2578392283353702718
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -354,6 +290,8 @@ GameObject:
   - component: {fileID: 2578392283353702656}
   - component: {fileID: 7983660517394171817}
   - component: {fileID: 6156362607860417416}
+  - component: {fileID: 897362557843706926}
+  - component: {fileID: 4616960274300603262}
   m_Layer: 9
   m_Name: Skeleton_mob
   m_TagString: Mob
@@ -411,6 +349,8 @@ MonoBehaviour:
   <PredictedSpawn>k__BackingField: {fileID: 0}
   _networkBehaviours:
   - {fileID: 7983660517394171817}
+  - {fileID: 897362557843706926}
+  - {fileID: 4616960274300603262}
   <ParentNetworkObject>k__BackingField: {fileID: 0}
   <ChildNetworkObjects>k__BackingField:
   - {fileID: 2578392283353702552}
@@ -447,15 +387,60 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _netTransform: {fileID: 2578392283353702706}
-  _stats: {fileID: 972570578531332002}
+  _stats: {fileID: 4616960274300603262}
   _animator: {fileID: 2424894543613601534}
   _audioSource: {fileID: 2578392283353702435}
   _attachPoints: {fileID: 835106260871067280}
   _transformAnimator: {fileID: 0}
   _viewTransform: {fileID: 0}
-  _abilityActor: {fileID: 6683097203788443856}
+  _abilityActor: {fileID: 897362557843706926}
   _agent: {fileID: 2578392283353702718}
   _inventory: {fileID: 0}
+--- !u!114 &897362557843706926
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2578392283353703598}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f33333c45bbd6244b0e22cd1ad54732, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _componentIndexCache: 1
+  _addedNetworkObject: {fileID: 2578392283353702552}
+  _networkObjectCache: {fileID: 2578392283353702656}
+  _requiredTraits:
+    _traits: []
+  _blockingTraits:
+    _traits: []
+  _startingAbilities:
+  - _input: 1
+    _ability: {fileID: 11400000, guid: 5f8a6bec64ab6ee4a8d94ed1d588b9e1, type: 2}
+  - _input: 14
+    _ability: {fileID: 11400000, guid: e7529e5a597f9fd41a5b03c6939d2d56, type: 2}
+  _cues: []
+--- !u!114 &4616960274300603262
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2578392283353703598}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bb0dbe57eb116d42af5d281eef26f0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _componentIndexCache: 2
+  _addedNetworkObject: {fileID: 2578392283353702552}
+  _networkObjectCache: {fileID: 2578392283353702656}
+  _statInitialValues:
+  - StatKind: 0
+    Value: 100
+  - StatKind: 1
+    Value: 100
 --- !u!1 &2578392283353703724
 GameObject:
   m_ObjectHideFlags: 0
