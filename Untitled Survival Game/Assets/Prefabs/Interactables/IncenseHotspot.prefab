@@ -167,11 +167,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NetworkObserver: {fileID: 0}
-  <PrefabId>k__BackingField: 0
+  <PrefabId>k__BackingField: 56
   <SpawnableCollectionId>k__BackingField: 0
   _scenePathHash: 0
   <SceneId>k__BackingField: 0
-  <AssetPathHash>k__BackingField: 17214931407738977885
+  <AssetPathHash>k__BackingField: 13045783447500221823
   _sceneNetworkObjects: []
   <IsNested>k__BackingField: 0
   <ComponentIndex>k__BackingField: 0

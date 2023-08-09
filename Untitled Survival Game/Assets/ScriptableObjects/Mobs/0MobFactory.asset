@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7123f182f30961942a5514c5fce592ad, type: 3}
-  m_Name: MobFactory
+  m_Name: 0MobFactory
   m_EditorClassIdentifier: 
   _mobPrefabs:
   - {fileID: 2578392283353703598, guid: 8fd33855ef2b2ac4b9bf50bdf594d79f, type: 3}

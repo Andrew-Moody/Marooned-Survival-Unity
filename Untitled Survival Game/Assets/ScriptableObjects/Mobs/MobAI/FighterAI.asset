@@ -37,6 +37,10 @@ MonoBehaviour:
       type: {class: RoamState, ns: , asm: Assembly-CSharp}
       data:
         _roamRange: {x: 10, y: 0, z: 10}
+        _viewMask:
+          serializedVersion: 2
+          m_Bits: 256
+        _viewRange: 5
     00000001:
       type: {class: TargetInViewCondition, ns: , asm: Assembly-CSharp}
       data:
@@ -49,10 +53,6 @@ MonoBehaviour:
       data:
         _abilityInput: 1
         _attackCoolDown: 2
-        _viewMask:
-          serializedVersion: 2
-          m_Bits: 256
-        _viewRange: 5
     00000003:
       type: {class: GreaterCondition, ns: , asm: Assembly-CSharp}
       data:
