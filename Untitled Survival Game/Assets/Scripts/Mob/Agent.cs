@@ -15,8 +15,8 @@ public class Agent : NetworkBehaviour
 	public Actor Actor => _actor;
 	private Actor _actor;
 
-	public GameObject AttackTarget => _attackTarget;
-	private GameObject _attackTarget;
+	public Actor AttackTarget => _attackTarget;
+	private Actor _attackTarget;
 
 	private ViewTransform _viewTransform;
 
@@ -95,13 +95,13 @@ public class Agent : NetworkBehaviour
 	}
 
 
-	public void SetAttackTarget(GameObject attackTarget)
+	public void SetAttackTarget(Actor attackTarget)
 	{
 		_attackTarget = attackTarget;
 
 		if (_attackTarget != null)
 		{
-			_pathfinding.SetTarget(attackTarget.transform);
+			_pathfinding.SetTarget(attackTarget.NetTransform);
 		}
 		else
 		{

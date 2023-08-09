@@ -94,7 +94,9 @@ public class AttackState : BaseState
 
 			if (_attackTarget != null)
 			{
-				agent.SetAttackTarget(_attackTarget.gameObject);
+				// Haven't added support for legacy abilities to use Actor rather than AbilityActor
+
+				//agent.SetAttackTarget(_attackTarget);
 			}
 		}
 	}

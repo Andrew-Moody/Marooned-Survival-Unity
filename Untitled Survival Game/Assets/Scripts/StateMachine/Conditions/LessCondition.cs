@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GreaterCondition : BaseCondition
+public class LessCondition : BaseCondition
 {
 	public string ValueName;
 
@@ -12,13 +12,13 @@ public class GreaterCondition : BaseCondition
 	{
 		float value = agent.GetBlackboardValue(ValueName);
 
-		if (value > Value)
+		if (value < Value)
 		{
-			Debug.Log($"{ValueName}: {value} was greater than {Value}");
+			Debug.Log($"{ValueName}: {value} was less than {Value}");
 			return true;
 		}
 
-		//return agent.GetBlackboardValue(ValueName) > Value;
+		//return agent.GetBlackboardValue(ValueName) < Value;
 
 		return false;
 	}
@@ -26,23 +26,23 @@ public class GreaterCondition : BaseCondition
 
 	public static BaseCondition Create()
 	{
-		return new GreaterCondition();
+		return new LessCondition();
 	}
 
 
 	public override BaseCondition DeepCopy()
 	{
-		return new GreaterCondition(this);
+		return new LessCondition(this);
 	}
 
 
-	public GreaterCondition()
+	public LessCondition()
 	{
 
 	}
 
 
-	public GreaterCondition(GreaterCondition condition)
+	public LessCondition(LessCondition condition)
 	{
 		NextState = condition.NextState;
 

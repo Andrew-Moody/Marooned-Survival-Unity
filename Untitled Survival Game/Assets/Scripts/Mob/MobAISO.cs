@@ -58,6 +58,8 @@ public class MobAISO : ScriptableObject
 				state.State.Transitions.Add(transition.Condition);
 			}
 
+			state.State.StateName = state.StateName;
+
 			states.Add(state.State);
 		}
 

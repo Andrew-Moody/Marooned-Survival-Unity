@@ -122,7 +122,7 @@ namespace AbilitySystem
 
 			if (attachPoint == null)
 			{
-				attachPoint = actor.transform;
+				attachPoint = actor.NetTransform;
 			}
 
 			Vector3 position = attachPoint.position;
@@ -145,7 +145,17 @@ namespace AbilitySystem
 			{
 				ProjectileBase projectile = data.Projectile;
 
-				Vector3 velocity = _speed * handle.Actor.ViewTransform.transform.forward;
+				Vector3 velocity = Vector3.zero;
+
+				if (handle.Actor.ViewTransform != null)
+				{
+					velocity = _speed * handle.Actor.ViewTransform.transform.forward;
+				}
+				else
+				{
+					velocity = _speed * handle.Actor.NetTransform.forward;
+				}
+
 				projectile.Launch(velocity);
 			}
 			else

@@ -5,6 +5,8 @@ using UnityEngine;
 [System.Serializable]
 public abstract class BaseState : IState
 {
+	public string StateName { get; set; }
+
 	public List<BaseCondition> Transitions = new List<BaseCondition>();
 
 
@@ -45,6 +47,8 @@ public abstract class BaseState : IState
 
 	public BaseState(BaseState state)
 	{
+		StateName = state.StateName;
+
 		// Need to copy the conditions as well but this is a test
 		Transitions = state.Transitions;
 

@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c4d7ab413c1a43343899debf5ff23c21, type: 3}
-  m_Name: FighterAI
+  m_Name: GoblinAI
   m_EditorClassIdentifier: 
   States:
   - StateName: Roam
@@ -21,40 +21,68 @@ MonoBehaviour:
     - ConditionType: 7
       Condition:
         id: 1
-      NextState: Attack
-  - StateName: Attack
+      NextState: RangeAttack
+  - StateName: RangeAttack
     StateType: 3
     State:
       id: 2
     Transitions:
-    - ConditionType: 1
+    - ConditionType: 2
       Condition:
         id: 3
+      NextState: MeleeAttack
+    - ConditionType: 1
+      Condition:
+        id: 4
       NextState: Roam
+  - StateName: MeleeAttack
+    StateType: 3
+    State:
+      id: 5
+    Transitions:
+    - ConditionType: 1
+      Condition:
+        id: 6
+      NextState: RangeAttack
   references:
     version: 1
     00000000:
       type: {class: RoamState, ns: , asm: Assembly-CSharp}
       data:
-        _roamRange: {x: 10, y: 0, z: 10}
+        _roamRange: {x: 5, y: 0, z: 5}
+        _viewMask:
+          serializedVersion: 2
+          m_Bits: 256
+        _viewRange: 10
     00000001:
       type: {class: TargetInViewCondition, ns: , asm: Assembly-CSharp}
       data:
         _viewMask:
           serializedVersion: 2
           m_Bits: 256
-        _viewRange: 5
+        _viewRange: 10
     00000002:
       type: {class: MeleeAttackState, ns: , asm: Assembly-CSharp}
       data:
-        _abilityInput: 1
+        _abilityInput: 2
         _attackCoolDown: 2
-        _viewMask:
-          serializedVersion: 2
-          m_Bits: 256
-        _viewRange: 5
     00000003:
+      type: {class: LessCondition, ns: , asm: Assembly-CSharp}
+      data:
+        ValueName: DistToTarget
+        Value: 5
+    00000004:
       type: {class: GreaterCondition, ns: , asm: Assembly-CSharp}
       data:
         ValueName: DistToTarget
         Value: 15
+    00000005:
+      type: {class: MeleeAttackState, ns: , asm: Assembly-CSharp}
+      data:
+        _abilityInput: 1
+        _attackCoolDown: 2
+    00000006:
+      type: {class: GreaterCondition, ns: , asm: Assembly-CSharp}
+      data:
+        ValueName: DistToTarget
+        Value: 7

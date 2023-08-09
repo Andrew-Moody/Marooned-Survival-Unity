@@ -7,37 +7,31 @@ using Actors;
 public class MeleeAttackState : BaseState
 {
 	[SerializeField]
+	private AbilityInput _abilityInput;
+
+	[SerializeField]
 	private float _attackCoolDown;
-
-	[SerializeField]
-	private LayerMask _viewMask;
-
-	[SerializeField]
-	private float _viewRange;
 
 	private float _coolDownLeft;
 
 	private AbilityActor _abilityActor;
 
-	private AbilityActor _attackTarget;
-
 	public override void OnEnter(Agent agent)
 	{
-		Debug.Log("Entering MeleeAttackState");
+		Debug.Log($"Entering {StateName}");
 		_coolDownLeft = _attackCoolDown;
 
 		_abilityActor = agent.Actor.AbilityActor;
 
-		agent.SetBlackboardValue("DistToTarget", 0f);
+		if (agent.AttackTarget == null)
+		{
+			Debug.LogError($"Agent {agent.Actor.gameObject.name} does not have an attack target");
+		}
 	}
 
 	public override void OnExit(Agent agent)
 	{
-		Debug.Log("Exiting MeleeAttackState");
-
-		agent.SetAttackTarget(null);
-
-		agent.SetBlackboardValue("DistToTarget", 0f);
+		Debug.Log($"Exiting {StateName}");
 	}
 
 	public override void OnTick(Agent agent, float deltaTime)
@@ -48,13 +42,7 @@ public class MeleeAttackState : BaseState
 		}
 
 
-		if (agent.AttackTarget == null)
-		{
-			FindAttackTarget(agent);
-			return;
-		}
-
-		float distToTarget = (agent.AttackTarget.transform.position - agent.transform.position).magnitude;
+		float distToTarget = (agent.AttackTarget.NetTransform.position - agent.transform.position).magnitude;
 
 		agent.SetBlackboardValue("DistToTarget", distToTarget);
 
@@ -63,7 +51,7 @@ public class MeleeAttackState : BaseState
 
 			if (!_abilityActor.IsAbilityActive)
 			{
-				_abilityActor.ActivateAbility(AbilityInput.Primary);
+				_abilityActor.ActivateAbility(_abilityInput);
 
 				_coolDownLeft = _attackCoolDown;
 			}
@@ -71,25 +59,6 @@ public class MeleeAttackState : BaseState
 		else
 		{
 			_coolDownLeft -= deltaTime;
-		}
-	}
-
-
-	private void FindAttackTarget(Agent agent)
-	{
-		Collider[] hits = Physics.OverlapSphere(agent.transform.position, _viewRange, _viewMask.value);
-
-		foreach (Collider hit in hits)
-		{
-			if (hit.TryGetComponent(out ActorFinder finder))
-			{
-				_attackTarget = finder.Actor.AbilityActor;
-
-				if (_attackTarget != null)
-				{
-					agent.SetAttackTarget(finder.Actor.NetTransform.gameObject);
-				}
-			}
 		}
 	}
 
@@ -114,10 +83,8 @@ public class MeleeAttackState : BaseState
 	public MeleeAttackState(MeleeAttackState state)
 		: base(state)
 	{
+		_abilityInput = state._abilityInput;
+
 		_attackCoolDown = state._attackCoolDown;
-
-		_viewRange = state._viewRange;
-
-		_viewMask = state._viewMask;
 	}
 }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Actors;
 
 public class RoamState : BaseState
 {
@@ -9,18 +10,30 @@ public class RoamState : BaseState
 
 	private Vector3 _roamCenter;
 
+	[SerializeField]
+	private LayerMask _viewMask;
+
+	[SerializeField]
+	private float _viewRange;
+
 	public override void OnEnter(Agent agent)
 	{
-		Debug.Log("Entering RoamState");
+		Debug.Log($"Entering {StateName}");
 
 		_roamCenter = agent.Actor.NetTransform.position;
 
+		agent.SetAttackTarget(null);
+
 		agent.Pathfinding.SetDestination(ChooseNextDest(agent));
+
+		agent.SetBlackboardValue("DistToTarget", float.MaxValue);
 	}
 
 	public override void OnExit(Agent agent)
 	{
-		Debug.Log("Exiting RoamState");
+		Debug.Log($"Exiting {StateName}");
+
+		FindAttackTarget(agent);
 	}
 
 	public override void OnTick(Agent agent, float deltaTime)
@@ -55,6 +68,24 @@ public class RoamState : BaseState
 	}
 
 
+	private void FindAttackTarget(Agent agent)
+	{
+		Collider[] hits = Physics.OverlapSphere(agent.transform.position, _viewRange, _viewMask.value);
+
+		foreach (Collider hit in hits)
+		{
+			if (hit.TryGetComponent(out ActorFinder finder))
+			{
+				agent.SetAttackTarget(finder.Actor);
+
+				float distToTarget = (agent.AttackTarget.NetTransform.position - agent.transform.position).magnitude;
+
+				agent.SetBlackboardValue("DistToTarget", distToTarget);
+			}
+		}
+	}
+
+
 	public static BaseState Create()
 	{
 		return new RoamState();
@@ -74,5 +105,9 @@ public class RoamState : BaseState
 		: base(state)
 	{
 		_roamRange = state._roamRange;
+
+		_viewMask = state._viewMask;
+
+		_viewRange = state._viewRange;
 	}
 }
