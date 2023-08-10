@@ -86,7 +86,14 @@ public class InventoryUI : UIPanel
 			CameraController.Instance.EquipmentCamera.gameObject.SetActive(true);
 		}
 
-		_handCraftingUI.Show(new CraftingUIPanelData(_handCraftingSO.Recipes));
+		if (data is CraftingUIPanelData craftingData)
+		{
+			_handCraftingUI.Show(craftingData);
+		}
+		else
+		{
+			_handCraftingUI.Show(new CraftingUIPanelData(_handCraftingSO.Recipes));
+		}
 	}
 
 

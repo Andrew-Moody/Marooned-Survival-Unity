@@ -129,6 +129,9 @@ MonoBehaviour:
   _componentIndexCache: 0
   _addedNetworkObject: {fileID: 416200329961083272}
   _networkObjectCache: {fileID: 416200329961083272}
+  _hostilityMask:
+    serializedVersion: 2
+    m_Bits: 0
   _smoothTransform: {fileID: 2996834708280513905}
   _destructibleSO: {fileID: 11400000, guid: 421058cb3b68b7e48b9f15fbbc0ef99d, type: 2}
 --- !u!114 &2487646241634094816
@@ -539,6 +542,7 @@ GameObject:
   - component: {fileID: 6399097161675407293}
   - component: {fileID: 5982935817222113139}
   - component: {fileID: 1115631232006669161}
+  - component: {fileID: 4508977139298182950}
   m_Layer: 9
   m_Name: NetTransform
   m_TagString: Untagged
@@ -626,6 +630,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59778ed6683a68749b3ca865708ef529, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4508977139298182950
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7757584804302846387}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1454ee6b335ddc041be6a459fa232ce7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _componentIndexCache: 255
+  _addedNetworkObject: {fileID: 416200329961083272}
+  _networkObjectCache: {fileID: 0}
+  _craftingStationSO: {fileID: 11400000, guid: 4f7db5f2a9f6e1344b562d874b3123f6, type: 2}
 --- !u!1 &8823513406274994754
 GameObject:
   m_ObjectHideFlags: 0

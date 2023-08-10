@@ -27,6 +27,8 @@ public class CraftingStation : Interactable
 	{
 		PlayerInput.SetFPSMode(false);
 
-		UIManager.ShowPanel("CraftingUI", new CraftingUIPanelData(_craftingStationSO.Recipes), true);
+		//UIManager.ShowPanel("CraftingUI", new CraftingUIPanelData(_craftingStationSO.Recipes), true);
+
+		UIManager.ShowPanel("InventoryUI", new CraftingUIPanelData(_craftingStationSO.Recipes), true);
 	}
 }
