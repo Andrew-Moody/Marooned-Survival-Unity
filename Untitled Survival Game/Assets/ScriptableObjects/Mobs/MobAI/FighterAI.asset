@@ -49,7 +49,7 @@ MonoBehaviour:
           m_Bits: 256
         _viewRange: 5
     00000002:
-      type: {class: MeleeAttackState, ns: , asm: Assembly-CSharp}
+      type: {class: UseAbilityState, ns: , asm: Assembly-CSharp}
       data:
         _abilityInput: 1
         _attackCoolDown: 2

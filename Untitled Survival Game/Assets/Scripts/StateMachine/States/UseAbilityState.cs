@@ -4,7 +4,7 @@ using UnityEngine;
 using AbilitySystem;
 using Actors;
 
-public class MeleeAttackState : BaseState
+public class UseAbilityState : BaseState
 {
 	[SerializeField]
 	private AbilityInput _abilityInput;
@@ -65,22 +65,22 @@ public class MeleeAttackState : BaseState
 
 	public static BaseState Create()
 	{
-		return new MeleeAttackState();
+		return new UseAbilityState();
 	}
 
 
 	public override BaseState DeepCopy()
 	{
-		return new MeleeAttackState(this);
+		return new UseAbilityState(this);
 	}
 
-	public MeleeAttackState()
+	public UseAbilityState()
 	{
 		
 	}
 
 
-	public MeleeAttackState(MeleeAttackState state)
+	public UseAbilityState(UseAbilityState state)
 		: base(state)
 	{
 		_abilityInput = state._abilityInput;
