@@ -17,7 +17,8 @@ MonoBehaviour:
   _modifiers:
   - _statKind: 0
     _operation: 1
-    _magnitude: -20
+    _magnitude: 0
   _cues:
   - _trait: 2
   _traits: []
+  _appliedAbilities: []

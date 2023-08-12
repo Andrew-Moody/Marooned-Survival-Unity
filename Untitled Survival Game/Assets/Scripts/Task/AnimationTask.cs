@@ -60,6 +60,17 @@ namespace AsyncTasks
 			_animEventHandler.OnAbilityAnimEvent -= AnimEventHandler_OnAbilityAnimEvent;
 
 			_animEventHandler.OnAbilityEndAnimEvent -= AnimEventHandler_OnAbilityEndAnimEvent;
+
+			AnimatorStateInfo info = _animator.GetCurrentAnimatorStateInfo(1);
+
+
+			// Transition out of USE_ABILITY state if it hasn't finished
+			if (info.IsName("USE_ABILITY"))
+			{
+				Debug.LogWarning($"Normalized time: {info.normalizedTime}");
+				Debug.LogWarning($"Setting Trigger: CANCEL_ABILITY");
+				_animator.SetTrigger("CANCEL_ABILITY");
+			}
 		}
 	}
 }

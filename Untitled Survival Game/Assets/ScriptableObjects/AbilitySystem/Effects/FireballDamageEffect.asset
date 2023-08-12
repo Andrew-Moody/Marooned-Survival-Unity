@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 523f6f64e6ebb9146afffad4bfb8339d, type: 3}
-  m_Name: MeleeDamageEffect
+  m_Name: FireballDamageEffect
   m_EditorClassIdentifier: 
   _durationType: 0
   _duration: 0
   _modifiers:
   - _statKind: 0
     _operation: 1
-    _magnitude: 0
+    _magnitude: -200
   _cues:
   - _trait: 2
   _traits: []

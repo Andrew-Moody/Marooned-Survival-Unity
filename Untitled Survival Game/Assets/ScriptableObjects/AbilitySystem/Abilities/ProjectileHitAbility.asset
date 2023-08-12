@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7776340cc423eb44cbcb218952472213, type: 3}
   m_Name: ProjectileHitAbility
   m_EditorClassIdentifier: 
-  _effect: {fileID: 11400000, guid: 392bf7db1e2070a468a33d8fab5e3ffc, type: 2}
+  _cooldown: 0
+  _effect: {fileID: 11400000, guid: cf79f697b273b6341a80046733bdb857, type: 2}

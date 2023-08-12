@@ -186,7 +186,7 @@ namespace AbilitySystem
 				return false;
 			}
 
-			// For now don't allow a new ability to cancel an inprogress ability
+			
 			if (_activeAbility != null)
 			{
 				// Need to check if the new ability is allowed to cancel the old ability (using traits?)

@@ -169,7 +169,7 @@ MonoBehaviour:
   _graphic: {fileID: 8935335444905319778}
   _startParticle: {fileID: 7859459789826889610}
   _endParticle: {fileID: 4090239542604302459}
-  _ability: {fileID: 11400000, guid: 2235dcacf00897048b69ed4d7a13e360, type: 2}
+  _ability: {fileID: 11400000, guid: 9e56ec933eac118438a6b8ee838ecc9b, type: 2}
 --- !u!1 &5800626481318469111
 GameObject:
   m_ObjectHideFlags: 0

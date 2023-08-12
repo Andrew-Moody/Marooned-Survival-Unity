@@ -13,16 +13,18 @@ public class AnimEventHandler : MonoBehaviour
 	public event Action OnDeathEndAnimEvent;
 
 
-	private void AbilityAnimEvent()
+	private void AbilityAnimEvent(string stringParam)
 	{
-		//Debug.Log("AbilityAnimEvent");
+		Debug.Log($"AbilityAnimEvent {stringParam}");
 
 		OnAbilityAnimEvent?.Invoke();
 	}
 
 
-	private void AbilityEndAnimEvent()
+	private void AbilityEndAnimEvent(string stringParam)
 	{
+		Debug.Log($"AbilityEndAnimEvent {stringParam}");
+
 		OnAbilityEndAnimEvent?.Invoke();
 	}
 
