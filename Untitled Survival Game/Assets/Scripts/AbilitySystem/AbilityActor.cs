@@ -343,7 +343,7 @@ namespace AbilitySystem
 
 			foreach (StatModifier modifier in effectHandle.Effect.Modifiers)
 			{
-				modifier.ApplyModifier(_actor.Stats);
+				modifier.ApplyModifier(effectHandle.EventData.Source.Actor, _actor);
 			}
 		}
 

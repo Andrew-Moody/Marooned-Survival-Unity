@@ -11,5 +11,7 @@ namespace Actors
 		DivineEnergy,
 		Stamina,
 		Hunger,
+		Armor,
+		Hardness
 	}
 }

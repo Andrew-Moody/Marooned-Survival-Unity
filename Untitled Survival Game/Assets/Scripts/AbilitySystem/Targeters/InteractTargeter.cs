@@ -27,7 +27,7 @@ namespace AbilitySystem
 				range = raycastArgs.Range;
 			}
 
-			if (Physics.Raycast(view.position, view.forward, out RaycastHit hit, range, LayerMask.GetMask("Mob")))
+			if (Physics.Raycast(view.position, view.forward, out RaycastHit hit, range, LayerMask.GetMask("Mob", "Interactable")))
 			{
 				if (hit.collider != null && hit.collider.gameObject.TryGetComponent(out Interactable interactible))
 				{

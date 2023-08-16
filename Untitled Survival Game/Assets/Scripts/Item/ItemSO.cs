@@ -34,4 +34,7 @@ public class ItemSO : ScriptableObject
 
 	public List<AbilityInputBinding> Abilities => new List<AbilityInputBinding>(_abilities);
 	[SerializeField] private List<AbilityInputBinding> _abilities;
+
+	public float Armor => _armor;
+	[SerializeField] private float _armor;
 }

@@ -16,8 +16,9 @@ MonoBehaviour:
   _duration: 0
   _modifiers:
   - _statKind: 0
-    _operation: 1
+    _operation: 5
     _magnitude: -75
+    _statOperation: {fileID: 11400000, guid: 6803cd928ee7e5f49b8d51e5fdf1ae9e, type: 2}
   _cues:
   - _trait: 2
   _traits:

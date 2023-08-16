@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using Actors;
 
 namespace AbilitySystem
@@ -14,14 +15,25 @@ namespace AbilitySystem
 
 		[SerializeField] private float _magnitude;
 
+		[SerializeField] private StatOperation _statOperation;
+
 		
-		public void ApplyModifier(Stats stats)
+		public void ApplyModifier(Actor source, Actor target)
 		{
-			float value = stats.GetStatValue(_statKind);
+			if (_operation == ModifierOperation.Custom)
+			{
+				OperationData data = new BasicOpData() { Value = _magnitude };
 
-			value = ApplyModifier(value);
+				_statOperation.Apply(source, target, data);
+			}
+			else
+			{
+				float value = target.Stats.GetStatValue(_statKind);
 
-			stats.SetStatValue(_statKind, value);
+				value = ApplyModifier(value);
+
+				target.Stats.SetStatValue(_statKind, value);
+			}
 		}
 
 
@@ -61,7 +73,8 @@ namespace AbilitySystem
 			Add,
 			Multiply,
 			Divide,
-			Override
+			Override,
+			Custom
 		}
 	}
 }

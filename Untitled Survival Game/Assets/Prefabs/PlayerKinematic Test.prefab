@@ -1966,6 +1966,8 @@ MonoBehaviour:
     Value: 100
   - StatKind: 1
     Value: 100
+  - StatKind: 5
+    Value: 0
 --- !u!114 &3230981215068263947
 MonoBehaviour:
   m_ObjectHideFlags: 0
