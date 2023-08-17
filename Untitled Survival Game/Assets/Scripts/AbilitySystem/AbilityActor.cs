@@ -45,6 +45,9 @@ namespace AbilitySystem
 
 			_actor = Actor.FindActor(gameObject);
 
+
+			Debug.LogWarning($"AbilityActor OnStartNetwork {_actor.gameObject.name}, {gameObject.name}");
+
 			SetupStartingAbilities();
 			SetupCueOverrides();
 		}

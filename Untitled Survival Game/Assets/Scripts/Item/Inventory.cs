@@ -147,6 +147,7 @@ public class Inventory : NetworkBehaviour
 				EquipSlot = equipSlot
 			};
 
+			Debug.Log($"Invoking ItemEquipped {ItemEquipped.GetInvocationList().Length} times");
 			ItemEquipped?.Invoke(this, args);
 		}
 
@@ -249,6 +250,7 @@ public class Inventory : NetworkBehaviour
 	[ServerRpc(RunLocally = true)]
 	public void SetHotbarSelectionSRPC(int selection)
 	{
+		Debug.Log("SetHotbarSelectionSRPC");
 		_hotbarSelection = selection;
 
 		UpdateSlot(_hotbarSelection);

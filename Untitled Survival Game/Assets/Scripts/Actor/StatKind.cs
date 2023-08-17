@@ -6,6 +6,7 @@ namespace Actors
 {
 	public enum StatKind
 	{
+		None,
 		Health,
 		MagicEnergy,
 		DivineEnergy,

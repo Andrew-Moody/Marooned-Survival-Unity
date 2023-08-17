@@ -18,6 +18,8 @@ namespace Actors
 
 		private Dictionary<StatKind, ActorStat> _stats;
 
+		private const float DEFAULT_MAX = 100f;
+
 
 		#region NetworkCallbacks
 
@@ -101,7 +103,7 @@ namespace Actors
 				return stat.Value;
 			}
 
-			Debug.LogWarning("Stats does not contain a stat with specified trait key");
+			Debug.LogWarning($"Stats does not contain a stat with specified trait key: {statKind}");
 
 			return 0f;
 		}
@@ -134,9 +136,10 @@ namespace Actors
 				}
 				else
 				{
-					ActorStat stat = new ActorStat();
-					stat.SetBounds(0f, value.Value);
-					stat.SetStatClamped(value.Value);
+					// Set the max to the initial value unless the initial value is zero
+					float max = (value.Value == 0f) ? DEFAULT_MAX : value.Value;
+
+					ActorStat stat = new ActorStat(value.StatKind, 0f, max, value.Value);
 
 					_stats[value.StatKind] = stat;
 

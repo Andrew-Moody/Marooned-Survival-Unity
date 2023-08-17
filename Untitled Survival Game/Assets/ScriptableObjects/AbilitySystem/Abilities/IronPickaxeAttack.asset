@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 303239c4ca4951d469f4ee6d201674b2, type: 3}
-  m_Name: PickaxeDamageAbility
+  m_Name: IronPickaxeAttack
   m_EditorClassIdentifier: 
   _cooldown: 2
-  _effect: {fileID: 11400000, guid: a1b2fc3fd04505645970975dd31a0983, type: 2}
+  _effect: {fileID: 11400000, guid: dde7628f18c203246b140618438f8d8e, type: 2}
   _targeter: {fileID: 11400000, guid: cca3fc09e5d4ec544947cc439ad78240, type: 2}
   _animationTrigger: USE_ABILITY
   _startSound: {fileID: 8300000, guid: f894ae2060e946649b8c5d2cbc7aa8b2, type: 3}

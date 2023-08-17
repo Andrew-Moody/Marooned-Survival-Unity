@@ -23,12 +23,7 @@ MonoBehaviour:
   Mesh: {fileID: 7053128779965063925, guid: 22cb6f89d10e71e47bf069b329578ef6, type: 3}
   Material: {fileID: 2100000, guid: 4c23086cc53d05b42a8a5004832ae24a, type: 2}
   WorldOptions: 00000000
-  ProjectileSource: {x: 0, y: 0, z: 0}
-  _useItemSO: {fileID: 0}
-  _abilitySet:
-    _abilitySetSO: {fileID: 0}
-    _abilitySOList:
-    - {fileID: 11400000, guid: 398240ea25a297e4d8118be2f18e8366, type: 2}
-    _abilities: []
-  references:
-    version: 1
+  _abilities:
+  - _input: 1
+    _ability: {fileID: 11400000, guid: bec8c368976ec0d479a08d09c7cba396, type: 2}
+  _armor: 0

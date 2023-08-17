@@ -84,7 +84,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NetworkObserver: {fileID: 0}
-  <PrefabId>k__BackingField: 28
+  <PrefabId>k__BackingField: 17
   <SpawnableCollectionId>k__BackingField: 0
   _scenePathHash: 0
   <SceneId>k__BackingField: 0
@@ -108,6 +108,7 @@ MonoBehaviour:
   - {fileID: 667627603145260963}
   - {fileID: 116272913050607862}
   - {fileID: 6399097161675407293}
+  - {fileID: 4508977139298182950}
   <ParentNetworkObject>k__BackingField: {fileID: 0}
   <ChildNetworkObjects>k__BackingField: []
   _isNetworked: 1
@@ -197,7 +198,7 @@ MonoBehaviour:
   _addedNetworkObject: {fileID: 416200329961083272}
   _networkObjectCache: {fileID: 416200329961083272}
   _statInitialValues:
-  - StatKind: 0
+  - StatKind: 1
     Value: 100
 --- !u!1 &543981008890952276
 GameObject:
@@ -642,9 +643,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1454ee6b335ddc041be6a459fa232ce7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 255
+  _componentIndexCache: 4
   _addedNetworkObject: {fileID: 416200329961083272}
-  _networkObjectCache: {fileID: 0}
+  _networkObjectCache: {fileID: 416200329961083272}
   _craftingStationSO: {fileID: 11400000, guid: 4f7db5f2a9f6e1344b562d874b3123f6, type: 2}
 --- !u!1 &8823513406274994754
 GameObject:

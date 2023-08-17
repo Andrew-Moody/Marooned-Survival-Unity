@@ -68,7 +68,7 @@ public class HotbarUI : UIPanel
 
 		position.x = selection * _slotWidth;
 
-		//Debug.Log($"Slot: {_selection}, Start: {_selectionBox.rectTransform.anchoredPosition.x}, End: {position.x}");
+		Debug.Log($"Slot: {_selection}, Start: {_selectionBox.rectTransform.anchoredPosition.x}, End: {position.x}");
 
 		_selectionBox.rectTransform.anchoredPosition = position;
 

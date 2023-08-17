@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 523f6f64e6ebb9146afffad4bfb8339d, type: 3}
-  m_Name: TestEffect
+  m_Name: MobMeleeDamageEffect
   m_EditorClassIdentifier: 
   _durationType: 0
   _duration: 0
   _modifiers:
   - _statKind: 1
-    _operation: 1
-    _magnitude: 0
-    _statOperation: {fileID: 0}
+    _operation: 5
+    _magnitude: 50
+    _statOperation: {fileID: 11400000, guid: 6803cd928ee7e5f49b8d51e5fdf1ae9e, type: 2}
   _cues:
   - _trait: 2
   _traits: []

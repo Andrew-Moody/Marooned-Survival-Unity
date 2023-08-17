@@ -15,9 +15,10 @@ MonoBehaviour:
   _durationType: 0
   _duration: 0
   _modifiers:
-  - _statKind: 0
+  - _statKind: 1
     _operation: 1
     _magnitude: -200
+    _statOperation: {fileID: 0}
   _cues:
   - _trait: 2
   _traits: []

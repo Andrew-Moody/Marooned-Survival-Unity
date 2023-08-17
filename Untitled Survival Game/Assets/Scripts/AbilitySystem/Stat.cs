@@ -23,8 +23,18 @@ namespace Actors
 
 		private float _currentValue;
 
-
 		public ActorStat() { }
+
+		public ActorStat(StatKind statKind, float min, float max, float initial)
+		{ 
+			_statKind = statKind;
+
+			_currentValue = initial;
+
+			_minValue = min;
+
+			_maxValue = max;
+		}
 
 		public ActorStat(ActorStat stat)
 		{

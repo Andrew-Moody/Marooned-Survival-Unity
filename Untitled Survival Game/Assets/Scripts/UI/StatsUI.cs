@@ -53,6 +53,9 @@ public class StatsUI : UIPanel
 
 	private void StatChangeHandler(UIEventData data)
 	{
+		Debug.Log($"StatChangeHandler: {data.TagString}");
+
+
 		if (_statBarDict.TryGetValue(data.TagString, out StatBar statBar))
 		{
 			statBar.StatChangeHandler(data);

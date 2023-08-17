@@ -84,7 +84,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NetworkObserver: {fileID: 0}
-  <PrefabId>k__BackingField: 52
+  <PrefabId>k__BackingField: 54
   <SpawnableCollectionId>k__BackingField: 0
   _scenePathHash: 0
   <SceneId>k__BackingField: 0
@@ -129,6 +129,9 @@ MonoBehaviour:
   _componentIndexCache: 0
   _addedNetworkObject: {fileID: 416200329961083272}
   _networkObjectCache: {fileID: 416200329961083272}
+  _hostilityMask:
+    serializedVersion: 2
+    m_Bits: 0
   _smoothTransform: {fileID: 2996834708280513905}
   _destructibleSO: {fileID: 11400000, guid: de9044598f5ee7041b3901bb876ff4fd, type: 2}
 --- !u!114 &2487646241634094816
@@ -195,7 +198,7 @@ MonoBehaviour:
   _addedNetworkObject: {fileID: 416200329961083272}
   _networkObjectCache: {fileID: 416200329961083272}
   _statInitialValues:
-  - StatKind: 0
+  - StatKind: 1
     Value: 100
 --- !u!1 &543981008890952276
 GameObject:

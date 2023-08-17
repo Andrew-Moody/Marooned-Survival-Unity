@@ -973,7 +973,6 @@ GameObject:
   - component: {fileID: 6477822008281276195}
   - component: {fileID: 2059881107077816103}
   - component: {fileID: 8484214561975426210}
-  - component: {fileID: 8201508245467690289}
   m_Layer: 8
   m_Name: RightHandSlot
   m_TagString: Untagged
@@ -1062,27 +1061,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &8201508245467690289
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6159213130976846301}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f33333c45bbd6244b0e22cd1ad54732, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _componentIndexCache: 13
-  _addedNetworkObject: {fileID: 8748319289121584179}
-  _networkObjectCache: {fileID: 8748319289121584179}
-  _requiredTraits:
-    _traits: []
-  _blockingTraits:
-    _traits: []
-  _startingAbilities: []
-  _cues: []
 --- !u!1 &6545347337491629525
 GameObject:
   m_ObjectHideFlags: 0
@@ -1871,7 +1849,6 @@ MonoBehaviour:
   - {fileID: 7872201630306974425}
   - {fileID: 8615519476207526426}
   - {fileID: 6477822008281276195}
-  - {fileID: 8201508245467690289}
   <ParentNetworkObject>k__BackingField: {fileID: 0}
   <ChildNetworkObjects>k__BackingField:
   - {fileID: 3319784803144381655}
@@ -1962,11 +1939,11 @@ MonoBehaviour:
   _addedNetworkObject: {fileID: 3319784803144381655}
   _networkObjectCache: {fileID: 8748319289121584179}
   _statInitialValues:
-  - StatKind: 0
-    Value: 100
   - StatKind: 1
     Value: 100
-  - StatKind: 5
+  - StatKind: 2
+    Value: 100
+  - StatKind: 6
     Value: 0
 --- !u!114 &3230981215068263947
 MonoBehaviour:
@@ -2513,11 +2490,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 338f58dda4ffefb4db4057e3b87b8ee0, type: 3}
---- !u!4 &1406874416240718049 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7260292384351397402, guid: 338f58dda4ffefb4db4057e3b87b8ee0, type: 3}
-  m_PrefabInstance: {fileID: 8594985366855997179}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2109125115634652029 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7638839137136788870, guid: 338f58dda4ffefb4db4057e3b87b8ee0, type: 3}
@@ -2546,5 +2518,10 @@ Transform:
 --- !u!4 &8729199826134443547 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1036915714403135712, guid: 338f58dda4ffefb4db4057e3b87b8ee0, type: 3}
+  m_PrefabInstance: {fileID: 8594985366855997179}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1406874416240718049 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7260292384351397402, guid: 338f58dda4ffefb4db4057e3b87b8ee0, type: 3}
   m_PrefabInstance: {fileID: 8594985366855997179}
   m_PrefabAsset: {fileID: 0}

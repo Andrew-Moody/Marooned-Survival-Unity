@@ -17,15 +17,19 @@ namespace AbilitySystem
 				return;
 			}
 
-			float damage = basicData.Value - target.Stats.GetStatValue(StatKind.Armor);
+			float armor = target.Stats.GetStatValue(StatKind.Armor);
 
-			damage = Mathf.Clamp(damage, 0, damage);
+			float damageUnclamped = basicData.Value - armor;
+
+			float damage = Mathf.Clamp(damageUnclamped, 0f, damageUnclamped);
 
 			float health = target.Stats.GetStatValue(StatKind.Health);
 
 			health -= damage;
 
 			target.Stats.SetStatValue(StatKind.Health, health);
+
+			Debug.LogWarning($"Value: {basicData.Value}, Armor: {armor}, Damage: {damage}, DamageUnclamped: {damageUnclamped}, Health: {health}");
 		}
 	}
 

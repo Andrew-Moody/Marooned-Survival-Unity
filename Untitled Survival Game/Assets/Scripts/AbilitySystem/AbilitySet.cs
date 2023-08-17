@@ -29,6 +29,7 @@ namespace AbilitySystem
 			{
 				_equippedItems = new Dictionary<EquipSlot, ItemHandle>();
 
+				Debug.LogWarning("Subscribing to ItemEquipped");
 				inventory.ItemEquipped += Inventory_ItemEquipped;
 			}
 		}
@@ -115,6 +116,8 @@ namespace AbilitySystem
 
 			currentArmor = currentArmor - prevArmor + newArmor;
 
+			Debug.LogWarning($"Armor changed to: {currentArmor}");
+
 			_user.Actor.Stats.SetStatValue(Actors.StatKind.Armor, currentArmor);
 		}
 
@@ -128,7 +131,7 @@ namespace AbilitySystem
 			}
 
 			// Eventually the abilityHandles may be shared between multiple items
-			// Whenever an item is equipped the abilityHandle must have the activation data updated to point
+			// Whenever an item is equipped the abilityHandle must have the activation data updated to point to
 			// the currently equipped item
 			foreach (AbilityHandle handle in item.AbilityHandles)
 			{
