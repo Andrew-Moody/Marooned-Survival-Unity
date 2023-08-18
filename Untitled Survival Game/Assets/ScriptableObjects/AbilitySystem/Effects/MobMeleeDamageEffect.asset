@@ -17,7 +17,7 @@ MonoBehaviour:
   _modifiers:
   - _statKind: 1
     _operation: 5
-    _magnitude: 50
+    _magnitude: 10
     _statOperation: {fileID: 11400000, guid: 6803cd928ee7e5f49b8d51e5fdf1ae9e, type: 2}
   _cues:
   - _trait: 2

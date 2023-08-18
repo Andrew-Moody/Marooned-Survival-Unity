@@ -199,6 +199,8 @@ MonoBehaviour:
   _statInitialValues:
   - StatKind: 1
     Value: 100
+  - StatKind: 7
+    Value: 10
 --- !u!1 &543981008890952276
 GameObject:
   m_ObjectHideFlags: 0

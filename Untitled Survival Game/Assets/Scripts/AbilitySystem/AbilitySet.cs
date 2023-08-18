@@ -116,7 +116,7 @@ namespace AbilitySystem
 
 			currentArmor = currentArmor - prevArmor + newArmor;
 
-			Debug.LogWarning($"Armor changed to: {currentArmor}");
+			//Debug.LogWarning($"Armor changed to: {currentArmor}");
 
 			_user.Actor.Stats.SetStatValue(Actors.StatKind.Armor, currentArmor);
 		}
