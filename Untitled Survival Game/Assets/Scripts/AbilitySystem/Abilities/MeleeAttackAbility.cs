@@ -13,6 +13,9 @@ namespace AbilitySystem
 		private Effect _effect;
 
 		[SerializeField]
+		private Effect _failEffect;
+
+		[SerializeField]
 		private Targeter _targeter;
 
 		[SerializeField]
@@ -118,27 +121,34 @@ namespace AbilitySystem
 					continue;
 				}
 
-				Actor actor = actorResult.Actor;
+				Actor target = actorResult.Actor;
 
-				AbilityActor target = actor.AbilityActor;
 
-				Agent agent = actor.Components.Agent;
-
-				if (agent != null && user.IsServer)
+				if (CheckSuccess(handle, target))
 				{
-					Vector3 direction = (target.Actor.NetTransform.position - user.Actor.NetTransform.position).normalized;
+					Agent agent = target.Agent;
 
-					direction.y += Mathf.Atan(Mathf.Deg2Rad * 30f); // add an upward component
+					if (agent != null && user.IsServer)
+					{
+						Vector3 direction = (target.NetTransform.position - user.Actor.NetTransform.position).normalized;
 
-					// Will want to calculate from target and user stats eventually
-					float strength = _knockbackStrength;
+						direction.y += Mathf.Atan(Mathf.Deg2Rad * 30f); // add an upward component
 
-					agent.KnockBack(direction, strength);
+						// Will want to calculate from target and user stats eventually
+						float strength = _knockbackStrength;
 
-					target.Actor.Animator.SetTrigger("HIT");
+						agent.KnockBack(direction, strength);
+
+						target.Animator.SetTrigger("HIT");
+					}
+
+					ApplyEffect(handle, _effect, target.AbilityActor);
 				}
-
-				ApplyEffect(handle, _effect, target);
+				else
+				{
+					// Apply to self for now otherwise will need seperate fail effect for logs and rocks (for the correct traits)
+					ApplyEffect(handle, _failEffect, handle.User);
+				}
 			}
 		}
 
@@ -154,6 +164,27 @@ namespace AbilitySystem
 			EffectHandle effectHandle = new EffectHandle(effect, effectData);
 
 			target.ApplyEffect(effectHandle);
+		}
+
+
+		private bool CheckSuccess(AbilityHandle handle, Actor target)
+		{
+			// First check if the effect has the correct traits
+			if (!target.AbilityActor.CanApply(_effect))
+			{
+				return false;
+			}
+
+			// Otherwise check some custom condition such as toolPower vs hardness
+			float hardness = target.Stats.GetStatValue(StatKind.Hardness);
+
+			float toolPower = handle.Actor.Stats.GetStatValue(StatKind.ToolPower);
+
+			bool success = toolPower >= hardness;
+
+			Debug.Log($"Hardness: {hardness}, ToolPower: {toolPower}, Success: {success}");
+
+			return success;
 		}
 	}
 }

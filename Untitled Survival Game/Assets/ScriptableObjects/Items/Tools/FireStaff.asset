@@ -16,7 +16,7 @@ MonoBehaviour:
   ItemName: FireStaff
   ExamineText: Ouch! thats hot!
   StackLimit: 1
-  equipSlot: 0
+  equipSlot: 5
   Sprite: {fileID: 21300000, guid: a076509a9a8f0b147aade82d097a1fdc, type: 3}
   InventoryOptions: 0300000000000000
   EquipedOptions: 
@@ -26,3 +26,4 @@ MonoBehaviour:
   _abilities:
   - _input: 1
     _ability: {fileID: 11400000, guid: a4e4593c15985854a86a74d4509f335e, type: 2}
+  _stats: []

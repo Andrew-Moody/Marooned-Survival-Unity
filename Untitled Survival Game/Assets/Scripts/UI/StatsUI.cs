@@ -6,18 +6,18 @@ using Actors;
 public class StatsUI : UIPanel
 {
 	[SerializeField]
-	private List<StatBar> _statBars;
+	private List<StatIndicator> _statIndicators;
 
 	private IUIEventPublisher _target;
 
-	private readonly Dictionary<string, StatBar> _statBarDict = new Dictionary<string, StatBar>();
+	private readonly Dictionary<string, StatIndicator> _statIndicatorDict = new Dictionary<string, StatIndicator>();
 
 
 	public override void Initialize()
 	{
-		foreach(StatBar statBar in _statBars)
+		foreach (StatIndicator statIndicator in _statIndicators)
 		{
-			_statBarDict.Add(statBar.StatName, statBar);
+			_statIndicatorDict.Add(statIndicator.StatName, statIndicator);
 		}
 	}
 
@@ -55,10 +55,9 @@ public class StatsUI : UIPanel
 	{
 		Debug.Log($"StatChangeHandler: {data.TagString}");
 
-
-		if (_statBarDict.TryGetValue(data.TagString, out StatBar statBar))
+		if (_statIndicatorDict.TryGetValue(data.TagString, out StatIndicator statIndicator))
 		{
-			statBar.StatChangeHandler(data);
+			statIndicator.StatChangeHandler(data);
 		}
 	}
 }

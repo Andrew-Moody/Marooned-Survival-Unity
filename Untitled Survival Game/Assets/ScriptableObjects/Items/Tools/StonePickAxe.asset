@@ -16,7 +16,7 @@ MonoBehaviour:
   ItemName: StonePickaxe
   ExamineText: Diggy Diggy Hole!
   StackLimit: 1
-  equipSlot: 0
+  equipSlot: 5
   Sprite: {fileID: 21300000, guid: a697b1095f90d3c4e914a1049a53f8de, type: 3}
   InventoryOptions: 0300000000000000
   EquipedOptions: 
@@ -26,4 +26,6 @@ MonoBehaviour:
   _abilities:
   - _input: 1
     _ability: {fileID: 11400000, guid: 6bfb6614f9e6e5d4886200d06be4c9a1, type: 2}
-  _armor: 0
+  _stats:
+  - StatKind: 8
+    Value: 10

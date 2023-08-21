@@ -147,7 +147,7 @@ public class Inventory : NetworkBehaviour
 				EquipSlot = equipSlot
 			};
 
-			Debug.Log($"Invoking ItemEquipped {ItemEquipped.GetInvocationList().Length} times");
+			//Debug.Log($"Invoking ItemEquipped {ItemEquipped.GetInvocationList().Length} times");
 			ItemEquipped?.Invoke(this, args);
 		}
 
@@ -451,7 +451,16 @@ public class Inventory : NetworkBehaviour
 	{
 		EquipSlot equipSlot = IndexToSlot(toSlot);
 
-		return (equipSlot == EquipSlot.None || _items[fromSlot].ItemID == 0 || equipSlot == _items[fromSlot].EquipSlot);
+		bool allowAny = equipSlot == EquipSlot.None || equipSlot == EquipSlot.MainHand;
+
+		// Allow an empty item to moved from any slot
+		bool fromSlotEmpty = _items[fromSlot].ItemID == 0;
+
+		bool equipSlotMatch = equipSlot == _items[fromSlot].EquipSlot;
+
+		//Debug.Log($"IsValidMove() EquipSlot: {equipSlot}, AllowAny: {allowAny}, FromSlotEmpty: {fromSlotEmpty}, EquipSlotMatch: {equipSlotMatch}");
+
+		return (allowAny || fromSlotEmpty || equipSlotMatch);
 	}
 
 

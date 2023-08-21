@@ -13,6 +13,7 @@ namespace Actors
 		Stamina,
 		Hunger,
 		Armor,
-		Hardness
+		Hardness,
+		ToolPower
 	}
 }

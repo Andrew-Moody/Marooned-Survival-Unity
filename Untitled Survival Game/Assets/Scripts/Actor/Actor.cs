@@ -19,6 +19,8 @@ namespace Actors
 
 		public Stats Stats => Components.Stats;
 
+		public Agent Agent => Components.Agent;
+
 		public Animator Animator => Components.Animator;
 
 		public AudioSource AudioSource => Components.AudioSource;

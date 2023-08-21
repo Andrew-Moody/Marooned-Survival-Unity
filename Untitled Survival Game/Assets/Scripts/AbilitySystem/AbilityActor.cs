@@ -96,7 +96,7 @@ namespace AbilitySystem
 
 
 			// First check that the effect can be applied based on traits
-			if (!CanApply(effectHandle))
+			if (!CanApply(effectHandle.Effect))
 			{
 				Debug.LogError("Can't apply effect");
 				return;
@@ -298,21 +298,21 @@ namespace AbilitySystem
 		}
 
 
-		private bool CanApply(EffectHandle effectHandle)
+		public bool CanApply(Effect effect)
 		{
-			if (!_requiredTraits.MeetsAllRequirements(effectHandle.Effect.Traits))
+			if (!_requiredTraits.MeetsAllRequirements(effect.Traits))
 			{
 				Debug.Log($"Effect does not contain all required traits");
 				return false;
 			}
 
 
-			foreach (AbilityTrait trait in effectHandle.Effect.Traits)
+			foreach (AbilityTrait trait in effect.Traits)
 			{
 
 				if (_blockingTraits.ContainsTrait(trait))
 				{
-					Debug.Log($"Effect contains blocked trait: {trait.ToString()}");
+					Debug.Log($"Effect contains blocked trait: {trait}");
 					return false;
 				}
 			}

@@ -7,7 +7,7 @@ using Actors;
 public class WorldStatDisplay : MonoBehaviour
 {
 	[SerializeField]
-	private List<StatBar> _statBars;
+	private List<StatIndicator> _statIndicators;
 
 	[SerializeField]
 	private TextMeshProUGUI _infoTMP;
@@ -34,7 +34,7 @@ public class WorldStatDisplay : MonoBehaviour
 
 	private IUIEventPublisher _target;
 
-	private readonly Dictionary<string, StatBar> _statBarDict = new Dictionary<string, StatBar>();
+	private readonly Dictionary<string, StatIndicator> _statIndicatorDict = new Dictionary<string, StatIndicator>();
 
 
 	public void Show(bool show)
@@ -49,9 +49,9 @@ public class WorldStatDisplay : MonoBehaviour
 
 	private void Awake()
 	{
-		for (int i = 0; i < _statBars.Count; i++)
+		for (int i = 0; i < _statIndicators.Count; i++)
 		{
-			_statBarDict.Add(_statBars[i].StatName, _statBars[i]);
+			_statIndicatorDict.Add(_statIndicators[i].StatName, _statIndicators[i]);
 		}
 
 
@@ -71,7 +71,7 @@ public class WorldStatDisplay : MonoBehaviour
 			Debug.LogWarning("WorldStatDisplay failed to find component that implements IUIEventPublisher");
 		}
 
-		foreach (StatBar stat in _statBars)
+		foreach (StatIndicator stat in _statIndicators)
 		{
 			stat.SetAlpha(0f);
 		}
@@ -103,9 +103,9 @@ public class WorldStatDisplay : MonoBehaviour
 
 	private void UIEvent_StatChanged(UIEventData data)
 	{
-		if (_statBarDict.TryGetValue(data.TagString, out StatBar statBar))
+		if (_statIndicatorDict.TryGetValue(data.TagString, out StatIndicator statIndicator))
 		{
-			statBar.StatChangeHandler(data);
+			statIndicator.StatChangeHandler(data);
 		}
 	}
 
@@ -134,7 +134,7 @@ public class WorldStatDisplay : MonoBehaviour
 
 			float alpha = Mathf.InverseLerp(_far, _near, distance) * Mathf.InverseLerp(_farAngle, _nearAngle, angle);
 
-			foreach (StatBar stat in _statBars)
+			foreach (StatIndicator stat in _statIndicators)
 			{
 				stat.SetAlpha(alpha);
 			}

@@ -93,14 +93,23 @@ namespace AbilitySystem
 
 		private void Inventory_ItemEquipped(object sender, ItemEquippedArgs args)
 		{
-			float prevArmor = 0f;
-
 			// Remove the abilities from the previous item
 			if (_equippedItems.TryGetValue(args.EquipSlot, out ItemHandle prevItem))
 			{
 				RemoveAbilityOverrides(prevItem.AbilityHandles);
 
-				prevArmor = prevItem.ItemSO.Armor;
+				// Also remove the item from stats
+				if (_user.IsServer)
+				{
+					_user.Actor.Stats.RemoveItemStats(prevItem.ItemSO);
+				}
+			}
+
+
+			// New Item may need to be equipped if the slots are mismatched (armor in mainhand for example)
+			if (args.EquipSlot != args.Item.ItemSO.equipSlot)
+			{
+				return;
 			}
 
 			// Add the new item and set the appropriate overrides (currently assumes a dummy item exist for case when no item is equipped)
@@ -110,15 +119,11 @@ namespace AbilitySystem
 
 			SetAbilityOverrides(args.Item.AbilityHandles);
 
-			float newArmor = args.Item.ItemSO.Armor;
-
-			float currentArmor = _user.Actor.Stats.GetStatValue(Actors.StatKind.Armor);
-
-			currentArmor = currentArmor - prevArmor + newArmor;
-
-			//Debug.LogWarning($"Armor changed to: {currentArmor}");
-
-			_user.Actor.Stats.SetStatValue(Actors.StatKind.Armor, currentArmor);
+			// Also apply stats
+			if (_user.IsServer)
+			{
+				_user.Actor.Stats.ApplyItemStats(args.Item.ItemSO);
+			}
 		}
 
 

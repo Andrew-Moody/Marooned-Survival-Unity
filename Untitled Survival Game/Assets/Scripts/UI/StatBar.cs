@@ -3,13 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class StatBar : MonoBehaviour
+public class StatBar : StatIndicator
 {
-	[SerializeField]
-	private string _statName;
-
-	public string StatName { get { return _statName; } private set { _statName = value; } }
-
 	[SerializeField]
 	private Image _statFill;
 
@@ -17,7 +12,7 @@ public class StatBar : MonoBehaviour
 	private Image _statBackground;
 
 
-	public void StatChangeHandler(UIEventData data)
+	public override void StatChangeHandler(UIEventData data)
 	{
 		if (data is UIFloatChangeEventData floatData)
 		{
@@ -27,7 +22,8 @@ public class StatBar : MonoBehaviour
 		}
 	}
 
-	public void SetAlpha(float alpha)
+
+	public override void SetAlpha(float alpha)
 	{
 		Color fillColor = _statFill.color;
 		fillColor.a = alpha;
@@ -37,13 +33,4 @@ public class StatBar : MonoBehaviour
 		backColor.a = alpha;
 		_statBackground.color = backColor;
 	}
-}
-
-public class UIFloatChangeEventData : UIEventData
-{
-	public float Value { get; set; }
-
-	public float MinValue { get; set; }
-
-	public float MaxValue { get; set; }
 }

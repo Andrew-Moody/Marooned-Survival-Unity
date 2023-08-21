@@ -16,7 +16,7 @@ MonoBehaviour:
   ItemName: MithrilAxe
   ExamineText: And my Axe!
   StackLimit: 1
-  equipSlot: 0
+  equipSlot: 5
   Sprite: {fileID: 21300000, guid: 66310d7fcd140044eabdb1a6fa88afa7, type: 3}
   InventoryOptions: 0300000000000000
   EquipedOptions: 
@@ -26,3 +26,6 @@ MonoBehaviour:
   _abilities:
   - _input: 1
     _ability: {fileID: 11400000, guid: 447a4821699fb5b4383f622da3dde980, type: 2}
+  _stats:
+  - StatKind: 8
+    Value: 30

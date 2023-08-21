@@ -1,3 +1,4 @@
+using FishNet.Connection;
 using FishNet.Object;
 using System;
 using System.Collections;
@@ -28,6 +29,25 @@ namespace Actors
 			base.OnStartNetwork();
 
 			SetInitialValues(_statInitialValues);
+
+			Actor actor = Actor.FindActor(gameObject);
+
+			if (actor != null && actor.IsServer && actor.Inventory != null)
+			{
+				actor.Inventory.ItemEquipped += Inventory_ItemEquipped;
+			}
+		}
+
+
+		public override void OnStartClient()
+		{
+			base.OnStartClient();
+
+			// OnStartNetwork was too early to initialize client UI
+			foreach (var stat in _stats)
+			{
+				UIEvent?.Invoke(stat.Value.GetUIData());
+			}
 		}
 
 		#endregion
@@ -45,7 +65,7 @@ namespace Actors
 
 		public float GetStatValue(StatKind statKind)
 		{
-			if (_stats.TryGetValue(statKind, out ActorStat stat))
+			if (statKind != StatKind.None && _stats.TryGetValue(statKind, out ActorStat stat))
 			{
 				return stat.Value;
 			}
@@ -103,7 +123,10 @@ namespace Actors
 				return stat.Value;
 			}
 
-			Debug.LogWarning($"Stats does not contain a stat with specified trait key: {statKind}");
+			if (statKind != StatKind.None)
+			{
+				Debug.LogWarning($"Stats does not contain a stat with specified trait key: {statKind}");
+			}
 
 			return 0f;
 		}
@@ -143,16 +166,57 @@ namespace Actors
 
 					_stats[value.StatKind] = stat;
 
-					UIEventData data = new UIFloatChangeEventData()
-					{
-						TagString = value.StatKind.ToString(),
-						Value = stat.Value,
-						MinValue = stat.MinValue,
-						MaxValue = stat.MaxValue
-					};
-
-					UIEvent?.Invoke(data);
+					UIEvent?.Invoke(stat.GetUIData());
 				}
+			}
+		}
+
+
+		private void Inventory_ItemEquipped(object sender, ItemEquippedArgs args)
+		{
+			// ItemEquippedArgs doesn't contain a PrevItem field and Inventory would require
+			// extensive modification to allow adding it
+			// for now let the abilitySet control Apply and Remove since it does maintain a reference to the prev item
+			
+			//RemoveItemStats(args.PrevItem.ItemSO);
+
+			//ApplyItemStats(args.Item.ItemSO);
+		}
+
+
+		public void ApplyItemStats(ItemSO item)
+		{
+			foreach (StatInitialValue statIV in item.Stats)
+			{
+				if (statIV.StatKind != StatKind.None && _stats.TryGetValue(statIV.StatKind, out ActorStat stat))
+				{
+					float value = stat.Value + statIV.Value;
+					SetStat(statIV.StatKind, value);
+				}
+			}
+		}
+
+
+		public void RemoveItemStats(ItemSO item)
+		{
+			foreach (StatInitialValue statIV in item.Stats)
+			{
+				if (statIV.StatKind != StatKind.None && _stats.TryGetValue(statIV.StatKind, out ActorStat stat))
+				{
+					float value = stat.Value - statIV.Value;
+					SetStat(statIV.StatKind, value);
+				}
+			}
+		}
+
+
+		private void OnDestroy()
+		{
+			Actor actor = Actor.FindActor(gameObject);
+
+			if (actor != null && actor.IsServer && actor.Inventory != null)
+			{
+				actor.Inventory.ItemEquipped -= Inventory_ItemEquipped;
 			}
 		}
 	}

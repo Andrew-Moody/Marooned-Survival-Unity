@@ -50,7 +50,8 @@ namespace AbilitySystem
 		// Other
 		Placement,
 		Interaction,
-		Consume
+		Consume,
+		Failure,
 	}
 }
 

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using AbilityInputBinding = AbilitySystem.AbilityInputBinding;
+using StatInitialValue = Actors.StatInitialValue;
 
 
 [CreateAssetMenu(fileName = "Item", menuName = "ScriptableObjects/ItemSO")]
@@ -35,6 +36,6 @@ public class ItemSO : ScriptableObject
 	public List<AbilityInputBinding> Abilities => new List<AbilityInputBinding>(_abilities);
 	[SerializeField] private List<AbilityInputBinding> _abilities;
 
-	public float Armor => _armor;
-	[SerializeField] private float _armor;
+	public List<StatInitialValue> Stats => _stats;
+	[SerializeField] private List<StatInitialValue> _stats;
 }

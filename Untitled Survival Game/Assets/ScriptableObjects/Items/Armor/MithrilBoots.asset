@@ -24,4 +24,6 @@ MonoBehaviour:
   Material: {fileID: 2100000, guid: 4c23086cc53d05b42a8a5004832ae24a, type: 2}
   WorldOptions: 00000000
   _abilities: []
-  _armor: 10
+  _stats:
+  - StatKind: 6
+    Value: 10

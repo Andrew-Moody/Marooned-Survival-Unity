@@ -188,9 +188,13 @@ public class InventoryUI : UIPanel
 			if (Input.GetKey(KeyCode.LeftShift))
 			{
 				// Shift Click if applicable
+				Debug.LogError($"Shift Left click on slot {slot.gameObject.name}");
 			}
-
-			_inventory.SwapWithMouseSRPC(slot.Index);
+			else
+			{
+				//Debug.LogError($"Left click on slot {slot.gameObject.name}");
+				_inventory.SwapWithMouseSRPC(slot.Index);
+			}
 		}
 
 		// Handle RightClick
