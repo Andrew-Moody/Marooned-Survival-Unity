@@ -458,7 +458,7 @@ public class Inventory : NetworkBehaviour
 
 		bool equipSlotMatch = equipSlot == _items[fromSlot].EquipSlot;
 
-		//Debug.Log($"IsValidMove() EquipSlot: {equipSlot}, AllowAny: {allowAny}, FromSlotEmpty: {fromSlotEmpty}, EquipSlotMatch: {equipSlotMatch}");
+		Debug.Log($"IsValidMove() EquipSlot: {equipSlot}, AllowAny: {allowAny}, FromSlotEmpty: {fromSlotEmpty}, EquipSlotMatch: {equipSlotMatch}");
 
 		return (allowAny || fromSlotEmpty || equipSlotMatch);
 	}

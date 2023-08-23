@@ -16,7 +16,7 @@ MonoBehaviour:
   ItemName: Apple
   ExamineText: To keep the Doctor away
   StackLimit: 10
-  equipSlot: 0
+  equipSlot: 5
   Sprite: {fileID: 21300000, guid: ef90075d92abe4b44a874bc4ea9d140a, type: 3}
   InventoryOptions: 0300000000000000
   EquipedOptions: 
@@ -26,3 +26,4 @@ MonoBehaviour:
   _abilities:
   - _input: 1
     _ability: {fileID: 11400000, guid: 614847c640d7d94429a7bcb1814dc519, type: 2}
+  _stats: []

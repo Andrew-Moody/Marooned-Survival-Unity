@@ -380,6 +380,7 @@ GameObject:
   - component: {fileID: 5115987515551461331}
   - component: {fileID: 8618715455212277388}
   - component: {fileID: 3671964349970535896}
+  - component: {fileID: 3381624077958517535}
   m_Layer: 10
   m_Name: ItemDispenser
   m_TagString: Untagged
@@ -494,3 +495,15 @@ MonoBehaviour:
   _showOutline: 1
   _showItem: 1
   _spawnLocation: {fileID: 7564200509167091572}
+--- !u!114 &3381624077958517535
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6612448571670638298}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec9462b5d52eafd4d93ae9b9f807877c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

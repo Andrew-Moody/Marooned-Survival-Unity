@@ -8,6 +8,8 @@ public class WorldGenManager : NetworkBehaviour
 	private static WorldGenManager _instance;
 	public static WorldGenManager Instance => _instance;
 
+	public event System.Action WorldGenEnded;
+
 	[SerializeField]
 	private MeshGenerator _meshGenerator;
 
@@ -41,5 +43,7 @@ public class WorldGenManager : NetworkBehaviour
 
 			Debug.Log("Finished Generating Resources");
 		}
+
+		WorldGenEnded?.Invoke();
 	}
 }

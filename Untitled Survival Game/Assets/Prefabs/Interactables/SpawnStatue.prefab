@@ -255,6 +255,7 @@ GameObject:
   - component: {fileID: 1413360350096937200}
   - component: {fileID: 4253541264949089149}
   - component: {fileID: 2439517597564616175}
+  - component: {fileID: 4849881053699645156}
   m_Layer: 10
   m_Name: SpawnStatue
   m_TagString: Untagged
@@ -355,3 +356,15 @@ MonoBehaviour:
   _isGlobal: 0
   _initializeOrder: 0
   _defaultDespawnType: 0
+--- !u!114 &4849881053699645156
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7430163226328283407}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec9462b5d52eafd4d93ae9b9f807877c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -258,6 +258,11 @@ public class InventoryUI : UIPanel
 		GameObject startObj = eventData.pointerPressRaycast.gameObject;
 		GameObject endObj = eventData.pointerCurrentRaycast.gameObject;
 
+		if (startObj == null || endObj == null)
+		{
+			Debug.LogError($"StartObj was null: {startObj == null}, EndObj was null: {endObj == null}");
+		}
+
 		// Check if the drag start was not on an item
 		if (startObj == null || !startObj.TryGetComponent(out ItemSlotUI startSlot))
 		{
@@ -268,6 +273,7 @@ public class InventoryUI : UIPanel
 		// Do nothing if the starting slot is empty and dragEmpty is false
 		if (!_dragEmpty && _inventory.IsSlotEmpty(startSlot.Index))
 		{
+			Debug.LogError($"DragStart was on an empty slot");
 			return;
 		}
 
@@ -284,6 +290,7 @@ public class InventoryUI : UIPanel
 		else if (endObj.transform.IsChildOf(_inventoryWindow))
 		{
 			// Drag ended inside the inventory window but not on another slot (return item to its original place)
+			Debug.LogError($"DragEnd was inside the inventory but not on a slot: {endObj.name}");
 			return;
 		}
 		else
