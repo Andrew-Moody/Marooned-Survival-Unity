@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class PickupWorldItem : NetworkBehaviour
 {
+	[SerializeField] private float _range;
+
 	private LayerMask _itemMask;
 
 	public override void OnStartNetwork()
@@ -29,10 +31,10 @@ public class PickupWorldItem : NetworkBehaviour
 
 
 		Vector3 origin = transform.position + new Vector3(0f, 0.4f, 0f);
-		float radius = 0.5f;
-		if (Physics.CheckSphere(origin, radius, _itemMask))
+		
+		if (Physics.CheckSphere(origin, _range, _itemMask))
 		{
-			Collider[] colliders = Physics.OverlapSphere(origin, radius, _itemMask);
+			Collider[] colliders = Physics.OverlapSphere(origin, _range, _itemMask);
 
 			for (int i = 0; i < colliders.Length; i++)
 			{

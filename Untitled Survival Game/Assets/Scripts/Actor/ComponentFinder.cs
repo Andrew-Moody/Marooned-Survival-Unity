@@ -37,6 +37,9 @@ public class ComponentFinder : MonoBehaviour
 	public Inventory Inventory => _inventory;
 	[SerializeField] private Inventory _inventory;
 
+	public AnimEventForwarder AnimEventForwarder => _animEventForwarder;
+	[SerializeField] private AnimEventForwarder _animEventForwarder;
+
 	// This looks bad, but keep in mind it is only ever run at edit time to help setup prefabs
 	public void SearchComponents()
 	{
@@ -63,6 +66,8 @@ public class ComponentFinder : MonoBehaviour
 		_agent = GetComponentInChildren<Agent>();
 
 		_inventory = GetComponentInChildren<Inventory>();
+
+		_animEventForwarder = GetComponentInChildren<AnimEventForwarder>();
 
 #else
 		Debug.LogError("ComponentFinder should not be used to search components at runtime");

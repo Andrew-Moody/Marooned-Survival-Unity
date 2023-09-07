@@ -22,10 +22,7 @@ namespace AbilitySystem
 
 			CueManager.HandleCue(_cueOnStart, CueEventType.OnExecute, data);
 
-
-			Animator anim = handle.Actor.Animator;
-
-			AnimationTask task = new AnimationTask(handle, anim, _animTrigger);
+			AnimationTask task = new AnimationTask(handle, handle.Actor, _animTrigger);
 
 			handle.Task = task;
 

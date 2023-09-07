@@ -12,7 +12,6 @@ namespace Actors
 
 		public event ActorEventHandler DeathFinished;
 
-
 		#region ComponentFinder
 
 		public Transform NetTransform => Components.NetTransform.transform;
@@ -34,6 +33,8 @@ namespace Actors
 		public AbilityActor AbilityActor => Components.AbilityActor;
 
 		public Inventory Inventory => Components.Inventory;
+
+		public AnimEventForwarder AnimEventForwarder => Components.AnimEventForwarder;
 
 
 		public ComponentFinder Components
@@ -110,6 +111,8 @@ namespace Actors
 
 		private void AbilityHandle_AbilityEnded(AbilityHandle handle, AbilityEventData data)
 		{
+			//data
+
 			FinishDeath();
 		}
 

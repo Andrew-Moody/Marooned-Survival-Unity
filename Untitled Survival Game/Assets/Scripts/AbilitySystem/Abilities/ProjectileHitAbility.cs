@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Actors;
 
 namespace AbilitySystem
 {
@@ -17,6 +18,19 @@ namespace AbilitySystem
 
 			if (data != null && data.Target != null)
 			{
+				Actor targetActor = data.Target.Actor;
+
+				if (targetActor.Agent != null && handle.Actor.IsServer)
+				{
+					Vector3 direction = (targetActor.NetTransform.position - handle.Actor.NetTransform.position).normalized;
+
+					direction.y += Mathf.Atan(Mathf.Deg2Rad * 30f); // add an upward component
+
+					targetActor.Agent.KnockBack(direction, 5f);
+
+					targetActor.Animator.SetTrigger("HIT");
+				}
+
 				ApplyEffect(handle, _effect, data.Target);
 			}
 		}

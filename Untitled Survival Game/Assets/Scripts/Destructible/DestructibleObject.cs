@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Actors;
 using AbilitySystem;
+using FishNet.Component.Transforming;
 
 public class DestructibleObject : Actor
 {
@@ -17,10 +18,22 @@ public class DestructibleObject : Actor
 	{
 		base.OnStartNetwork();
 
+		Debug.Log("Destructible OnStartNetwork");
+
+		// Doesn't work on clients (event if moved to onstartclient)
 		_smoothTransform.position = NetTransform.position;
 		_smoothTransform.rotation = NetTransform.rotation;
+
+		NetworkTransform netTrans = NetTransform.gameObject.GetComponent<NetworkTransform>();
+
+		netTrans.OnDataReceived += NetTrans_OnDataReceived;
 	}
 
+	private void NetTrans_OnDataReceived(NetworkTransform.TransformData prev, NetworkTransform.TransformData next)
+	{
+		_smoothTransform.position = next.Position;
+		_smoothTransform.rotation = next.Rotation;
+	}
 
 	protected override void DoDeathFinish()
 	{

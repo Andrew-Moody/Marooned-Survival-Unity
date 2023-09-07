@@ -101,22 +101,22 @@ ModelImporter:
       curves: []
       events:
       - time: 0.375162
-        functionName: AbilityAnimEvent
-        data: First Hit
+        functionName: AbilityCue
+        data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
       - time: 0.6366068
-        functionName: AbilityAnimEvent
-        data: Second Hit
+        functionName: AbilityCue
+        data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 1
         messageOptions: 0
       - time: 1
-        functionName: AbilityEndAnimEvent
-        data: Attack End
+        functionName: AbilityEnd
+        data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
@@ -151,11 +151,11 @@ ModelImporter:
       curves: []
       events:
       - time: 1
-        functionName: AbilityEndAnimEvent
-        data: Death End
+        functionName: AbilityEnd
+        data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
-        intParameter: 0
+        intParameter: -5
         messageOptions: 0
       transformMask: []
       maskType: 3

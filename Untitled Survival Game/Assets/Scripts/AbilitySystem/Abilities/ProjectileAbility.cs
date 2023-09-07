@@ -31,9 +31,7 @@ namespace AbilitySystem
 				SpawnProjectile(handle);
 			}
 
-			Animator anim = handle.Actor.Animator;
-
-			AnimationTask task = new AnimationTask(handle, anim, _animationTrigger);
+			AnimationTask task = new AnimationTask(handle, handle.Actor, _animationTrigger);
 
 			handle.Task = task;
 

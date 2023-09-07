@@ -53,13 +53,35 @@ MonoBehaviour:
       Quantity: 1
     - ItemID: 202
       Quantity: 1
-  - RecipeID: 304
-    OutputID: 105
+  - RecipeID: 306
+    OutputID: 82
     Quantity: 1
     Ingredients:
-    - ItemID: 302
+    - ItemID: 206
+      Quantity: 5
+    - ItemID: 202
       Quantity: 1
-    - ItemID: 205
+  - RecipeID: 307
+    OutputID: 83
+    Quantity: 1
+    Ingredients:
+    - ItemID: 206
+      Quantity: 4
+    - ItemID: 202
       Quantity: 1
+  - RecipeID: 308
+    OutputID: 81
+    Quantity: 1
+    Ingredients:
+    - ItemID: 206
+      Quantity: 2
+    - ItemID: 202
+      Quantity: 1
+  - RecipeID: 309
+    OutputID: 80
+    Quantity: 1
+    Ingredients:
+    - ItemID: 206
+      Quantity: 2
     - ItemID: 202
       Quantity: 1

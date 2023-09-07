@@ -156,6 +156,7 @@ MonoBehaviour:
   _abilityActor: {fileID: 4891158137039984533}
   _agent: {fileID: 0}
   _inventory: {fileID: 0}
+  _animEventForwarder: {fileID: 0}
 --- !u!114 &4891158137039984533
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -586,9 +587,9 @@ MonoBehaviour:
     Position: 1
     Rotation: 1
     Scale: 0
-  _interpolation: 2
-  _extrapolation: 2
-  _enableTeleport: 0
+  _interpolation: 1
+  _extrapolation: 0
+  _enableTeleport: 1
   _teleportThreshold: 1
   _clientAuthoritative: 1
   _sendToOwner: 1

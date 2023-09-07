@@ -53,15 +53,17 @@ public class Inventory : NetworkBehaviour
 			_clientInstance = this;
 		}
 
+		Debug.LogWarning($"Inventory OnStartNetwork for client: {OwnerId}");
+
 		if (IsServer || Owner.IsLocalClient)
 		{
 			Initialize();
 
-			//Debug.LogError("Initialized inventory for Client: " + OwnerId + " AsServer: " + IsServer);
+			Debug.LogError("Initialized inventory for Client: " + OwnerId + " AsServer: " + IsServer);
 		}
 		else
 		{
-			//Debug.LogError("Non Owning client would  have initialized Inventory " + OwnerId);
+			Debug.LogError("Non Owning client would  have initialized Inventory " + OwnerId);
 		}
 	}
 
@@ -125,6 +127,12 @@ public class Inventory : NetworkBehaviour
 	
 	private void UpdateSlot(int index)
 	{
+		if (_items == null)
+		{
+			Debug.LogError($"Failed to update slot for client {OwnerId}");
+			return;
+		}
+
 		InventoryItem item = _items[index];
 
 		if (item.ItemHandle == null)

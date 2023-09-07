@@ -36,9 +36,7 @@ namespace AbilitySystem
 
 			audioSource.PlayOneShot(_startSound);
 
-			Animator anim = handle.Actor.Animator;
-
-			AnimationTask task = new AnimationTask(handle, anim, _animationTrigger);
+			AnimationTask task = new AnimationTask(handle, handle.Actor, _animationTrigger);
 
 			task.AnimEventRecieved += Task_AnimEventRecieved;
 

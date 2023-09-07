@@ -16,6 +16,7 @@ public class PlayerActor : Actor
 		if (Owner.IsLocalClient)
 		{
 			Debug.Log("Initializing PlayerLocator");
+			Debug.LogWarning("OnStartNetwork PlayerLocator");
 			_player = this;
 		}
 	}
@@ -27,6 +28,7 @@ public class PlayerActor : Actor
 
 		if (IsOwner)
 		{
+			Debug.LogWarning($"OnStartClient PlayerLocator clientid: {OwnerId}");
 			GameManager.Instance.OnLocalPlayerStartClient(_player);
 		}
 	}

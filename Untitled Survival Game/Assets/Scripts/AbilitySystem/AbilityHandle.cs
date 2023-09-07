@@ -58,7 +58,7 @@ namespace AbilitySystem
 		{
 			_user = user;
 
-			_actor = user.Actor;
+			_actor = user != null ? user.Actor : null;
 
 			_ability = ability;
 

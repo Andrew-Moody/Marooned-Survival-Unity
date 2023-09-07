@@ -345,6 +345,10 @@ namespace AbilitySystem
 
 			foreach (StatModifier modifier in effectHandle.Effect.Modifiers)
 			{
+				var eventData = effectHandle.EventData;
+				var source = eventData.Source;
+				var actor = source.Actor;
+
 				modifier.ApplyModifier(effectHandle.EventData.Source.Actor, _actor);
 			}
 		}

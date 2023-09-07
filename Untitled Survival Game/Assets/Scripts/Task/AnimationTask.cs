@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
+using Actors;
 
 namespace AsyncTasks
 {
@@ -10,21 +11,20 @@ namespace AsyncTasks
 	{
 		public event TaskResultHandler AnimEventRecieved;
 
-		private Animator _animator;
+		private Actor _actor;
 
 		private string _trigger;
 
 		private AnimEventHandler _animEventHandler;
 
 
-		public AnimationTask(ITaskUser taskOwner, Animator animator, string trigger)
+		public AnimationTask(ITaskUser taskOwner, Actor actor, string trigger)
 			: base(taskOwner)
 		{
-			_animator = animator;
+			_actor = actor;
 			_trigger = trigger;
-			_animEventHandler = _animator.gameObject.GetComponent<AnimEventHandler>();
 		}
-		
+
 
 		protected override async Task<TaskResultData> PerformTaskAsync(CancellationToken token)
 		{
@@ -33,44 +33,107 @@ namespace AsyncTasks
 			// Allow the task to be canceled externally
 			token.Register(() => _taskSource.TrySetCanceled());
 
+			_actor.AnimEventForwarder.AnimEventRecieved += AnimEventForwarder_AnimEventRecieved;
 
-			_animEventHandler.OnAbilityAnimEvent += AnimEventHandler_OnAbilityAnimEvent;
-
-			_animEventHandler.OnAbilityEndAnimEvent += AnimEventHandler_OnAbilityEndAnimEvent;
-
-			_animator.SetTrigger(_trigger);
+			_actor.Animator.SetTrigger(_trigger);
 
 			return await _taskSource.Task;
 		}
 
 
-		private void AnimEventHandler_OnAbilityAnimEvent()
+		private void AnimEventForwarder_AnimEventRecieved(AnimEventData data)
 		{
-			AnimEventRecieved?.Invoke(this, null);
-		}
+			Debug.LogWarning($"{_actor.name} AnimEventKind: {data.EventKind}, Param: {data.Param}, {GetActiveClips()}");
 
-		private void AnimEventHandler_OnAbilityEndAnimEvent()
-		{
-			_taskSource.TrySetResult(null);
+			switch (data.EventKind)
+			{
+				case AnimEventKind.AbilityCue:
+				{
+					// Foward the animation event to the task user
+					AnimEventRecieved?.Invoke(this, null);
+					break;
+				}
+				case AnimEventKind.AbilityEnd:
+				{
+					// Animation task completed successfully
+					_taskSource.TrySetResult(null);
+					break;
+				}
+				default:
+				{
+					Debug.LogError("Animation Task Error: anim event recieved with unknown AnimEventKind");
+					_taskSource.TrySetResult(null);
+					break;
+				}
+			}
 		}
 
 
 		protected override void Cleanup()
 		{
-			_animEventHandler.OnAbilityAnimEvent -= AnimEventHandler_OnAbilityAnimEvent;
+			Debug.LogWarning($"Animation Task Cleanup:");
 
-			_animEventHandler.OnAbilityEndAnimEvent -= AnimEventHandler_OnAbilityEndAnimEvent;
-
-			AnimatorStateInfo info = _animator.GetCurrentAnimatorStateInfo(1);
-
-
-			// Transition out of USE_ABILITY state if it hasn't finished
-			if (info.IsName("USE_ABILITY"))
+			if (_actor != null)
 			{
-				Debug.LogWarning($"Normalized time: {info.normalizedTime}");
-				Debug.LogWarning($"Setting Trigger: CANCEL_ABILITY");
-				_animator.SetTrigger("CANCEL_ABILITY");
+				Debug.LogWarning(GetActiveClips());
+
+				_actor.AnimEventForwarder.AnimEventRecieved -= AnimEventForwarder_AnimEventRecieved;
+
+				AnimatorStateInfo info = _actor.Animator.GetCurrentAnimatorStateInfo(1);
+
+				// Transition out of USE_ABILITY state if it hasn't finished
+				if (info.IsName("USE_ABILITY"))
+				{
+					Debug.LogWarning($"Normalized time: {info.normalizedTime}");
+					Debug.LogWarning($"Setting Trigger: CANCEL_ABILITY");
+					_actor.Animator.SetTrigger("CANCEL_ABILITY");
+				}
 			}
+			else
+			{
+				Debug.Log("Actor was null while cleaning up animation task");
+
+				if (TaskOwner is AbilitySystem.AbilityHandle handle)
+				{
+					if (handle.Actor)
+					{
+						Debug.Log($"Found actor through taskowner: {handle.Actor.name}");
+					}
+					else if (handle.User)
+					{
+						Debug.Log($"Found user through taskowner: {handle.User.name}");
+					}
+				}
+			}
+			
+			
+		}
+
+
+		private string GetActiveClips()
+		{
+			string active = "Active clips: ";
+
+			if (_actor != null)
+			{
+				var clipInfo = _actor.Animator.GetCurrentAnimatorClipInfo(1);
+
+				for (int i = 0; i < clipInfo.Length; i++)
+				{
+					if (i != 0)
+					{
+						active += ", ";
+					}
+
+					active += clipInfo[i].clip.name;
+				}
+			}
+			else
+			{
+				active += "null actor";
+			}
+
+			return active;
 		}
 	}
 }
