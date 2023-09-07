@@ -17,7 +17,7 @@ MonoBehaviour:
   ExamineText: A superb pair of boots
   StackLimit: 1
   equipSlot: 4
-  Sprite: {fileID: 21300000, guid: f8d056d54cefc1b42907ad004962ed72, type: 3}
+  Sprite: {fileID: 21300000, guid: dd7051824a1c9a747a362a9d079dd508, type: 3}
   InventoryOptions: 04000000010000000000000003000000
   EquipedOptions: 05000000
   Mesh: {fileID: 3969019833457623711, guid: 522cfff79e6163344bc384af84596d10, type: 3}

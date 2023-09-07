@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _cooldown: 2
   _effect: {fileID: 11400000, guid: b6fb0518b53ff9c43b00c733f0030d2d, type: 2}
+  _failEffect: {fileID: 0}
   _targeter: {fileID: 11400000, guid: cca3fc09e5d4ec544947cc439ad78240, type: 2}
   _animationTrigger: USE_ABILITY
   _startSound: {fileID: 8300000, guid: f894ae2060e946649b8c5d2cbc7aa8b2, type: 3}

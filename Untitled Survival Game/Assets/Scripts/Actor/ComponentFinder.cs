@@ -40,6 +40,9 @@ public class ComponentFinder : MonoBehaviour
 	public AnimEventForwarder AnimEventForwarder => _animEventForwarder;
 	[SerializeField] private AnimEventForwarder _animEventForwarder;
 
+	public WorldStatDisplay WorldStatDisplay => _worldStatDisplay;
+	[SerializeField] private WorldStatDisplay _worldStatDisplay;
+
 	// This looks bad, but keep in mind it is only ever run at edit time to help setup prefabs
 	public void SearchComponents()
 	{
@@ -68,6 +71,8 @@ public class ComponentFinder : MonoBehaviour
 		_inventory = GetComponentInChildren<Inventory>();
 
 		_animEventForwarder = GetComponentInChildren<AnimEventForwarder>();
+
+		_worldStatDisplay = GetComponentInChildren<WorldStatDisplay>();
 
 #else
 		Debug.LogError("ComponentFinder should not be used to search components at runtime");

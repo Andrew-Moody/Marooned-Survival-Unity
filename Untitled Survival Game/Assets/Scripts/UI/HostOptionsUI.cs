@@ -6,17 +6,17 @@ using UnityEngine;
 public class HostOptionsUI : UIPanel
 {
 	[SerializeField]
-	TMP_InputField _input;
+	TMP_InputField _seedInput;
 
 
 	public void OnStartGamePressed()
 	{
 		// If no seed is set use the default set by the gamemanager
-		if (_input.text != "")
+		if (_seedInput.text != "")
 		{
-			if (!int.TryParse(_input.text, out int seed))
+			if (!int.TryParse(_seedInput.text, out int seed))
 			{
-				seed = _input.text.GetHashCode();
+				seed = _seedInput.text.GetHashCode();
 			}
 
 			GameManager.Instance.Seed = seed;

@@ -1068,6 +1068,7 @@ GameObject:
   - component: {fileID: 6301940947875670647}
   - component: {fileID: 4227697961650031323}
   - component: {fileID: 207214141892266559}
+  - component: {fileID: 1031065885930774798}
   m_Layer: 0
   m_Name: MenuPlayer
   m_TagString: Untagged
@@ -1152,6 +1153,21 @@ MonoBehaviour:
   _isGlobal: 0
   _initializeOrder: 0
   _defaultDespawnType: 0
+--- !u!114 &1031065885930774798
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7638839137136788870}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70fc9a860300b5240b59efced84bb9c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _componentIndexCache: 255
+  _addedNetworkObject: {fileID: 207214141892266559}
+  _networkObjectCache: {fileID: 0}
 --- !u!1 &7888996097698237543
 GameObject:
   m_ObjectHideFlags: 0

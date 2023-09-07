@@ -17,7 +17,7 @@ MonoBehaviour:
   ExamineText: A superb pair of leg armor
   StackLimit: 1
   equipSlot: 2
-  Sprite: {fileID: 21300000, guid: 17eb5151df500e44cb879e09ca70a7c7, type: 3}
+  Sprite: {fileID: 21300000, guid: 30ae218532977694e91a637bfc12e3f1, type: 3}
   InventoryOptions: 04000000010000000000000003000000
   EquipedOptions: 05000000
   Mesh: {fileID: 7167730326340049309, guid: 522cfff79e6163344bc384af84596d10, type: 3}

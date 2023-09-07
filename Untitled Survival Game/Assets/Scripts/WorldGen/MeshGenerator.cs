@@ -26,6 +26,7 @@ public class MeshGenerator : MonoBehaviour
 	private int _textureTileSize;
 
 
+	public int Seed => _seed;
 	[SerializeField]
 	private int _seed;
 
@@ -176,6 +177,12 @@ public class MeshGenerator : MonoBehaviour
 		_mesh.RecalculateNormals();
 
 		_mesh.uv = uvcoords;
+
+
+		if (_targetMeshFilter == null)
+		{
+			_targetMeshFilter = _target.GetComponent<MeshFilter>();
+		}
 
 		_targetMeshFilter.mesh = _mesh;
 

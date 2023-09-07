@@ -15,6 +15,12 @@ namespace AbilitySystem
 			return _trait == trait._trait;
 		}
 
+
+		public bool Matches(AbilityTraitValue value)
+		{
+			return _trait == value;
+		}
+
 		public int GetTraitKey()
 		{
 			return _trait.GetHashCode();

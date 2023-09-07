@@ -21,5 +21,6 @@ MonoBehaviour:
     _statOperation: {fileID: 0}
   _cues:
   - _trait: 13
-  _traits: []
+  _traits:
+  - _trait: 13
   _appliedAbilities: []

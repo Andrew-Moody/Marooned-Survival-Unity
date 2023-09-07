@@ -156,6 +156,7 @@ MonoBehaviour:
   _abilityActor: {fileID: 1743882154215105310}
   _agent: {fileID: 0}
   _inventory: {fileID: 0}
+  _animEventForwarder: {fileID: 0}
 --- !u!114 &1743882154215105310
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -201,7 +202,7 @@ MonoBehaviour:
   - StatKind: 1
     Value: 100
   - StatKind: 7
-    Value: 10
+    Value: 20
 --- !u!1 &543981008890952276
 GameObject:
   m_ObjectHideFlags: 0

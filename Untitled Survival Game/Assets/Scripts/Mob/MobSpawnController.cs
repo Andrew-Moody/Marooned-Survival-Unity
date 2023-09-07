@@ -25,6 +25,9 @@ public class MobSpawnController : MonoBehaviour
 
 	private float _timeToSpawn;
 
+	[SerializeField]
+	private bool _paused;
+
 	void Awake()
 	{
 		enabled = false;
@@ -35,6 +38,16 @@ public class MobSpawnController : MonoBehaviour
 
 	void Update()
 	{
+		if (Input.GetKeyDown(KeyCode.P))
+		{
+			_paused = !_paused;
+		}
+
+		if (_paused)
+		{
+			return;
+		}
+
 		if (_timeToSpawn > 0f)
 		{
 			_timeToSpawn -= Time.deltaTime;

@@ -358,6 +358,9 @@ MonoBehaviour:
   _componentIndexCache: 0
   _addedNetworkObject: {fileID: 2578392283353702656}
   _networkObjectCache: {fileID: 2578392283353702656}
+  _hostilityMask:
+    serializedVersion: 2
+    m_Bits: 256
   _mobSO: {fileID: 11400000, guid: 0723e4578cb55da49bd1eefd6045f440, type: 2}
 --- !u!114 &712350334576834854
 MonoBehaviour:
@@ -381,6 +384,7 @@ MonoBehaviour:
   _abilityActor: {fileID: 7909595392015492263}
   _agent: {fileID: 2578392283353702718}
   _inventory: {fileID: 0}
+  _animEventForwarder: {fileID: 6676938095319760247}
 --- !u!114 &7909595392015492263
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -675,6 +679,18 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
+--- !u!114 &6676938095319760247
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8727066429944424548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f3b00844d782d748a1d318ee7d68128, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1377643088569249250
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -685,6 +701,18 @@ PrefabInstance:
     - target: {fileID: 7010216850891185980, guid: f88c52dd0a89e7840abe5a0c78a3cd02, type: 3}
       propertyPath: m_RootOrder
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7010216850891185980, guid: f88c52dd0a89e7840abe5a0c78a3cd02, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7010216850891185980, guid: f88c52dd0a89e7840abe5a0c78a3cd02, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7010216850891185980, guid: f88c52dd0a89e7840abe5a0c78a3cd02, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 7010216850891185980, guid: f88c52dd0a89e7840abe5a0c78a3cd02, type: 3}
       propertyPath: m_LocalPosition.x
@@ -740,6 +768,11 @@ Animator:
 --- !u!4 &2124997871688604930 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1036915714403135712, guid: f88c52dd0a89e7840abe5a0c78a3cd02, type: 3}
+  m_PrefabInstance: {fileID: 1377643088569249250}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8727066429944424548 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7638839137136788870, guid: f88c52dd0a89e7840abe5a0c78a3cd02, type: 3}
   m_PrefabInstance: {fileID: 1377643088569249250}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &8239076044311802590 stripped

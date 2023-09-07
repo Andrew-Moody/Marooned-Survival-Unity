@@ -84,7 +84,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NetworkObserver: {fileID: 0}
-  <PrefabId>k__BackingField: 28
+  <PrefabId>k__BackingField: 24
   <SpawnableCollectionId>k__BackingField: 0
   _scenePathHash: 0
   <SceneId>k__BackingField: 0
@@ -156,6 +156,7 @@ MonoBehaviour:
   _abilityActor: {fileID: 2438059622344570824}
   _agent: {fileID: 0}
   _inventory: {fileID: 0}
+  _animEventForwarder: {fileID: 0}
 --- !u!114 &2438059622344570824
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -201,7 +202,7 @@ MonoBehaviour:
   - StatKind: 1
     Value: 100
   - StatKind: 7
-    Value: 30
+    Value: 20
 --- !u!1 &543981008890952276
 GameObject:
   m_ObjectHideFlags: 0

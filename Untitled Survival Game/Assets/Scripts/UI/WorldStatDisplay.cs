@@ -58,7 +58,7 @@ public class WorldStatDisplay : MonoBehaviour
 		Actor actor = Actor.FindActor(gameObject);
 
 		actor.DeathFinished += Actor_DeathFinished;
-
+		actor.NetworkStarted += Actor_NetworkStarted;
 
 		_target = actor.Stats;
 
@@ -74,6 +74,17 @@ public class WorldStatDisplay : MonoBehaviour
 		foreach (StatIndicator stat in _statIndicators)
 		{
 			stat.SetAlpha(0f);
+		}
+	}
+
+	private void Actor_NetworkStarted(IActor actor, ActorEventData data)
+	{
+		if (actor is Actor act)
+		{
+			if (act.Owner.IsLocalClient)
+			{
+				Show(false);
+			}
 		}
 	}
 

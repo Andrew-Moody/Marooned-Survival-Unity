@@ -12,6 +12,8 @@ namespace Actors
 
 		public event ActorEventHandler DeathFinished;
 
+		public event ActorEventHandler NetworkStarted;
+
 		#region ComponentFinder
 
 		public Transform NetTransform => Components.NetTransform.transform;
@@ -68,6 +70,13 @@ namespace Actors
 			base.OnStartNetwork();
 
 			SetupServerAndClient();
+
+			NetworkStarted?.Invoke(this, null);
+
+			//if (Owner.IsLocalClient && _components.WorldStatDisplay != null)
+			//{
+			//	_components.WorldStatDisplay.Show(false);
+			//}
 		}
 
 

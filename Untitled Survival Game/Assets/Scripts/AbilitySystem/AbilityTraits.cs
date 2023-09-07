@@ -70,6 +70,16 @@ namespace AbilitySystem
 
 		public bool MeetsAllRequirements(AbilityTrait[] traits)
 		{
+			// Bypass requirements for failure effects
+			foreach (AbilityTrait trait in traits)
+			{
+				Debug.Log($"Trait value: {trait}");
+				if (trait.Matches(AbilityTraitValue.Failure))
+				{
+					return true;
+				}
+			}
+
 			foreach (AbilityTrait reqTrait in _traits)
 			{
 				if (!ContainsTrait(traits, reqTrait))

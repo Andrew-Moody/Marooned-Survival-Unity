@@ -144,8 +144,7 @@ namespace AbilitySystem
 				}
 				else
 				{
-					// Apply to self for now otherwise will need seperate fail effect for logs and rocks (for the correct traits)
-					ApplyEffect(handle, _failEffect, handle.User);
+					ApplyEffect(handle, _failEffect, target.AbilityActor);
 				}
 			}
 		}
