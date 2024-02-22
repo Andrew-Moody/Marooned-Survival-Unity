@@ -156,6 +156,8 @@ MonoBehaviour:
   _abilityActor: {fileID: 8357277706267225347}
   _agent: {fileID: 0}
   _inventory: {fileID: 0}
+  _animEventForwarder: {fileID: 0}
+  _worldStatDisplay: {fileID: 0}
 --- !u!114 &8357277706267225347
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -180,8 +182,8 @@ MonoBehaviour:
   - _input: 14
     _ability: {fileID: 11400000, guid: 5a394c5ecfbf3f341a8b1574a3cf95f6, type: 2}
   _cues:
+  - {fileID: 11400000, guid: e7b6c84153247d84f8fd4f9f975bf190, type: 2}
   - {fileID: 11400000, guid: c5bc14c651e0ffe47a8a2a9da565fa78, type: 2}
-  - {fileID: 11400000, guid: a28013fc10696f14ea3971fb52064afd, type: 2}
 --- !u!114 &116272913050607862
 MonoBehaviour:
   m_ObjectHideFlags: 0
